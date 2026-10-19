@@ -143,4 +143,53 @@ router.get("/facets", (req, res) => {
   res.json({ event_types: eventTypes, tool_names: toolNames });
 });
 
+// POST /api/events?provider=claude|antigravity — Dual-provider non-blocking hook ingestion
+router.post("/", (req, res) => {
+  try {
+    const hooksRouter = require("./hooks");
+    const { normalizeProvider } = require("../utils/modelClassifier");
+    const body = req.body || {};
+    const queryProvider = req.query.provider || body.provider || body.data?.provider;
+
+    const hookType =
+      body.hook_type ||
+      body.hook_event_name ||
+      body.event_type ||
+      body.event ||
+      (body.tool_name || body.toolName ? "PreToolUse" : "SessionStart");
+
+    const rawData =
+      body.data && typeof body.data === "object" && !Array.isArray(body.data)
+        ? { ...body, ...body.data }
+        : { ...body };
+
+    const provider = normalizeProvider(
+      queryProvider || rawData.provider,
+      rawData.model,
+      rawData.source
+    );
+
+    const sessionId =
+      rawData.session_id ||
+      rawData.sessionId ||
+      rawData.conversation_id ||
+      rawData.conversationId ||
+      `${provider}-live-session`;
+
+    const normalizedData = {
+      ...rawData,
+      session_id: String(sessionId),
+      provider,
+      tool_name: rawData.tool_name || rawData.toolName || null,
+      tool_input: rawData.tool_input || rawData.toolInput || rawData.arguments || null,
+    };
+
+    const event = hooksRouter.processEvent(hookType, normalizedData);
+    return res.status(200).json({ ok: true, provider, event });
+  } catch (err) {
+    // Non-blocking fail-safe response so CLI hooks never stall
+    return res.status(200).json({ ok: false, error: err.message });
+  }
+});
+
 module.exports = router;

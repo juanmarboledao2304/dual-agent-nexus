@@ -71,6 +71,8 @@ const alertsRouter = require("./routes/alerts");
 const webhooksRouter = require("./routes/webhooks");
 const remoteSourcesRouter = require("./routes/remote-sources");
 const metricsRouter = require("./routes/metrics");
+const dispatchController = require("./controllers/dispatchController");
+const simulateController = require("./controllers/simulateController");
 
 const APP_VERSION = (() => {
   try {
@@ -116,6 +118,11 @@ function createApp() {
   app.use("/api/webhooks", webhooksRouter);
   app.use("/api/remote-sources", remoteSourcesRouter);
   app.use("/api/metrics", metricsRouter);
+  app.use("/api/dispatch", dispatchController);
+  app.use("/api/simulate", simulateController);
+  app.get("/api/quota", (_req, res) => {
+    res.json(simulateController.getDualQuotaTelemetry());
+  });
   app.get("/favicon.svg", (_req, res) => {
     res.type("image/svg+xml").sendFile(DASHBOARD_FAVICON_PATH);
   });
@@ -557,6 +564,13 @@ function startBackgroundServices() {
     }
   } catch (err) {
     console.warn("dashboard-runs reconciliation failed:", err.message);
+  }
+  // DualAgent Nexus live JSONL transcript watcher (~/.claude/projects & ~/.gemini)
+  try {
+    const { startLiveTranscriptWatcher } = require("./watchers/liveTranscriptWatcher");
+    startLiveTranscriptWatcher();
+  } catch (err) {
+    console.warn("liveTranscriptWatcher failed to start:", err.message);
   }
 }
 

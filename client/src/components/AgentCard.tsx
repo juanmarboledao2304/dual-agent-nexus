@@ -62,13 +62,14 @@
  * ----------------------------------------------------------------------------- */
 
 import { useTranslation } from "react-i18next";
-import { Bot, GitBranch, Clock, Wrench, Cpu, Coins } from "lucide-react";
+import { Bot, GitBranch, Clock, Wrench, Cpu, Coins, Flame, Sparkles, Layers } from "lucide-react";
 import { useNavigate } from "react-router";
 import { AgentStatusBadge } from "./StatusBadge";
 import { TodoProgressIndicator } from "./TodoProgressIndicator";
 import { effectiveAgentStatus, isAgentAwaitingInput, agentAwaitingReason } from "../lib/types";
 import type { Agent, Session } from "../lib/types";
 import { formatDuration, timeAgo, formatModelName, pathBasename, fmtCost } from "../lib/format";
+import { getAgentThermalTheme } from "../utils/agentTheme";
 
 /** Keep a compact card's history legible: at most two distinct human turns,
  * one visual row each. This intentionally preserves a title-matching first
@@ -126,7 +127,8 @@ function isTransientProcessCard(metadata: string | null | undefined): boolean {
 }
 
 /**
- * Kanban card for an agent: name, status badge, and what it is working on. Main-agent cards use the
+ * Kanban card for an agent: name, status badge, Chromatic Thermal encoding, 4-bar Effort Signal
+ * Meter, context/token telemetry bar, and what it is working on. Main-agent cards use the
  * session for model, working directory, and cost; subagent cards show their type. Clicking opens
  * the session, except for transient Codex placeholders, which have no page yet.
  */
@@ -144,19 +146,19 @@ export function AgentCard({
   const isActive = agent.status === "working";
   const isMain = agent.type === "main";
 
+  // Resolve Chromatic Thermal UI theme (Warm Spectrum for Claude, Cool Spectrum for Antigravity)
+  const theme = getAgentThermalTheme(agent, session?.provider, session?.model);
+
   // Session-level metadata applies to every card in the session - main and
   // subagents alike. Subtitle differs by type: main uses model+cwd (its
   // auto-generated name carries no info), subagents stick with their
   // subagent_type label (more useful than repeating the session model).
-  const model = formatModelName(session?.model);
+  const model = formatModelName(session?.model || agent.model);
   const cwdBase = pathBasename(session?.cwd);
   // Cost shown on the card is scoped to what the card represents: a main agent's
   // card stands in for the whole session, so it shows the session total; a
   // subagent's card shows that subagent's OWN cost (server-computed from its
-  // token buckets). Showing the session total on a subagent card is misleading —
-  // it reads as if that one subagent cost the whole session's spend. A subagent
-  // with no recorded usage shows no cost (the cost > 0 guard below hides it),
-  // which is truthful rather than misleading.
+  // token buckets).
   const cost = isMain
     ? typeof session?.cost === "number"
       ? session.cost
@@ -172,10 +174,15 @@ export function AgentCard({
     : sessionName;
   const isCodexMain = isMain && session?.provider === "codex" && agent.name.trim() === "Codex";
   const isCursorMain = isMain && session?.provider === "cursor";
+  const isAntigravityMain =
+    isMain &&
+    (session?.provider === "antigravity" || agent.provider === "antigravity") &&
+    /^(Main Agent|Antigravity)/i.test(agent.name.trim());
   const isClaudeMain =
     isMain &&
     session?.provider !== "cursor" &&
     session?.provider !== "codex" &&
+    session?.provider !== "antigravity" &&
     /^Main Agent(?:\s*-|$)/i.test(agent.name.trim());
   // Provider-owned main cards title themselves with the session's own title;
   // the tool name moves to the start of the subtitle instead of eating the
@@ -185,9 +192,11 @@ export function AgentCard({
     ? "Codex"
     : isCursorMain
       ? "Cursor"
-      : isClaudeMain
-        ? "Claude Code"
-        : null;
+      : isAntigravityMain
+        ? "Antigravity"
+        : isClaudeMain
+          ? "Claude Code"
+          : null;
   const displayName = providerLabel ? realSessionName || t("session.anonymous") : agent.name;
   // Session titles and requests are intentionally independent: Claude,
   // Cursor, and Codex persist two recent real human turns on the session, while a
@@ -198,12 +207,10 @@ export function AgentCard({
     : agent.task?.trim() || null;
   const taskPreviewLines = promptPreviewLines(taskPreview);
   const isTransient = isTransientProcessCard(agent.metadata);
-  // A subagent's own model lives in its metadata (resolved from its transcript,
-  // not the parent session's — see issue #185). Use it everywhere this card
-  // shows a model so a Haiku QA agent under an Opus orchestrator reads as
-  // Haiku, not Opus. Falls back to the session model only for the main agent.
-  let subagentModel: string | null = null;
-  if (!isMain && agent.metadata) {
+  // A subagent's own model lives in `agent.model` or its metadata (resolved from its transcript,
+  // not the parent session's — see issue #185).
+  let subagentModel: string | null = agent.model ? formatModelName(agent.model) : null;
+  if (!isMain && !subagentModel && agent.metadata) {
     try {
       const parsed = JSON.parse(agent.metadata) as { model?: string };
       subagentModel = parsed?.model ? formatModelName(parsed.model) : null;
@@ -214,17 +221,7 @@ export function AgentCard({
   // The model badge (footer) must reflect THIS card's agent: the session model
   // for main, the subagent's own model for subagents.
   const displayModel = isMain ? model : subagentModel;
-  // Model now lives in the footer badge, so the subtitle carries project
-  // context instead: main shows cwd + how many agents the session spawned +
-  // how many turns it has run; subagents show their type + the project they ran
-  // in. (No model here — that would duplicate the footer badge, which is what
-  // main cards used to do.)
   const agentCount = typeof session?.agent_count === "number" ? session.agent_count : 0;
-  // agent_count includes the main agent itself. Show how many SUBAGENTS the
-  // session spawned instead, so this reconciles with the "Active Subagents"
-  // dashboard stat (which excludes main agents) — otherwise a card reading
-  // "29 agents" looks like it should equal a 29-subagent stat when the session
-  // actually has 28 subagents + 1 main.
   const subagentCount = Math.max(0, agentCount - 1);
   let sessionTurns = 0;
   if (isMain && session?.metadata) {
@@ -246,6 +243,14 @@ export function AgentCard({
         .join(" · ") || null
     : [label || agent.subagent_type, cwdBase].filter(Boolean).join(" · ") || null;
 
+  const totalTokens = (agent.input_tokens ?? 0) + (agent.output_tokens ?? 0);
+  const cacheReadTokens = agent.cache_read_tokens ?? 0;
+  const cacheHitRatio =
+    totalTokens + cacheReadTokens > 0
+      ? Math.round((cacheReadTokens / (totalTokens + cacheReadTokens)) * 100)
+      : 0;
+  const contextPct = Math.min(100, Math.max(0, agent.context_utilization_pct ?? 0));
+
   function handleClick() {
     if (onClick) {
       onClick();
@@ -257,22 +262,60 @@ export function AgentCard({
   return (
     <div
       onClick={handleClick}
-      className={`card-hover p-4 overflow-hidden ${
-        isTransient ? "cursor-default" : "cursor-pointer"
-      } ${
+      className={`card-hover p-4 overflow-hidden ${theme.bgGradientClass} ${
+        isActive ? theme.glowClass : ""
+      } ${isTransient ? "cursor-default" : "cursor-pointer"} ${
         isWaiting
           ? "border-l-2 border-l-yellow-500/60"
           : isActive
-            ? "border-l-2 border-l-emerald-500/50"
+            ? `border-l-2 ${theme.borderClass}`
             : ""
       }`}
     >
+      {/* Chromatic Thermal Header Strip: Provider Spectrum Pill + Tier Badge + 4-Bar Effort Meter */}
+      <div className="flex items-center justify-between gap-2 mb-2.5">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span
+            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${theme.providerPillClass}`}
+          >
+            {theme.provider === "antigravity" ? (
+              <Sparkles className="w-2.5 h-2.5" />
+            ) : (
+              <Flame className="w-2.5 h-2.5" />
+            )}
+            {theme.provider === "antigravity" ? "AGY · COOL" : "CLAUDE · WARM"}
+          </span>
+          <span
+            className={`px-1.5 py-0.5 rounded text-[9px] font-semibold truncate ${theme.badgeClass}`}
+          >
+            {theme.label}
+          </span>
+        </div>
+
+        {/* 4-Bar Effort Signal Meter (LOW, MED, HIGH, MAX) */}
+        <div
+          className="flex items-center gap-1 flex-shrink-0"
+          title={`Reasoning Effort: ${theme.effortLabel}`}
+        >
+          <span className="flex items-end gap-0.5 h-2.5">
+            {[1, 2, 3, 4].map((bar) => (
+              <span
+                key={bar}
+                className={`w-0.5 rounded-sm transition-all ${
+                  bar <= theme.effortBars ? theme.barActiveClass : "bg-slate-700/50"
+                }`}
+                style={{ height: `${bar * 25}%` }}
+              />
+            ))}
+          </span>
+          <span className="text-[9px] font-mono text-gray-400">{theme.effortLabel}</span>
+        </div>
+      </div>
+
       <div className="flex items-start justify-between gap-2 mb-3 min-w-0">
         <div className="flex items-start gap-2.5 min-w-0 overflow-hidden">
           <div
-            className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${
-              isMain ? "bg-accent/15 text-accent" : "bg-violet-500/15 text-violet-400"
-            }`}
+            className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${theme.badgeClass}`}
           >
             {isMain ? <Bot className="w-3.5 h-3.5" /> : <GitBranch className="w-3.5 h-3.5" />}
           </div>
@@ -312,7 +355,7 @@ export function AgentCard({
       </div>
 
       {taskPreviewLines.length > 0 && (
-        <div className="mb-3 space-y-1 border-l-2 border-accent/25 pl-2.5">
+        <div className={`mb-3 space-y-1 border-l-2 ${theme.borderClass} pl-2.5`}>
           {taskPreviewLines.map((prompt, index) => (
             <p
               key={`${index}-${prompt}`}
@@ -322,6 +365,28 @@ export function AgentCard({
               {prompt}
             </p>
           ))}
+        </div>
+      )}
+
+      {/* Context Window Fill % & Token Telemetry Bar */}
+      {(totalTokens > 0 || contextPct > 0) && (
+        <div className="mb-3 space-y-1 bg-slate-950/50 p-2 rounded-lg border border-slate-800/70">
+          <div className="flex items-center justify-between text-[10px] font-mono text-gray-400">
+            <span className="flex items-center gap-1">
+              <Layers className="w-2.5 h-2.5" />
+              Ctx {contextPct.toFixed(0)}%
+            </span>
+            <span>
+              {(totalTokens / 1000).toFixed(1)}K tok
+              {cacheHitRatio > 0 ? ` · ${cacheHitRatio}% cache` : ""}
+            </span>
+          </div>
+          <div className="w-full h-1.5 rounded-full bg-slate-900 overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${theme.barActiveClass}`}
+              style={{ width: `${Math.max(4, contextPct || Math.min(100, totalTokens / 2000))}%` }}
+            />
+          </div>
         </div>
       )}
 

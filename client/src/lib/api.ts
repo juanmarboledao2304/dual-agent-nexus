@@ -1,6 +1,7 @@
 /**
  * @file api.ts
  * @description Defines a set of functions for interacting with the backend API of the agent dashboard application. It includes methods for fetching statistics, managing sessions and agents, retrieving analytics data, handling settings, and managing model pricing. The module abstracts away the details of making HTTP requests and provides a clean interface for the rest of the application to use when communicating with the server.
+ * @author Son Nguyen <hoangson091104@gmail.com>
  *
  * ## What this module is
  * `api.ts` is the single, centralized REST client for the React dashboard. Every page/hook that
@@ -58,8 +59,6 @@
  * request bodies and response payloads that are *specific to this client* (many response DTOs are
  * imported from `./types`; the ones declared here are the client-only ones, e.g. the CC-config
  * explorer shapes, the Run-page process handles, and the import-result shape).
- *
- * @author Son Nguyen <hoangson091104@gmail.com>
  */
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
@@ -391,6 +390,7 @@ import type {
   CostResult,
   CursorModelPricing,
   DashboardEvent,
+  DualQuotaTelemetry,
   GptModelPricing,
   ModelPricing,
   Session,
@@ -842,6 +842,17 @@ export const api = {
       const q = qs.toString();
       return request<{ agents: Agent[] }>(`/agents${q ? `?${q}` : ""}`);
     },
+    /**
+     * POST /api/agents/:id/kill - terminate an active agent process via SIGTERM and mark it completed.
+     *
+     * @param id The agent id to terminate.
+     * @returns `{ ok, killed_pid, agent }`
+     */
+    kill: (id: string) =>
+      request<{ ok: boolean; killed_pid: number | null; agent: Agent }>(
+        `/agents/${encodeURIComponent(id)}/kill`,
+        { method: "POST" }
+      ),
   },
 
   // ──────────────────────────────── Events API ────────────────────────────────
@@ -2170,6 +2181,74 @@ export const api = {
         synced: number;
         results: Array<{ id: string; ok: boolean; error?: string }>;
       }>("/remote-sources/sync-all", { method: "POST" }),
+  },
+
+  // ───────────────────────────── DualAgent Nexus API ────────────────────────────
+  /** Dual-subscription telemetry (Claude Code + Google Antigravity) & quota tracking. */
+  quota: {
+    get: () => request<DualQuotaTelemetry>("/quota"),
+  },
+
+  /** Interactive Prompt Dispatcher & Process Manager for Claude Code, Antigravity (agy), and Dual Swarm. */
+  dispatch: {
+    start: (payload: {
+      prompt: string;
+      cwd?: string;
+      engine?: "claude" | "antigravity" | "dual";
+      model?: string;
+      effort?: "low" | "medium" | "high" | "max";
+    }) =>
+      request<{
+        ok: boolean;
+        engine: string;
+        dispatches: Array<{
+          dispatchId: string;
+          sessionId: string;
+          agentId: string;
+          provider: string;
+          model: string;
+          modelTier: string;
+          effort: string;
+          pid: number | null;
+        }>;
+      }>("/dispatch", { method: "POST", body: JSON.stringify(payload) }),
+    active: () =>
+      request<{
+        items: Array<{
+          dispatchId: string;
+          sessionId: string;
+          agentId: string;
+          provider: string;
+          model: string;
+          modelTier: string;
+          effort: string;
+          cwd: string;
+          prompt: string;
+          status: string;
+          pid: number | null;
+          startedAt: number;
+        }>;
+      }>("/dispatch/active"),
+    kill: (id: string) =>
+      request<{ ok: boolean; killed: string }>(`/dispatch/${encodeURIComponent(id)}/kill`, {
+        method: "POST",
+      }),
+  },
+
+  /** 1-Click Live Multi-Agent Swarm Simulator (`POST /api/simulate/swarm`). */
+  simulate: {
+    swarm: (cwd?: string) =>
+      request<{
+        ok: boolean;
+        alreadyRunning?: boolean;
+        claudeSessionId: string;
+        antigravitySessionId: string;
+        durationSeconds?: number;
+        message: string;
+      }>("/simulate/swarm", {
+        method: "POST",
+        body: JSON.stringify(cwd ? { cwd } : {}),
+      }),
   },
 };
 

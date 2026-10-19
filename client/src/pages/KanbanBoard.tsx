@@ -76,6 +76,8 @@ import { AgentCard } from "../components/AgentCard";
 import { SessionCard } from "../components/SessionCard";
 import { EmptyState } from "../components/EmptyState";
 import { CardSkeleton } from "../components/Skeleton";
+import { SubagentGraph } from "../components/SubagentGraph";
+import { AgentInspectorDrawer } from "../components/AgentInspectorDrawer";
 import {
   STATUS_CONFIG,
   SESSION_STATUS_CONFIG,
@@ -141,6 +143,7 @@ export function KanbanBoard() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<Record<string, number>>({});
+  const [inspectedAgent, setInspectedAgent] = useState<Agent | null>(null);
 
   /** Switch boards and reset each column's "show more" pagination. */
   const setView = useCallback(
@@ -349,8 +352,18 @@ export function KanbanBoard() {
   }
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in space-y-6">
       {Header}
+
+      {view === "agents" && (
+        <SubagentGraph
+          agents={agents.filter((a) => a.type === "main")}
+          subagents={agents.filter((a) => a.type === "subagent")}
+          sessionsById={sessionsById}
+          onSelectAgent={setInspectedAgent}
+          onRefresh={load}
+        />
+      )}
 
       <div className="flex gap-4 min-h-[600px] overflow-x-auto pb-4 -mx-8 px-8">
         {view === "agents"
@@ -427,6 +440,13 @@ export function KanbanBoard() {
               );
             })}
       </div>
+
+      <AgentInspectorDrawer
+        agent={inspectedAgent}
+        session={inspectedAgent ? sessionsById.get(inspectedAgent.session_id) : null}
+        onClose={() => setInspectedAgent(null)}
+        onAgentUpdated={load}
+      />
     </div>
   );
 }

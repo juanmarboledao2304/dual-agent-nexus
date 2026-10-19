@@ -158,4 +158,10 @@ router.patch("/:id", (req, res) => {
   res.json({ agent });
 });
 
+router.post("/:id/kill", (req, res) => {
+  const { killAgentOrDispatch } = require("../controllers/dispatchController");
+  const result = killAgentOrDispatch(req.params.id);
+  res.json(result);
+});
+
 module.exports = router;

@@ -106,6 +106,8 @@ import { AgentCard } from "../components/AgentCard";
 import { AgentStatusBadge } from "../components/StatusBadge";
 import { EmptyState } from "../components/EmptyState";
 import { Tip } from "../components/Tip";
+import { SubagentGraph } from "../components/SubagentGraph";
+import { AgentInspectorDrawer } from "../components/AgentInspectorDrawer";
 import { useUrlTab } from "../hooks/usePageShortcuts";
 import { usePaletteAction } from "../components/PaletteActionProvider";
 import { timeAgo, fmt, fmtCost, formatModelName } from "../lib/format";
@@ -1032,6 +1034,7 @@ export function Dashboard() {
   const [allSubagents, setAllSubagents] = useState<Agent[]>([]);
   const [sessionsById, setSessionsById] = useState<Map<string, Session>>(new Map());
   const [expandedAgents, setExpandedAgents] = useState<Set<string>>(new Set());
+  const [inspectedAgent, setInspectedAgent] = useState<Agent | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Dynamic item counts based on available container height
@@ -1367,6 +1370,14 @@ export function Dashboard() {
             />
           </div>
 
+          <SubagentGraph
+            agents={activeAgents}
+            subagents={allSubagents}
+            sessionsById={sessionsById}
+            onSelectAgent={setInspectedAgent}
+            onRefresh={load}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-0 min-w-0 flex-1 min-h-0">
             {/* Active agents */}
             <div ref={agentsContainerRef} className="min-w-0 overflow-y-auto pr-6">
@@ -1599,6 +1610,12 @@ export function Dashboard() {
       ) : (
         <SystemHealthTab />
       )}
+      <AgentInspectorDrawer
+        agent={inspectedAgent}
+        session={inspectedAgent ? sessionsById.get(inspectedAgent.session_id) : null}
+        onClose={() => setInspectedAgent(null)}
+        onAgentUpdated={load}
+      />
     </div>
   );
 }

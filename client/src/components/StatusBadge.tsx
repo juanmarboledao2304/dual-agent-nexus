@@ -119,10 +119,17 @@ function ReasonChip({ reason }: { reason: AwaitingReason }) {
 function reasonDescription(
   t: TFunction,
   reason: AwaitingReason,
-  provider: "claude" | "cursor" | "codex" | undefined
+  provider: "claude" | "cursor" | "codex" | "antigravity" | string | undefined
 ): string {
   return t(AWAITING_REASON_CONFIG[reason].descKey, {
-    provider: provider === "codex" ? "Codex" : provider === "cursor" ? "Cursor" : "Claude",
+    provider:
+      provider === "antigravity"
+        ? "Antigravity"
+        : provider === "codex"
+          ? "Codex"
+          : provider === "cursor"
+            ? "Cursor"
+            : "Claude",
   });
 }
 
@@ -174,7 +181,7 @@ interface AgentStatusBadgeProps {
    *  never squeezes the card title. */
   compact?: boolean;
   /** Product that owns the waiting row; drives provider wording in the tooltip. */
-  provider?: "claude" | "cursor" | "codex";
+  provider?: "claude" | "cursor" | "codex" | "antigravity" | string;
   /** `dot` renders only the colored status dot (see {@link StatusDot}); for
    *  surfaces whose layout already conveys the status, e.g. a Kanban column. */
   variant?: "badge" | "dot";
@@ -243,7 +250,7 @@ interface SessionStatusBadgeProps {
    *  never squeezes the card title. */
   compact?: boolean;
   /** Product that owns the waiting row; drives provider wording in the tooltip. */
-  provider?: "claude" | "cursor" | "codex";
+  provider?: "claude" | "cursor" | "codex" | "antigravity" | string;
   /** `dot` renders only the colored status dot (see {@link StatusDot}); for
    *  surfaces whose layout already conveys the status, e.g. a Kanban column. */
   variant?: "badge" | "dot";

@@ -80,6 +80,8 @@ import { CommandPalette } from "./CommandPalette";
 import { Tabby } from "./Tabby/Tabby";
 import { ActionToast } from "./ActionToast";
 import { PaletteActionProvider, usePaletteAction } from "./PaletteActionProvider";
+import { DualQuotaHeader } from "./DualQuotaHeader";
+import { CommandCenterDock } from "./CommandCenterDock";
 
 /** Props for {@link Layout}. */
 interface LayoutProps {
@@ -104,8 +106,8 @@ function LayoutActions({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 }
 
 /**
- * Root layout wrapping all dashboard routes: sidebar, global overlays, and the
- * routed page outlet.
+ * Root layout wrapping all dashboard routes: sidebar, global overlays, DualQuotaHeader,
+ * CommandCenterDock, and the routed page outlet.
  * @param props See {@link LayoutProps}.
  */
 export function Layout({ wsConnected }: LayoutProps) {
@@ -125,7 +127,7 @@ export function Layout({ wsConnected }: LayoutProps) {
 
   return (
     <PaletteActionProvider>
-      <div className="min-h-screen bg-surface-0">
+      <div className="min-h-screen bg-slate-950 text-slate-100">
         <a href="#main-content" className="skip-to-content">
           {t("skipToContent")}
         </a>
@@ -144,13 +146,15 @@ export function Layout({ wsConnected }: LayoutProps) {
             width: collapsed ? "calc(100% - 4.25rem)" : "calc(100% - 15rem)",
           }}
         >
+          <DualQuotaHeader />
           {/* overflow-x-clip (not -hidden) clips horizontal overflow without
             creating a scroll container, so descendant `position: sticky`
             elements (e.g. the Settings page TOC) still pin to the window. */}
-          <div className="p-5 lg:p-6 max-w-full overflow-x-clip">
+          <div className="p-5 lg:p-6 pb-28 max-w-full overflow-x-clip">
             <Outlet />
           </div>
         </main>
+        <CommandCenterDock />
       </div>
     </PaletteActionProvider>
   );

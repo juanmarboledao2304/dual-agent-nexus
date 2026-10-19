@@ -1381,6 +1381,67 @@ try {
   }
 }
 
+// Migrate: DualAgent Nexus telemetry columns on sessions, agents, and events
+// for Claude Code + Google Antigravity thermal classification, effort levels,
+// subagent graph hierarchy, context window utilization, and process management.
+// Runs AFTER the legacy `agents_new` rebuild above so rebuilt `agents` tables
+// also receive all telemetry columns.
+for (const [col, def] of [
+  ["provider", "TEXT DEFAULT 'claude'"],
+  ["model_tier", "TEXT DEFAULT 'standard'"],
+  ["effort", "TEXT DEFAULT 'medium'"],
+  ["metrics", "TEXT DEFAULT '{}'"],
+  ["pid", "INTEGER"],
+]) {
+  try {
+    db.prepare(`SELECT ${col} FROM sessions LIMIT 1`).get();
+  } catch {
+    db.prepare(`ALTER TABLE sessions ADD COLUMN ${col} ${def}`).run();
+  }
+}
+
+for (const [col, def] of [
+  ["provider", "TEXT DEFAULT 'claude'"],
+  ["subagent_role", "TEXT DEFAULT 'Main'"],
+  ["model", "TEXT"],
+  ["model_tier", "TEXT DEFAULT 'standard'"],
+  ["effort", "TEXT DEFAULT 'medium'"],
+  ["telemetry_status", "TEXT DEFAULT 'thinking'"],
+  ["input_tokens", "INTEGER DEFAULT 0"],
+  ["output_tokens", "INTEGER DEFAULT 0"],
+  ["cache_read_tokens", "INTEGER DEFAULT 0"],
+  ["cache_write_tokens", "INTEGER DEFAULT 0"],
+  ["context_utilization_pct", "REAL DEFAULT 0"],
+  ["bytes_processed", "INTEGER DEFAULT 0"],
+  ["burn_rate_per_hour", "REAL DEFAULT 0"],
+  ["metrics", "TEXT DEFAULT '{}'"],
+  ["pid", "INTEGER"],
+]) {
+  try {
+    db.prepare(`SELECT ${col} FROM agents LIMIT 1`).get();
+  } catch {
+    db.prepare(`ALTER TABLE agents ADD COLUMN ${col} ${def}`).run();
+  }
+}
+
+for (const [col, def] of [
+  ["provider", "TEXT DEFAULT 'claude'"],
+  ["model", "TEXT"],
+  ["model_tier", "TEXT"],
+  ["effort", "TEXT"],
+  ["metrics", "TEXT"],
+]) {
+  try {
+    db.prepare(`SELECT ${col} FROM events LIMIT 1`).get();
+  } catch {
+    db.prepare(`ALTER TABLE events ADD COLUMN ${col} ${def}`).run();
+  }
+}
+
+db.prepare("CREATE INDEX IF NOT EXISTS idx_agents_provider ON agents(provider)").run();
+db.prepare("CREATE INDEX IF NOT EXISTS idx_agents_parent ON agents(parent_agent_id)").run();
+db.prepare("CREATE INDEX IF NOT EXISTS idx_sessions_provider ON sessions(provider)").run();
+
 // Migrate: add compaction baseline columns to token_usage.
 // When conversation compaction rewrites the JSONL, pre-compaction token counts
 // are lost from the transcript. Baselines preserve those counts so the effective
@@ -2434,6 +2495,60 @@ const stmts = {
   ),
   listAgentsByWorkflow: db.prepare(
     "SELECT * FROM agents WHERE workflow_run_id = ? ORDER BY started_at ASC, id ASC"
+  ),
+
+  // ── DualAgent Nexus Telemetry & Hierarchy ─────────────────────────────────
+  setSessionProvider: db.prepare(
+    "UPDATE sessions SET provider = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id = ?"
+  ),
+  updateSessionTelemetry: db.prepare(
+    `UPDATE sessions SET
+       provider = COALESCE(?, provider),
+       model = COALESCE(?, model),
+       model_tier = COALESCE(?, model_tier),
+       effort = COALESCE(?, effort),
+       metrics = COALESCE(?, metrics),
+       pid = COALESCE(?, pid),
+       updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now')
+     WHERE id = ?`
+  ),
+  updateAgentTelemetry: db.prepare(
+    `UPDATE agents SET
+       provider = COALESCE(?, provider),
+       subagent_role = COALESCE(?, subagent_role),
+       model = COALESCE(?, model),
+       model_tier = COALESCE(?, model_tier),
+       effort = COALESCE(?, effort),
+       telemetry_status = COALESCE(?, telemetry_status),
+       input_tokens = COALESCE(?, input_tokens),
+       output_tokens = COALESCE(?, output_tokens),
+       cache_read_tokens = COALESCE(?, cache_read_tokens),
+       cache_write_tokens = COALESCE(?, cache_write_tokens),
+       context_utilization_pct = COALESCE(?, context_utilization_pct),
+       bytes_processed = COALESCE(?, bytes_processed),
+       burn_rate_per_hour = COALESCE(?, burn_rate_per_hour),
+       metrics = COALESCE(?, metrics),
+       pid = COALESCE(?, pid),
+       updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now')
+     WHERE id = ?`
+  ),
+  addAgentTokenDelta: db.prepare(
+    `UPDATE agents SET
+       input_tokens = COALESCE(input_tokens, 0) + ?,
+       output_tokens = COALESCE(output_tokens, 0) + ?,
+       cache_read_tokens = COALESCE(cache_read_tokens, 0) + ?,
+       cache_write_tokens = COALESCE(cache_write_tokens, 0) + ?,
+       bytes_processed = COALESCE(bytes_processed, 0) + ?,
+       context_utilization_pct = COALESCE(?, context_utilization_pct),
+       burn_rate_per_hour = COALESCE(?, burn_rate_per_hour),
+       updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now')
+     WHERE id = ?`
+  ),
+  insertTelemetryEvent: db.prepare(
+    `INSERT INTO events (
+       session_id, agent_id, event_type, tool_name, summary, data,
+       provider, model, model_tier, effort, metrics, created_at
+     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now'))`
   ),
 };
 

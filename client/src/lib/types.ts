@@ -703,8 +703,14 @@ export interface Session {
    * Remote Data Sources feature / `remote_sources`). Maps to `sessions.source`. */
   source?: string;
   /** Product that created this session. Historical records default to Claude;
-   *  Codex rollouts are marked `codex` and use the GPT price card. */
-  provider?: "claude" | "cursor" | "codex";
+   *  Codex rollouts are marked `codex` and use the GPT price card; Google Antigravity is `antigravity`. */
+  provider?: "claude" | "cursor" | "codex" | "antigravity";
+  /** Model tier ('heavy' | 'standard' | 'light'). */
+  model_tier?: "heavy" | "standard" | "light" | string | null;
+  /** Reasoning effort ('low' | 'medium' | 'high' | 'max'). */
+  effort?: "low" | "medium" | "high" | "max" | string | null;
+  /** OS Process ID when spawned or tracked by the dispatcher. */
+  pid?: number | null;
   /** Compact latest task progress attached to Sessions-list rows. Null when the
    * provider never emitted task/checklist/plan state. */
   todo_summary?: SessionTodoSummary | null;
@@ -922,6 +928,29 @@ export interface Agent {
    * for main agents (whose cost is the session total) and compaction agents.
    */
   cost?: number;
+  /** DualAgent Nexus telemetry fields */
+  provider?: "claude" | "antigravity" | "codex" | "cursor" | string | null;
+  subagent_role?: string | null;
+  model?: string | null;
+  model_tier?: "heavy" | "standard" | "light" | string | null;
+  effort?: "low" | "medium" | "high" | "max" | string | null;
+  telemetry_status?:
+    | "spawning"
+    | "thinking"
+    | "tool_use"
+    | "waiting_approval"
+    | "completed"
+    | "error"
+    | string
+    | null;
+  input_tokens?: number;
+  output_tokens?: number;
+  cache_read_tokens?: number;
+  cache_write_tokens?: number;
+  context_utilization_pct?: number;
+  bytes_processed?: number;
+  burn_rate_per_hour?: number;
+  pid?: number | null;
 }
 
 // ───── "Awaiting input" overlay helpers ─────
@@ -1883,16 +1912,77 @@ export interface WebhookTestResult {
  * for the full mapping). Because live UI tabs may outlive a server upgrade, the
  * set of `type` values must only ever grow - never rename or repurpose one.
  */
+export interface DualQuotaTelemetry {
+  timestamp: string;
+  simulating: boolean;
+  claude: {
+    provider: "claude";
+    label: string;
+    window_5h_tokens: number;
+    window_5h_cap: number;
+    window_5h_utilization_pct: number;
+    input_tokens: number;
+    output_tokens: number;
+    cache_read_tokens: number;
+    cache_efficiency_pct: number;
+    active_subagents: {
+      heavy: number;
+      standard: number;
+      light: number;
+    };
+    burn_rate_tokens_per_hr: number;
+    est_hours_to_cap: number | null;
+  };
+  antigravity: {
+    provider: "antigravity";
+    label: string;
+    session_tokens: number;
+    session_cap: number;
+    context_bandwidth_pct: number;
+    bytes_processed: number;
+    flow_credits_used: number;
+    flow_credits_limit: number;
+    active_subagents: {
+      heavy: number;
+      standard: number;
+      light: number;
+    };
+    model_distribution: {
+      flash_pct: number;
+      pro_argon_pct: number;
+    };
+    burn_rate_tokens_per_hr: number;
+    burn_rate_requests_per_hr: number;
+  };
+}
+
+export interface DispatchStreamPayload {
+  dispatch_id: string;
+  dispatchId?: string;
+  session_id: string;
+  sessionId?: string;
+  agent_id: string;
+  agentId?: string;
+  provider: "claude" | "antigravity" | string;
+  stream: "stdout" | "stderr";
+  line: string;
+  chunk: string;
+  timestamp: string;
+}
+
+export interface DispatchStatusPayload {
+  dispatch_id: string;
+  dispatchId?: string;
+  session_id: string;
+  sessionId?: string;
+  agent_id: string;
+  agentId?: string;
+  provider: "claude" | "antigravity" | string;
+  status: "running" | "completed" | "error" | "killed";
+  exit_code?: number;
+}
+
 export interface WSMessage {
-  /** Discriminant selecting which member of the `data` union applies:
-   *  session_created/updated → Session; agent_created/updated → Agent;
-   *  new_event → DashboardEvent; import.progress → ImportProgressMessage;
-   *  update_status → UpdateStatusPayload; run_stream/run_status/run_input_ack
-   *  → their matching Run*Payload; cc_config_changed / codex_config_changed
-   *  → CcConfigChangedPayload;
-   *  alert_triggered/alert_updated → AlertEvent; workflow_upserted → WorkflowRun;
-   *  remote_source.status → RemoteSourceStatusPayload;
-   *  remote_data.updated → RemoteDataUpdatedPayload. */
   type:
     | "session_created"
     | "session_updated"
@@ -1910,7 +2000,12 @@ export interface WSMessage {
     | "alert_updated"
     | "workflow_upserted"
     | "remote_source.status"
-    | "remote_data.updated";
+    | "remote_data.updated"
+    | "dispatch_stream"
+    | "dispatch_status"
+    | "quota_updated"
+    | "swarm_simulation_started"
+    | "swarm_simulation_completed";
   /** The message body, whose concrete shape is selected by `type` above. */
   data:
     | Session
@@ -1925,7 +2020,11 @@ export interface WSMessage {
     | AlertEvent
     | WorkflowRun
     | RemoteSourceStatusPayload
-    | RemoteDataUpdatedPayload;
+    | RemoteDataUpdatedPayload
+    | DispatchStreamPayload
+    | DispatchStatusPayload
+    | DualQuotaTelemetry
+    | Record<string, unknown>;
   /** ISO timestamp the server broadcast this message (not necessarily the
    *  same instant the underlying event occurred). */
   timestamp: string;

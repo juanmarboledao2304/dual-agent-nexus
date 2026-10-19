@@ -84,7 +84,14 @@ function containerRefusalMessage() {
 }
 
 // Hook types to install. Some support matchers, some don't.
-const HOOKS_WITH_MATCHER = ["PreToolUse", "PostToolUse", "Stop", "SubagentStop", "Notification"];
+const HOOKS_WITH_MATCHER = [
+  "PreToolUse",
+  "PostToolUse",
+  "SubagentStart",
+  "Stop",
+  "SubagentStop",
+  "Notification",
+];
 // UserPromptSubmit fires the instant the user hits enter — the only reliable
 // signal that the user has resumed for *text-only* turns (no PreToolUse will
 // fire until Claude calls a tool, which never happens for plain-text replies).
@@ -93,6 +100,18 @@ const HOOKS_WITH_MATCHER = ["PreToolUse", "PostToolUse", "Stop", "SubagentStop",
 // tool-name matchers, hence the separate list.
 const HOOKS_WITHOUT_MATCHER = ["SessionStart", "SessionEnd", "UserPromptSubmit"];
 const HOOK_TYPES = [...HOOKS_WITH_MATCHER, ...HOOKS_WITHOUT_MATCHER];
+
+const ANTIGRAVITY_HOOK_TYPES = ["PreToolUse", "PostToolUse", "SessionStart", "Stop"];
+const ANTIGRAVITY_CURL_CMD =
+  "curl -s -X POST http://127.0.0.1:4820/api/events?provider=antigravity -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
+const CLAUDE_CURL_CMD =
+  "curl -s -X POST http://127.0.0.1:4820/api/events?provider=claude -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
+
+function getAntigravityHooksPath() {
+  if (process.env.GEMINI_HOOKS_PATH) return process.env.GEMINI_HOOKS_PATH;
+  const os = require("os");
+  return path.join(os.homedir(), ".gemini", "config", "hooks.json");
+}
 
 function makeHookEntry(hookType) {
   const entry = {
@@ -109,11 +128,37 @@ function makeHookEntry(hookType) {
   return entry;
 }
 
+function makeAntigravityHookEntry(hookType) {
+  const entry = {
+    hooks: [
+      {
+        type: "command",
+        command: ANTIGRAVITY_CURL_CMD,
+      },
+    ],
+  };
+  if (hookType === "PreToolUse" || hookType === "PostToolUse" || hookType === "Stop") {
+    entry.matcher = "*";
+  }
+  return entry;
+}
+
 function isOurEntry(entry) {
+  if (!entry) return false;
   // Matches old format (entry.command) and new format (entry.hooks[].command)
-  if (entry.command && entry.command.includes("hook-handler.js")) return true;
+  if (
+    entry.command &&
+    (entry.command.includes("hook-handler.js") ||
+      entry.command.includes("127.0.0.1:4820/api/events"))
+  ) {
+    return true;
+  }
   if (Array.isArray(entry.hooks)) {
-    return entry.hooks.some((h) => h.command && h.command.includes("hook-handler.js"));
+    return entry.hooks.some(
+      (h) =>
+        h.command &&
+        (h.command.includes("hook-handler.js") || h.command.includes("127.0.0.1:4820/api/events"))
+    );
   }
   return false;
 }
@@ -136,6 +181,80 @@ function getClaudeHookStatus() {
   } catch (err) {
     return { installed: false, path: SETTINGS_PATH, hooks: {}, error: err.message };
   }
+}
+
+function getAntigravityHookStatus() {
+  const agyPath = getAntigravityHooksPath();
+  try {
+    if (!fs.existsSync(agyPath)) return { installed: false, path: agyPath, hooks: {} };
+    const config = JSON.parse(fs.readFileSync(agyPath, "utf8"));
+    const hooksRoot = config.hooks || config;
+    const hooks = Object.fromEntries(
+      ANTIGRAVITY_HOOK_TYPES.map((type) => [
+        type,
+        Array.isArray(hooksRoot?.[type]) && hooksRoot[type].some(isOurEntry),
+      ])
+    );
+    const hookLists = Object.values(hooksRoot || {}).filter(Array.isArray);
+    return {
+      installed: Object.values(hooks).every(Boolean),
+      has_dashboard_hooks: Object.values(hooks).some(Boolean),
+      has_existing_hooks: hookLists.some((entries) => entries.length > 0),
+      path: agyPath,
+      hooks,
+    };
+  } catch (err) {
+    return { installed: false, path: agyPath, hooks: {}, error: err.message };
+  }
+}
+
+function installAntigravityHooks(silent = false) {
+  const agyPath = getAntigravityHooksPath();
+  let config = {};
+  if (fs.existsSync(agyPath)) {
+    try {
+      const raw = fs.readFileSync(agyPath, "utf8");
+      if (raw.trim()) {
+        config = JSON.parse(raw);
+      }
+    } catch (err) {
+      if (!silent) console.error(`Failed to parse ${agyPath}:`, err.message);
+      return false;
+    }
+  }
+
+  if (!config.hooks || typeof config.hooks !== "object" || Array.isArray(config.hooks)) {
+    config.hooks = {};
+  }
+
+  let installed = 0;
+  let updated = 0;
+
+  for (const hookType of ANTIGRAVITY_HOOK_TYPES) {
+    if (!Array.isArray(config.hooks[hookType])) {
+      config.hooks[hookType] = [];
+    }
+    const existing = config.hooks[hookType].findIndex(isOurEntry);
+    const entry = makeAntigravityHookEntry(hookType);
+    if (existing >= 0) {
+      config.hooks[hookType][existing] = entry;
+      updated++;
+    } else {
+      // Non-destructively append while preserving Safe Mode / MCP user hooks
+      config.hooks[hookType].push(entry);
+      installed++;
+    }
+  }
+
+  const dir = path.dirname(agyPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(agyPath, JSON.stringify(config, null, 2) + "\n", "utf8");
+
+  if (!silent) {
+    console.log(`Antigravity hooks file: ${agyPath}`);
+    console.log(`Antigravity hooks installed: ${installed} new, updated: ${updated} existing`);
+  }
+  return true;
 }
 
 function installHooks(silent = false) {
@@ -193,31 +312,36 @@ function installHooks(silent = false) {
 }
 
 function selectedFromArgs(args) {
+  if (args.includes("--all")) return ["claude", "antigravity", "codex"];
+  if (args.includes("--dual")) return ["claude", "antigravity"];
   if (args.includes("--both")) return ["claude", "codex"];
-  if (args.includes("--codex")) return ["codex"];
-  if (args.includes("--claude")) return ["claude"];
-  return null;
+  const picked = [];
+  if (args.includes("--claude")) picked.push("claude");
+  if (args.includes("--antigravity") || args.includes("--agy")) picked.push("antigravity");
+  if (args.includes("--codex")) picked.push("codex");
+  return picked.length > 0 ? picked : null;
 }
 
 function chooseHookProviders() {
   if (!process.stdin.isTTY || !process.stdout.isTTY) {
     return Promise.reject(
       new Error(
-        "An interactive terminal is required. Use --claude, --codex, or --both for automation."
+        "An interactive terminal is required. Use --claude, --antigravity, --codex, --dual, or --both for automation."
       )
     );
   }
   const options = [
-    { value: "claude", label: "Claude Code" },
-    { value: "codex", label: "Codex" },
+    { value: "claude", label: "Claude Code (~/.claude/settings.json)" },
+    { value: "antigravity", label: "Google Antigravity (~/.gemini/config/hooks.json)" },
+    { value: "codex", label: "Codex (~/.codex/hooks.json)" },
   ];
   let cursor = 0;
-  const selected = new Set(["claude"]);
+  const selected = new Set(["claude", "antigravity"]);
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
   const draw = () => {
     process.stdout.write("\x1b[2J\x1b[H");
-    process.stdout.write("Install dashboard hooks\n\n");
+    process.stdout.write("Install DualAgent Nexus dashboard hooks\n\n");
     process.stdout.write("Use ↑/↓ to move, Space to select one or more, Enter to continue.\n\n");
     for (let index = 0; index < options.length; index++) {
       const option = options[index];
@@ -259,14 +383,17 @@ function chooseHookProviders() {
 function confirmOverwrite(selected) {
   const statuses = {
     claude: getClaudeHookStatus(),
+    antigravity: getAntigravityHookStatus(),
     codex: require("./install-codex-hooks").getCodexHookStatus(),
   };
-  const detected = selected.filter((provider) => statuses[provider].has_existing_hooks);
+  const detected = selected.filter((provider) => statuses[provider]?.has_existing_hooks);
   if (detected.length === 0) return Promise.resolve(true);
   if (!process.stdin.isTTY || !process.stdout.isTTY) return Promise.resolve(true);
-  const dashboardInstalled = detected.filter((provider) => statuses[provider].has_dashboard_hooks);
+  const dashboardInstalled = detected.filter((provider) => statuses[provider]?.has_dashboard_hooks);
+  const labelFor = (p) =>
+    p === "claude" ? "Claude Code" : p === "antigravity" ? "Google Antigravity" : "Codex";
   process.stdout.write(
-    `Warning: existing ${detected.map((provider) => (provider === "claude" ? "Claude Code" : "Codex")).join(" and ")} hook configuration detected.\n` +
+    `Warning: existing ${detected.map(labelFor).join(" and ")} hook configuration detected.\n` +
       (dashboardInstalled.length
         ? "Proceeding replaces this dashboard's existing entries and preserves unrelated hooks.\n"
         : "Proceeding adds this dashboard's entries and preserves all existing hooks.\n") +
@@ -295,6 +422,9 @@ async function runInteractiveInstall() {
   }
   const results = [];
   if (selected.includes("claude")) results.push({ provider: "claude", ok: installHooks(false) });
+  if (selected.includes("antigravity")) {
+    results.push({ provider: "antigravity", ok: installAntigravityHooks(false) });
+  }
   if (selected.includes("codex")) {
     const result = require("./install-codex-hooks").installCodexHooks({ silent: false });
     results.push({ provider: "codex", ok: result.ok });
@@ -313,4 +443,14 @@ if (require.main === module) {
     });
 }
 
-module.exports = { installHooks, getClaudeHookStatus, isInsideContainer, runInteractiveInstall };
+module.exports = {
+  installHooks,
+  installAntigravityHooks,
+  getClaudeHookStatus,
+  getAntigravityHookStatus,
+  getAntigravityHooksPath,
+  isInsideContainer,
+  runInteractiveInstall,
+  ANTIGRAVITY_CURL_CMD,
+  CLAUDE_CURL_CMD,
+};

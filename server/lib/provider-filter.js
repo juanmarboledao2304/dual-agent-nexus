@@ -6,7 +6,7 @@
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
-const VALID_PROVIDERS = new Set(["claude", "cursor", "codex"]);
+const VALID_PROVIDERS = new Set(["claude", "cursor", "codex", "antigravity"]);
 
 /** Parse `?providers=claude,codex`; absent means every provider. */
 function parseProviders(req) {

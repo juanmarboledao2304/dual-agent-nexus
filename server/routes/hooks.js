@@ -26,6 +26,12 @@ const { getRemotePushToken, extractHeaderOnlyToken, tokensMatch } = require("../
 const { REMOTE_PROVIDERS, assertProvider } = require("../lib/remote-sync");
 const { normalizeSpeed, normalizeGeo, normalizeTier } = require("../lib/token-usage");
 const { isCursorTranscriptPath } = require("../lib/cursor-home");
+const {
+  classifyModelAndEffort,
+  mapTelemetryStatus,
+  computeContextMetrics,
+  normalizeProvider,
+} = require("../utils/modelClassifier");
 
 const router = Router();
 
@@ -257,6 +263,18 @@ function ensureSession(sessionId, data, origin = null) {
   const cursorSession =
     data.provider === "cursor" ||
     (typeof data.transcript_path === "string" && isCursorTranscriptPath(data.transcript_path));
+  const resolvedProvider = cursorSession
+    ? "cursor"
+    : normalizeProvider(data.provider, data.model, data.source);
+  const classified = classifyModelAndEffort({
+    provider: resolvedProvider,
+    model: data.model,
+    effort: data.effort,
+    subagentRole: "Main",
+    isSubagent: false,
+    type: "main",
+  });
+
   if (!session) {
     stmts.insertSession.run(
       sessionId,
@@ -266,7 +284,11 @@ function ensureSession(sessionId, data, origin = null) {
       data.model || null,
       null
     );
-    if (cursorSession) setSessionProviderStmt.run("cursor", sessionId);
+    if (cursorSession) {
+      setSessionProviderStmt.run("cursor", sessionId);
+    } else if (resolvedProvider && resolvedProvider !== "claude") {
+      setSessionProviderStmt.run(resolvedProvider, sessionId);
+    }
     // A hook that proved REMOTE_PUSH_TOKEN (see POST /event) comes from
     // another machine: birth the row as remote-push owned so the same
     // collector's POST /ingest-batch can enrich it with tokens/tool events.
@@ -278,6 +300,15 @@ function ensureSession(sessionId, data, origin = null) {
         setSessionProviderStmt.run(data.provider, sessionId);
       }
     }
+    stmts.updateSessionTelemetry.run(
+      resolvedProvider,
+      data.model || null,
+      classified.model_tier,
+      classified.effort,
+      data.metrics ? JSON.stringify(data.metrics) : null,
+      data.pid || null,
+      sessionId
+    );
     session = stmts.getSession.get(sessionId);
     if (!session) {
       console.error(`[HOOKS] Failed to create session ${sessionId} — insert returned no row`);
@@ -302,12 +333,41 @@ function ensureSession(sessionId, data, origin = null) {
       "main",
       null,
       "working",
-      null,
+      data.prompt ? String(data.prompt).slice(0, 500) : null,
       null,
       null
     );
+    stmts.updateAgentTelemetry.run(
+      resolvedProvider,
+      "Main",
+      data.model || classified.model,
+      classified.model_tier,
+      classified.effort,
+      "thinking",
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      data.metrics ? JSON.stringify(data.metrics) : null,
+      data.pid || null,
+      mainAgentId
+    );
     const mainAgent = stmts.getAgent.get(mainAgentId);
     if (mainAgent) broadcast("agent_created", mainAgent);
+  } else if (data.model || data.effort || data.provider || data.pid) {
+    stmts.updateSessionTelemetry.run(
+      data.provider ? resolvedProvider : null,
+      data.model || null,
+      data.model || data.effort ? classified.model_tier : null,
+      data.model || data.effort ? classified.effort : null,
+      data.metrics ? JSON.stringify(data.metrics) : null,
+      data.pid || null,
+      sessionId
+    );
+    session = stmts.getSession.get(sessionId);
   }
 
   // First-seen transcript_path → write to session row so the periodic sweep
@@ -583,47 +643,92 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
         true
       );
 
-      // If the tool is Agent, a subagent is being created
-      if (toolName === "Agent") {
+      // If the tool is Agent, Task, dispatch_agent, or invoke_subagent, subagent(s) are being created
+      if (
+        toolName === "Agent" ||
+        toolName === "Task" ||
+        toolName === "dispatch_agent" ||
+        toolName === "invoke_subagent"
+      ) {
         const input = data.tool_input || {};
-        const subId = uuidv4();
-        // Use description, then type, then first line of prompt, then fallback
-        const rawName =
-          input.description ||
-          input.subagent_type ||
-          (input.prompt ? input.prompt.split("\n")[0].slice(0, 60) : null) ||
-          "Subagent";
-        const subName = rawName.length > 60 ? rawName.slice(0, 57) + "..." : rawName;
+        const subEntries = Array.isArray(input.Subagents)
+          ? input.Subagents.map((s) => ({
+              description: s.Role || s.TypeName,
+              subagent_type: s.TypeName || s.Role,
+              subagent_role: s.Role || s.TypeName,
+              prompt: s.Prompt,
+              model: s.Model && s.Model !== "inherit" ? s.Model : data.model,
+              effort: s.Effort || data.effort,
+              metadata: s,
+            }))
+          : [input];
 
         // Infer which agent is spawning this subagent.
-        // Hook events don't carry an explicit agent ID, so we use a heuristic:
-        //   - If the main agent is actively working, it's the one spawning (common case).
-        //   - If the main agent is waiting (for user or subagent results),
-        //     the spawn must come from an already-running subagent — pick the deepest
-        //     working subagent (most recently nested active agent).
-        //   - Fallback to main if nothing else matches.
-        let parentId = mainAgentId;
-        if (mainAgent && mainAgent.status !== "working") {
+        let parentId = data.parent_agent_id || mainAgentId;
+        if (!data.parent_agent_id && mainAgent && mainAgent.status !== "working") {
           const deepest = stmts.findDeepestWorkingAgent.get(sessionId, sessionId);
           if (deepest) {
             parentId = deepest.id;
           }
         }
 
-        stmts.insertAgent.run(
-          subId,
-          sessionId,
-          subName,
-          "subagent",
-          input.subagent_type || null,
-          "working",
-          input.prompt ? input.prompt.slice(0, 500) : null,
-          parentId,
-          input.metadata ? JSON.stringify(input.metadata) : null
-        );
-        broadcast("agent_created", stmts.getAgent.get(subId));
-        agentId = subId;
-        summary = `Subagent spawned: ${subName}`;
+        const spawnedNames = [];
+        for (const entry of subEntries) {
+          const subId = entry.agent_id || entry.id || uuidv4();
+          const rawName =
+            entry.description ||
+            entry.subagent_type ||
+            entry.subagent_role ||
+            (entry.prompt ? String(entry.prompt).split("\n")[0].slice(0, 60) : null) ||
+            "Subagent";
+          const subName = rawName.length > 60 ? rawName.slice(0, 57) + "..." : rawName;
+          const subClassified = classifyModelAndEffort({
+            provider: data.provider || session?.provider || "claude",
+            model: entry.model || data.model || session?.model,
+            effort: entry.effort || data.effort,
+            toolName,
+            subagentType: entry.subagent_type || data.subagent_type,
+            subagentRole: entry.subagent_role || data.subagent_role,
+            isSubagent: true,
+            type: "subagent",
+          });
+
+          if (!stmts.getAgent.get(subId)) {
+            stmts.insertAgent.run(
+              subId,
+              sessionId,
+              subName,
+              "subagent",
+              entry.subagent_type || subClassified.subagent_role || null,
+              "working",
+              entry.prompt ? String(entry.prompt).slice(0, 500) : null,
+              parentId,
+              entry.metadata ? JSON.stringify(entry.metadata) : null
+            );
+          }
+          stmts.updateAgentTelemetry.run(
+            subClassified.provider,
+            subClassified.subagent_role,
+            entry.model || subClassified.model,
+            subClassified.model_tier,
+            subClassified.effort,
+            "spawning",
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            entry.metadata ? JSON.stringify(entry.metadata) : null,
+            data.pid || null,
+            subId
+          );
+          broadcast("agent_created", stmts.getAgent.get(subId));
+          agentId = subId;
+          spawnedNames.push(subName);
+        }
+        summary = `Subagent spawned: ${spawnedNames.join(", ")}`;
       }
 
       // Update main agent status to "working" — but only when main is the likely
@@ -633,12 +738,17 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
       //
       // Heuristic: main is waiting + working subagents exist → subagent is the actor.
       //            main is working/waiting with no subagents → main is the actor.
+      const isSubagentSpawnTool =
+        toolName === "Agent" ||
+        toolName === "Task" ||
+        toolName === "dispatch_agent" ||
+        toolName === "invoke_subagent";
       const deepestWorking =
         mainAgent && mainAgent.status === "waiting"
           ? stmts.findDeepestWorkingAgent.get(sessionId, sessionId)
           : null;
       const subagentIsActor = !!deepestWorking;
-      if (subagentIsActor && toolName !== "Agent") {
+      if (subagentIsActor && !isSubagentSpawnTool) {
         agentId = deepestWorking.id;
       }
       if (
@@ -739,16 +849,116 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
       break;
     }
 
+    case "SubagentStart": {
+      const subType = data.subagent_type || data.agent_type || data.subagent_role || "Explore";
+      const rawName =
+        data.description ||
+        data.name ||
+        subType ||
+        (data.prompt ? String(data.prompt).split("\n")[0].slice(0, 60) : null) ||
+        "Subagent";
+      const subName = rawName.length > 60 ? rawName.slice(0, 57) + "..." : rawName;
+      const subClassified = classifyModelAndEffort({
+        provider: data.provider || session?.provider || "claude",
+        model: data.model || session?.model,
+        effort: data.effort,
+        toolName: "Task",
+        subagentType: subType,
+        subagentRole: data.subagent_role || subType,
+        isSubagent: true,
+        type: "subagent",
+      });
+
+      const subagents = stmts.listAgentsBySession.all(sessionId);
+      const explicitSubId =
+        data.agent_id && data.agent_id !== mainAgentId ? String(data.agent_id) : null;
+      let matchingSub = explicitSubId ? stmts.getAgent.get(explicitSubId) : null;
+      if (!matchingSub) {
+        matchingSub = subagents.find(
+          (a) =>
+            a.type === "subagent" &&
+            a.status === "working" &&
+            (a.name === subName || a.subagent_type === subType)
+        );
+      }
+
+      if (!matchingSub) {
+        const subId = explicitSubId || uuidv4();
+        const parentId = data.parent_agent_id || mainAgentId;
+        stmts.insertAgent.run(
+          subId,
+          sessionId,
+          subName,
+          "subagent",
+          subType,
+          "working",
+          data.prompt ? String(data.prompt).slice(0, 500) : null,
+          parentId,
+          data.metadata ? JSON.stringify(data.metadata) : null
+        );
+        stmts.updateAgentTelemetry.run(
+          subClassified.provider,
+          subClassified.subagent_role,
+          data.model || subClassified.model,
+          subClassified.model_tier,
+          subClassified.effort,
+          "spawning",
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          data.metrics ? JSON.stringify(data.metrics) : null,
+          data.pid || null,
+          subId
+        );
+        broadcast("agent_created", stmts.getAgent.get(subId));
+        agentId = subId;
+      } else {
+        stmts.updateAgentTelemetry.run(
+          subClassified.provider,
+          subClassified.subagent_role,
+          data.model || subClassified.model,
+          subClassified.model_tier,
+          subClassified.effort,
+          "thinking",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          data.metrics ? JSON.stringify(data.metrics) : null,
+          data.pid || null,
+          matchingSub.id
+        );
+        broadcast("agent_updated", stmts.getAgent.get(matchingSub.id));
+        agentId = matchingSub.id;
+      }
+      summary = `Subagent started: ${subName}`;
+      break;
+    }
+
     case "SubagentStop": {
       summary = `Subagent completed`;
       const subagents = stmts.listAgentsBySession.all(sessionId);
       let matchingSub = null;
 
+      // Try explicit agent_id first if provided
+      if (data.agent_id && data.agent_id !== mainAgentId) {
+        matchingSub = subagents.find(
+          (a) => a.type === "subagent" && a.status === "working" && a.id === data.agent_id
+        );
+      }
+
       // Try to identify which subagent stopped using available data.
       // SubagentStop provides: agent_type (e.g. "Explore", "test-engineer"),
       // agent_id (Claude's internal ID), description, last_assistant_message.
       const subDesc = data.description || data.agent_type || data.subagent_type || null;
-      if (subDesc) {
+      if (!matchingSub && subDesc) {
         const namePrefix = subDesc.length > 57 ? subDesc.slice(0, 57) : subDesc;
         matchingSub = subagents.find(
           (a) => a.type === "subagent" && a.status === "working" && a.name.startsWith(namePrefix)
@@ -784,6 +994,24 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
           null,
           null,
           new Date().toISOString(),
+          null,
+          matchingSub.id
+        );
+        stmts.updateAgentTelemetry.run(
+          null,
+          null,
+          null,
+          null,
+          null,
+          "completed",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           null,
           matchingSub.id
         );
@@ -1286,17 +1514,116 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
     transcriptCache.invalidate(data.transcript_path);
   }
 
+  // Update DualAgent Nexus telemetry on the active agent and session
+  const curSession = stmts.getSession.get(sessionId);
+  const curAgent = agentId ? stmts.getAgent.get(agentId) : null;
+  const resolvedProvider = normalizeProvider(
+    data.provider || curSession?.provider,
+    data.model || curAgent?.model || curSession?.model,
+    data.source || curSession?.source
+  );
+  const eventClassified = classifyModelAndEffort({
+    provider: resolvedProvider,
+    model: data.model || curAgent?.model || curSession?.model,
+    effort: data.effort || curAgent?.effort || curSession?.effort,
+    toolName,
+    subagentType: data.subagent_type || curAgent?.subagent_type,
+    subagentRole: data.subagent_role || curAgent?.subagent_role,
+    isSubagent: curAgent ? curAgent.type === "subagent" : false,
+    type: curAgent?.type || "main",
+  });
+  const mappedStatus = mapTelemetryStatus({
+    hookType,
+    status: data.status || curAgent?.status,
+    currentTool: curAgent?.current_tool || (hookType === "PreToolUse" ? toolName : null),
+    awaitingInput: Boolean(curAgent?.awaiting_input_since || curSession?.awaiting_input_since),
+  });
+
+  if (curAgent) {
+    const inlineMetrics = data.metrics || data.usage || {};
+    const tokenTotals = stmts.sessionTokenTotals.get(sessionId) || {};
+    const inTokens =
+      Number(inlineMetrics.input_tokens ?? curAgent.input_tokens ?? 0) ||
+      (curAgent.type === "main" ? Number(tokenTotals.input_tokens || 0) : 0);
+    const outTokens =
+      Number(inlineMetrics.output_tokens ?? curAgent.output_tokens ?? 0) ||
+      (curAgent.type === "main" ? Number(tokenTotals.output_tokens || 0) : 0);
+    const cacheRead =
+      Number(
+        inlineMetrics.cache_read_tokens ??
+          inlineMetrics.cache_read_input_tokens ??
+          curAgent.cache_read_tokens ??
+          0
+      ) || (curAgent.type === "main" ? Number(tokenTotals.cache_read_tokens || 0) : 0);
+    const cacheWrite =
+      Number(
+        inlineMetrics.cache_write_tokens ??
+          inlineMetrics.cache_creation_input_tokens ??
+          curAgent.cache_write_tokens ??
+          0
+      ) || (curAgent.type === "main" ? Number(tokenTotals.cache_write_tokens || 0) : 0);
+    const bytesProc = Number(inlineMetrics.bytes_processed ?? curAgent.bytes_processed ?? 0);
+
+    const ctxMetrics = computeContextMetrics({
+      provider: resolvedProvider,
+      modelTier: eventClassified.model_tier,
+      inputTokens: inTokens,
+      outputTokens: outTokens,
+      cacheReadTokens: cacheRead,
+      cacheWriteTokens: cacheWrite,
+      bytesProcessed: bytesProc,
+      startedAt: curAgent.started_at || curSession?.started_at,
+    });
+
+    stmts.updateAgentTelemetry.run(
+      resolvedProvider,
+      eventClassified.subagent_role,
+      data.model || curAgent.model || eventClassified.model,
+      eventClassified.model_tier,
+      eventClassified.effort,
+      mappedStatus.telemetryStatus,
+      inTokens,
+      outTokens,
+      cacheRead,
+      cacheWrite,
+      inlineMetrics.context_utilization_pct ?? ctxMetrics.context_utilization_pct,
+      bytesProc,
+      inlineMetrics.burn_rate_per_hour ?? ctxMetrics.burn_rate_per_hour,
+      data.metrics ? JSON.stringify(data.metrics) : null,
+      data.pid || null,
+      curAgent.id
+    );
+
+    if (
+      resolvedProvider === "antigravity" &&
+      (inlineMetrics.input_tokens || inlineMetrics.output_tokens)
+    ) {
+      stmts.upsertTokenUsage.run(
+        sessionId,
+        data.model || eventClassified.model,
+        Number(inlineMetrics.input_tokens || 0),
+        Number(inlineMetrics.output_tokens || 0),
+        Number(inlineMetrics.cache_read_tokens || 0),
+        Number(inlineMetrics.cache_write_tokens || 0)
+      );
+    }
+  }
+
   // Bump session updated_at on every event
   stmts.touchSession.run(sessionId);
 
-  stmts.insertEvent.run(
+  stmts.insertTelemetryEvent.run(
     sessionId,
     agentId,
     eventType,
     toolName,
     summary,
-    JSON.stringify(data)
-    // created_at uses default
+    JSON.stringify(data),
+    resolvedProvider,
+    eventClassified.model,
+    eventClassified.model_tier,
+    eventClassified.effort,
+    data.metrics ? JSON.stringify(data.metrics) : null
   );
 
   const event = {
@@ -1305,6 +1632,10 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
     event_type: eventType,
     tool_name: toolName,
     summary,
+    provider: resolvedProvider,
+    model: eventClassified.model,
+    model_tier: eventClassified.model_tier,
+    effort: eventClassified.effort,
     created_at: new Date().toISOString(),
   };
   broadcast("new_event", event);
@@ -2504,6 +2835,7 @@ if (watchdogTimer.unref) watchdogTimer.unref();
 router.transcriptCache = transcriptCache;
 router.watchdogCheck = watchdogCheck;
 router.livenessReap = livenessReap;
+router.processEvent = processEvent;
 // Exposed as a narrow test seam for version-variant Codex hook payloads.
 router.codexTranscriptPath = codexTranscriptPath;
 module.exports = router;
