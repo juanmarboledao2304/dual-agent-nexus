@@ -704,7 +704,7 @@ export interface Session {
   source?: string;
   /** Product that created this session. Historical records default to Claude;
    *  Codex rollouts are marked `codex` and use the GPT price card; Google Antigravity is `antigravity`. */
-  provider?: "claude" | "cursor" | "codex" | "antigravity";
+  provider?: "claude" | "cursor" | "codex" | "antigravity" | "agy-claude" | "agy-gemini";
   /** Model tier ('heavy' | 'standard' | 'light'). */
   model_tier?: "heavy" | "standard" | "light" | string | null;
   /** Reasoning effort ('low' | 'medium' | 'high' | 'max'). */
@@ -1912,6 +1912,44 @@ export interface WebhookTestResult {
  * for the full mapping). Because live UI tabs may outlive a server upgrade, the
  * set of `type` values must only ever grow - never rename or repurpose one.
  */
+export interface CascadePoolStatus {
+  pool: string;
+  label: string;
+  exhausted: boolean;
+  remaining_seconds: number;
+  exhausted_at: string | null;
+  models: Array<{
+    id: string;
+    label: string;
+    pool: string;
+    tier: string;
+    effort: string;
+  }>;
+}
+
+export interface CascadeStatus {
+  cache_dir: string;
+  cooldown_seconds: number;
+  active_pool: 1 | 2 | 3;
+  active_pool_id: "agy-claude" | "agy-gemini" | "claude-direct" | string;
+  active_pool_label: string;
+  waterfall_order: Array<{
+    id: string;
+    label: string;
+    pool: string;
+    tier: string;
+    effort: string;
+  }>;
+  pools: {
+    claude: CascadePoolStatus;
+    gemini: CascadePoolStatus;
+    claude_direct: CascadePoolStatus;
+  };
+  tokens_offloaded: number;
+  digest_count: number;
+  timestamp: string;
+}
+
 export interface DualQuotaTelemetry {
   timestamp: string;
   simulating: boolean;
@@ -1954,6 +1992,7 @@ export interface DualQuotaTelemetry {
     burn_rate_tokens_per_hr: number;
     burn_rate_requests_per_hr: number;
   };
+  cascade?: CascadeStatus;
 }
 
 export interface DispatchStreamPayload {
@@ -1963,7 +2002,7 @@ export interface DispatchStreamPayload {
   sessionId?: string;
   agent_id: string;
   agentId?: string;
-  provider: "claude" | "antigravity" | string;
+  provider: "claude" | "antigravity" | "agy-claude" | "agy-gemini" | string;
   stream: "stdout" | "stderr";
   line: string;
   chunk: string;
@@ -1977,7 +2016,7 @@ export interface DispatchStatusPayload {
   sessionId?: string;
   agent_id: string;
   agentId?: string;
-  provider: "claude" | "antigravity" | string;
+  provider: "claude" | "antigravity" | "agy-claude" | "agy-gemini" | string;
   status: "running" | "completed" | "error" | "killed";
   exit_code?: number;
 }
@@ -2004,6 +2043,7 @@ export interface WSMessage {
     | "dispatch_stream"
     | "dispatch_status"
     | "quota_updated"
+    | "cascade:status"
     | "swarm_simulation_started"
     | "swarm_simulation_completed";
   /** The message body, whose concrete shape is selected by `type` above. */
@@ -2024,6 +2064,7 @@ export interface WSMessage {
     | DispatchStreamPayload
     | DispatchStatusPayload
     | DualQuotaTelemetry
+    | CascadeStatus
     | Record<string, unknown>;
   /** ISO timestamp the server broadcast this message (not necessarily the
    *  same instant the underlying event occurred). */

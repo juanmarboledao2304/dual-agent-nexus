@@ -31,7 +31,12 @@ const {
   mapTelemetryStatus,
   computeContextMetrics,
   normalizeProvider,
+  normalizeSubagentRole,
+  extractDigestBlock,
+  extractGitCheckpoints,
+  parseAgyBridgeCommand,
 } = require("../utils/modelClassifier");
+const { recordOffloadedDigest } = require("../watchers/cascadeCacheWatcher");
 
 const router = Router();
 
@@ -1575,6 +1580,64 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
       startedAt: curAgent.started_at || curSession?.started_at,
     });
 
+    // Merge metadata for ===DIGEST===, git checkpoints, and hierarchy level
+    let mergedMeta = {};
+    try {
+      mergedMeta = JSON.parse(curAgent.metadata || "{}");
+    } catch {
+      mergedMeta = {};
+    }
+    if (data.metadata && typeof data.metadata === "object") {
+      Object.assign(mergedMeta, data.metadata);
+    }
+    if (data.metrics && typeof data.metrics === "object") {
+      Object.assign(mergedMeta, data.metrics);
+    }
+
+    const rawOutputText = [
+      typeof data.tool_response === "string"
+        ? data.tool_response
+        : data.tool_response
+          ? JSON.stringify(data.tool_response)
+          : "",
+      typeof data.output === "string" ? data.output : "",
+      typeof data.result === "string" ? data.result : "",
+      typeof data.summary === "string" ? data.summary : "",
+      typeof summary === "string" ? summary : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const digestInfo = extractDigestBlock(rawOutputText, { rawBytes: bytesProc });
+    if (digestInfo.hasDigest) {
+      mergedMeta.digest = digestInfo.digestText;
+      mergedMeta.digest_received = true;
+      mergedMeta.offloaded_tokens_saved =
+        Number(mergedMeta.offloaded_tokens_saved || 0) + digestInfo.savedTokens;
+      recordOffloadedDigest({
+        savedTokens: digestInfo.savedTokens,
+        digestText: digestInfo.digestText,
+      });
+    }
+
+    const rawCmdAndOutput = [data.tool_input?.command || "", rawOutputText]
+      .filter(Boolean)
+      .join("\n");
+    const gitInfo = extractGitCheckpoints(rawCmdAndOutput);
+    if (gitInfo.count > 0) {
+      const prevCommits = Array.isArray(mergedMeta.git_commits) ? mergedMeta.git_commits : [];
+      const nextCommits = [...prevCommits];
+      for (const msg of gitInfo.messages) {
+        if (!nextCommits.includes(msg)) nextCommits.push(msg);
+      }
+      mergedMeta.git_commits = nextCommits;
+      mergedMeta.git_checkpoints = Math.max(
+        Number(mergedMeta.git_checkpoints || 0),
+        nextCommits.length,
+        gitInfo.count
+      );
+    }
+
     stmts.updateAgentTelemetry.run(
       resolvedProvider,
       eventClassified.subagent_role,
@@ -1589,13 +1652,13 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
       inlineMetrics.context_utilization_pct ?? ctxMetrics.context_utilization_pct,
       bytesProc,
       inlineMetrics.burn_rate_per_hour ?? ctxMetrics.burn_rate_per_hour,
-      data.metrics ? JSON.stringify(data.metrics) : null,
+      Object.keys(mergedMeta).length > 0 ? JSON.stringify(mergedMeta) : null,
       data.pid || null,
       curAgent.id
     );
 
     if (
-      resolvedProvider === "antigravity" &&
+      (resolvedProvider === "antigravity" || resolvedProvider === "agy-claude") &&
       (inlineMetrics.input_tokens || inlineMetrics.output_tokens)
     ) {
       stmts.upsertTokenUsage.run(
@@ -1606,6 +1669,168 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
         Number(inlineMetrics.cache_read_tokens || 0),
         Number(inlineMetrics.cache_write_tokens || 0)
       );
+    }
+
+    // Level 1 -> Level 2 Cross-CLI Bridge Detection (Bash calling agy-cascade / agy-delegate / agy-job / agy-trace)
+    if ((toolName === "Bash" || toolName === "run_command") && data.tool_input?.command) {
+      const bridgeInfo = parseAgyBridgeCommand(data.tool_input.command);
+      if (bridgeInfo) {
+        const bridgeAgentId = `${sessionId}-bridge-${bridgeInfo.bridgeTool}`;
+        const existingBridge = stmts.getAgent.get(bridgeAgentId);
+        const bridgeClassified = classifyModelAndEffort({
+          provider: bridgeInfo.pool === "agy-gemini" ? "antigravity" : "agy-claude",
+          model: bridgeInfo.model || "claude-opus-5-5-high",
+          source: "agy-cascade",
+          isSubagent: true,
+          subagentType: bridgeInfo.bridgeTool,
+          subagentRole: "Code",
+        });
+        const bridgeMeta = {
+          hierarchy_level: 2,
+          bridge_tool: bridgeInfo.bridgeTool,
+          yolo: bridgeInfo.yolo,
+          digest_flag: bridgeInfo.digest,
+          timeout: bridgeInfo.timeout,
+          workspace_dir: bridgeInfo.workspaceDir,
+          is_fan_out: bridgeInfo.isFanOut,
+          ...(digestInfo.hasDigest
+            ? {
+                digest: digestInfo.digestText,
+                digest_received: true,
+                offloaded_tokens_saved: digestInfo.savedTokens,
+              }
+            : {}),
+        };
+
+        if (!existingBridge && hookType === "PreToolUse") {
+          stmts.insertAgent.run(
+            bridgeAgentId,
+            sessionId,
+            `${bridgeInfo.bridgeTool} (Waterfall Bridge)`,
+            "subagent",
+            bridgeInfo.bridgeTool,
+            "working",
+            bridgeInfo.prompt || `Cross-CLI delegation via ${bridgeInfo.bridgeTool}`,
+            bridgeInfo.bridgeTool,
+            curAgent.id,
+            JSON.stringify(bridgeMeta)
+          );
+          stmts.updateAgentTelemetry.run(
+            bridgeClassified.provider,
+            "Code",
+            bridgeClassified.model,
+            bridgeClassified.model_tier,
+            bridgeClassified.effort,
+            "tool_use",
+            0,
+            0,
+            0,
+            0,
+            12.4,
+            0,
+            18500,
+            JSON.stringify(bridgeMeta),
+            null,
+            bridgeAgentId
+          );
+          broadcast("agent_created", stmts.getAgent.get(bridgeAgentId));
+        } else if (existingBridge && hookType === "PostToolUse") {
+          const tsNow = new Date().toISOString();
+          stmts.updateAgent.run(
+            null,
+            "completed",
+            null,
+            null,
+            tsNow,
+            JSON.stringify(bridgeMeta),
+            bridgeAgentId
+          );
+          stmts.updateAgentTelemetry.run(
+            null,
+            null,
+            null,
+            null,
+            null,
+            "completed",
+            0,
+            0,
+            0,
+            0,
+            null,
+            0,
+            null,
+            JSON.stringify(bridgeMeta),
+            null,
+            bridgeAgentId
+          );
+          broadcast("agent_updated", stmts.getAgent.get(bridgeAgentId));
+        }
+      }
+    }
+
+    // Level 2 -> Level 3 Internal Fan-Out Detection (invoke_subagent / define_subagent)
+    if (
+      toolName === "invoke_subagent" &&
+      Array.isArray(data.tool_input?.Subagents) &&
+      hookType === "PreToolUse"
+    ) {
+      const activeBridge =
+        stmts.getAgent.get(`${sessionId}-bridge-agy-cascade`) ||
+        stmts.getAgent.get(`${sessionId}-agy-cascade`) ||
+        curAgent;
+      data.tool_input.Subagents.forEach((sub, idx) => {
+        const subConvId = sub.conversationId || sub.id || `${sessionId}-fanout-${idx + 1}`;
+        if (stmts.getAgent.get(subConvId)) return;
+        const subRole = normalizeSubagentRole({
+          subagentRole: sub.Role || sub.role,
+          subagentType: sub.TypeName || sub.type,
+          isSubagent: true,
+        });
+        const subClassified = classifyModelAndEffort({
+          provider: "antigravity",
+          model: sub.Model === "pro" ? "gemini-3-pro" : "gemini-3.8-flash-high",
+          effort: "high",
+          subagentRole: subRole,
+          isSubagent: true,
+        });
+        const subMeta = {
+          hierarchy_level: 3,
+          conversation_id: subConvId,
+          role_title: sub.Role || sub.TypeName || `Fan-Out Unit ${idx + 1}`,
+          fan_out_unit: idx + 1,
+        };
+        stmts.insertAgent.run(
+          subConvId,
+          sessionId,
+          sub.Role || `Fan-Out Specialist ${idx + 1}`,
+          "subagent",
+          sub.TypeName || "self",
+          "working",
+          sub.Prompt || "Parallel fan-out specialist task",
+          "view_file",
+          activeBridge.id,
+          JSON.stringify(subMeta)
+        );
+        stmts.updateAgentTelemetry.run(
+          subClassified.provider,
+          subRole,
+          subClassified.model,
+          subClassified.model_tier,
+          subClassified.effort,
+          "tool_use",
+          1400,
+          450,
+          0,
+          0,
+          8.5,
+          0,
+          24000,
+          JSON.stringify(subMeta),
+          null,
+          subConvId
+        );
+        broadcast("agent_created", stmts.getAgent.get(subConvId));
+      });
     }
   }
 

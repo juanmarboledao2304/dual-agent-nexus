@@ -62,14 +62,26 @@
  * ----------------------------------------------------------------------------- */
 
 import { useTranslation } from "react-i18next";
-import { Bot, GitBranch, Clock, Wrench, Cpu, Coins, Flame, Sparkles, Layers } from "lucide-react";
+import {
+  Bot,
+  GitBranch,
+  Clock,
+  Wrench,
+  Cpu,
+  Coins,
+  Flame,
+  Sparkles,
+  Layers,
+  ShieldCheck,
+  GitCommit,
+} from "lucide-react";
 import { useNavigate } from "react-router";
 import { AgentStatusBadge } from "./StatusBadge";
 import { TodoProgressIndicator } from "./TodoProgressIndicator";
 import { effectiveAgentStatus, isAgentAwaitingInput, agentAwaitingReason } from "../lib/types";
 import type { Agent, Session } from "../lib/types";
 import { formatDuration, timeAgo, formatModelName, pathBasename, fmtCost } from "../lib/format";
-import { getAgentThermalTheme } from "../utils/agentTheme";
+import { getAgentThermalTheme, parseAgentMetadata } from "../utils/agentTheme";
 
 /** Keep a compact card's history legible: at most two distinct human turns,
  * one visual row each. This intentionally preserves a title-matching first
@@ -148,6 +160,7 @@ export function AgentCard({
 
   // Resolve Chromatic Thermal UI theme (Warm Spectrum for Claude, Cool Spectrum for Antigravity)
   const theme = getAgentThermalTheme(agent, session?.provider, session?.model);
+  const agentMeta = parseAgentMetadata(agent.metadata);
 
   // Session-level metadata applies to every card in the session - main and
   // subagents alike. Subtitle differs by type: main uses model+cwd (its
@@ -278,12 +291,16 @@ export function AgentCard({
           <span
             className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${theme.providerPillClass}`}
           >
-            {theme.provider === "antigravity" ? (
-              <Sparkles className="w-2.5 h-2.5" />
-            ) : (
+            {theme.provider === "claude" ? (
               <Flame className="w-2.5 h-2.5" />
+            ) : (
+              <Sparkles className="w-2.5 h-2.5" />
             )}
-            {theme.provider === "antigravity" ? "AGY · COOL" : "CLAUDE · WARM"}
+            {theme.provider === "agy-claude"
+              ? "AGY • CLAUDE POOL"
+              : theme.provider === "antigravity"
+                ? "AGY · COOL"
+                : "CLAUDE · WARM"}
           </span>
           <span
             className={`px-1.5 py-0.5 rounded text-[9px] font-semibold truncate ${theme.badgeClass}`}
@@ -311,6 +328,26 @@ export function AgentCard({
           <span className="text-[9px] font-mono text-gray-400">{theme.effortLabel}</span>
         </div>
       </div>
+
+      {/* ===DIGEST=== Handoff & Git Checkpoints Badges */}
+      {(agentMeta.digest_received ||
+        agentMeta.digest ||
+        (agentMeta.git_checkpoints && agentMeta.git_checkpoints > 0)) && (
+        <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+          {(agentMeta.digest_received || agentMeta.digest) && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/35">
+              <ShieldCheck className="w-2.5 h-2.5 text-emerald-400" />
+              ===DIGEST=== Received
+            </span>
+          )}
+          {agentMeta.git_checkpoints && agentMeta.git_checkpoints > 0 ? (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/35">
+              <GitCommit className="w-2.5 h-2.5 text-cyan-400" />
+              Git Checkpoints: {agentMeta.git_checkpoints}
+            </span>
+          ) : null}
+        </div>
+      )}
 
       <div className="flex items-start justify-between gap-2 mb-3 min-w-0">
         <div className="flex items-start gap-2.5 min-w-0 overflow-hidden">

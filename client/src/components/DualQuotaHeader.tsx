@@ -1,11 +1,13 @@
 /**
  * @file DualQuotaHeader.tsx
- * @description Top Dual-Subscription Telemetry Header for DualAgent Nexus.
+ * @description Top Dual-Subscription Telemetry Header & 3-Pool Waterfall Status Bar for DualAgent Nexus.
  * Displays side-by-side real-time gauges for the Claude Code Subscription (Warm
  * Spectrum: Crimson Red / Vibrant Orange / Amber Yellow) and the Google Antigravity
- * Subscription (Cool Spectrum: Electric Purple / Cyber Blue / Emerald Green),
- * along with the 1-Click Live Multi-Agent Swarm Simulator button and a collapsible
- * Chromatic Thermal Spectrum legend.
+ * Subscription (Cool Spectrum: Electric Fuchsia / Neon Indigo / Electric Purple /
+ * Cyber Blue / Emerald Green), along with the 3-Pool `agy-cascade` Waterfall
+ * Status Bar (`~/.cache/agy-cascade/` 30m cooldown countdown + `===DIGEST===`
+ * offloaded token savings), 1-Click Live Multi-Agent Swarm Simulator button, and
+ * collapsible Chromatic Thermal Spectrum legend.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
@@ -21,11 +23,14 @@ import {
   TrendingUp,
   ChevronDown,
   ChevronUp,
+  AlertTriangle,
+  ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import { api } from "../lib/api";
 import { eventBus } from "../lib/eventBus";
 import { THERMAL_LEGEND_ITEMS } from "../utils/agentTheme";
-import type { DualQuotaTelemetry, WSMessage } from "../lib/types";
+import type { CascadeStatus, DualQuotaTelemetry, WSMessage } from "../lib/types";
 
 function fmtCompact(n: number): string {
   if (!Number.isFinite(n)) return "0";
@@ -41,8 +46,16 @@ function fmtEstHours(hours: number | null): string {
   return `${hours.toFixed(1)}h`;
 }
 
+function fmtCooldownMmSs(totalSeconds: number): string {
+  const sec = Math.max(0, Math.floor(totalSeconds));
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
 export function DualQuotaHeader() {
   const [quota, setQuota] = useState<DualQuotaTelemetry | null>(null);
+  const [cascade, setCascade] = useState<CascadeStatus | null>(null);
   const [simulating, setSimulating] = useState(false);
   const [simMessage, setSimMessage] = useState<string | null>(null);
   const [showLegend, setShowLegend] = useState(false);
@@ -52,6 +65,9 @@ export function DualQuotaHeader() {
     try {
       const data = await api.quota.get();
       setQuota(data);
+      if (data.cascade) {
+        setCascade(data.cascade);
+      }
     } catch {
       // Fail-safe: leave previous telemetry in place if server is momentarily unreachable
     }
@@ -63,10 +79,46 @@ export function DualQuotaHeader() {
     return () => clearInterval(interval);
   }, [loadQuota]);
 
+  // 1-second local countdown tick when any pool is in 30m exhaustion cooldown
+  useEffect(() => {
+    const claudeEx = cascade?.pools?.claude?.exhausted;
+    const geminiEx = cascade?.pools?.gemini?.exhausted;
+    if (!claudeEx && !geminiEx) return;
+
+    const timer = setInterval(() => {
+      setCascade((prev) => {
+        if (!prev) return prev;
+        const nextClaudeRem = Math.max(0, (prev.pools.claude.remaining_seconds || 0) - 1);
+        const nextGeminiRem = Math.max(0, (prev.pools.gemini.remaining_seconds || 0) - 1);
+        return {
+          ...prev,
+          pools: {
+            ...prev.pools,
+            claude: {
+              ...prev.pools.claude,
+              remaining_seconds: nextClaudeRem,
+              exhausted: nextClaudeRem > 0,
+            },
+            gemini: {
+              ...prev.pools.gemini,
+              remaining_seconds: nextGeminiRem,
+              exhausted: nextGeminiRem > 0,
+            },
+          },
+        };
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cascade?.pools?.claude?.exhausted, cascade?.pools?.gemini?.exhausted]);
+
   useEffect(() => {
     return eventBus.subscribe((msg: WSMessage) => {
       if (msg.type === "quota_updated" && msg.data) {
-        setQuota(msg.data as DualQuotaTelemetry);
+        const q = msg.data as DualQuotaTelemetry;
+        setQuota(q);
+        if (q.cascade) setCascade(q.cascade);
+      } else if (msg.type === "cascade:status" && msg.data) {
+        setCascade(msg.data as CascadeStatus);
       } else if (msg.type === "swarm_simulation_started") {
         setSimulating(true);
       } else if (msg.type === "swarm_simulation_completed") {
@@ -86,7 +138,7 @@ export function DualQuotaHeader() {
   const handleSimulateSwarm = async () => {
     if (simulating) return;
     setSimulating(true);
-    setSimMessage("Launching Claude Opus + Antigravity Argon Swarm...");
+    setSimMessage("Launching 3-Level agy-cascade Waterfall Swarm...");
     try {
       const res = await api.simulate.swarm();
       setSimMessage(res.message);
@@ -128,6 +180,14 @@ export function DualQuotaHeader() {
     burn_rate_requests_per_hr: 0,
   };
 
+  const pool1Exhausted = Boolean(cascade?.pools?.claude?.exhausted);
+  const pool1Remaining = cascade?.pools?.claude?.remaining_seconds ?? 0;
+  const pool2Exhausted = Boolean(cascade?.pools?.gemini?.exhausted);
+  const pool2Remaining = cascade?.pools?.gemini?.remaining_seconds ?? 0;
+  const activePool = cascade?.active_pool ?? (pool1Exhausted ? (pool2Exhausted ? 3 : 2) : 1);
+  const tokensOffloaded = cascade?.tokens_offloaded ?? 0;
+  const digestCount = cascade?.digest_count ?? 0;
+
   const agyUtilizationPct =
     agy.session_cap > 0 ? Math.min(100, (agy.session_tokens / agy.session_cap) * 100) : 0;
 
@@ -136,15 +196,15 @@ export function DualQuotaHeader() {
       {/* Top Mission Control Action Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-2.5 border-b border-slate-800/60">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-orange-500/15 to-blue-500/20 border border-slate-700/80">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-fuchsia-500/15 to-blue-500/20 border border-slate-700/80">
             <Flame className="w-3.5 h-3.5 text-orange-400" />
-            <span className="text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-orange-300 via-amber-200 to-cyan-300 bg-clip-text text-transparent">
+            <span className="text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-orange-300 via-fuchsia-200 to-cyan-300 bg-clip-text text-transparent">
               DualAgent Nexus
             </span>
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
           </div>
           <span className="hidden md:inline-block text-[11px] text-slate-400 truncate">
-            Unified Claude Code &amp; Google Antigravity Mission Control
+            Unified Claude Code &amp; Google Antigravity (`agy-cascade`) Mission Control
           </span>
           {simMessage && (
             <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded animate-pulse truncate max-w-xs">
@@ -172,7 +232,7 @@ export function DualQuotaHeader() {
             className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all border ${
               simulating
                 ? "bg-gradient-to-r from-red-600/30 via-amber-500/30 to-emerald-500/30 text-amber-200 border-amber-400/50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)] cursor-wait"
-                : "bg-gradient-to-r from-orange-600 via-red-600 to-purple-600 hover:from-orange-500 hover:via-red-500 hover:to-purple-500 text-white border-orange-400/40 shadow-[0_0_18px_-4px_rgba(249,115,22,0.55)]"
+                : "bg-gradient-to-r from-orange-600 via-fuchsia-600 to-purple-600 hover:from-orange-500 hover:via-fuchsia-500 hover:to-purple-500 text-white border-orange-400/40 shadow-[0_0_18px_-4px_rgba(249,115,22,0.55)]"
             }`}
           >
             <Zap className={`w-3.5 h-3.5 ${simulating ? "animate-spin text-amber-300" : ""}`} />
@@ -191,9 +251,113 @@ export function DualQuotaHeader() {
         </div>
       </div>
 
+      {/* 3-Pool agy-cascade Waterfall Status Bar */}
+      <div
+        data-testid="cascade-waterfall-bar"
+        className="flex flex-wrap items-center justify-between gap-2 px-5 py-2 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
+      >
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mr-1">
+            🌊 3-Pool Waterfall:
+          </span>
+
+          {/* Pool 1: AGY-Claude (Opus 5.5 -> Sonnet 5.5 -> GPT-OSS 120B) */}
+          <div
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+              pool1Exhausted
+                ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
+                : activePool === 1
+                  ? "bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/60 shadow-[0_0_12px_-3px_rgba(217,70,239,0.5)]"
+                  : "bg-slate-950/80 text-slate-400 border-slate-800"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                pool1Exhausted
+                  ? "bg-red-500"
+                  : activePool === 1
+                    ? "bg-fuchsia-400 shadow-[0_0_8px_#d946ef]"
+                    : "bg-slate-600"
+              }`}
+            />
+            <span>Pool 1: AGY-Claude (Opus 5.5 ➔ Sonnet 5.5)</span>
+            {pool1Exhausted && (
+              <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
+                EXHAUSTED ({fmtCooldownMmSs(pool1Remaining)})
+              </span>
+            )}
+          </div>
+
+          <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+
+          {/* Pool 2: AGY-Gemini (Argon -> 3.8 Flash) */}
+          <div
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+              pool2Exhausted
+                ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
+                : activePool === 2
+                  ? "bg-purple-500/25 text-purple-200 border-purple-400/70 shadow-[0_0_14px_-3px_rgba(168,85,247,0.6)]"
+                  : "bg-slate-950/80 text-slate-400 border-slate-800"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                pool2Exhausted
+                  ? "bg-red-500"
+                  : activePool === 2
+                    ? "bg-purple-400 shadow-[0_0_8px_#a855f7]"
+                    : "bg-slate-600"
+              }`}
+            />
+            <span>Pool 2: AGY-Gemini (Argon ➔ 3.8 Flash)</span>
+            {pool2Exhausted && (
+              <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
+                EXHAUSTED ({fmtCooldownMmSs(pool2Remaining)})
+              </span>
+            )}
+          </div>
+
+          <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+
+          {/* Pool 3: Claude Direct */}
+          <div
+            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+              activePool === 3
+                ? "bg-orange-500/25 text-orange-200 border-orange-400/70 shadow-[0_0_14px_-3px_rgba(249,115,22,0.5)]"
+                : "bg-slate-950/80 text-slate-400 border-slate-800"
+            }`}
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                activePool === 3 ? "bg-orange-400 shadow-[0_0_8px_#f97316]" : "bg-slate-600"
+              }`}
+            />
+            <span>Pool 3: Claude Direct</span>
+          </div>
+        </div>
+
+        {/* Right Side: Live Exhaustion Warning Badge + Tokens Offloaded via ===DIGEST=== */}
+        <div className="flex flex-wrap items-center gap-2">
+          {pool1Exhausted && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/40 font-mono text-[10px] animate-pulse">
+              <AlertTriangle className="w-3 h-3 text-amber-400" />
+              Pool 1 Exhausted (Exit 10) — Cascading to Pool {pool2Exhausted ? "3" : "2"}
+            </span>
+          )}
+          <span
+            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 font-mono text-[10px]"
+            title="Raw exploration tokens kept out of the Claude Code 5-hour quota window via ===DIGEST=== handoff"
+          >
+            <ShieldCheck className="w-3 h-3 text-emerald-400" />
+            Tokens Offloaded via ===DIGEST===: <strong>{fmtCompact(tokensOffloaded)} saved</strong>
+            {digestCount > 0 ? ` (${digestCount})` : ""}
+          </span>
+        </div>
+      </div>
+
       {/* Collapsible Chromatic Thermal Spectrum Legend */}
       {showLegend && (
-        <div className="px-5 py-3 bg-slate-900/95 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2 animate-fade-in">
+        <div className="px-5 py-3 bg-slate-900/95 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-2 animate-fade-in">
           {THERMAL_LEGEND_ITEMS.map((item) => (
             <div
               key={`${item.provider}-${item.tier}`}
@@ -285,7 +449,7 @@ export function DualQuotaHeader() {
           </div>
 
           {/* RIGHT WING: Cool Gradient — Google Antigravity Subscription */}
-          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-purple-950/35 via-slate-900/90 to-emerald-950/25 p-3.5 shadow-[0_0_25px_-8px_rgba(59,130,246,0.3)]">
+          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-fuchsia-950/30 via-slate-900/90 to-emerald-950/25 p-3.5 shadow-[0_0_25px_-8px_rgba(59,130,246,0.3)]">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-500/20 text-cyan-300 border border-blue-500/40">
@@ -313,23 +477,23 @@ export function DualQuotaHeader() {
             {/* Session Quota & Context Bandwidth Progress Bar */}
             <div className="w-full h-2 rounded-full bg-slate-950/90 border border-blue-500/20 overflow-hidden mb-2.5">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 transition-all duration-500"
+                className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-blue-500 to-fuchsia-500 transition-all duration-500"
                 style={{
                   width: `${Math.max(2, Math.min(100, Math.max(agyUtilizationPct, agy.context_bandwidth_pct)))}%`,
                 }}
               />
             </div>
 
-            {/* Active Subagent Breakdown: Purple / Blue / Green */}
+            {/* Active Subagent Breakdown: Fuchsia/Purple / Indigo/Blue / Green */}
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/35 font-mono">
                   <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />
-                  Deep/Argon-Pro: <strong>{agy.active_subagents.heavy}</strong>
+                  Deep/Opus-Argon: <strong>{agy.active_subagents.heavy}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-300 border border-blue-500/35 font-mono">
                   <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
-                  Standard/Flow: <strong>{agy.active_subagents.standard}</strong>
+                  Standard/Sonnet-Flow: <strong>{agy.active_subagents.standard}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 border border-emerald-400/35 font-mono">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]" />

@@ -387,6 +387,7 @@ import type {
   AlertEvent,
   AlertRule,
   Analytics,
+  CascadeStatus,
   CostResult,
   CursorModelPricing,
   DashboardEvent,
@@ -2189,12 +2190,17 @@ export const api = {
     get: () => request<DualQuotaTelemetry>("/quota"),
   },
 
-  /** Interactive Prompt Dispatcher & Process Manager for Claude Code, Antigravity (agy), and Dual Swarm. */
+  /** 3-Pool agy-cascade waterfall status & ~/.cache/agy-cascade/ cooldown monitor. */
+  cascade: {
+    status: () => request<CascadeStatus>("/cascade/status"),
+  },
+
+  /** Interactive Prompt Dispatcher & Process Manager for Claude Code, Antigravity (agy), Dual Swarm, agy-cascade, and AGY Fan-Out. */
   dispatch: {
     start: (payload: {
       prompt: string;
       cwd?: string;
-      engine?: "claude" | "antigravity" | "dual";
+      engine?: "claude" | "antigravity" | "dual" | "cascade" | "fanout";
       model?: string;
       effort?: "low" | "medium" | "high" | "max";
     }) =>

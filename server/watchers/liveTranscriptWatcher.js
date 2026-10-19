@@ -9,7 +9,13 @@ const path = require("path");
 const os = require("os");
 const { stmts } = require("../db");
 const { broadcast } = require("../websocket");
-const { classifyModelAndEffort, computeContextMetrics } = require("../utils/modelClassifier");
+const {
+  classifyModelAndEffort,
+  computeContextMetrics,
+  extractDigestBlock,
+  extractGitCheckpoints,
+} = require("../utils/modelClassifier");
+const { recordOffloadedDigest } = require("./cascadeCacheWatcher");
 
 const POLL_INTERVAL_MS = 4000;
 const ACTIVE_WINDOW_MS = 10 * 60 * 1000; // tail files modified in last 10 minutes
@@ -154,8 +160,11 @@ function processClaudeJsonlEntries(filePath, entries) {
     const model = msg.model || obj.model || session.model;
     const usage = msg.usage || obj.usage || null;
     const effort = obj.effort || msg.effort || session.effort;
+    const rawLineText = JSON.stringify(msg.content || obj.content || "");
+    const digestInfo = extractDigestBlock(rawLineText, { rawBytes: bytes });
+    const gitInfo = extractGitCheckpoints(rawLineText);
 
-    if (usage || model) {
+    if (usage || model || digestInfo.hasDigest || gitInfo.count > 0) {
       const classified = classifyModelAndEffort({
         provider: "claude",
         model,
@@ -190,6 +199,35 @@ function processClaudeJsonlEntries(filePath, entries) {
           startedAt: agent.started_at,
         });
 
+        let metaObj = {};
+        try {
+          metaObj = JSON.parse(agent.metadata || "{}");
+        } catch {
+          metaObj = {};
+        }
+        if (digestInfo.hasDigest) {
+          metaObj.digest = digestInfo.digestText;
+          metaObj.digest_received = true;
+          metaObj.offloaded_tokens_saved =
+            Number(metaObj.offloaded_tokens_saved || 0) + digestInfo.savedTokens;
+          recordOffloadedDigest({
+            savedTokens: digestInfo.savedTokens,
+            digestText: digestInfo.digestText,
+          });
+        }
+        if (gitInfo.count > 0) {
+          const prevCommits = Array.isArray(metaObj.git_commits) ? metaObj.git_commits : [];
+          for (const m of gitInfo.messages) {
+            if (!prevCommits.includes(m)) prevCommits.push(m);
+          }
+          metaObj.git_commits = prevCommits;
+          metaObj.git_checkpoints = Math.max(
+            Number(metaObj.git_checkpoints || 0),
+            prevCommits.length,
+            gitInfo.count
+          );
+        }
+
         stmts.updateAgentTelemetry.run(
           "claude",
           classified.subagent_role,
@@ -204,7 +242,7 @@ function processClaudeJsonlEntries(filePath, entries) {
           ctx.context_utilization_pct,
           nextBytes,
           ctx.burn_rate_per_hour,
-          null,
+          Object.keys(metaObj).length > 0 ? JSON.stringify(metaObj) : null,
           null,
           agent.id
         );
@@ -243,9 +281,10 @@ function processAntigravityJsonlEntries(filePath, entries) {
   for (const { obj, bytes } of entries) {
     const stepType = obj.type || "";
     const toolCalls = Array.isArray(obj.tool_calls) ? obj.tool_calls : [];
+    const contentStr = String(obj.content || "");
 
     // Estimate tokens from content + thinking + tool calls
-    const contentLen = String(obj.content || "").length + String(obj.thinking || "").length;
+    const contentLen = contentStr.length + String(obj.thinking || "").length;
     const estInputTokens = stepType === "USER_INPUT" ? Math.max(10, Math.round(contentLen / 4)) : 0;
     const estOutputTokens =
       stepType === "PLANNER_RESPONSE" ? Math.max(20, Math.round(contentLen / 4)) : 0;
@@ -257,7 +296,8 @@ function processAntigravityJsonlEntries(filePath, entries) {
         provider: "antigravity",
         model: obj.model || "argon-4-ultra",
         effort: obj.thinking ? "high" : "medium",
-        prompt: String(obj.content || "").slice(0, 300),
+        prompt: contentStr.slice(0, 300),
+        output: contentStr,
         transcript_path: filePath,
         metrics: {
           input_tokens: estInputTokens,
@@ -276,6 +316,7 @@ function processAntigravityJsonlEntries(filePath, entries) {
           effort: obj.thinking ? "high" : "medium",
           tool_name: toolName,
           tool_input: args,
+          output: contentStr,
           transcript_path: filePath,
           metrics: {
             input_tokens: estInputTokens,
@@ -284,6 +325,21 @@ function processAntigravityJsonlEntries(filePath, entries) {
           },
         });
       }
+    } else if (stepType === "PLANNER_RESPONSE" && contentStr.includes("===DIGEST===")) {
+      hooksRouter.processEvent("Stop", {
+        session_id: convId,
+        provider: "antigravity",
+        model: obj.model || "gemini-3.8-flash-high",
+        effort: "high",
+        output: contentStr,
+        summary: "===DIGEST=== Received from Antigravity",
+        transcript_path: filePath,
+        metrics: {
+          input_tokens: estInputTokens,
+          output_tokens: estOutputTokens,
+          bytes_processed: bytes,
+        },
+      });
     }
   }
 }

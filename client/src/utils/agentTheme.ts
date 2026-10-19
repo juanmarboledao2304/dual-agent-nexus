@@ -5,7 +5,7 @@
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
-export type ThermalProvider = "claude" | "antigravity" | "codex" | "cursor";
+export type ThermalProvider = "claude" | "agy-claude" | "antigravity" | "codex" | "cursor";
 export type ModelTier = "heavy" | "standard" | "light";
 export type ReasoningEffort = "low" | "medium" | "high" | "max";
 export type SubagentRole =
@@ -47,7 +47,7 @@ export interface AgentThermalTheme {
 }
 
 export interface ThermalLegendItem {
-  provider: "claude" | "antigravity";
+  provider: "claude" | "agy-claude" | "antigravity";
   tier: ModelTier;
   colorName: string;
   hex: string;
@@ -62,7 +62,7 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     colorName: "Crimson Red",
     hex: "#ef4444",
     models: "Claude Opus 4.6 · High/Max Effort",
-    role: "Heavy Orchestrator / Architect",
+    role: "Pool 3: Direct Conductor / Architect",
   },
   {
     provider: "claude",
@@ -70,7 +70,7 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     colorName: "Vibrant Orange",
     hex: "#f97316",
     models: "Claude Sonnet 4.6 · Med Effort",
-    role: "Standard Execution / Implementation",
+    role: "Pool 3: Direct Standard Execution",
   },
   {
     provider: "claude",
@@ -78,33 +78,122 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     colorName: "Amber Yellow",
     hex: "#fbbf24",
     models: "Claude Haiku 4.5 · Low Effort",
-    role: "Fast Recon / Explore / Verifier",
+    role: "Pool 3: Fast Recon / Explore Subagent",
+  },
+  {
+    provider: "agy-claude",
+    tier: "heavy",
+    colorName: "Electric Fuchsia",
+    hex: "#d946ef",
+    models: "Opus 5.5 High/Med (AGY • claude pool)",
+    role: "Pool 1: Waterfall Primary Heavy",
+  },
+  {
+    provider: "agy-claude",
+    tier: "standard",
+    colorName: "Neon Indigo",
+    hex: "#6366f1",
+    models: "Sonnet 5.5 High / GPT-OSS 120B",
+    role: "Pool 1: Waterfall Standard",
   },
   {
     provider: "antigravity",
     tier: "heavy",
     colorName: "Electric Purple",
     hex: "#a855f7",
-    models: "Argon 4 Ultra / Gemini 3 Pro",
-    role: "Deep Reasoning / Planner",
+    models: "Argon 4 Ultra / Gemini 4+ High",
+    role: "Pool 2: Deep Reasoning / Planner",
   },
   {
     provider: "antigravity",
     tier: "standard",
     colorName: "Cyber Blue",
     hex: "#3b82f6",
-    models: "Gemini 3 Flow · Med Effort",
-    role: "Standard Agentic Coding Flow",
+    models: "Gemini 3 Pro / Flow · Med Effort",
+    role: "Pool 2: Standard Agentic Coding Flow",
   },
   {
     provider: "antigravity",
     tier: "light",
     colorName: "Emerald Green",
     hex: "#10b981",
-    models: "Gemini 3.8 Flash · Low Effort",
-    role: "High-Speed Utility / Search Subagent",
+    models: "Gemini 3.8 Flash · High/Med/Low",
+    role: "Pool 2: High-Speed Fan-Out Specialist",
   },
 ];
+
+export interface AgentDigestPayload {
+  raw?: string;
+  status?: string;
+  files_touched?: string[];
+  key_findings?: string;
+  follow_ups?: string;
+  offloaded_tokens_saved?: number;
+}
+
+export interface ParsedAgentMetadata {
+  hierarchy_level?: number;
+  bridge_tool?: string;
+  conversation_id?: string;
+  digest?: AgentDigestPayload;
+  digest_received?: boolean;
+  offloaded_tokens_saved?: number;
+  git_checkpoints?: number;
+  git_commits?: string[];
+  git_checkpoint_commits?: string[];
+  cascade_exit_code?: number;
+  pool_cascaded?: boolean;
+  exhausted_pool?: string;
+  active_pool?: string;
+  yolo?: boolean;
+  timeout?: string;
+  workspace_dir?: string;
+}
+
+/**
+ * Parse agent metadata JSON safely for ===DIGEST===, git checkpoints, and 3-level hierarchy attributes.
+ */
+export function parseAgentMetadata(
+  rawMetadata?: string | Record<string, unknown> | null
+): ParsedAgentMetadata {
+  if (!rawMetadata) return {};
+  let obj: Record<string, unknown> = {};
+  if (typeof rawMetadata === "object") {
+    obj = rawMetadata;
+  } else {
+    try {
+      const parsed = JSON.parse(rawMetadata);
+      if (parsed && typeof parsed === "object") {
+        obj = parsed as Record<string, unknown>;
+      }
+    } catch {
+      return {};
+    }
+  }
+
+  let normalizedDigest: AgentDigestPayload | undefined;
+  if (typeof obj.digest === "string" && obj.digest.trim()) {
+    normalizedDigest = {
+      raw: obj.digest,
+      offloaded_tokens_saved:
+        typeof obj.offloaded_tokens_saved === "number" ? obj.offloaded_tokens_saved : undefined,
+    };
+  } else if (obj.digest && typeof obj.digest === "object") {
+    normalizedDigest = obj.digest as AgentDigestPayload;
+  }
+
+  const commits = Array.isArray(obj.git_checkpoint_commits)
+    ? (obj.git_checkpoint_commits as string[])
+    : Array.isArray(obj.git_commits)
+      ? (obj.git_commits as string[])
+      : undefined;
+
+  return {
+    ...(obj as ParsedAgentMetadata),
+    digest: normalizedDigest,
+    git_checkpoint_commits: commits,
+  };
+}
 
 /**
  * Resolve provider from explicit provider, model, or name.
@@ -125,7 +214,22 @@ export function resolveProvider(
     .trim();
 
   if (
+    p === "agy-claude" ||
+    m.includes("opus-5") ||
+    m.includes("opus 5") ||
+    m.includes("sonnet-5") ||
+    m.includes("sonnet 5") ||
+    m.includes("gpt-oss") ||
+    m.includes("120b") ||
+    ((p === "antigravity" || p === "agy" || n.includes("agy-cascade")) &&
+      (m.includes("opus") || m.includes("sonnet")))
+  ) {
+    return "agy-claude";
+  }
+
+  if (
     p === "antigravity" ||
+    p === "agy-gemini" ||
     p === "agy" ||
     p === "gemini" ||
     m.includes("gemini") ||
@@ -164,6 +268,11 @@ export function resolveModelTier(params: {
   const m = String(params.model || "").toLowerCase();
   const e = String(params.effort || "").toLowerCase();
   const sub = String(params.subagentRole || params.subagentType || "").toLowerCase();
+
+  if (params.provider === "agy-claude") {
+    if (m.includes("opus")) return "heavy";
+    return "standard";
+  }
 
   if (params.provider === "antigravity") {
     if (m.includes("3.8-flash") || m.includes("flash") || m.includes("lite") || e === "low") {
@@ -224,7 +333,7 @@ export function resolveEffort(
 }
 
 /**
- * Format compact model badge text (e.g. Opus 4.6, Sonnet 4.6, Haiku 4.5, Argon 4, Gemini 3 Pro, 3.8 Flash).
+ * Format compact model badge text (e.g. Opus 5.5, Sonnet 5.5, GPT-OSS 120B, Opus 4.6, Sonnet 4.6, Haiku 4.5, Argon 4, 3.8 Flash).
  */
 export function formatModelBadge(
   model?: string | null,
@@ -235,8 +344,16 @@ export function formatModelBadge(
     .toLowerCase()
     .trim();
 
-  if (provider === "antigravity") {
+  if (provider === "agy-claude") {
+    if (m.includes("gpt-oss") || m.includes("120b")) return "GPT-OSS 120B";
+    if (m.includes("opus")) return "Opus 5.5";
+    if (m.includes("sonnet")) return "Sonnet 5.5";
+    return tier === "heavy" ? "Opus 5.5" : "Sonnet 5.5";
+  }
+
+  if (provider === "antigravity" || provider === "agy-gemini") {
     if (m.includes("argon")) return "Argon 4";
+    if (m.includes("gemini-4") || m.includes("gemini 4")) return "Gemini 4";
     if (m.includes("ultra")) return "Gemini Ultra";
     if (m.includes("3.8-flash") || m.includes("3.8")) return "3.8 Flash";
     if (m.includes("flash-lite") || m.includes("lite")) return "Flash Lite";
@@ -249,6 +366,7 @@ export function formatModelBadge(
   }
 
   if (m.includes("opus")) {
+    if (m.includes("5-5") || m.includes("5.5")) return "Opus 5.5";
     if (m.includes("4-5") || m.includes("4.5")) return "Opus 4.5";
     return "Opus 4.6";
   }
@@ -256,6 +374,7 @@ export function formatModelBadge(
     return "Haiku 4.5";
   }
   if (m.includes("sonnet")) {
+    if (m.includes("5-5") || m.includes("5.5")) return "Sonnet 5.5";
     if (m.includes("4-5") || m.includes("4.5")) return "Sonnet 4.5";
     return "Sonnet 4.6";
   }
@@ -294,7 +413,14 @@ export function resolveSubagentRole(
   if (raw.includes("plan") || raw.includes("architect")) return "Plan";
   if (raw.includes("verif") || raw.includes("test") || raw.includes("qa")) return "Verifier";
   if (raw.includes("browser") || raw.includes("web")) return "Browser";
-  if (raw.includes("code") || raw.includes("implement") || raw.includes("self")) return "Code";
+  if (
+    raw.includes("code") ||
+    raw.includes("implement") ||
+    raw.includes("self") ||
+    raw.includes("cascade") ||
+    raw.includes("delegate")
+  )
+    return "Code";
   if (raw.includes("task")) return "Task";
   return agentType === "subagent" ? "Task" : "Main";
 }
@@ -330,8 +456,70 @@ export function getAgentThermalTheme(
   const role = resolveSubagentRole(input.subagent_role, input.subagent_type, input.type);
   const modelShortName = formatModelBadge(effectiveModel, provider, tier);
 
+  // Pool 1: agy-claude (Claude / GPT-OSS running inside Google Antigravity — Neon Magenta/Indigo Spectrum)
+  if (provider === "agy-claude") {
+    if (tier === "heavy") {
+      return {
+        provider,
+        providerLabel: "AGY • Claude Pool",
+        providerPillLabel: "AGY • claude pool",
+        tier,
+        tierLabel: "Pool 1 Heavy",
+        label: `Pool 1 · ${modelShortName}`,
+        effort,
+        effortLabel,
+        effortBars,
+        role,
+        modelShortName,
+        cardClass:
+          "bg-fuchsia-500/10 border-fuchsia-500/50 text-fuchsia-300 shadow-[0_0_20px_rgba(217,70,239,0.24)]",
+        borderClass: "border-fuchsia-500/50",
+        bgGradientClass: "bg-gradient-to-br from-fuchsia-950/35 via-slate-900/90 to-slate-950",
+        glowClass: "shadow-[0_0_20px_rgba(217,70,239,0.24)]",
+        badgeClass: "bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40",
+        providerPillClass: "bg-fuchsia-500/25 text-fuchsia-200 border border-fuchsia-400/50",
+        dotColorClass: "bg-fuchsia-400",
+        dotClass: "bg-fuchsia-400",
+        barFillClass: "bg-fuchsia-400",
+        barActiveClass: "bg-fuchsia-400",
+        strokeHex: "#d946ef",
+        svgStroke: "#d946ef",
+        glowHex: "rgba(217,70,239,0.38)",
+        spectrumLabel: "Electric Fuchsia",
+      };
+    }
+    return {
+      provider,
+      providerLabel: "AGY • Claude Pool",
+      providerPillLabel: "AGY • claude pool",
+      tier,
+      tierLabel: "Pool 1 Standard",
+      label: `Pool 1 · ${modelShortName}`,
+      effort,
+      effortLabel,
+      effortBars,
+      role,
+      modelShortName,
+      cardClass:
+        "bg-indigo-500/10 border-indigo-500/50 text-indigo-300 shadow-[0_0_16px_rgba(99,102,241,0.22)]",
+      borderClass: "border-indigo-500/50",
+      bgGradientClass: "bg-gradient-to-br from-indigo-950/35 via-slate-900/90 to-slate-950",
+      glowClass: "shadow-[0_0_16px_rgba(99,102,241,0.22)]",
+      badgeClass: "bg-indigo-500/20 text-indigo-300 border border-indigo-500/40",
+      providerPillClass: "bg-indigo-500/25 text-indigo-200 border border-indigo-400/50",
+      dotColorClass: "bg-indigo-400",
+      dotClass: "bg-indigo-400",
+      barFillClass: "bg-indigo-400",
+      barActiveClass: "bg-indigo-400",
+      strokeHex: "#6366f1",
+      svgStroke: "#6366f1",
+      glowHex: "rgba(99,102,241,0.35)",
+      spectrumLabel: "Neon Indigo",
+    };
+  }
+
+  // Pool 2: agy-gemini / antigravity (Cool Thermal Spectrum: Electric Purple / Cyber Blue / Emerald Green)
   if (provider === "antigravity") {
-    // Cool Thermal Spectrum (Google Antigravity)
     if (tier === "heavy") {
       return {
         provider,
@@ -423,7 +611,7 @@ export function getAgentThermalTheme(
     };
   }
 
-  // Warm Thermal Spectrum (Claude Code Ecosystem)
+  // Pool 3: Claude Direct (Warm Thermal Spectrum: Crimson Red / Vibrant Orange / Amber Yellow)
   if (tier === "heavy") {
     return {
       provider,

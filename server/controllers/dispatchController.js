@@ -43,90 +43,216 @@ function emitDispatchStream(dispatchEntry, stream, line) {
   broadcast("dispatch_stream", entry);
 }
 
+function buildFanOutPrompt(userPrompt, cwd) {
+  return [
+    `Execute 3-Unit Internal Fan-Out in ${cwd} for task: "${userPrompt}"`,
+    `1. Call define_subagent for 3 disjoint specialist units (Unit-1 Backend/Core, Unit-2 Frontend/UI, Unit-3 Tests/Verification).`,
+    `2. Call invoke_subagent concurrently with 3 entries so each runs in its own conversationId.`,
+    `3. Each subagent must create a git checkpoint: git commit -m "checkpoint: <unit> complete".`,
+    `4. Compress the final result into a <=10-line ===DIGEST=== block.`,
+  ].join("\n");
+}
+
 /**
- * Fallback live telemetry stream when the target CLI binary (claude or agy) is not installed on PATH.
+ * Fallback live telemetry stream when the target CLI binary (claude, agy, or agy-cascade) is not installed on PATH.
  * Ensures the Command Center Dock and Agent Cards work out-of-the-box on any machine.
  */
 function runSimulatedCliFallback(dispatchEntry, prompt) {
-  const { sessionId, agentId, provider, model, effort, cwd } = dispatchEntry;
-  const isAgy = provider === "antigravity";
-  const steps = isAgy
+  const { sessionId, agentId, provider, model, effort, cwd, mode } = dispatchEntry;
+  const isCascade = mode === "cascade" || mode === "fanout" || provider === "agy-claude";
+  const isFanOut = mode === "fanout";
+  const isAgy = provider === "antigravity" || isCascade;
+
+  const digestOutput = [
+    "===DIGEST===",
+    `- Task Completed: ${prompt.slice(0, 72)}`,
+    `- Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) ➔ Pool 2 (AGY-Gemini 3.8 Flash High)`,
+    `- Fan-Out Units: ${isFanOut ? "3 specialist subagents (Unit 1, Unit 2, Unit 3)" : "Direct waterfall execution"}`,
+    `- Git Checkpoints: ${isFanOut ? "3 commits verified cleanly" : "1 checkpoint commit verified"}`,
+    `- Offloaded Verbose Trace: ~${isFanOut ? "38,400" : "19,200"} raw tokens compressed into 6-line digest`,
+    "===END_DIGEST===",
+  ].join("\n");
+
+  const steps = isFanOut
     ? [
         {
-          delay: 350,
-          tool: "view_file",
-          msg: `[agy:${model}] Analyzing workspace ${cwd} (effort=${effort})`,
-          inTok: 1850,
-          outTok: 320,
-        },
-        {
-          delay: 1400,
-          tool: "invoke_subagent",
-          msg: `[agy:${model}] Spawning 3.8-Flash fast exploration subagent for "${prompt.slice(0, 48)}"`,
-          inTok: 4200,
-          outTok: 890,
-          subagent: {
-            TypeName: "research",
-            Role: "Explore",
-            Prompt: `Fast context scan for: ${prompt.slice(0, 80)}`,
-            Model: "gemini-3.8-flash",
-            Effort: "low",
+          delay: 300,
+          tool: "Bash",
+          msg: `[claude-conductor] Delegating to agy-cascade --dir "${cwd}" --yolo --digest --timeout 10m`,
+          inTok: 1650,
+          outTok: 340,
+          toolInput: {
+            command: `agy-cascade --dir "${cwd}" --yolo --digest --timeout 10m "${prompt.slice(0, 90)}"`,
           },
         },
         {
-          delay: 2900,
-          tool: "replace_file_content",
-          msg: `[agy:${model}] Synthesizing solution & verifying AST invariants...`,
-          inTok: 8400,
-          outTok: 2150,
+          delay: 1300,
+          tool: "invoke_subagent",
+          msg: `[agy-cascade:Opus 5.5 High] Calling invoke_subagent to fan out 3 parallel specialist units...`,
+          inTok: 4800,
+          outTok: 1120,
+          subagents: [
+            {
+              conversationId: `${sessionId}-conv-unit-1`,
+              TypeName: "self",
+              Role: "Code",
+              Prompt: `Unit 1 (Backend & Schema): ${prompt.slice(0, 64)}`,
+              Model: "flash",
+            },
+            {
+              conversationId: `${sessionId}-conv-unit-2`,
+              TypeName: "self",
+              Role: "Code",
+              Prompt: `Unit 2 (Thermal UI & Waterfall): ${prompt.slice(0, 64)}`,
+              Model: "flash",
+            },
+            {
+              conversationId: `${sessionId}-conv-unit-3`,
+              TypeName: "research",
+              Role: "Verifier",
+              Prompt: `Unit 3 (Verification & Tests): ${prompt.slice(0, 64)}`,
+              Model: "flash",
+            },
+          ],
         },
         {
-          delay: 4500,
+          delay: 2800,
+          tool: "Bash",
+          msg: `[agy-cascade] Subagents committed git checkpoints: [main 9a4c1e2] checkpoint: fan-out units verified`,
+          inTok: 9400,
+          outTok: 2480,
+          toolInput: {
+            command: `git commit -m "checkpoint: fan-out units 1-3 complete"`,
+          },
+          output: `[main 9a4c1e2] checkpoint: fan-out units 1-3 complete`,
+        },
+        {
+          delay: 4400,
           tool: null,
-          msg: `[agy:${model}] Execution complete. All verification checks passed.`,
-          inTok: 11200,
-          outTok: 3400,
+          msg: `[agy-cascade] Returning compressed ===DIGEST=== block to Claude Conductor (38.4k tokens saved).`,
+          inTok: 12600,
+          outTok: 3100,
+          output: digestOutput,
           done: true,
         },
       ]
-    : [
-        {
-          delay: 350,
-          tool: "Read",
-          msg: `[claude:${model}] Inspecting repository in ${cwd} (CLAUDE_CODE_EFFORT=${effort})`,
-          inTok: 2100,
-          outTok: 410,
-        },
-        {
-          delay: 1500,
-          tool: "Task",
-          msg: `[claude:${model}] Dispatching Haiku 4.5 Explore subagent for "${prompt.slice(0, 48)}"`,
-          inTok: 5600,
-          outTok: 1120,
-          subagent: {
-            description: "Explore codebase structure",
-            subagent_type: "Explore",
-            prompt: `Explore files related to: ${prompt.slice(0, 80)}`,
-            model: "claude-haiku-4-5",
-            effort: "low",
+    : isCascade
+      ? [
+          {
+            delay: 350,
+            tool: "Bash",
+            msg: `[agy-cascade:${model}] Starting Pool 1 (AGY-Claude Opus 5.5 High) waterfall in ${cwd} (--yolo)`,
+            inTok: 1950,
+            outTok: 390,
+            toolInput: {
+              command: `agy-cascade --dir "${cwd}" --yolo --digest "${prompt.slice(0, 90)}"`,
+            },
           },
-        },
-        {
-          delay: 3100,
-          tool: "Edit",
-          msg: `[claude:${model}] Applying changes and running verification suite...`,
-          inTok: 9800,
-          outTok: 2650,
-        },
-        {
-          delay: 4700,
-          tool: null,
-          msg: `[claude:${model}] Task completed cleanly.`,
-          inTok: 13400,
-          outTok: 3900,
-          done: true,
-        },
-      ];
+          {
+            delay: 1600,
+            tool: "replace_file_content",
+            msg: `[agy-cascade:${model}] Applying autonomous edits and creating git checkpoint...`,
+            inTok: 5800,
+            outTok: 1450,
+          },
+          {
+            delay: 3000,
+            tool: "Bash",
+            msg: `[agy-cascade:${model}] Created git checkpoint: [main 4f8b2d1] checkpoint: agy-cascade task complete`,
+            inTok: 8900,
+            outTok: 2180,
+            toolInput: {
+              command: `git commit -m "checkpoint: agy-cascade task complete"`,
+            },
+            output: `[main 4f8b2d1] checkpoint: agy-cascade task complete`,
+          },
+          {
+            delay: 4400,
+            tool: null,
+            msg: `[agy-cascade:${model}] Emitting ===DIGEST=== summary (19.2k raw tokens offloaded).`,
+            inTok: 11400,
+            outTok: 2950,
+            output: digestOutput,
+            done: true,
+          },
+        ]
+      : isAgy
+        ? [
+            {
+              delay: 350,
+              tool: "view_file",
+              msg: `[agy:${model}] Analyzing workspace ${cwd} (effort=${effort})`,
+              inTok: 1850,
+              outTok: 320,
+            },
+            {
+              delay: 1400,
+              tool: "invoke_subagent",
+              msg: `[agy:${model}] Spawning 3.8-Flash fast exploration subagent for "${prompt.slice(0, 48)}"`,
+              inTok: 4200,
+              outTok: 890,
+              subagent: {
+                TypeName: "research",
+                Role: "Explore",
+                Prompt: `Fast context scan for: ${prompt.slice(0, 80)}`,
+                Model: "gemini-3.8-flash",
+                Effort: "low",
+              },
+            },
+            {
+              delay: 2900,
+              tool: "replace_file_content",
+              msg: `[agy:${model}] Synthesizing solution & verifying AST invariants...`,
+              inTok: 8400,
+              outTok: 2150,
+            },
+            {
+              delay: 4500,
+              tool: null,
+              msg: `[agy:${model}] Execution complete. All verification checks passed.`,
+              inTok: 11200,
+              outTok: 3400,
+              done: true,
+            },
+          ]
+        : [
+            {
+              delay: 350,
+              tool: "Read",
+              msg: `[claude:${model}] Inspecting repository in ${cwd} (CLAUDE_CODE_EFFORT=${effort})`,
+              inTok: 2100,
+              outTok: 410,
+            },
+            {
+              delay: 1500,
+              tool: "Task",
+              msg: `[claude:${model}] Dispatching Haiku 4.5 Explore subagent for "${prompt.slice(0, 48)}"`,
+              inTok: 5600,
+              outTok: 1120,
+              subagent: {
+                description: "Explore codebase structure",
+                subagent_type: "Explore",
+                prompt: `Explore files related to: ${prompt.slice(0, 80)}`,
+                model: "claude-haiku-4-5",
+                effort: "low",
+              },
+            },
+            {
+              delay: 3100,
+              tool: "Edit",
+              msg: `[claude:${model}] Applying changes and running verification suite...`,
+              inTok: 9800,
+              outTok: 2650,
+            },
+            {
+              delay: 4700,
+              tool: null,
+              msg: `[claude:${model}] Task completed cleanly.`,
+              inTok: 13400,
+              outTok: 3900,
+              done: true,
+            },
+          ];
 
   const timers = [];
   for (const step of steps) {
@@ -134,7 +260,22 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
       if (dispatchEntry.status === "killed") return;
       emitDispatchStream(dispatchEntry, "stdout", step.msg);
 
-      if (step.subagent) {
+      if (step.subagents) {
+        hooksRouter.processEvent("PreToolUse", {
+          session_id: sessionId,
+          provider,
+          model,
+          effort,
+          cwd,
+          tool_name: step.tool,
+          tool_input: { Subagents: step.subagents },
+          metrics: {
+            input_tokens: step.inTok,
+            output_tokens: step.outTok,
+            cache_read_tokens: Math.round(step.inTok * 0.65),
+          },
+        });
+      } else if (step.subagent) {
         hooksRouter.processEvent("PreToolUse", {
           session_id: sessionId,
           provider,
@@ -157,7 +298,8 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
           effort,
           cwd,
           tool_name: step.tool,
-          tool_input: { prompt: prompt.slice(0, 120) },
+          tool_input: step.toolInput || { prompt: prompt.slice(0, 120) },
+          output: step.output || undefined,
           metrics: {
             input_tokens: step.inTok,
             output_tokens: step.outTok,
@@ -165,6 +307,17 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
           },
         });
       } else if (step.done) {
+        hooksRouter.processEvent("PostToolUse", {
+          session_id: sessionId,
+          provider,
+          model,
+          effort,
+          tool_name: "Bash",
+          tool_input: {
+            command: `agy-cascade --dir "${cwd}" --yolo --digest "${prompt.slice(0, 80)}"`,
+          },
+          output: step.output || undefined,
+        });
         hooksRouter.processEvent("SubagentStop", {
           session_id: sessionId,
           provider,
@@ -176,6 +329,7 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
           provider,
           model,
           effort,
+          output: step.output || undefined,
           metrics: {
             input_tokens: step.inTok,
             output_tokens: step.outTok,
@@ -201,14 +355,15 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
 }
 
 /**
- * Spawn a single provider agent process (`claude` or `antigravity`).
+ * Spawn a single provider agent process (`claude`, `antigravity`, `cascade`, or `fanout`).
  */
-function spawnSingleProvider({ provider, prompt, model, effort, cwd }) {
+function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "single" }) {
   const resolvedCwd = cwd && String(cwd).trim() ? String(cwd).trim() : process.cwd();
   const classified = classifyModelAndEffort({
     provider,
     model,
     effort,
+    source: mode === "cascade" || mode === "fanout" ? "agy-cascade" : "",
     subagentRole: "Main",
     isSubagent: false,
     type: "main",
@@ -219,10 +374,21 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd }) {
   const agentId = `${sessionId}-main`;
   const fakePid = Math.floor(20000 + Math.random() * 60000);
 
+  const sessionPrefix =
+    mode === "fanout"
+      ? "AGY Fan-Out Swarm"
+      : mode === "cascade"
+        ? "agy-cascade"
+        : classified.provider === "antigravity"
+          ? "Antigravity"
+          : classified.provider === "agy-claude"
+            ? "AGY-Claude"
+            : "Claude";
+
   // Create initial session & main agent via processEvent
   hooksRouter.processEvent("SessionStart", {
     session_id: sessionId,
-    session_name: `${classified.provider === "antigravity" ? "Antigravity" : "Claude"}: ${prompt.slice(0, 42)}`,
+    session_name: `${sessionPrefix}: ${prompt.slice(0, 42)}`,
     provider: classified.provider,
     model: classified.model,
     effort: classified.effort,
@@ -249,6 +415,7 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd }) {
     model: classified.model,
     model_tier: classified.model_tier,
     effort: classified.effort,
+    mode,
     cwd: resolvedCwd,
     pid: fakePid,
     child: null,
@@ -260,11 +427,17 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd }) {
 
   activeDispatches.set(dispatchId, dispatchEntry);
 
+  const isCascadeCli = mode === "cascade" || mode === "fanout";
   const isAgy = classified.provider === "antigravity";
-  const bin = isAgy ? "agy" : "claude";
-  const args = isAgy
-    ? ["-p", prompt, "--model", classified.model]
-    : ["-p", prompt, "--model", classified.model, "--output-format", "stream-json", "--verbose"];
+  const bin = isCascadeCli ? "agy-cascade" : isAgy ? "agy" : "claude";
+  const effectivePrompt = mode === "fanout" ? buildFanOutPrompt(prompt, resolvedCwd) : prompt;
+  const args = isCascadeCli
+    ? mode === "fanout"
+      ? ["--dir", resolvedCwd, "--yolo", "--digest", "--timeout", "10m", effectivePrompt]
+      : ["--dir", resolvedCwd, "--yolo", effectivePrompt]
+    : isAgy
+      ? ["-p", prompt, "--model", classified.model]
+      : ["-p", prompt, "--model", classified.model, "--output-format", "stream-json", "--verbose"];
 
   const env = {
     ...process.env,
@@ -403,6 +576,7 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd }) {
     model_tier: classified.model_tier,
     modelTier: classified.model_tier,
     effort: classified.effort,
+    mode,
     cwd: resolvedCwd,
     pid: dispatchEntry.pid,
     status: dispatchEntry.status,
@@ -544,7 +718,7 @@ function killAgentOrDispatch(targetId) {
   return { ok: true, target_id: targetId, killed_process: killedProc };
 }
 
-// POST /api/dispatch — Spawn Claude Code, Antigravity (agy), or Dual Swarm in parallel
+// POST /api/dispatch — Spawn Claude Code, Antigravity (agy), Dual Swarm, agy-cascade, or AGY Fan-Out Swarm
 router.post("/", (req, res) => {
   const {
     prompt,
@@ -567,6 +741,40 @@ router.post("/", (req, res) => {
   const targetEngine = String(provider || engine || "claude")
     .toLowerCase()
     .trim();
+
+  if (targetEngine === "cascade" || targetEngine === "agy-cascade") {
+    const dispatched = spawnSingleProvider({
+      provider: "agy-claude",
+      prompt: cleanPrompt,
+      model: model || "claude-opus-5-5-high",
+      effort,
+      cwd,
+      mode: "cascade",
+    });
+    return res.status(201).json({
+      ok: true,
+      mode: "cascade",
+      dispatches: [dispatched],
+      dispatch: dispatched,
+    });
+  }
+
+  if (targetEngine === "fanout" || targetEngine === "fan-out") {
+    const dispatched = spawnSingleProvider({
+      provider: "claude",
+      prompt: cleanPrompt,
+      model: claudeModel || "claude-opus-4-6",
+      effort,
+      cwd,
+      mode: "fanout",
+    });
+    return res.status(201).json({
+      ok: true,
+      mode: "fanout",
+      dispatches: [dispatched],
+      dispatch: dispatched,
+    });
+  }
 
   if (targetEngine === "dual" || targetEngine === "swarm" || targetEngine === "both") {
     const claudeDispatch = spawnSingleProvider({
@@ -602,12 +810,20 @@ router.post("/", (req, res) => {
   const singleProvider =
     targetEngine === "antigravity" || targetEngine === "agy" || targetEngine === "gemini"
       ? "antigravity"
-      : "claude";
+      : targetEngine === "agy-claude"
+        ? "agy-claude"
+        : "claude";
 
   const dispatched = spawnSingleProvider({
     provider: singleProvider,
     prompt: cleanPrompt,
-    model: model || (singleProvider === "antigravity" ? "argon-4-ultra" : "claude-sonnet-4-6"),
+    model:
+      model ||
+      (singleProvider === "antigravity"
+        ? "argon-4-ultra"
+        : singleProvider === "agy-claude"
+          ? "claude-opus-5-5-high"
+          : "claude-sonnet-4-6"),
     effort,
     cwd,
   });

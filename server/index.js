@@ -123,6 +123,11 @@ function createApp() {
   app.get("/api/quota", (_req, res) => {
     res.json(simulateController.getDualQuotaTelemetry());
   });
+  app.get("/api/cascade/status", (_req, res) => {
+    const { db } = require("./db");
+    const { getCascadeStatus } = require("./watchers/cascadeCacheWatcher");
+    res.json(getCascadeStatus(db));
+  });
   app.get("/favicon.svg", (_req, res) => {
     res.type("image/svg+xml").sendFile(DASHBOARD_FAVICON_PATH);
   });
@@ -571,6 +576,14 @@ function startBackgroundServices() {
     startLiveTranscriptWatcher();
   } catch (err) {
     console.warn("liveTranscriptWatcher failed to start:", err.message);
+  }
+  // DualAgent Nexus ~/.cache/agy-cascade 3-pool waterfall & digest offload watcher
+  try {
+    const { startCascadeCacheWatcher } = require("./watchers/cascadeCacheWatcher");
+    const dbModule = require("./db");
+    startCascadeCacheWatcher({ db: dbModule.db, broadcast });
+  } catch (err) {
+    console.warn("cascadeCacheWatcher failed to start:", err.message);
   }
 }
 

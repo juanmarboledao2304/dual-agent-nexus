@@ -14,7 +14,18 @@
 const nodeProcess = (
   globalThis as unknown as { process?: { env: Record<string, string | undefined> } }
 ).process;
-if (nodeProcess) nodeProcess.env.TZ = "UTC";
+if (nodeProcess) {
+  nodeProcess.env.TZ = "UTC";
+  nodeProcess.env.LC_ALL = "en_US.UTF-8";
+  nodeProcess.env.LANG = "en_US.UTF-8";
+}
+const origToLocaleTimeString = Date.prototype.toLocaleTimeString;
+Date.prototype.toLocaleTimeString = function (
+  locales?: Intl.LocalesArgument,
+  options?: Intl.DateTimeFormatOptions
+) {
+  return origToLocaleTimeString.call(this, locales ?? "en-US", options);
+};
 
 import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import type { ReactNode } from "react";

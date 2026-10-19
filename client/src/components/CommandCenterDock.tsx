@@ -3,7 +3,9 @@
  * @description Persistent, collapsible bottom Unified Prompt Dispatcher & Process
  * Manager dock for DualAgent Nexus. Allows operators to dispatch tasks to
  * Claude Code CLI (Warm Spectrum), Google Antigravity CLI (`agy`, Cool Spectrum),
- * or Dual Swarm (Parallel Mode), with dynamic model override, 4-level reasoning
+ * Dual Swarm (Parallel Mode), `🌊 agy-cascade --yolo` (3-Pool Waterfall), or
+ * `🪭 AGY Fan-Out Swarm (3x Subagents + Digest)` (Level-2-to-Level-3 internal
+ * `invoke_subagent` fan-out), with dynamic model override, 4-level reasoning
  * effort selector, workspace path picker, real-time stdout/stderr stream console,
  * and SIGTERM process kill switch.
  * @author Son Nguyen <hoangson091104@gmail.com>
@@ -22,12 +24,14 @@ import {
   OctagonX,
   Cpu,
   Gauge,
+  Waves,
+  GitFork,
 } from "lucide-react";
 import { api } from "../lib/api";
 import { eventBus } from "../lib/eventBus";
 import type { WSMessage, DispatchStreamPayload, DispatchStatusPayload } from "../lib/types";
 
-type TargetEngine = "claude" | "antigravity" | "dual";
+type TargetEngine = "claude" | "antigravity" | "dual" | "cascade" | "fanout";
 type EffortOption = "low" | "medium" | "high" | "max";
 
 const CLAUDE_MODELS = [
@@ -38,9 +42,32 @@ const CLAUDE_MODELS = [
 
 const ANTIGRAVITY_MODELS = [
   { id: "argon-4-ultra", label: "Argon 4 Ultra (Deep Reasoning · Electric Purple)" },
-  { id: "gemini-3-pro", label: "Gemini 3 Pro (Deep Reasoning · Electric Purple)" },
+  { id: "gemini-3.2-pro-high", label: "Gemini 3.2 Pro High (Deep Reasoning · Electric Purple)" },
   { id: "gemini-3-flow", label: "Gemini 3 Flow (Standard Agentic Flow · Cyber Blue)" },
-  { id: "gemini-3.8-flash", label: "Gemini 3.8 Flash (High-Speed Utility · Emerald Green)" },
+  { id: "gemini-3.8-flash-high", label: "Gemini 3.8 Flash High (High-Speed · Emerald Green)" },
+];
+
+const CASCADE_MODELS = [
+  {
+    id: "claude-opus-5-5-thinking",
+    label: "Waterfall Start: Claude Opus 5.5 (Thinking) ➔ Pool 1 [AGY • claude pool]",
+  },
+  {
+    id: "claude-sonnet-5-5-thinking",
+    label: "Waterfall Start: Claude Sonnet 5.5 (Thinking) ➔ Pool 1 [AGY • claude pool]",
+  },
+  {
+    id: "gpt-oss-120b-medium",
+    label: "Waterfall Start: GPT-OSS 120B (Medium) ➔ Pool 1 [AGY • claude pool]",
+  },
+  {
+    id: "gemini-3.2-pro-high",
+    label: "Waterfall Start: Gemini 3.2 Pro (High) ➔ Pool 2 [AGY • gemini pool]",
+  },
+  {
+    id: "gemini-3.8-flash-high",
+    label: "Waterfall Start: Gemini 3.8 Flash (High) ➔ Pool 2 [AGY • gemini pool]",
+  },
 ];
 
 const DUAL_MODELS = [
@@ -70,8 +97,8 @@ export function CommandCenterDock() {
   const [expanded, setExpanded] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [cwd, setCwd] = useState("");
-  const [engine, setEngine] = useState<TargetEngine>("dual");
-  const [model, setModel] = useState("claude-opus-4-6");
+  const [engine, setEngine] = useState<TargetEngine>("cascade");
+  const [model, setModel] = useState("claude-opus-5-5-thinking");
   const [effort, setEffort] = useState<EffortOption>("high");
   const [dispatching, setDispatching] = useState(false);
   const [activeDispatches, setActiveDispatches] = useState<ActiveDispatchItem[]>([]);
@@ -95,6 +122,8 @@ export function CommandCenterDock() {
       setModel("claude-sonnet-4-6");
     } else if (engine === "antigravity") {
       setModel("gemini-3-flow");
+    } else if (engine === "cascade" || engine === "fanout") {
+      setModel("claude-opus-5-5-thinking");
     } else {
       setModel("claude-opus-4-6");
     }
@@ -105,7 +134,12 @@ export function CommandCenterDock() {
     return eventBus.subscribe((msg: WSMessage) => {
       if (msg.type === "dispatch_stream" && msg.data) {
         const payload = msg.data as DispatchStreamPayload;
-        const prefix = payload.provider === "antigravity" ? "[AGY]" : "[CLAUDE]";
+        const prefix =
+          payload.provider === "agy-claude"
+            ? "[AGY•CLAUDE]"
+            : payload.provider === "antigravity" || payload.provider === "agy-gemini"
+              ? "[AGY•GEMINI]"
+              : "[CLAUDE]";
         setStreamLog((prev) => [...prev.slice(-100), `${prefix} ${payload.chunk}`]);
       } else if (msg.type === "dispatch_status" && msg.data) {
         const statusPayload = msg.data as DispatchStatusPayload;
@@ -129,7 +163,9 @@ export function CommandCenterDock() {
       ? CLAUDE_MODELS
       : engine === "antigravity"
         ? ANTIGRAVITY_MODELS
-        : DUAL_MODELS;
+        : engine === "cascade" || engine === "fanout"
+          ? CASCADE_MODELS
+          : DUAL_MODELS;
 
   const handleDispatch = async () => {
     const trimmed = prompt.trim();
@@ -192,12 +228,12 @@ export function CommandCenterDock() {
           className="cursor-pointer flex items-center justify-between gap-3 px-4 py-2 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900 border-b border-slate-800/80"
         >
           <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-orange-500/20 via-purple-500/20 to-cyan-500/20 text-slate-100 border border-slate-700">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-orange-500/20 via-fuchsia-500/20 to-cyan-500/20 text-slate-100 border border-slate-700">
               <Terminal className="w-3 h-3 text-amber-400" />
               Command Center Dock
             </span>
             <span className="text-[11px] text-slate-400 hidden sm:inline">
-              Unified Prompt Dispatcher — Claude Code CLI · Antigravity (agy) · Dual Swarm
+              Unified Dispatcher — `agy-cascade` Waterfall · AGY Fan-Out · Claude Code · Dual Swarm
             </span>
             {runningCount > 0 && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 animate-pulse">
@@ -219,6 +255,32 @@ export function CommandCenterDock() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               {/* Target Engine Selector */}
               <div className="flex flex-wrap items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setEngine("cascade")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                    engine === "cascade"
+                      ? "bg-gradient-to-r from-fuchsia-600/35 to-purple-500/35 text-fuchsia-200 border-fuchsia-400/70 shadow-[0_0_16px_-3px_rgba(217,70,239,0.5)]"
+                      : "bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200"
+                  }`}
+                >
+                  <Waves className="w-3.5 h-3.5 text-fuchsia-400" />
+                  🌊 agy-cascade --yolo
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setEngine("fanout")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                    engine === "fanout"
+                      ? "bg-gradient-to-r from-indigo-600/35 via-blue-500/35 to-emerald-500/35 text-cyan-200 border-cyan-400/70 shadow-[0_0_16px_-3px_rgba(16,185,129,0.5)]"
+                      : "bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200"
+                  }`}
+                >
+                  <GitFork className="w-3.5 h-3.5 text-emerald-400" />
+                  🪭 AGY Fan-Out Swarm (3x Subagents + Digest)
+                </button>
+
                 <button
                   type="button"
                   onClick={() => setEngine("claude")}
@@ -255,7 +317,7 @@ export function CommandCenterDock() {
                   }`}
                 >
                   <Zap className="w-3.5 h-3.5 text-amber-300" />
-                  Dual Swarm (Parallel Mode)
+                  Dual Swarm (Parallel)
                 </button>
               </div>
 
@@ -325,9 +387,11 @@ export function CommandCenterDock() {
                         <span
                           className={`w-2 h-2 rounded-full ${
                             d.status === "running"
-                              ? d.provider === "antigravity"
-                                ? "bg-cyan-400 animate-ping"
-                                : "bg-orange-400 animate-ping"
+                              ? d.provider === "agy-claude"
+                                ? "bg-fuchsia-400 animate-ping"
+                                : d.provider === "antigravity"
+                                  ? "bg-cyan-400 animate-ping"
+                                  : "bg-orange-400 animate-ping"
                               : "bg-slate-500"
                           }`}
                         />
@@ -375,7 +439,7 @@ export function CommandCenterDock() {
                 void handleDispatch();
               }
             }}
-            placeholder="Dispatch a task to Claude Code, Antigravity (agy), or Dual Swarm... (Ctrl/⌘ + Enter)"
+            placeholder="Dispatch via 🌊 agy-cascade --yolo, 🪭 AGY Fan-Out Swarm, Claude Code, or Dual Swarm... (Ctrl/⌘ + Enter)"
             className="flex-1 bg-slate-900/90 text-xs text-slate-100 placeholder-slate-500 px-3 py-2 rounded-xl border border-slate-800 focus:border-amber-500/50 focus:outline-none resize-none font-mono"
           />
           <button
@@ -387,7 +451,11 @@ export function CommandCenterDock() {
                 ? "bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white"
                 : engine === "antigravity"
                   ? "bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-500 hover:to-blue-400 text-white"
-                  : "bg-gradient-to-r from-orange-600 via-purple-600 to-blue-600 hover:from-orange-500 hover:to-blue-500 text-white"
+                  : engine === "cascade"
+                    ? "bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white"
+                    : engine === "fanout"
+                      ? "bg-gradient-to-r from-indigo-600 via-blue-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white"
+                      : "bg-gradient-to-r from-orange-600 via-purple-600 to-blue-600 hover:from-orange-500 hover:to-blue-500 text-white"
             } disabled:opacity-40 disabled:cursor-not-allowed`}
           >
             <Send className="w-3.5 h-3.5" />

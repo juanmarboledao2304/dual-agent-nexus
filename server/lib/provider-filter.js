@@ -6,7 +6,14 @@
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
-const VALID_PROVIDERS = new Set(["claude", "cursor", "codex", "antigravity"]);
+const VALID_PROVIDERS = new Set([
+  "claude",
+  "cursor",
+  "codex",
+  "antigravity",
+  "agy-claude",
+  "agy-gemini",
+]);
 
 /** Parse `?providers=claude,codex`; absent means every provider. */
 function parseProviders(req) {
@@ -21,10 +28,13 @@ function parseProviders(req) {
     ),
   ];
   if (providers.length === 0) return null;
-  // Cursor uses Claude-compatible lifecycle hooks but has its own transcript
-  // store and rate card. Product scope keeps the existing two-choice UX:
-  // "Claude Code" means the Claude-compatible family (Claude + Cursor).
-  if (providers.includes("claude") && !providers.includes("cursor")) providers.push("cursor");
+  // Cursor and Google Antigravity (agy-cascade / agy-claude / agy-gemini)
+  // participate in the unified DualAgent Nexus Mission Control scope alongside Claude Code.
+  if (providers.includes("claude")) {
+    for (const p of ["cursor", "antigravity", "agy-claude", "agy-gemini"]) {
+      if (!providers.includes(p)) providers.push(p);
+    }
+  }
   return providers;
 }
 

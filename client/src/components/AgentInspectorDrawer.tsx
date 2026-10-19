@@ -2,7 +2,8 @@
  * @file AgentInspectorDrawer.tsx
  * @description Slide-over inspector drawer that opens when clicking any node in the
  * Subagent Hierarchy Graph or Agent Card. Displays the agent's Chromatic Thermal
- * telemetry, 4-bar Effort Signal Meter, system prompt / task description, live
+ * telemetry, 4-bar Effort Signal Meter, expandable `===DIGEST===` Execution Summary,
+ * Git Checkpoint commit history, system prompt / task description, live
  * tool call & reasoning trace, stdout/stderr stream, and a SIGTERM process kill switch.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
@@ -20,11 +21,19 @@ import {
   Clock,
   Activity,
   Layers,
+  ShieldCheck,
+  GitCommit,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { api } from "../lib/api";
 import { eventBus } from "../lib/eventBus";
-import { getAgentThermalTheme, formatAgentModelBadge } from "../utils/agentTheme";
+import {
+  getAgentThermalTheme,
+  formatAgentModelBadge,
+  parseAgentMetadata,
+} from "../utils/agentTheme";
 import { timeAgo } from "../lib/format";
 import type {
   Agent,
@@ -51,6 +60,7 @@ export function AgentInspectorDrawer({
   const [events, setEvents] = useState<DashboardEvent[]>([]);
   const [streamLines, setStreamLines] = useState<string[]>([]);
   const [killing, setKilling] = useState(false);
+  const [digestExpanded, setDigestExpanded] = useState(true);
 
   const loadAgentEvents = useCallback(async () => {
     if (!agent) return;
@@ -91,6 +101,7 @@ export function AgentInspectorDrawer({
 
   const theme = getAgentThermalTheme(agent, session?.provider, session?.model);
   const modelBadge = formatAgentModelBadge(agent.model || session?.model, theme.provider);
+  const meta = parseAgentMetadata(agent.metadata);
   const roleBadge =
     agent.subagent_role || agent.subagent_type || (agent.type === "main" ? "Main" : "Subagent");
   const isActive = agent.status !== "completed" && agent.status !== "error";
@@ -126,10 +137,10 @@ export function AgentInspectorDrawer({
                 <span
                   className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${theme.providerPillClass}`}
                 >
-                  {theme.provider === "antigravity" ? (
-                    <Sparkles className="w-3 h-3" />
-                  ) : (
+                  {theme.provider === "claude" ? (
                     <Flame className="w-3 h-3" />
+                  ) : (
+                    <Sparkles className="w-3 h-3" />
                   )}
                   {theme.providerLabel}
                 </span>
@@ -166,6 +177,7 @@ export function AgentInspectorDrawer({
               <p className="text-[11px] font-mono text-slate-400">
                 Agent ID: {agent.id} · Session: {agent.session_id.slice(0, 12)}
                 {agent.pid ? ` · PID: ${agent.pid}` : ""}
+                {meta.conversation_id ? ` · Conv: ${meta.conversation_id}` : ""}
               </p>
             </div>
 
@@ -209,6 +221,89 @@ export function AgentInspectorDrawer({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
+          {/* Expandable ===DIGEST=== Execution Summary Box */}
+          {(meta.digest || meta.digest_received) && (
+            <div className="p-4 rounded-xl bg-emerald-950/25 border border-emerald-500/40 space-y-2.5">
+              <div
+                onClick={() => setDigestExpanded((v) => !v)}
+                className="cursor-pointer flex items-center justify-between gap-2"
+              >
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  ===DIGEST=== Execution Summary
+                </span>
+                <div className="flex items-center gap-2">
+                  {meta.digest?.offloaded_tokens_saved ? (
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 border border-emerald-500/40">
+                      {(meta.digest.offloaded_tokens_saved / 1000).toFixed(1)}K tokens saved
+                    </span>
+                  ) : null}
+                  {digestExpanded ? (
+                    <ChevronUp className="w-4 h-4 text-emerald-300" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-emerald-300" />
+                  )}
+                </div>
+              </div>
+
+              {digestExpanded && (
+                <div className="space-y-1.5 text-xs font-mono bg-slate-950/90 p-3 rounded-lg border border-emerald-500/30 text-slate-200">
+                  {meta.digest?.status && (
+                    <p>
+                      <span className="text-emerald-400">Status:</span> {meta.digest.status}
+                    </p>
+                  )}
+                  {meta.digest?.files_touched && meta.digest.files_touched.length > 0 && (
+                    <p>
+                      <span className="text-emerald-400">Files Touched:</span>{" "}
+                      {meta.digest.files_touched.join(", ")}
+                    </p>
+                  )}
+                  {meta.digest?.key_findings && (
+                    <p>
+                      <span className="text-emerald-400">Key Findings:</span>{" "}
+                      {meta.digest.key_findings}
+                    </p>
+                  )}
+                  {meta.digest?.follow_ups && (
+                    <p>
+                      <span className="text-emerald-400">Follow-Ups:</span> {meta.digest.follow_ups}
+                    </p>
+                  )}
+                  {!meta.digest?.status && meta.digest?.raw && (
+                    <pre className="whitespace-pre-wrap text-[11px] text-emerald-200">
+                      {meta.digest.raw}
+                    </pre>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Git Checkpoint Verification Commits */}
+          {meta.git_checkpoints && meta.git_checkpoints > 0 ? (
+            <div className="p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/35 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
+                  <GitCommit className="w-4 h-4 text-cyan-400" />
+                  Git Checkpoint Protocol ({meta.git_checkpoints} checkpoint
+                  {meta.git_checkpoints === 1 ? "" : "s"})
+                </span>
+                <span className="text-[10px] font-mono text-cyan-400">git diff verified</span>
+              </div>
+              {meta.git_checkpoint_commits && meta.git_checkpoint_commits.length > 0 && (
+                <div className="space-y-1 font-mono text-[11px] bg-slate-950/90 p-2.5 rounded-lg border border-cyan-500/25 text-cyan-200">
+                  {meta.git_checkpoint_commits.map((msg, idx) => (
+                    <div key={`${idx}-${msg}`} className="flex items-center gap-2">
+                      <span className="text-cyan-500">●</span>
+                      <span className="truncate">{msg}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : null}
+
           {/* Telemetry & Context Window Utilization */}
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
             <div className="flex items-center justify-between text-xs">
