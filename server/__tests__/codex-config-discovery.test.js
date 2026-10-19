@@ -9,6 +9,7 @@
 
 const { describe, it, after } = require("node:test");
 const assert = require("node:assert/strict");
+const { SKIP_WITHOUT_SYMLINKS } = require("./helpers/symlink-support");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
@@ -230,37 +231,45 @@ describe("codex config discovery", () => {
     );
   });
 
-  it("does not follow an allowlisted configuration symlink", () => {
-    const hooked = path.join(HOME, "hooks.json");
-    const outside = path.join(os.tmpdir(), `codex-config-outside-${process.pid}.json`);
-    fs.writeFileSync(outside, "{}\n");
-    fs.unlinkSync(hooked);
-    fs.symlinkSync(outside, hooked);
-    assert.throws(() => mutate.readEditableFile(hooked), /symbolic link/);
-    fs.unlinkSync(hooked);
-    fs.writeFileSync(hooked, JSON.stringify({ hooks: { SessionStart: [{}] } }));
-    fs.rmSync(outside, { force: true });
-  });
+  it(
+    "does not follow an allowlisted configuration symlink",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    () => {
+      const hooked = path.join(HOME, "hooks.json");
+      const outside = path.join(os.tmpdir(), `codex-config-outside-${process.pid}.json`);
+      fs.writeFileSync(outside, "{}\n");
+      fs.unlinkSync(hooked);
+      fs.symlinkSync(outside, hooked);
+      assert.throws(() => mutate.readEditableFile(hooked), /symbolic link/);
+      fs.unlinkSync(hooked);
+      fs.writeFileSync(hooked, JSON.stringify({ hooks: { SessionStart: [{}] } }));
+      fs.rmSync(outside, { force: true });
+    }
+  );
 
-  it("rejects a symlinked parent that escapes the Codex skills root", () => {
-    const outside = fs.mkdtempSync(path.join(os.tmpdir(), "codex-config-parent-"));
-    const linkedSkill = path.join(HOME, "skills", "linked");
-    fs.symlinkSync(outside, linkedSkill, "dir");
-    const target = path.join(linkedSkill, "SKILL.md");
-    fs.writeFileSync(path.join(outside, "SKILL.md"), "# outside\n");
+  it(
+    "rejects a symlinked parent that escapes the Codex skills root",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    () => {
+      const outside = fs.mkdtempSync(path.join(os.tmpdir(), "codex-config-parent-"));
+      const linkedSkill = path.join(HOME, "skills", "linked");
+      fs.symlinkSync(outside, linkedSkill, "dir");
+      const target = path.join(linkedSkill, "SKILL.md");
+      fs.writeFileSync(path.join(outside, "SKILL.md"), "# outside\n");
 
-    const read = discovery.readFileSafe(target);
-    assert.match(read.error, /inside Codex home|not readable/);
-    assert.throws(() => mutate.readEditableFile(target), /symbolic link/);
-    assert.throws(
-      () => mutate.writeEditableFile({ file: target, content: "# replaced\n" }),
-      /symbolic link/
-    );
-    assert.equal(fs.readFileSync(path.join(outside, "SKILL.md"), "utf8"), "# outside\n");
+      const read = discovery.readFileSafe(target);
+      assert.match(read.error, /inside Codex home|not readable/);
+      assert.throws(() => mutate.readEditableFile(target), /symbolic link/);
+      assert.throws(
+        () => mutate.writeEditableFile({ file: target, content: "# replaced\n" }),
+        /symbolic link/
+      );
+      assert.equal(fs.readFileSync(path.join(outside, "SKILL.md"), "utf8"), "# outside\n");
 
-    fs.unlinkSync(linkedSkill);
-    fs.rmSync(outside, { recursive: true, force: true });
-  });
+      fs.unlinkSync(linkedSkill);
+      fs.rmSync(outside, { recursive: true, force: true });
+    }
+  );
 
   it("refuses to save redacted preview content", () => {
     assert.throws(

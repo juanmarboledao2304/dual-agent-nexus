@@ -287,7 +287,7 @@ function sendTest(target) {
     rule_type: "test",
     session_id: null,
     agent_id: null,
-    message: `Test notification from Claude Code Agent Monitor to "${target.name}". If you can read this, delivery works.`,
+    message: `Test notification from DualAgent Nexus to "${target.name}". If you can read this, delivery works.`,
     details: { test: true, target: target.name, type: target.type },
     triggered_at: new Date().toISOString(),
   };

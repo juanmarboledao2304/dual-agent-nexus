@@ -208,7 +208,7 @@ async function ruleCreate({ opts }) {
   });
   const r = await post("/api/alerts/rules", body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Created alert rule ${r.rule.id}`);
+  console.log(`${c.green("OK")} Created alert rule ${r.rule.id}`);
 }
 
 async function ruleUpdate({ args, opts }) {
@@ -237,7 +237,7 @@ async function ruleUpdate({ args, opts }) {
   await confirm(opts, { prompt: `Update alert rule ${args[0]}?`, refusal: RULE_REFUSAL });
   const r = await patch(`/api/alerts/rules/${enc(args[0])}`, body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Updated alert rule ${args[0]}`);
+  console.log(`${c.green("OK")} Updated alert rule ${args[0]}`);
 }
 
 async function ruleToggle(id, enabled, opts) {
@@ -248,7 +248,7 @@ async function ruleToggle(id, enabled, opts) {
   const r = await patch(`/api/alerts/rules/${enc(id)}`, { enabled });
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Alert rule ${id} ${enabled ? c.green("enabled") : c.dim("disabled")}`
+    `${c.green("OK")} Alert rule ${id} ${enabled ? c.green("enabled") : c.dim("disabled")}`
   );
 }
 
@@ -256,7 +256,7 @@ async function ruleDelete({ args, opts }) {
   await confirm(opts, { prompt: `Delete alert rule ${args[0]}?`, refusal: RULE_REFUSAL });
   const r = await del(`/api/alerts/rules/${enc(args[0])}`);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Deleted alert rule ${args[0]}`);
+  console.log(`${c.green("OK")} Deleted alert rule ${args[0]}`);
 }
 
 /** Attach the rule subcommands to a group (shared by `alert-rules` and `alerts rules`). */
@@ -403,7 +403,7 @@ async function webhookCreate({ opts }) {
   });
   const r = await post("/api/webhooks", body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Created webhook ${r.target.id}`);
+  console.log(`${c.green("OK")} Created webhook ${r.target.id}`);
 }
 
 async function webhookUpdate({ args, opts }) {
@@ -414,7 +414,7 @@ async function webhookUpdate({ args, opts }) {
   await confirm(opts, { prompt: `Update webhook ${args[0]}?`, refusal: WEBHOOK_REFUSAL });
   const r = await patch(`/api/webhooks/${enc(args[0])}`, body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Updated webhook ${r.target.id}`);
+  console.log(`${c.green("OK")} Updated webhook ${r.target.id}`);
 }
 
 async function webhookToggle(id, enabled, opts) {
@@ -424,14 +424,14 @@ async function webhookToggle(id, enabled, opts) {
   });
   const r = await patch(`/api/webhooks/${enc(id)}`, { enabled });
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Webhook ${id} ${enabled ? c.green("enabled") : c.dim("disabled")}`);
+  console.log(`${c.green("OK")} Webhook ${id} ${enabled ? c.green("enabled") : c.dim("disabled")}`);
 }
 
 async function webhookDelete({ args, opts }) {
   await confirm(opts, { prompt: `Delete webhook ${args[0]}?`, refusal: WEBHOOK_REFUSAL });
   const r = await del(`/api/webhooks/${enc(args[0])}`);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Deleted webhook ${args[0]}`);
+  console.log(`${c.green("OK")} Deleted webhook ${args[0]}`);
 }
 
 async function webhookTest({ args }) {
@@ -441,8 +441,8 @@ async function webhookTest({ args }) {
   if (isJson()) return printJson(r);
   console.log(
     okay
-      ? `${c.green("✔")} Test delivery succeeded (HTTP ${r.status ?? "?"}, ${r.attempts ?? 1} attempt(s))`
-      : `${c.red("✖")} Test delivery failed: ${r.error || `HTTP ${r.status}`}`
+      ? `${c.green("OK")} Test delivery succeeded (HTTP ${r.status ?? "?"}, ${r.attempts ?? 1} attempt(s))`
+      : `${c.red("ERR")} Test delivery failed: ${r.error || `HTTP ${r.status}`}`
   );
 }
 
@@ -494,7 +494,7 @@ function register(program) {
         async ({ args }) => {
           const r = await post(`/api/alerts/${enc(args[0])}/ack`);
           if (isJson()) return printJson(r ?? { ok: true });
-          console.log(`${c.green("✔")} Alert ${args[0]} acknowledged`);
+          console.log(`${c.green("OK")} Alert ${args[0]} acknowledged`);
         },
         { serverOnly: ONLY_ACK }
       )
@@ -507,7 +507,7 @@ function register(program) {
         async () => {
           const r = await post("/api/alerts/ack-all");
           if (isJson()) return printJson(r);
-          console.log(`${c.green("✔")} Acknowledged ${r?.acknowledged ?? "all"} alert(s)`);
+          console.log(`${c.green("OK")} Acknowledged ${r?.acknowledged ?? "all"} alert(s)`);
         },
         { serverOnly: ONLY_ACK }
       )

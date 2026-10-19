@@ -75,6 +75,19 @@ describe("Phase 7 — 3-Pool Model Classifier & Waterfall Telemetry", () => {
     assert.equal(opus46.model_tier, "heavy");
   });
 
+  it("keeps Claude Code sessions on Opus/Sonnet 5.5 in Pool 3 when the provider is explicit", () => {
+    // Claude Code runs 5.5-generation models directly on the Anthropic subscription and its
+    // hooks always report provider "claude"; only Antigravity or provider-less rows map to Pool 1.
+    for (const model of ["claude-opus-5-5", "claude-sonnet-5-5-thinking"]) {
+      const direct = classifyModelAndEffort({ model, provider: "claude" });
+      assert.equal(direct.provider, "claude", model);
+      assert.equal(direct.pool, "claude-direct", model);
+    }
+    assert.equal(resolveQuotaPool("claude", "claude-opus-5-5"), "claude-direct");
+    assert.equal(resolveQuotaPool("antigravity", "claude-opus-5-5-thinking"), "agy-claude");
+    assert.equal(resolveQuotaPool(undefined, "claude-opus-5-5-thinking"), "agy-claude");
+  });
+
   it("exports DEFAULT_CASCADE_MODELS in priority order", () => {
     assert.ok(Array.isArray(DEFAULT_CASCADE_MODELS));
     assert.ok(DEFAULT_CASCADE_MODELS.length >= 4);

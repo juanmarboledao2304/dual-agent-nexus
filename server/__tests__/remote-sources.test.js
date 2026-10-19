@@ -161,7 +161,10 @@ describe("remote-sync validateSourceInput", () => {
       host: "a",
       identity_file: "/home/u/.ssh/id-ed25519",
     });
-    assert.equal(v.identityFile, "/home/u/.ssh/id-ed25519");
+    // validateSourceInput normalizes slashes for the local OS.
+    const expected =
+      process.platform === "win32" ? "\\home\\u\\.ssh\\id-ed25519" : "/home/u/.ssh/id-ed25519";
+    assert.equal(v.identityFile, expected);
   });
 });
 

@@ -1,10 +1,10 @@
 {
   "name": "ccam-reports",
   "description": "Generate stakeholder-ready CCAM reports from local session, cost, reliability, and workflow data with explicit scope, evidence, and export-friendly Markdown.",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "author": { "name": "Son Nguyen", "url": "https://github.com/hoangsonww" },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["reports", "executive-summary", "cost", "reliability", "workflows", "ccam"],
   "skills": "./skills/"

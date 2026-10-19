@@ -128,7 +128,7 @@ describe("formatter", () => {
     it("formats successful result with name and duration", () => {
       const result = formatToolResult("my_tool", { ok: true }, 42);
       const text = plain(result);
-      assert.ok(text.includes("✔"));
+      assert.ok(text.includes("OK"));
       assert.ok(text.includes("my_tool"));
       assert.ok(text.includes("42ms"));
     });
@@ -158,7 +158,7 @@ describe("formatter", () => {
     it("formats error with name, message, and duration", () => {
       const result = formatToolError("bad_tool", "Connection refused", 150);
       const text = plain(result);
-      assert.ok(text.includes("✘"));
+      assert.ok(text.includes("ERR"));
       assert.ok(text.includes("bad_tool"));
       assert.ok(text.includes("150ms"));
       assert.ok(text.includes("Connection refused"));

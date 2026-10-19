@@ -25,7 +25,7 @@ function loadOrCreateVapidKeys() {
 const vapidKeys = loadOrCreateVapidKeys();
 
 webpush.setVapidDetails(
-  "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "https://github.com/juanmarboledao2304/dual-agent-nexus",
   vapidKeys.publicKey,
   vapidKeys.privateKey
 );
@@ -94,9 +94,9 @@ async function sendPushToAll(db, title, body) {
   const payload = JSON.stringify({
     title,
     body,
-    icon: "https://raw.githubusercontent.com/hoangsonww/Claude-Code-Agent-Monitor/main/client/public/favicon.ico",
+    icon: "https://raw.githubusercontent.com/juanmarboledao2304/dual-agent-nexus/main/client/public/favicon.ico",
     badge:
-      "https://raw.githubusercontent.com/hoangsonww/Claude-Code-Agent-Monitor/main/client/public/favicon.ico",
+      "https://raw.githubusercontent.com/juanmarboledao2304/dual-agent-nexus/main/client/public/favicon.ico",
     silent: false,
     sound: "default",
   });

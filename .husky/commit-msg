@@ -17,7 +17,7 @@ esac
 PATTERN='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9._/-]+\))?!?: .+'
 
 if ! printf '%s' "$SUBJECT" | grep -Eq "$PATTERN"; then
-  echo "💡 Tip: commit subjects work best in Conventional Commits form:"
+  echo "Tip: commit subjects work best in Conventional Commits form:"
   echo "      <type>(optional-scope): <description>"
   echo "      e.g. feat(tray): poll /api/stats for live counts"
   echo "   (advisory only — your commit will still proceed)"

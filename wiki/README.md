@@ -1,8 +1,8 @@
 # wiki/
 
-The localized static wiki: a single-page product and architecture tour published at <https://hoangsonww.github.io/Claude-Code-Agent-Monitor/wiki/>. It is a self-contained, offline-capable PWA with no build step and no third-party CDN requests.
+The localized static wiki: a single-page product and architecture tour published at <https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/>. It is a self-contained, offline-capable PWA with no build step and no third-party CDN requests.
 
-It is separate from the task-oriented [GitHub Wiki](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/wiki) and from the exact technical contracts in [`docs/`](../docs/README.md).
+It is separate from the task-oriented [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) and from the exact technical contracts in [`docs/`](../docs/README.md).
 
 ## Files
 

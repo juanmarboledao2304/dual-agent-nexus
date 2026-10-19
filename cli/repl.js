@@ -81,7 +81,7 @@ function replBanner(up) {
   const dot = up ? c.green("●") : c.red("○");
   const where = up ? baseUrl().replace(/^https?:\/\//, "") : "offline";
   console.log(
-    `  ${c.bold("Claude Code Agent Monitor")} ${c.dim("· interactive shell")}` +
+    `  ${c.bold("DualAgent Nexus")} ${c.dim("· interactive shell")}` +
       (v ? c.dim(` · v${v}`) : "") +
       `   ${dot} ${c.dim(where)}`
   );
@@ -270,7 +270,7 @@ async function startRepl(program) {
       };
       child.on("close", done);
       child.on("error", (err) => {
-        console.error(c.red(`✖ ${err?.message || err}`));
+        console.error(c.red(`ERR ${err?.message || err}`));
         done();
       });
     });

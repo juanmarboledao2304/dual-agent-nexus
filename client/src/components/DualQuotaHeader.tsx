@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { api } from "../lib/api";
 import { eventBus } from "../lib/eventBus";
-import { THERMAL_LEGEND_ITEMS } from "../utils/agentTheme";
+import { THERMAL_LEGEND_ITEMS, resolveActivePoolNumber } from "../utils/agentTheme";
 import { resolveSpriteVariant } from "../utils/pixelSprites";
 import { PixelAvatar } from "./PixelAvatar";
 import type { CascadeStatus, DualQuotaTelemetry, WSMessage } from "../lib/types";
@@ -185,7 +185,10 @@ export function DualQuotaHeader() {
   const pool1Remaining = cascade?.pools?.claude?.remaining_seconds ?? 0;
   const pool2Exhausted = Boolean(cascade?.pools?.gemini?.exhausted);
   const pool2Remaining = cascade?.pools?.gemini?.remaining_seconds ?? 0;
-  const activePool = cascade?.active_pool ?? (pool1Exhausted ? (pool2Exhausted ? 3 : 2) : 1);
+  const activePool = resolveActivePoolNumber(
+    cascade?.active_pool,
+    pool1Exhausted ? (pool2Exhausted ? 3 : 2) : 1
+  );
   const tokensOffloaded = cascade?.tokens_offloaded ?? 0;
   const digestCount = cascade?.digest_count ?? 0;
 
@@ -193,220 +196,228 @@ export function DualQuotaHeader() {
     agy.session_cap > 0 ? Math.min(100, (agy.session_tokens / agy.session_cap) * 100) : 0;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-xl">
-      {/* Top Mission Control Action Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-slate-800/60">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-fuchsia-500/15 to-blue-500/20 border border-slate-700/80">
-            <PixelAvatar
-              variant="claude-opus"
-              state="idle"
-              size={16}
-              framed={false}
-              indicator={false}
-              showBadge={false}
-            />
-            <span className="text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-orange-300 via-fuchsia-200 to-cyan-300 bg-clip-text text-transparent">
-              DualAgent Nexus
-            </span>
-            <PixelAvatar
-              variant="gemini-argon"
-              state="idle"
-              size={16}
-              framed={false}
-              indicator={false}
-              showBadge={false}
-            />
-          </div>
-          <span className="hidden md:inline-block text-[11px] text-slate-400 truncate">
-            Unified Claude Code &amp; Google Antigravity (`agy-cascade`) Mission Control
-          </span>
-          {simMessage && (
-            <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded animate-pulse truncate max-w-xs">
-              {simMessage}
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowLegend((v) => !v)}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 transition-colors"
-            title="Toggle Chromatic Thermal Spectrum Legend"
-          >
-            <Palette className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Thermal Spectrum</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSimulateSwarm}
-            disabled={simulating}
-            data-testid="simulate-swarm-btn"
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all border ${
-              simulating
-                ? "bg-gradient-to-r from-red-600/30 via-amber-500/30 to-emerald-500/30 text-amber-200 border-amber-400/50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)] cursor-wait"
-                : "bg-gradient-to-r from-orange-600 via-fuchsia-600 to-purple-600 hover:from-orange-500 hover:via-fuchsia-500 hover:to-purple-500 text-white border-orange-400/40 shadow-[0_0_18px_-4px_rgba(249,115,22,0.55)]"
-            }`}
-          >
-            {simulating ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
-            ) : (
-              <Play className="w-3.5 h-3.5" />
-            )}
-            <span>{simulating ? "Simulation Running (25s)" : "Run Swarm Simulation"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setCollapsed((c) => !c)}
-            className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-colors"
-            title={collapsed ? "Expand Dual Quota Telemetry" : "Collapse Dual Quota Telemetry"}
-            aria-label="Toggle Quota Telemetry Wings"
-          >
-            {collapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
-          </button>
-        </div>
-      </div>
-
-      {/* 3-Pool agy-cascade Waterfall Status Bar */}
-      <div
-        data-testid="cascade-waterfall-bar"
-        className="flex flex-wrap items-center justify-between gap-2 px-4 py-1.5 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
-      >
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mr-1">
-            3-Pool Waterfall
-          </span>
-
-          {/* Pool 1: AGY-Claude (Opus 5.5 -> Sonnet 5.5 -> GPT-OSS 120B) */}
-          <div
-            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
-              pool1Exhausted
-                ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
-                : activePool === 1
-                  ? "bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/60 shadow-[0_0_12px_-3px_rgba(217,70,239,0.5)]"
-                  : "bg-slate-950/80 text-slate-400 border-slate-800"
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                pool1Exhausted
-                  ? "bg-red-500"
-                  : activePool === 1
-                    ? "bg-fuchsia-400 shadow-[0_0_8px_#d946ef]"
-                    : "bg-slate-600"
-              }`}
-            />
-            <span>Pool 1: AGY-Claude (Opus 5.5 / Sonnet 5.5 / GPT-OSS)</span>
-            {pool1Exhausted && (
-              <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
-                EXHAUSTED ({fmtCooldownMmSs(pool1Remaining)})
-              </span>
-            )}
-          </div>
-
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-
-          {/* Pool 2: AGY-Gemini (Argon -> 3.8 Flash) */}
-          <div
-            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
-              pool2Exhausted
-                ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
-                : activePool === 2
-                  ? "bg-purple-500/25 text-purple-200 border-purple-400/70 shadow-[0_0_14px_-3px_rgba(168,85,247,0.6)]"
-                  : "bg-slate-950/80 text-slate-400 border-slate-800"
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                pool2Exhausted
-                  ? "bg-red-500"
-                  : activePool === 2
-                    ? "bg-purple-400 shadow-[0_0_8px_#a855f7]"
-                    : "bg-slate-600"
-              }`}
-            />
-            <span>Pool 2: AGY-Gemini (Argon 4 / Pro / 3.8 Flash)</span>
-            {pool2Exhausted && (
-              <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
-                EXHAUSTED ({fmtCooldownMmSs(pool2Remaining)})
-              </span>
-            )}
-          </div>
-
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-
-          {/* Pool 3: Claude Direct */}
-          <div
-            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
-              activePool === 3
-                ? "bg-orange-500/25 text-orange-200 border-orange-400/70 shadow-[0_0_14px_-3px_rgba(249,115,22,0.5)]"
-                : "bg-slate-950/80 text-slate-400 border-slate-800"
-            }`}
-          >
-            <span
-              className={`w-2 h-2 rounded-full ${
-                activePool === 3 ? "bg-orange-400 shadow-[0_0_8px_#f97316]" : "bg-slate-600"
-              }`}
-            />
-            <span>Pool 3: Claude Direct (Conductor / Haiku Explore)</span>
-          </div>
-        </div>
-
-        {/* Right Side: Live Exhaustion Warning Badge + Tokens Offloaded via ===DIGEST=== */}
-        <div className="flex flex-wrap items-center gap-2">
-          {pool1Exhausted && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/40 font-mono text-[10px] animate-pulse">
-              <AlertTriangle className="w-3 h-3 text-amber-400" />
-              Pool 1 Exhausted (Exit 10) — Cascading to Pool {pool2Exhausted ? "3" : "2"}
-            </span>
-          )}
-          <span
-            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 font-mono text-[10px]"
-            title="Raw exploration tokens kept out of the Claude Code 5-hour quota window via ===DIGEST=== handoff"
-          >
-            <ShieldCheck className="w-3 h-3 text-emerald-400" />
-            Tokens Offloaded via ===DIGEST===: <strong>{fmtCompact(tokensOffloaded)} saved</strong>
-            {digestCount > 0 ? ` (${digestCount})` : ""}
-          </span>
-        </div>
-      </div>
-
-      {/* Collapsible Chromatic Thermal Spectrum Legend */}
-      {showLegend && (
-        <div className="px-5 py-3 bg-slate-900/95 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-2 animate-fade-in">
-          {THERMAL_LEGEND_ITEMS.map((item) => (
-            <div
-              key={`${item.provider}-${item.tier}`}
-              className="flex items-start gap-2 p-2 rounded-lg bg-slate-950/80 border border-slate-800/90"
-            >
+    <>
+      {/* Only the action bar, waterfall status, and legend stay pinned; the telemetry wings below
+        scroll with the page so they never cover content. */}
+      <header className="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-xl">
+        {/* Top Mission Control Action Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-slate-800/60">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-fuchsia-500/15 to-blue-500/20 border border-slate-700/80">
               <PixelAvatar
-                variant={resolveSpriteVariant(item.provider, item.tier)}
+                variant="claude-opus"
                 state="idle"
-                size={24}
+                size={16}
                 framed={false}
                 indicator={false}
                 showBadge={false}
               />
-              <div className="min-w-0">
-                <div className="flex items-center gap-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">
-                    {item.colorName}
-                  </span>
-                </div>
-                <p className="text-[10px] font-mono text-slate-400 truncate">{item.models}</p>
-                <p className="text-[10px] text-slate-500 truncate">{item.role}</p>
-              </div>
+              <span className="text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-orange-300 via-fuchsia-200 to-cyan-300 bg-clip-text text-transparent">
+                DualAgent Nexus
+              </span>
+              <PixelAvatar
+                variant="gemini-argon"
+                state="idle"
+                size={16}
+                framed={false}
+                indicator={false}
+                showBadge={false}
+              />
             </div>
-          ))}
-        </div>
-      )}
+            <span className="hidden md:inline-block text-[11px] text-slate-400 truncate">
+              Unified Claude Code &amp; Google Antigravity (agy-cascade) Mission Control
+            </span>
+            {simMessage && (
+              <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded animate-pulse truncate max-w-xs">
+                {simMessage}
+              </span>
+            )}
+          </div>
 
-      {/* Dual Telemetry Wings */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowLegend((v) => !v)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 transition-colors"
+              title="Toggle Chromatic Thermal Spectrum Legend"
+            >
+              <Palette className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Thermal Spectrum</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSimulateSwarm}
+              disabled={simulating}
+              data-testid="simulate-swarm-btn"
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all border ${
+                simulating
+                  ? "bg-gradient-to-r from-red-600/30 via-amber-500/30 to-emerald-500/30 text-amber-200 border-amber-400/50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)] cursor-wait"
+                  : "bg-gradient-to-r from-orange-600 via-fuchsia-600 to-purple-600 hover:from-orange-500 hover:via-fuchsia-500 hover:to-purple-500 text-white border-orange-400/40 shadow-[0_0_18px_-4px_rgba(249,115,22,0.55)]"
+              }`}
+            >
+              {simulating ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+              ) : (
+                <Play className="w-3.5 h-3.5" />
+              )}
+              <span>{simulating ? "Simulation Running (25s)" : "Run Swarm Simulation"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCollapsed((c) => !c)}
+              className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-colors"
+              title={collapsed ? "Expand Dual Quota Telemetry" : "Collapse Dual Quota Telemetry"}
+              aria-label="Toggle Quota Telemetry Wings"
+            >
+              {collapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+
+        {/* 3-Pool agy-cascade Waterfall Status Bar */}
+        <div
+          data-testid="cascade-waterfall-bar"
+          className="flex flex-wrap items-center justify-between gap-2 px-4 py-1.5 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
+        >
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mr-1">
+              3-Pool Waterfall
+            </span>
+
+            {/* Pool 1: AGY-Claude (Opus 5.5 -> Sonnet 5.5 -> GPT-OSS 120B) */}
+            <div
+              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+                pool1Exhausted
+                  ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
+                  : activePool === 1
+                    ? "bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/60 shadow-[0_0_12px_-3px_rgba(217,70,239,0.5)]"
+                    : "bg-slate-950/80 text-slate-400 border-slate-800"
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  pool1Exhausted
+                    ? "bg-red-500"
+                    : activePool === 1
+                      ? "bg-fuchsia-400 shadow-[0_0_8px_#d946ef]"
+                      : "bg-slate-600"
+                }`}
+              />
+              <span>Pool 1: AGY-Claude (Opus 5.5 / Sonnet 5.5 / GPT-OSS)</span>
+              {pool1Exhausted && (
+                <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
+                  EXHAUSTED ({fmtCooldownMmSs(pool1Remaining)})
+                </span>
+              )}
+            </div>
+
+            <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+
+            {/* Pool 2: AGY-Gemini (Argon -> 3.8 Flash) */}
+            <div
+              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+                pool2Exhausted
+                  ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
+                  : activePool === 2
+                    ? "bg-purple-500/25 text-purple-200 border-purple-400/70 shadow-[0_0_14px_-3px_rgba(168,85,247,0.6)]"
+                    : "bg-slate-950/80 text-slate-400 border-slate-800"
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  pool2Exhausted
+                    ? "bg-red-500"
+                    : activePool === 2
+                      ? "bg-purple-400 shadow-[0_0_8px_#a855f7]"
+                      : "bg-slate-600"
+                }`}
+              />
+              <span>Pool 2: AGY-Gemini (Argon 4 / Pro / 3.8 Flash)</span>
+              {pool2Exhausted && (
+                <span className="ml-1 px-1.5 py-0.2 rounded bg-red-950/90 text-red-200 border border-red-500/40 text-[10px] font-bold">
+                  EXHAUSTED ({fmtCooldownMmSs(pool2Remaining)})
+                </span>
+              )}
+            </div>
+
+            <ArrowRight className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+
+            {/* Pool 3: Claude Direct */}
+            <div
+              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
+                activePool === 3
+                  ? "bg-orange-500/25 text-orange-200 border-orange-400/70 shadow-[0_0_14px_-3px_rgba(249,115,22,0.5)]"
+                  : "bg-slate-950/80 text-slate-400 border-slate-800"
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  activePool === 3 ? "bg-orange-400 shadow-[0_0_8px_#f97316]" : "bg-slate-600"
+                }`}
+              />
+              <span>Pool 3: Claude Direct (Conductor / Haiku Explore)</span>
+            </div>
+          </div>
+
+          {/* Right Side: Live Exhaustion Warning Badge + Tokens Offloaded via ===DIGEST=== */}
+          <div className="flex flex-wrap items-center gap-2">
+            {pool1Exhausted && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/40 font-mono text-[10px] animate-pulse">
+                <AlertTriangle className="w-3 h-3 text-amber-400" />
+                Pool 1 Exhausted (Exit 10) — Cascading to Pool {pool2Exhausted ? "3" : "2"}
+              </span>
+            )}
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 font-mono text-[10px]"
+              title="Raw exploration tokens kept out of the Claude Code 5-hour quota window via ===DIGEST=== handoff"
+            >
+              <ShieldCheck className="w-3 h-3 text-emerald-400" />
+              Tokens Offloaded via ===DIGEST===:{" "}
+              <strong>{fmtCompact(tokensOffloaded)} saved</strong>
+              {digestCount > 0 ? ` (${digestCount})` : ""}
+            </span>
+          </div>
+        </div>
+
+        {/* Collapsible Chromatic Thermal Spectrum Legend */}
+        {showLegend && (
+          <div className="px-5 py-3 bg-slate-900/95 border-b border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-2 animate-fade-in">
+            {THERMAL_LEGEND_ITEMS.map((item) => (
+              <div
+                key={`${item.provider}-${item.tier}`}
+                className="flex items-start gap-2 p-2 rounded-lg bg-slate-950/80 border border-slate-800/90"
+              >
+                <PixelAvatar
+                  variant={resolveSpriteVariant(item.provider, item.tier)}
+                  state="idle"
+                  size={24}
+                  framed={false}
+                  indicator={false}
+                  showBadge={false}
+                />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">
+                      {item.colorName}
+                    </span>
+                  </div>
+                  <p className="text-[10px] font-mono text-slate-400 truncate">{item.models}</p>
+                  <p className="text-[10px] text-slate-500 truncate">{item.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </header>
+
+      {/* Dual Telemetry Wings (scroll with the page) */}
       {!collapsed && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 px-4 py-2">
+        <section
+          aria-label="Dual subscription telemetry"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-3 px-4 py-2 border-b border-slate-800/90 bg-slate-950/90"
+        >
           {/* LEFT WING: Warm Gradient — Claude Code Subscription */}
           <div className="relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-red-950/35 via-slate-900/90 to-amber-950/25 p-2.5 shadow-[0_0_25px_-8px_rgba(249,115,22,0.3)]">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
@@ -540,8 +551,8 @@ export function DualQuotaHeader() {
               </span>
             </div>
           </div>
-        </div>
+        </section>
       )}
-    </header>
+    </>
   );
 }

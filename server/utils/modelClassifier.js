@@ -3,6 +3,9 @@
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
+/** Shortest window a burn rate is averaged over (15 minutes), so short bursts are not projected. */
+const BURN_RATE_MIN_WINDOW_HOURS = 0.25;
+
 const CONTEXT_WINDOWS = {
   claude: {
     heavy: 200000,
@@ -137,6 +140,14 @@ function normalizeProvider(provider, model = "", source = "") {
 
   if (p === "agy-claude" || s.includes("agy-claude") || s.includes("claude-pool")) {
     return "agy-claude";
+  }
+
+  // An explicit Claude provider is the Anthropic direct subscription (Pool 3), whatever the
+  // model: Claude Code itself runs Opus/Sonnet 5.5 directly, and Claude Code hooks always
+  // report provider "claude". Model-based Pool 1 inference below only applies when the
+  // provider is missing or is Antigravity.
+  if (p === "claude" || p === "claude-direct") {
+    return "claude";
   }
 
   // Models specific to Pool 1 (Antigravity's Claude / GPT-OSS pool)
@@ -630,12 +641,14 @@ function computeContextMetrics({
     Math.round((totalContextTokens / maxContext) * 1000) / 10
   );
 
-  let elapsedHours = 1 / 60; // minimum 1 minute denominator to avoid spike on spawn
+  // Rate over at least BURN_RATE_MIN_WINDOW_HOURS: projecting a few seconds of activity to a full
+  // hour (the old 1-minute floor) turned a 25-second burst into tens of millions of tokens/hr.
+  let elapsedHours = BURN_RATE_MIN_WINDOW_HOURS;
   if (startedAt) {
     const startMs = new Date(startedAt).getTime();
     if (!Number.isNaN(startMs)) {
       const diffHours = (Date.now() - startMs) / 3600000;
-      if (diffHours > 1 / 60) {
+      if (diffHours > BURN_RATE_MIN_WINDOW_HOURS) {
         elapsedHours = diffHours;
       }
     }

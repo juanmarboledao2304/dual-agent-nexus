@@ -1,6 +1,6 @@
 {
   "name": "claude-code-agent-monitor-plugins",
-  "interface": { "displayName": "Claude Code Agent Monitor" },
+  "interface": { "displayName": "DualAgent Nexus" },
   "plugins": [
     {
       "name": "ccam-analytics",

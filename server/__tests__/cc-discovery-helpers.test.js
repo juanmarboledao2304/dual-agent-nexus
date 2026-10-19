@@ -13,6 +13,7 @@
 
 const { describe, it } = require("node:test");
 const assert = require("node:assert/strict");
+const { SKIP_WITHOUT_SYMLINKS } = require("./helpers/symlink-support");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
@@ -221,27 +222,31 @@ describe("isUnder", () => {
 });
 
 describe("readSkills (symlinked skill directories)", () => {
-  it("includes a skill directory that is a symlink to a real directory", () => {
-    // Dirent.isDirectory() returns false for a symlink even when it points
-    // to a directory (Node fs quirk) — readSkillsAt must still follow it.
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-symlink-"));
-    const realDir = path.join(tmp, "real-skills", "second-brain");
-    fs.mkdirSync(realDir, { recursive: true });
-    fs.writeFileSync(
-      path.join(realDir, "SKILL.md"),
-      "---\nname: second-brain\n---\n\nBody text.\n"
-    );
-    const projectRoot = path.join(tmp, "project");
-    const skillsDir = path.join(projectRoot, ".claude", "skills");
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.symlinkSync(realDir, path.join(skillsDir, "second-brain"), "dir");
+  it(
+    "includes a skill directory that is a symlink to a real directory",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    () => {
+      // Dirent.isDirectory() returns false for a symlink even when it points
+      // to a directory (Node fs quirk) — readSkillsAt must still follow it.
+      const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-symlink-"));
+      const realDir = path.join(tmp, "real-skills", "second-brain");
+      fs.mkdirSync(realDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(realDir, "SKILL.md"),
+        "---\nname: second-brain\n---\n\nBody text.\n"
+      );
+      const projectRoot = path.join(tmp, "project");
+      const skillsDir = path.join(projectRoot, ".claude", "skills");
+      fs.mkdirSync(skillsDir, { recursive: true });
+      fs.symlinkSync(realDir, path.join(skillsDir, "second-brain"), "dir");
 
-    const items = readSkills({ scope: "project", cwd: projectRoot });
-    const names = items.map((s) => s.name);
-    assert.ok(names.includes("second-brain"), `expected symlinked skill in ${names}`);
-  });
+      const items = readSkills({ scope: "project", cwd: projectRoot });
+      const names = items.map((s) => s.name);
+      assert.ok(names.includes("second-brain"), `expected symlinked skill in ${names}`);
+    }
+  );
 
-  it("skips a broken symlink without throwing", () => {
+  it("skips a broken symlink without throwing", { skip: SKIP_WITHOUT_SYMLINKS }, () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-broken-symlink-"));
     const projectRoot = path.join(tmp, "project");
     const skillsDir = path.join(projectRoot, ".claude", "skills");
@@ -257,25 +262,29 @@ describe("readSkills (symlinked skill directories)", () => {
 });
 
 describe("readAgents (symlinked markdown files)", () => {
-  it("includes an agent .md that is a symlink to a real file", () => {
-    // Same Dirent quirk as symlinked skill directories, but for files:
-    // ent.isFile() is false for a symlink pointing at a regular file, so a
-    // version-controlled agent linked into .claude/agents/ was invisible.
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-file-symlink-"));
-    const realFile = path.join(tmp, "repo", "reviewer.md");
-    fs.mkdirSync(path.dirname(realFile), { recursive: true });
-    fs.writeFileSync(realFile, "---\nname: reviewer\ndescription: Reviews diffs\n---\n\nBody.\n");
-    const projectRoot = path.join(tmp, "project");
-    const agentsDir = path.join(projectRoot, ".claude", "agents");
-    fs.mkdirSync(agentsDir, { recursive: true });
-    fs.symlinkSync(realFile, path.join(agentsDir, "reviewer.md"), "file");
+  it(
+    "includes an agent .md that is a symlink to a real file",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    () => {
+      // Same Dirent quirk as symlinked skill directories, but for files:
+      // ent.isFile() is false for a symlink pointing at a regular file, so a
+      // version-controlled agent linked into .claude/agents/ was invisible.
+      const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-file-symlink-"));
+      const realFile = path.join(tmp, "repo", "reviewer.md");
+      fs.mkdirSync(path.dirname(realFile), { recursive: true });
+      fs.writeFileSync(realFile, "---\nname: reviewer\ndescription: Reviews diffs\n---\n\nBody.\n");
+      const projectRoot = path.join(tmp, "project");
+      const agentsDir = path.join(projectRoot, ".claude", "agents");
+      fs.mkdirSync(agentsDir, { recursive: true });
+      fs.symlinkSync(realFile, path.join(agentsDir, "reviewer.md"), "file");
 
-    const items = readAgents({ scope: "project", cwd: projectRoot });
-    const names = items.map((a) => a.name);
-    assert.ok(names.includes("reviewer"), `expected symlinked agent in ${names}`);
-  });
+      const items = readAgents({ scope: "project", cwd: projectRoot });
+      const names = items.map((a) => a.name);
+      assert.ok(names.includes("reviewer"), `expected symlinked agent in ${names}`);
+    }
+  );
 
-  it("skips a broken .md symlink without throwing", () => {
+  it("skips a broken .md symlink without throwing", { skip: SKIP_WITHOUT_SYMLINKS }, () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-discovery-file-broken-"));
     const projectRoot = path.join(tmp, "project");
     const agentsDir = path.join(projectRoot, ".claude", "agents");
@@ -298,18 +307,22 @@ describe("isFileLike", () => {
     assert.equal(isFileLike(ent, path.join(tmp, ent.name)), true);
   });
 
-  it("true for a symlink resolving to a file, false for one resolving to a directory", () => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-isfilelike-sym-"));
-    fs.writeFileSync(path.join(tmp, "real.md"), "x");
-    fs.mkdirSync(path.join(tmp, "realdir"));
-    fs.symlinkSync(path.join(tmp, "real.md"), path.join(tmp, "file-link.md"), "file");
-    fs.symlinkSync(path.join(tmp, "realdir"), path.join(tmp, "dir-link"), "dir");
-    const ents = Object.fromEntries(
-      fs.readdirSync(tmp, { withFileTypes: true }).map((e) => [e.name, e])
-    );
-    assert.equal(isFileLike(ents["file-link.md"], path.join(tmp, "file-link.md")), true);
-    assert.equal(isFileLike(ents["dir-link"], path.join(tmp, "dir-link")), false);
-  });
+  it(
+    "true for a symlink resolving to a file, false for one resolving to a directory",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    () => {
+      const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cc-isfilelike-sym-"));
+      fs.writeFileSync(path.join(tmp, "real.md"), "x");
+      fs.mkdirSync(path.join(tmp, "realdir"));
+      fs.symlinkSync(path.join(tmp, "real.md"), path.join(tmp, "file-link.md"), "file");
+      fs.symlinkSync(path.join(tmp, "realdir"), path.join(tmp, "dir-link"), "dir");
+      const ents = Object.fromEntries(
+        fs.readdirSync(tmp, { withFileTypes: true }).map((e) => [e.name, e])
+      );
+      assert.equal(isFileLike(ents["file-link.md"], path.join(tmp, "file-link.md")), true);
+      assert.equal(isFileLike(ents["dir-link"], path.join(tmp, "dir-link")), false);
+    }
+  );
 });
 
 describe("module exports", () => {

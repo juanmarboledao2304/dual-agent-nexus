@@ -14,7 +14,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/desktop/src/tray.ts`
+ * **Path:** `desktop/src/tray.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -195,16 +195,16 @@ export function createTray(actions: TrayActions): Tray {
   // user can see the same numbers in context.
   const buildMenu = (): Menu => {
     const port = actions.serverPort();
-    const portLabel = port ? `🟢  Listening on :${port}` : "🔴  Server not running";
+    const portLabel = port ? `Listening on :${port}` : "Server not running";
     const snap = actions.getSnapshot();
     /** Open the dashboard window. */
     const open = (): void => actions.showDashboard();
     const snapshotItems: Electron.MenuItemConstructorOptions[] = snap
       ? [
           { type: "separator" },
-          { label: `📊   ${plural(snap.activeSessions, "active session")}`, click: open },
-          { label: `🤖   ${plural(snap.workingAgents, "working agent")}`, click: open },
-          { label: `📥   ${plural(snap.eventsToday, "event")} today`, click: open },
+          { label: `${plural(snap.activeSessions, "active session")}`, click: open },
+          { label: `${plural(snap.workingAgents, "working agent")}`, click: open },
+          { label: `${plural(snap.eventsToday, "event")} today`, click: open },
         ]
       : [{ type: "separator" }, { label: "Snapshot unavailable", enabled: false }];
 
@@ -228,7 +228,7 @@ export function createTray(actions: TrayActions): Tray {
       { type: "separator" },
       { label: `Version ${app.getVersion()}`, enabled: false },
       {
-        label: "Quit Claude Code Monitor",
+        label: "Quit DualAgent Nexus",
         accelerator: "CmdOrCtrl+Q",
         click: () => actions.requestQuit(),
       },

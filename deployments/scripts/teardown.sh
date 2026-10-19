@@ -25,9 +25,9 @@ NC='\033[0m'
 
 log()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $*"; }
 info()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${BLUE}ℹ${NC}  $*"; }
-ok()    { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}✔${NC}  $*"; }
-warn()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}⚠${NC}  $*" >&2; }
-err()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}✖${NC}  $*" >&2; }
+ok()    { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}OK${NC}  $*"; }
+warn()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}WARN${NC}  $*" >&2; }
+err()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}ERR${NC}  $*" >&2; }
 fatal() { err "$@"; exit 1; }
 
 # ── Defaults ────────────────────────────────────────────────────────────────
@@ -103,7 +103,7 @@ confirm_teardown() {
 
   echo ""
   echo -e "  ${RED}${BOLD}╔══════════════════════════════════════════╗${NC}"
-  echo -e "  ${RED}${BOLD}║         ⚠  TEARDOWN WARNING  ⚠          ║${NC}"
+  echo -e "  ${RED}${BOLD}║         WARN  TEARDOWN WARNING  WARN          ║${NC}"
   echo -e "  ${RED}${BOLD}╚══════════════════════════════════════════╝${NC}"
   echo ""
   echo -e "  This will ${RED}${BOLD}DESTROY${NC} the following resources:"

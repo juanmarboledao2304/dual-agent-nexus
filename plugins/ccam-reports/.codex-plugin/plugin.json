@@ -1,14 +1,14 @@
 {
   "name": "ccam-reports",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Generate stakeholder-ready CCAM reports from local session, cost, reliability, and workflow data with explicit scope, evidence, and export-friendly Markdown.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
     "url": "https://github.com/hoangsonww"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["reports", "executive-summary", "cost", "reliability", "workflows", "ccam"],
   "skills": "./skills/",
@@ -19,7 +19,7 @@
     "developerName": "Son Nguyen",
     "category": "Productivity",
     "capabilities": ["Read"],
-    "websiteURL": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+    "websiteURL": "https://github.com/juanmarboledao2304/dual-agent-nexus",
     "defaultPrompt": [
       "Use CCAM Reports to inspect the local CCAM dashboard.",
       "Use CCAM Reports to analyze recent agent activity."

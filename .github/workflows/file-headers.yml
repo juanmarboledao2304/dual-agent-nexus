@@ -3,7 +3,7 @@
 # Python, shell, and CSS comment styles — see .claude/skills/file-headers/.
 #
 # @author Son Nguyen <hoangson091104@gmail.com>
-name: 📋 File Headers
+name: File Headers
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   file-headers:
-    name: "📋 Copyright / authorship headers"
+    name: "Copyright / authorship headers"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
         if: always()
         run: |
           {
-            echo "## 📋 File header check"
+            echo "## File header check"
             echo
             echo "**Base:** \`${{ github.event.pull_request.base.sha }}\`"
             echo "**Head:** \`${{ github.event.pull_request.head.sha }}\`"

@@ -138,7 +138,7 @@ function createApp() {
     "/api/docs",
     swaggerUi.serve,
     swaggerUi.setup(openApiSpec, {
-      customSiteTitle: "Agent Dashboard API Docs",
+      customSiteTitle: "DualAgent Nexus API Docs",
       customfavIcon: "/favicon.svg",
     })
   );
@@ -158,7 +158,7 @@ function createApp() {
         renderRedocHtml(
           "/api/openapi.json",
           "/api/redoc/redoc.standalone.js",
-          "Agent Dashboard API Reference",
+          "DualAgent Nexus API Reference",
           "/favicon.svg"
         )
       );
@@ -250,7 +250,7 @@ function startServer(app, port) {
       }
       const mode = isProduction ? "production" : "development";
       const shown = boundLoopback ? "localhost" : host;
-      console.log(`Agent Dashboard server running on http://${shown}:${port} (${mode})`);
+      console.log(`DualAgent Nexus server running on http://${shown}:${port} (${mode})`);
       if (!boundLoopback) {
         console.warn(
           `WARNING: Dashboard bound to ${host} — reachable from the network. ` +
@@ -1406,7 +1406,7 @@ if (require.main === module) {
   probeDashboardHealth(PORT).then((alreadyRunning) => {
     if (alreadyRunning && !isWatchMode) {
       console.log(
-        `Agent Dashboard is already running on http://localhost:${PORT} — not starting a ` +
+        `DualAgent Nexus is already running on http://localhost:${PORT} — not starting a ` +
           `second instance. Open that URL, or stop the other dashboard first.`
       );
       process.exit(0);

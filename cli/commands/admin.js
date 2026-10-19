@@ -48,16 +48,16 @@ function jsonOrTree(data, pretty = renderTree) {
 
 // ── doctor ──────────────────────────────────────────────────────────────────
 
-/** Render doctor checks: `✔ name detail` lines (or a JSON report). */
+/** Render doctor checks: `OK name detail` lines (or a JSON report). */
 function renderChecks(title, checks) {
   const failed = checks.some((k) => k.status === "fail");
   if (failed) process.exitCode = 1;
   if (isJson()) return printJson({ ok: !failed, url: baseUrl(), checks });
   heading(title.name, title.sub);
   const mark = {
-    ok: c.green("✔"),
+    ok: c.green("OK"),
     warn: c.yellow("!"),
-    fail: c.red("✖"),
+    fail: c.red("ERR"),
     info: c.dim("·"),
     down: c.red("○"),
   };
@@ -269,7 +269,7 @@ function writeExport(target, data) {
       bytes: size,
       offline: Boolean(data.exported_offline),
     });
-  console.log(`${c.green("✔")} Exported to ${c.bold(file)} (${(size / 1048576).toFixed(1)} MB)`);
+  console.log(`${c.green("OK")} Exported to ${c.bold(file)} (${(size / 1048576).toFixed(1)} MB)`);
 }
 
 function offlineExport({ args }) {
@@ -300,7 +300,7 @@ async function cmdCleanup({ opts }) {
   if (opts.days != null) body.purge_days = opts.days;
   const r = await post("/api/settings/cleanup", body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Cleanup done: ${JSON.stringify(r)}`);
+  console.log(`${c.green("OK")} Cleanup done: ${JSON.stringify(r)}`);
 }
 
 // ── snapshots (issue #358) ──────────────────────────────────────────────────
@@ -335,7 +335,7 @@ async function cmdSnapshotCompress() {
   const r = await post("/api/settings/snapshots/compress", undefined, { timeoutMs: 600_000 });
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Compressed ${r.compressed} snapshot(s) ` +
+    `${c.green("OK")} Compressed ${r.compressed} snapshot(s) ` +
       `(${fmtBytes(r.bytes_before)} → ${fmtBytes(r.bytes_after)})` +
       (r.failed ? c.yellow(` · ${r.failed} failed`) : "") +
       (r.skipped_roots?.length
@@ -402,7 +402,7 @@ async function cmdSnapshotPrune({ opts }) {
       console.log(c.dim("  Apply with: --apply --confirm PRUNE_SNAPSHOTS"));
   } else {
     console.log(
-      `${c.green("✔")} Pruned ${r.candidate_sessions} session(s): ${r.removed_files} file(s), ` +
+      `${c.green("OK")} Pruned ${r.candidate_sessions} session(s): ${r.removed_files} file(s), ` +
         fmtBytes(r.removed_bytes) +
         (r.failed_files ? c.yellow(` · ${r.failed_files} locked file(s) left for later`) : "")
     );
@@ -426,7 +426,7 @@ async function cmdClearData({ opts }) {
   }
   const r = await post("/api/settings/clear-data");
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} All data cleared (schema preserved)`);
+  console.log(`${c.green("OK")} All data cleared (schema preserved)`);
 }
 
 // ── hooks ───────────────────────────────────────────────────────────────────
@@ -527,7 +527,7 @@ function cmdMcp({ args }) {
     const child = spawn(process.execPath, argv, { stdio: "inherit", env: process.env });
     child.on("error", (error) => {
       process.exitCode = 1;
-      console.error(c.red(`✖ Failed to start MCP server: ${error.message}`));
+      console.error(c.red(`ERR Failed to start MCP server: ${error.message}`));
       console.error(c.dim("  Run npm run mcp:install && npm run mcp:build, then retry."));
       resolve();
     });
@@ -548,14 +548,14 @@ function renderUpdate(s) {
   if (s.fetch_error)
     return console.log(`${c.yellow("!")}  ${s.message} ${c.dim(`(${s.fetch_error})`)}`);
   if (s.update_available) {
-    console.log(`${c.yellow("⬆")}  ${s.message}`);
+    console.log(`${c.yellow("UPDATE")}  ${s.message}`);
     if (s.situation_note) console.log(c.dim(`   ${s.situation_note}`));
     if (s.manual_command) {
       console.log(`\n  ${c.bold("To update, run:")}`);
       console.log(`  ${c.cyan(s.manual_command)}`);
     }
   } else {
-    console.log(`${c.green("✔")}  ${s.message || "Your checkout is up to date."}`);
+    console.log(`${c.green("OK")}  ${s.message || "Your checkout is up to date."}`);
   }
 }
 
@@ -653,7 +653,7 @@ function register(program) {
         async () => {
           const r = await post("/api/settings/reinstall-hooks");
           if (isJson()) return printJson(r);
-          console.log(`${c.green("✔")} Claude Code hooks reinstalled`);
+          console.log(`${c.green("OK")} Claude Code hooks reinstalled`);
         },
         { serverOnly: "hook installation is performed by the server" }
       )
@@ -998,7 +998,9 @@ function register(program) {
           });
           const r = await put(`/api/settings/${provider}-home`, { path: abs });
           if (isJson()) return printJson(r);
-          console.log(`${c.green("✔")} ${provider} home → ${c.bold(r[`${provider}_home`] || abs)}`);
+          console.log(
+            `${c.green("OK")} ${provider} home → ${c.bold(r[`${provider}_home`] || abs)}`
+          );
         },
         { serverOnly: HOME_ONLY }
       )
@@ -1033,7 +1035,7 @@ function register(program) {
           const r = await post("/api/push/send", { title: opts.title, body: opts.body });
           if (isJson()) return printJson(r);
           console.log(
-            `${c.green("✔")} Sent — ${r.pushed ?? 0} push subscriber(s), native ${r.native ? c.green("yes") : c.dim("no")}${r.failed ? c.red(`, ${r.failed} failed`) : ""}`
+            `${c.green("OK")} Sent — ${r.pushed ?? 0} push subscriber(s), native ${r.native ? c.green("yes") : c.dim("no")}${r.failed ? c.red(`, ${r.failed} failed`) : ""}`
           );
         },
         { serverOnly: PUSH_ONLY }

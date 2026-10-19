@@ -21,7 +21,7 @@ The two coexist — install whichever fits your workflow.
 
 **Option A — download a pre-built installer** (recommended):
 
-1. Open [**Releases → latest**](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest) and grab the asset for your platform. Every `master` commit that bumps the version in `package.json` cuts a new `vX.Y.Z` release automatically (CI publishes it), so this link always lands on the current build — no GitHub sign-in required.
+1. Open [**Releases → latest**](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest) and grab the asset for your platform. Every `master` commit that bumps the version in `package.json` cuts a new `vX.Y.Z` release automatically (CI publishes it), so this link always lands on the current build — no GitHub sign-in required.
 
    | Platform | Asset | Notes |
    |---|---|---|
@@ -32,7 +32,7 @@ The two coexist — install whichever fits your workflow.
 
 2. Want a **per-commit build** instead of waiting for a release? Every green CI run uploads a workflow artifact (sign-in required, 14-day retention) — `ClaudeCodeMonitor-dmg` from the ` macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the ` Windows Desktop (EXE)` job:
    ```bash
-   gh run download <run-id> -R hoangsonww/Claude-Code-Agent-Monitor -n ClaudeCodeMonitor-dmg   # or ClaudeCodeMonitor-win
+   gh run download <run-id> -R juanmarboledao2304/dual-agent-nexus -n ClaudeCodeMonitor-dmg   # or ClaudeCodeMonitor-win
    ```
 3. **macOS:** double-click the DMG → drag `Claude Code Monitor.app` into your `Applications` folder. Open it; macOS may show a Gatekeeper warning the first time — see [Gatekeeper & SmartScreen](#gatekeeper--smartscreen-first-launch) below.
 4. **Windows:** run `ClaudeCodeMonitor-Setup-<ver>-x64.exe` (per-user, no admin) and follow the wizard, or just run the `*-portable.exe` to launch without installing. Windows **SmartScreen** may show *"Windows protected your PC"* the first time — see [Gatekeeper & SmartScreen](#gatekeeper--smartscreen-first-launch) below.

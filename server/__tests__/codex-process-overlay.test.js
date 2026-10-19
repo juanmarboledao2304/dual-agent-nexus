@@ -133,7 +133,8 @@ describe("interactive Codex command classification", () => {
     assert.deepEqual(processes, [
       {
         pid: 60182,
-        cwd: "/workspace/launch",
+        // processInfosFromLsof resolves cwd for the host OS (C:\workspace\launch on Windows).
+        cwd: path.resolve("/workspace/launch"),
         sessionId: resumedId,
       },
     ]);

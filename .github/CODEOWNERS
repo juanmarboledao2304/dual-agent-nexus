@@ -1,39 +1,39 @@
-# CODEOWNERS — Claude Code Agent Monitor
+# CODEOWNERS — DualAgent Nexus
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default owner for everything in the repo
-*                       @hoangsonww
+*                       @juanmarboledao2304
 
 # Backend — API, hooks, SQLite, WebSocket
-/server/                @hoangsonww
+/server/                @juanmarboledao2304
 
 # Frontend — React + Vite UI
-/client/                @hoangsonww
+/client/                @juanmarboledao2304
 
 # MCP server integration
-/mcp/                   @hoangsonww
+/mcp/                   @juanmarboledao2304
 
 # Hook installer, import, seed, cleanup utilities
-/scripts/               @hoangsonww
+/scripts/               @juanmarboledao2304
 
 # VS Code extension
-/vscode-extension/      @hoangsonww
+/vscode-extension/      @juanmarboledao2304
 
 # Statusline plugin
-/statusline/            @hoangsonww
+/statusline/            @juanmarboledao2304
 
 # Claude Code plugins
-/plugins/               @hoangsonww
+/plugins/               @juanmarboledao2304
 
 # Deployment configs (Docker, k8s, etc.)
-/deployments/           @hoangsonww
-/Dockerfile             @hoangsonww
-/docker-compose.yml     @hoangsonww
+/deployments/           @juanmarboledao2304
+/Dockerfile             @juanmarboledao2304
+/docker-compose.yml     @juanmarboledao2304
 
 # CI/CD workflows and GitHub config
-/.github/               @hoangsonww
+/.github/               @juanmarboledao2304
 
 # Documentation
-/docs/                  @hoangsonww
-/wiki/                  @hoangsonww
-*.md                    @hoangsonww
+/docs/                  @juanmarboledao2304
+/wiki/                  @juanmarboledao2304
+*.md                    @juanmarboledao2304

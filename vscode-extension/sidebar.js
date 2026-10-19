@@ -510,7 +510,7 @@ class DashboardWebviewProvider {
     </svg>
   </div>
   <div>
-    <div class="hero-title">Claude Code Monitor</div>
+    <div class="hero-title">DualAgent Nexus</div>
     <div class="hero-sub" id="hero-sub">Connecting…</div>
   </div>
   <div class="pill off" id="pill"><span class="dot"></span><span id="pill-text">Offline</span></div>

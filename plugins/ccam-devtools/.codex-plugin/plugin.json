@@ -1,14 +1,14 @@
 {
   "name": "ccam-devtools",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Developer tools for Claude Code Agent Monitor — session debugging, hook diagnostics, data export, and system health checks for maintaining a healthy monitoring setup.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
     "url": "https://github.com/hoangsonww"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["devtools", "debugging", "diagnostics", "export", "health-check", "claude-code"],
   "skills": "./skills/",
@@ -19,7 +19,7 @@
     "developerName": "Son Nguyen",
     "category": "Developer Tools",
     "capabilities": ["Read"],
-    "websiteURL": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+    "websiteURL": "https://github.com/juanmarboledao2304/dual-agent-nexus",
     "defaultPrompt": [
       "Use CCAM Devtools to inspect the local CCAM dashboard.",
       "Use CCAM Devtools to analyze recent agent activity."

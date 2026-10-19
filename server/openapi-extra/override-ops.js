@@ -17,13 +17,13 @@
  *   POST       /api/webhooks/{id}/test
  *   GET        /api/webhooks/{id}/deliveries
  *   GET        /api/settings/info
- *   POST       /api/settings/clear-data          ⚠ DESTRUCTIVE
+ *   POST       /api/settings/clear-data          WARN DESTRUCTIVE
  *   POST       /api/settings/reimport
  *   POST       /api/settings/reinstall-hooks
- *   POST       /api/settings/reset-pricing       ⚠ DESTRUCTIVE
+ *   POST       /api/settings/reset-pricing       WARN DESTRUCTIVE
  *   GET        /api/settings/export
  *   POST       /api/settings/import
- *   POST       /api/settings/cleanup             ⚠ DESTRUCTIVE (with purge_days)
+ *   POST       /api/settings/cleanup             WARN DESTRUCTIVE (with purge_days)
  *   GET        /api/import/guide
  *   POST       /api/import/rescan
  *   POST       /api/import/scan-path
@@ -97,7 +97,7 @@ const GENERIC_WEBHOOK_TARGET_EXAMPLE = {
 
 const SETTINGS_INFO_EXAMPLE = {
   db: {
-    path: "/Users/son/WebstormProjects/Claude-Code-Agent-Monitor/server/data/agent-monitor.db",
+    path: "server/data/agent-monitor.db",
     size: 48922624,
     counts: {
       sessions: 412,
@@ -408,7 +408,7 @@ const IMPORT_UPLOAD_EXAMPLE = {
 
 const UPDATE_STATUS_AVAILABLE_EXAMPLE = {
   git_repo: true,
-  repo_root: "/Users/son/WebstormProjects/Claude-Code-Agent-Monitor",
+  repo_root: "/Users/you/projects/dual-agent-nexus",
   update_available: true,
   commits_behind: 4,
   remote_ref: "origin/master",
@@ -420,7 +420,7 @@ const UPDATE_STATUS_AVAILABLE_EXAMPLE = {
 
 const UPDATE_STATUS_UP_TO_DATE_EXAMPLE = {
   git_repo: true,
-  repo_root: "/Users/son/WebstormProjects/Claude-Code-Agent-Monitor",
+  repo_root: "/Users/you/projects/dual-agent-nexus",
   update_available: false,
   commits_behind: 0,
   remote_ref: "origin/master",
@@ -1045,7 +1045,7 @@ const paths = {
       tags: ["Settings"],
       summary: "Delete all dashboard data",
       description:
-        "⚠ DESTRUCTIVE — IRREVERSIBLE. Deletes ALL sessions, agents, events, token_usage rows, the fired-alert feed (alert_events), and the webhook delivery log. There is no confirmation step and no undo — export first via GET /api/settings/export if you need a backup. User CONFIGURATION survives: alert *rules*, webhook *targets*, model_pricing, and gpt_model_pricing are preserved (they're settings, not captured data). The response echoes the row counts that existed BEFORE the wipe so the UI can report what was removed.",
+        "WARN DESTRUCTIVE — IRREVERSIBLE. Deletes ALL sessions, agents, events, token_usage rows, the fired-alert feed (alert_events), and the webhook delivery log. There is no confirmation step and no undo — export first via GET /api/settings/export if you need a backup. User CONFIGURATION survives: alert *rules*, webhook *targets*, model_pricing, and gpt_model_pricing are preserved (they're settings, not captured data). The response echoes the row counts that existed BEFORE the wipe so the UI can report what was removed.",
       operationId: "clearData",
       responses: {
         200: {
@@ -1137,7 +1137,7 @@ const paths = {
       tags: ["Settings"],
       summary: "Reset pricing defaults",
       description:
-        "⚠ DESTRUCTIVE to pricing customizations. With `provider: claude` or `provider: codex`, deletes and re-seeds only that provider's pricing table so the other provider's custom rules remain untouched. Omitting the body preserves the legacy CLI/MCP behavior and resets both tables. Custom rates or model patterns in the selected scope are permanently lost — there is no undo. Captured session/token data is untouched. The response returns both current tables and identifies the reset scope.",
+        "WARN DESTRUCTIVE to pricing customizations. With `provider: claude` or `provider: codex`, deletes and re-seeds only that provider's pricing table so the other provider's custom rules remain untouched. Omitting the body preserves the legacy CLI/MCP behavior and resets both tables. Custom rates or model patterns in the selected scope are permanently lost — there is no undo. Captured session/token data is untouched. The response returns both current tables and identifies the reset scope.",
       operationId: "resetPricing",
       requestBody: {
         required: false,
@@ -1271,7 +1271,7 @@ const paths = {
       tags: ["Settings"],
       summary: "Abandon stale sessions and optionally purge old history",
       description:
-        "Two-phase maintenance. Phase 1 (`abandon_hours`, non-destructive): marks any still-`active` session with no events newer than that many hours as `abandoned`, and completes its lingering agents — a tidy-up of crashed/orphaned sessions. Phase 2 (`purge_days`) is ⚠ DESTRUCTIVE and IRREVERSIBLE: it permanently DELETES completed/error/abandoned sessions (and their events, agents, and token_usage) whose `started_at` is older than that many days. Active sessions are NEVER purged. Purged sessions' transcript snapshots (all three provider snapshot dirs) are deleted with them and reported as `purged_snapshot_files` / `purged_snapshot_bytes`. Both fields are optional and independent — send only `abandon_hours` for a safe tidy-up, or include `purge_days` to also reclaim disk. Export first if the purged history matters. The response reports counts for each phase.",
+        "Two-phase maintenance. Phase 1 (`abandon_hours`, non-destructive): marks any still-`active` session with no events newer than that many hours as `abandoned`, and completes its lingering agents — a tidy-up of crashed/orphaned sessions. Phase 2 (`purge_days`) is WARN DESTRUCTIVE and IRREVERSIBLE: it permanently DELETES completed/error/abandoned sessions (and their events, agents, and token_usage) whose `started_at` is older than that many days. Active sessions are NEVER purged. Purged sessions' transcript snapshots (all three provider snapshot dirs) are deleted with them and reported as `purged_snapshot_files` / `purged_snapshot_bytes`. Both fields are optional and independent — send only `abandon_hours` for a safe tidy-up, or include `purge_days` to also reclaim disk. Export first if the purged history matters. The response reports counts for each phase.",
       operationId: "cleanupData",
       requestBody: {
         required: true,

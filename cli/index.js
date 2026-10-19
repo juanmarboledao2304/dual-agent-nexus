@@ -128,7 +128,7 @@ function buildProgram() {
     });
   program.addHelpText(
     "before",
-    `${c.cyan("▍")}${c.bold("ccam")} — Claude Code Agent Monitor CLI${pkgVersion() ? c.dim(` v${pkgVersion()}`) : ""}\n`
+    `${c.cyan("▍")}${c.bold("ccam")} — DualAgent Nexus CLI${pkgVersion() ? c.dim(` v${pkgVersion()}`) : ""}\n`
   );
   program.addHelpText("after", HELP_FOOTER);
 

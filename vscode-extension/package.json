@@ -1,6 +1,6 @@
 {
   "name": "claude-code-agent-monitor",
-  "displayName": "Claude Code Agent Monitor",
+  "displayName": "DualAgent Nexus",
   "description": "Professional integrated dashboard for monitoring Claude Code AI agent activity, token usage, and costs directly in VS Code.",
   "version": "1.2.4",
   "publisher": "hoangsonw",
@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor"
+    "url": "https://github.com/juanmarboledao2304/dual-agent-nexus"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/vscode-extension/README.md",
   "contributes": {
     "commands": [
       {
         "command": "claude-code-agent-monitor.openDashboard",
-        "title": "Open Agent Dashboard",
+        "title": "Open DualAgent Nexus",
         "category": "Claude Code",
         "icon": "$(dashboard)"
       },
@@ -58,7 +58,7 @@
       "activitybar": [
         {
           "id": "claude-code-monitor",
-          "title": "Claude Code Agent Monitor",
+          "title": "DualAgent Nexus",
           "icon": "icon.svg"
         }
       ]

@@ -7,7 +7,6 @@ GitHub Actions workflows for this repository.
 | `ci.yml`           | push and pull request (all branches)       | Format check, server + client tests, cross-OS snapshot store tests, client build, path-change detection, macOS DMG and Windows EXE desktop builds, advisory deployment-stack validation, OCI image supply chain, and release publishing via `scripts/publish-release.js`. |
 | `file-headers.yml` | pull request                               | Runs `.claude/skills/file-headers/scripts/check-headers-pr.sh` so every touched source file carries the required authorship header. |
 | `triage.yml`       | issues, `pull_request_target`, manual      | Reconciles `size/*`, `area/*`, `type/*`, `priority/*`, and review-signal labels using `.github/scripts/label-rules.js`; assigns authors; adds items to the project board. Hand-applied labels are never removed. |
-| `cla.yml`          | issue comments, `pull_request_target`      | CLA Assistant signature check for contributors. |
 
 ## Related files
 

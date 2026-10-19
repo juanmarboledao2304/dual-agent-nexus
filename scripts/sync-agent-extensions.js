@@ -15,7 +15,7 @@ const ROOT = path.resolve(__dirname, "..");
 const PLUGINS_DIR = path.join(ROOT, "plugins");
 const CLAUDE_MARKETPLACE = path.join(ROOT, ".claude-plugin", "marketplace.json");
 const CODEX_MARKETPLACE = path.join(ROOT, ".agents", "plugins", "marketplace.json");
-const REPOSITORY = "https://github.com/hoangsonww/Claude-Code-Agent-Monitor";
+const REPOSITORY = "https://github.com/juanmarboledao2304/dual-agent-nexus";
 const PLUGIN_VERSION = readJson(path.join(ROOT, "package.json")).version;
 const AUTHOR = {
   name: "Son Nguyen",
@@ -314,7 +314,7 @@ async function sync() {
   });
   await writeJson(CODEX_MARKETPLACE, {
     name: "claude-code-agent-monitor-plugins",
-    interface: { displayName: "Claude Code Agent Monitor" },
+    interface: { displayName: "DualAgent Nexus" },
     plugins: codexEntries,
   });
 

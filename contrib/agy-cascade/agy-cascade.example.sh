@@ -110,7 +110,7 @@ EOF
 fi
 
 # ---------------------------------------------------------
-# Handle Exit Code 10 (Quota Depleted ➔ Write Cooldown Lock)
+# Handle Exit Code 10 (Quota Depleted Write Cooldown Lock)
 # ---------------------------------------------------------
 if [[ ${EXIT_CODE} -eq 10 ]]; then
   echo "[agy-cascade] Quota exhausted (Exit code 10). Writing cooldown lockfile..." >&2

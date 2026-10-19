@@ -22,9 +22,9 @@ NC='\033[0m'
 
 log()   { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $*"; }
 info()  { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${BLUE}ℹ${NC}  $*"; }
-ok()    { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}✔${NC}  $*"; }
-warn()  { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}⚠${NC}  $*" >&2; }
-err()   { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}✖${NC}  $*" >&2; }
+ok()    { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}OK${NC}  $*"; }
+warn()  { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}WARN${NC}  $*" >&2; }
+err()   { [[ "$JSON_OUTPUT" == true ]] && return; echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}ERR${NC}  $*" >&2; }
 
 # ── Defaults ────────────────────────────────────────────────────────────────
 BASE_URL=""
@@ -298,9 +298,9 @@ JSON
     echo -e "${BOLD}Health Check Summary${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-    local http_icon=$([[ "$HTTP_OK" == true ]] && echo "${GREEN}✔${NC}" || echo "${RED}✖${NC}")
-    local latency_icon=$([[ "$LATENCY_OK" == true ]] && echo "${GREEN}✔${NC}" || echo "${YELLOW}⚠${NC}")
-    local ws_icon=$([[ "$WS_OK" == true ]] && echo "${GREEN}✔${NC}" || echo "${RED}✖${NC}")
+    local http_icon=$([[ "$HTTP_OK" == true ]] && echo "${GREEN}OK${NC}" || echo "${RED}ERR${NC}")
+    local latency_icon=$([[ "$LATENCY_OK" == true ]] && echo "${GREEN}OK${NC}" || echo "${YELLOW}WARN${NC}")
+    local ws_icon=$([[ "$WS_OK" == true ]] && echo "${GREEN}OK${NC}" || echo "${RED}ERR${NC}")
 
     echo -e "  ${http_icon}  HTTP /api/health  (${HTTP_STATUS:-???}, ${HTTP_RESPONSE_TIME_MS:-?}ms, ${HTTP_ATTEMPTS:-?} attempts)"
     echo -e "  ${latency_icon}  Response time     (${HTTP_RESPONSE_TIME_MS:-?}ms / ${RESPONSE_THRESHOLD}ms threshold)"

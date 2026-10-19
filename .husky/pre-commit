@@ -29,11 +29,11 @@ if [ -n "$STAGED" ]; then
     set -- npx --no-install prettier
   fi
 
-  echo "🎨 Formatting staged files with Prettier..."
+  echo "Formatting staged files with Prettier..."
   git diff --cached --name-only --diff-filter=ACMR -z | xargs -0 "$@" --write --ignore-unknown
   git diff --cached --name-only --diff-filter=ACMR -z | xargs -0 git add
 else
-  echo "🎨 No staged files to format."
+  echo "No staged files to format."
 fi
 
 # ── 2. Run tests — commit is blocked unless all pass ────────────────────────
@@ -62,7 +62,7 @@ fi
 # second, environmental layer of that guarantee.
 run_suite() {
   # $1 = human label, $2 = npm script
-  echo "🧪 Running $1 tests..."
+  echo "Running $1 tests..."
   if (
     unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_COMMON_DIR GIT_PREFIX \
       GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES GIT_NAMESPACE \
@@ -73,7 +73,7 @@ run_suite() {
   ); then
     return 0
   fi
-  echo "⚠️  $1 suite failed — retrying once to rule out machine-load flakiness..."
+  echo "WARN  $1 suite failed — retrying once to rule out machine-load flakiness..."
   if (
     unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_COMMON_DIR GIT_PREFIX \
       GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES GIT_NAMESPACE \
@@ -82,15 +82,15 @@ run_suite() {
       GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL GIT_COMMITTER_DATE
     npm run "$2"
   ); then
-    echo "✅ $1 suite passed on retry — treating the first failure as a load flake."
+    echo "OK $1 suite passed on retry — treating the first failure as a load flake."
     echo "   If this keeps happening, the flaky test above deserves a real fix."
     return 0
   fi
-  echo "❌ $1 suite failed twice — genuine failure, aborting the commit."
+  echo "ERR $1 suite failed twice — genuine failure, aborting the commit."
   return 1
 }
 
 run_suite backend test:server
 run_suite frontend test:client
 
-echo "✅ Formatting applied and all tests passed — proceeding with commit."
+echo "OK Formatting applied and all tests passed — proceeding with commit."

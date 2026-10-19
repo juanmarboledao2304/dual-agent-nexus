@@ -2,7 +2,7 @@
 
 **Claude Code Agent Monitor** brings a high-fidelity, real-time dashboard for your Claude Code AI sessions directly into your VS Code workspace. Monitor token usage, track agent health, and view deep analytics without switching windows.
 
-![Extension Screenshot](https://raw.githubusercontent.com/hoangsonww/Claude-Code-Agent-Monitor/refs/heads/master/vscode-extension/vscode.png)
+![Extension Screenshot](https://raw.githubusercontent.com/juanmarboledao2304/dual-agent-nexus/refs/heads/master/vscode-extension/vscode.png)
 
 ---
 

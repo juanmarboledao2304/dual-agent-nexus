@@ -78,7 +78,7 @@ function reportError(err) {
     if (err.extra) Object.assign(payload.error, err.extra);
     process.stderr.write(`${JSON.stringify(payload)}\n`);
   } else {
-    console.error(c.red(`✖ ${err.message}`));
+    console.error(c.red(`ERR ${err.message}`));
     for (const h of err.hints || []) console.error(c.dim(`  ${h}`));
   }
   process.exitCode = exitCode;

@@ -30,7 +30,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/client/src/lib/eventBus.ts`
+ * **Path:** `client/src/lib/eventBus.ts`
  * **Purpose:** In-memory pub/sub bus bridging `useWebSocket` to any page without prop drilling.
  *
  * ## Design constraints

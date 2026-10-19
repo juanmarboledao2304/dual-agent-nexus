@@ -109,13 +109,13 @@ async function setPricing({ args, opts }) {
   }
   const r = await put("/api/pricing", body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Pricing rule saved for ${c.bold(pattern)}`);
+  console.log(`${c.green("OK")} Pricing rule saved for ${c.bold(pattern)}`);
 }
 
 async function deletePricing({ args }) {
   const r = await del(`/api/pricing/${enc(args[0])}`);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Pricing rule deleted: ${args[0]}`);
+  console.log(`${c.green("OK")} Pricing rule deleted: ${args[0]}`);
 }
 
 async function resetPricing({ opts }) {
@@ -125,7 +125,7 @@ async function resetPricing({ opts }) {
   });
   const r = await post("/api/settings/reset-pricing");
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Pricing rules reset to defaults`);
+  console.log(`${c.green("OK")} Pricing rules reset to defaults`);
 }
 
 // ── Secondary rate cards (GPT / Cursor) ─────────────────────────────────────
@@ -178,7 +178,7 @@ function rateCard(parent, { name, label, route, fields, columns }) {
         });
         const r = await put(route, body);
         if (isJson()) return printJson(r);
-        console.log(`${c.green("✔")} ${label} pricing rule saved for ${c.bold(args[0])}`);
+        console.log(`${c.green("OK")} ${label} pricing rule saved for ${c.bold(args[0])}`);
       },
       { serverOnly: PRICING_ONLY }
     )
@@ -197,7 +197,7 @@ function rateCard(parent, { name, label, route, fields, columns }) {
           });
           const r = await del(`${route}/${enc(args[0])}`);
           if (isJson()) return printJson(r);
-          console.log(`${c.green("✔")} ${label} pricing rule deleted: ${args[0]}`);
+          console.log(`${c.green("OK")} ${label} pricing rule deleted: ${args[0]}`);
         },
         { serverOnly: PRICING_ONLY }
       )
@@ -344,7 +344,7 @@ function register(program) {
             });
           const r = await del(`/api/pricing/gpt/${enc(args[0])}`);
           if (isJson()) return printJson(r);
-          console.log(`${c.green("✔")} GPT pricing rule deleted: ${args[0]}`);
+          console.log(`${c.green("OK")} GPT pricing rule deleted: ${args[0]}`);
         },
         { serverOnly: PRICING_ONLY }
       )

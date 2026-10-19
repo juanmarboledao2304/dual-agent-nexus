@@ -1,14 +1,14 @@
 {
   "name": "ccam-runner",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Operate dashboard-launched Claude Code and Codex runs with safe launch, follow-up, stop, resume, model discovery, and persistent run-history workflows.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
     "url": "https://github.com/hoangsonww"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["claude-code", "codex", "run", "launcher", "resume", "agents"],
   "skills": "./skills/",
@@ -19,7 +19,7 @@
     "developerName": "Son Nguyen",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
-    "websiteURL": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+    "websiteURL": "https://github.com/juanmarboledao2304/dual-agent-nexus",
     "defaultPrompt": [
       "Use CCAM Runner to inspect the local CCAM dashboard.",
       "Use CCAM Runner to analyze recent agent activity."

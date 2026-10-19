@@ -55,7 +55,7 @@ for term in "$@"; do
     n=$(grep -Fc -- "$term" "$doc" 2>/dev/null || true)
     n=${n:-0}
     if [ "$n" -gt 0 ]; then
-      printf "  ✅ %-26s %s\n" "$doc" "$n"
+      printf "  OK %-26s %s\n" "$doc" "$n"
     else
       printf "  ·  %-26s 0\n" "$doc"
     fi

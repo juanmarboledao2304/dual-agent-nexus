@@ -76,7 +76,7 @@ Bảng điều khiển chuyên nghiệp để theo dõi Claude Code, Cursor và 
 Tài liệu đã bản địa hóa: [`README-EN.md`](./README-EN.md) · [`README-CN.md`](./README-CN.md) · [`README-VN.md`](./README-VN.md) · [`README-KO.md`](./README-KO.md) · [`README-ES.md`](./README-ES.md)
 
 > [!NOTE]
-> Bạn cần hướng dẫn theo tác vụ? [GitHub Wiki](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/wiki) là sổ tay thực hành về sử dụng hằng ngày, vận hành theo nhóm, khắc phục sự cố, tự động hóa CLI/MCP và các quy trình triển khai. [Wiki tĩnh đã bản địa hóa](https://hoangsonww.github.io/Claude-Code-Agent-Monitor/wiki/) vẫn là phần giới thiệu sản phẩm và kiến trúc bằng tiếng Anh, Việt, Trung, Hàn và Tây Ban Nha; các hợp đồng kỹ thuật chính xác vẫn nằm trong [`docs/`](./docs/README.md).
+> Bạn cần hướng dẫn theo tác vụ? [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) là sổ tay thực hành về sử dụng hằng ngày, vận hành theo nhóm, khắc phục sự cố, tự động hóa CLI/MCP và các quy trình triển khai. [Wiki tĩnh đã bản địa hóa](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) vẫn là phần giới thiệu sản phẩm và kiến trúc bằng tiếng Anh, Việt, Trung, Hàn và Tây Ban Nha; các hợp đồng kỹ thuật chính xác vẫn nằm trong [`docs/`](./docs/README.md).
 
 ---
 
@@ -348,7 +348,7 @@ Dashboard bao quát toàn bộ vòng đời Agent cục bộ. Các hợp đồng
 | **Dữ liệu mẫu** | Script tích hợp cung cấp dữ liệu demo và phát triển thực tế. |
 | **Statusline** | Dải CLI có màu hiển thị model, ngữ cảnh, nhánh Git, token theo chiều và chi phí phiên bằng USD. |
 | **Định dạng tên model** | Định danh Claude, GPT và Gemini trở thành tên dễ đọc bằng cách bỏ hậu tố nhà cung cấp/ngày/latest, nối phiên bản số và định dạng tag ngữ cảnh; Cài đặt giữ nguyên mẫu định giá thô. |
-| **Thị trường plugin Claude + Codex** | Một cây 14 plugin cung cấp cả hai định dạng manifest và danh mục, 66 skill plugin, 18 Subagent Claude, 34 lệnh Claude, 3 trình trợ giúp CLI và metadata OpenAI. `npx skills add hoangsonww/Claude-Code-Agent-Monitor --list` phát hiện 77 skill của kho mã. |
+| **Thị trường plugin Claude + Codex** | Một cây 14 plugin cung cấp cả hai định dạng manifest và danh mục, 66 skill plugin, 18 Subagent Claude, 34 lệnh Claude, 3 trình trợ giúp CLI và metadata OpenAI. `npx skills add juanmarboledao2304/dual-agent-nexus --list` phát hiện 77 skill của kho mã. |
 | **Run Claude** | Chế độ hội thoại và one-shot hỗ trợ tiếp tục/xem lịch sử, nhiều lần chạy nền đồng thời, gắn lại có nhận biết transcript, điều khiển model/effort/quyền/cwd, làm mượt tin nhắn một phần, giữ suy luận, lệnh slash, tệp `@`, đồng hồ ngữ cảnh và chi phí, cùng trạng thái trực tiếp. Bảo vệ same-origin chặn việc tạo ngoài ý muốn; đồng thời mặc định có trần an toàn 10000 và có thể giảm bằng `RUN_MAX_CONCURRENT`. |
 | **Trình khám phá cấu hình Claude** | Mười hai tab kiểm tra skill, Agent, lệnh, style, plugin, marketplace, MCP, hook, cài đặt, memory, keybinding và statusline. Đường dẫn chuẩn hóa chặn thoát qua symlink; bề mặt văn bản được hỗ trợ dùng tạo/sửa/xóa atomic với bản sao lưu có dấu thời gian bên ngoài cây, còn cấu hình nhạy cảm chỉ đọc với hướng dẫn CLI chính xác. `cc-watcher` 500 ms broadcast thay đổi bên ngoài. |
 | **Tabby** | Linh vật WebSocket không phụ thuộc với tám trạng thái theo hoạt động, lời thoại được throttle, hành động nhanh, câu trả lời trạng thái cục bộ và chuyển tiếp sang Run Claude cho lời nhắc rộng hơn. Có thể dùng bằng bàn phím, nhận biết reduced motion, an toàn khi mất kết nối, có thể cấu hình và đã bản địa hóa. |
@@ -374,8 +374,8 @@ Dashboard bao quát toàn bộ vòng đời Agent cục bộ. Các hợp đồng
 ### 1. Cài đặt
 
 ```bash
-git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup
 ```
 
@@ -442,7 +442,7 @@ Tạo 8 phiên mẫu, 23 Agent và 106 sự kiện để bạn có thể khám p
 
 Nếu không muốn giữ terminal mở, hãy cài **ứng dụng máy tính để bàn gốc** tùy chọn. Ứng dụng nhúng máy chủ trong cùng tiến trình, thêm biểu tượng menu-bar / khu vực thông báo (tray) và hỗ trợ tự khởi động khi đăng nhập (macOS Login Items / Windows startup).
 
-Cách nhanh nhất là **tải trình cài đặt dựng sẵn** từ [GitHub Release mới nhất](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest) (CI tự động phát hành `vX.Y.Z` mỗi khi `package.json` được tăng phiên bản trên `master`):
+Cách nhanh nhất là **tải trình cài đặt dựng sẵn** từ [GitHub Release mới nhất](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest) (CI tự động phát hành `vX.Y.Z` mỗi khi `package.json` được tăng phiên bản trên `master`):
 
 - **macOS:** Tải `ClaudeCodeMonitor-<version>-arm64.dmg` (Apple Silicon) hoặc `-x64.dmg` (Intel), rồi kéo **Claude Code Monitor.app** vào `/Applications`.
 - **Windows:** Tải `ClaudeCodeMonitor-Setup-<version>-x64.exe` (trình cài đặt) hoặc `ClaudeCodeMonitor-<version>-x64-portable.exe` (không cần cài đặt), rồi chạy tệp.
@@ -1423,7 +1423,7 @@ Cả hai endpoint trả về cùng một payload:
 {
   "git_repo": true,
   "update_available": true,
-  "repo_root": "/Users/you/Claude-Code-Agent-Monitor",
+  "repo_root": "/Users/you/dual-agent-nexus",
   "remote_ref": "upstream/master",
   "canonical_remote": "upstream",
   "current_branch": "master",
@@ -1645,7 +1645,7 @@ Khi khởi chạy, ứng dụng:
 
 ### Tải ứng dụng
 
-**Lựa chọn A, tải trình cài dựng sẵn (khuyến nghị).** Từ **[Releases → latest](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest)**, công khai và không cần đăng nhập GitHub. CI tự động phát hành bản `vX.Y.Z` mới mỗi khi phiên bản trong `package.json` được tăng trên `master`, nên liên kết này luôn cung cấp build hiện tại:
+**Lựa chọn A, tải trình cài dựng sẵn (khuyến nghị).** Từ **[Releases → latest](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest)**, công khai và không cần đăng nhập GitHub. CI tự động phát hành bản `vX.Y.Z` mới mỗi khi phiên bản trong `package.json` được tăng trên `master`, nên liên kết này luôn cung cấp build hiện tại:
 
 | Nền tảng | Tài nguyên | Ghi chú |
 | --- | --- | --- |
@@ -1817,18 +1817,18 @@ CCAM cung cấp **14 plugin** từ một cây nguồn dùng chung. Claude Code �
 
 ```bash
 # Claude Code
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
 claude plugin install ccam-platform@claude-code-agent-monitor-plugins
 
 # Codex
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
 codex plugin add ccam-platform@claude-code-agent-monitor-plugins
 
 # Open Agent Skills / skills.sh-compatible CLI
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 
 # Install one skill for Claude Code and Codex in the current project
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -1840,7 +1840,7 @@ npx skills update --project --yes
 npx skills remove mcp-server --yes
 
 # Add --global to install at user scope, then manage that scope explicitly
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -2247,7 +2247,7 @@ agent-dashboard/
 
 Mọi đóng góp đều được chào đón. Xem [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) để biết hướng dẫn đầy đủ.
 
-Mọi người đóng góp phải ký [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Điều này được tự động áp dụng trên mỗi pull request bởi GitHub Action ` CLA Assistant`: lần đầu mở PR, bot yêu cầu bạn ký bằng cách bình luận `I have read the CLA Document and I hereby sign the CLA`. Kiểm tra trạng thái **CLA Assistant** của PR giữ màu đỏ cho tới khi hoàn tất, và một lần ký áp dụng cho mọi đóng góp về sau.
+Mọi người đóng góp phải ký [Contributor License Agreement](https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/CLA.md). Điều này được tự động áp dụng trên mỗi pull request bởi GitHub Action ` CLA Assistant`: lần đầu mở PR, bot yêu cầu bạn ký bằng cách bình luận `I have read the CLA Document and I hereby sign the CLA`. Kiểm tra trạng thái **CLA Assistant** của PR giữ màu đỏ cho tới khi hoàn tất, và một lần ký áp dụng cho mọi đóng góp về sau.
 
 ---
 

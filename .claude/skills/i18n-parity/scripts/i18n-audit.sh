@@ -375,9 +375,9 @@ fi
 # ── Result ──────────────────────────────────────────────────────────────────
 echo
 if [ "$fails" -eq 0 ]; then
-  echo "✔ i18n parity clean — $checks checks passed across $(echo "$LOCALES" | wc -w | tr -d ' ') languages."
+  echo "OK i18n parity clean — $checks checks passed across $(echo "$LOCALES" | wc -w | tr -d ' ') languages."
   exit 0
 fi
-echo "✘ $fails i18n parity gap(s); $checks checks passed."
+echo "ERR $fails i18n parity gap(s); $checks checks passed."
 echo "  Fix with .claude/skills/i18n-parity/SKILL.md (new language: references/new-language-checklist.md)."
 exit 1

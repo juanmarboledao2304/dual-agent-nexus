@@ -9,7 +9,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/mcp/src/ui/banner.ts`
+ * **Path:** `mcp/src/ui/banner.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -126,7 +126,7 @@ export function printServerInfo(info: {
 
   process.stdout.write(divider + "\n");
   process.stdout.write(
-    `  ${c.dim(c.cyan("│"))} ${c.bold(c.brightWhite("Agent Dashboard MCP Server"))}\n`
+    `  ${c.dim(c.cyan("│"))} ${c.bold(c.brightWhite("DualAgent Nexus MCP Server"))}\n`
   );
   process.stdout.write(divider + "\n");
   process.stdout.write(line("Version", c.brightCyan(info.version)) + "\n");
@@ -144,7 +144,7 @@ export function printServerInfo(info: {
   );
   process.stdout.write(divider + "\n");
   process.stdout.write(
-    `  ${c.dim(c.cyan("│"))} ${c.warn("⚠")}  ${c.dim("Dashboard must be running at the URL above.")}\n`
+    `  ${c.dim(c.cyan("│"))} ${c.warn("WARN")}  ${c.dim("Dashboard must be running at the URL above.")}\n`
   );
   process.stdout.write(
     `  ${c.dim(c.cyan("│"))} ${c.dim("   Start it first:")} ${c.brightWhite("npm run dev")} ${c.dim("or")} ${c.brightWhite("npm start")}\n`
@@ -158,7 +158,7 @@ export function printServerInfo(info: {
  * @param transport - Transport description shown after the message.
  */
 export function printReady(transport: string): void {
-  const icon = "✔";
+  const icon = "OK";
   process.stdout.write(
     `  ${c.success(icon)} ${c.bold(c.brightWhite("Server ready"))} ${c.muted(`(${transport})`)}\n\n`
   );

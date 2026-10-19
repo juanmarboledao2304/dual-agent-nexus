@@ -76,7 +76,7 @@ Un panel profesional para rastrear sesiones, herramientas, historial de conversa
 > Consulta también [README-EN.md](./README-EN.md) (English), [README-CN.md](./README-CN.md) (中文), [README-VN.md](./README-VN.md) (Tiếng Việt) y [README-KO.md](./README-KO.md) (한국어). Este es el README en español.
 
 > [!NOTE]
-> ¿Necesitas ayuda orientada a tareas? La [Wiki de GitHub](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/wiki) es el manual práctico para el uso diario, las operaciones de equipo, la solución de problemas, la automatización con CLI/MCP y las recetas de despliegue. La [Wiki estática localizada](https://hoangsonww.github.io/Claude-Code-Agent-Monitor/wiki/) sigue siendo el recorrido del producto y la arquitectura en inglés, vietnamita, chino, coreano y español; los contratos técnicos exactos permanecen en [`docs/`](./docs/README.md).
+> ¿Necesitas ayuda orientada a tareas? La [Wiki de GitHub](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) es el manual práctico para el uso diario, las operaciones de equipo, la solución de problemas, la automatización con CLI/MCP y las recetas de despliegue. La [Wiki estática localizada](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) sigue siendo el recorrido del producto y la arquitectura en inglés, vietnamita, chino, coreano y español; los contratos técnicos exactos permanecen en [`docs/`](./docs/README.md).
 
 ---
 
@@ -347,7 +347,7 @@ El panel cubre todo el ciclo de vida de los agentes locales. Los contratos opera
 | **Datos de ejemplo** | Un script integrado aporta datos realistas para demostraciones y desarrollo. |
 | **Línea de estado** | Una franja CLI en color muestra el modelo, el contexto, la rama de Git, los tokens por dirección y el costo de la sesión en USD. |
 | **Formato de nombres de modelos** | Los identificadores de Claude, GPT y Gemini se convierten en nombres legibles eliminando sufijos de proveedor, fecha y latest, uniendo versiones numéricas y formateando etiquetas de contexto. Configuración conserva los patrones de precios sin procesar. |
-| **Marketplace de plugins de Claude + Codex** | Un árbol de 14 plugins compartidos incluye ambos formatos de manifest y catálogos, 66 habilidades empaquetadas, 18 subagentes de Claude, 34 comandos de Claude, 3 asistentes de CLI y metadatos OpenAI. `npx skills add hoangsonww/Claude-Code-Agent-Monitor --list` descubre 77 habilidades del repositorio. |
+| **Marketplace de plugins de Claude + Codex** | Un árbol de 14 plugins compartidos incluye ambos formatos de manifest y catálogos, 66 habilidades empaquetadas, 18 subagentes de Claude, 34 comandos de Claude, 3 asistentes de CLI y metadatos OpenAI. `npx skills add juanmarboledao2304/dual-agent-nexus --list` descubre 77 habilidades del repositorio. |
 | **Ejecutar Claude** | Los modos Conversación y una ejecución admiten reanudación y visualización del historial, ejecuciones simultáneas en segundo plano, reconexión basada en transcripciones, controles de modelo, esfuerzo, permisos y cwd, suavizado de mensajes parciales, conservación del razonamiento, comandos slash, archivos `@`, medidores de contexto y costo y estado en vivo. La protección del mismo origen impide inicios externos. La concurrencia usa un límite de seguridad predeterminado de 10000 y puede reducirse con `RUN_MAX_CONCURRENT`. |
 | **Explorador de configuración de Claude** | Doce pestañas examinan skills, agentes, comandos, estilos, plugins, marketplaces, MCP, hooks, configuración, memoria, combinaciones de teclas y línea de estado. Las rutas canónicas bloquean escapes por symlink. Las superficies de texto compatibles permiten crear, editar y eliminar de forma atómica con copias de seguridad con marca de tiempo fuera del árbol, mientras que la configuración sensible sigue siendo de solo lectura con instrucciones CLI exactas. Un `cc-watcher` de 500 ms emite los cambios externos. |
 | **Tabby** | Una mascota WebSocket sin dependencias, con ocho estados de ánimo derivados de la actividad, mensajes moderados, acciones rápidas, respuestas de estado locales y transferencia a Ejecutar Claude para prompts más amplios. Es accesible por teclado, respeta el movimiento reducido, funciona con seguridad sin conexión, se puede configurar y está localizada. |
@@ -373,8 +373,8 @@ El panel cubre todo el ciclo de vida de los agentes locales. Los contratos opera
 ### 1. Instalar
 
 ```bash
-git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup
 ```
 
@@ -441,7 +441,7 @@ Crea 8 sesiones de ejemplo, 23 agentes y 106 eventos para que puedas explorar la
 
 Si prefieres no mantener un terminal abierto, instala la **aplicación de escritorio nativa** opcional. Integra el servidor en el proceso, añade un icono en la barra de menús o el área de notificaciones (tray) y admite el inicio automático al entrar en macOS o Windows.
 
-La vía más rápida es **descargar un instalador precompilado** desde la [versión más reciente de GitHub](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest). CI publica automáticamente una `vX.Y.Z` cuando se incrementa `package.json` en `master`.
+La vía más rápida es **descargar un instalador precompilado** desde la [versión más reciente de GitHub](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest). CI publica automáticamente una `vX.Y.Z` cuando se incrementa `package.json` en `master`.
 
 - **macOS**: descarga `ClaudeCodeMonitor-<version>-arm64.dmg` (Apple Silicon) o `-x64.dmg` (Intel) y arrastra **Claude Code Monitor.app** a `/Applications`.
 - **Windows**: descarga `ClaudeCodeMonitor-Setup-<version>-x64.exe` (instalador) o `ClaudeCodeMonitor-<version>-x64-portable.exe` (sin instalación) y ejecútalo.
@@ -1428,7 +1428,7 @@ Ambos extremos devuelven la misma forma de carga útil:
 {
   "git_repo": true,
   "update_available": true,
-  "repo_root": "/Users/you/Claude-Code-Agent-Monitor",
+  "repo_root": "/Users/you/dual-agent-nexus",
   "remote_ref": "upstream/master",
   "canonical_remote": "upstream",
   "current_branch": "master",
@@ -1648,7 +1648,7 @@ Al iniciar la aplicación:
 
 ### Obtenerla
 
-**Opción A - descargar un instalador preconstruido (recomendado).** Desde **[Versiones → última](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest)** (público, sin inicio de sesión en GitHub). CI publica automáticamente una nueva versión `vX.Y.Z` cada vez que la versión en `package.json` se actualiza en `master`, por lo que este enlace siempre sirve para la construcción actual:
+**Opción A - descargar un instalador preconstruido (recomendado).** Desde **[Versiones → última](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest)** (público, sin inicio de sesión en GitHub). CI publica automáticamente una nueva versión `vX.Y.Z` cada vez que la versión en `package.json` se actualiza en `master`, por lo que este enlace siempre sirve para la construcción actual:
 
 | Plataforma | Activo | Notas |
 | --- | --- | --- |
@@ -1820,18 +1820,18 @@ CCAM incluye **14 plugins compartidos** desde un único árbol de fuentes. Claud
 
 ```bash
 # Claude Code
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
 claude plugin install ccam-platform@claude-code-agent-monitor-plugins
 
 # Codex
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
 codex plugin add ccam-platform@claude-code-agent-monitor-plugins
 
 # Open Agent Skills / skills.sh-compatible CLI
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 
 # Install one skill for Claude Code and Codex in the current project
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -1843,7 +1843,7 @@ npx skills update --project --yes
 npx skills remove mcp-server --yes
 
 # Add --global to install at user scope, then manage that scope explicitly
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -2274,7 +2274,7 @@ agent-dashboard/
 
 Las contribuciones son bienvenidas, consulte [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) para la guía completa.
 
-Todos los colaboradores deben firmar el [Acuerdo de Licencia del Colaborador](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Esto se aplica automáticamente en cada solicitud de extracción por la Acción de GitHub ` Asistente de CLA`: la primera vez que abres una PR, un bot te pide que firmes comentando `He leído el Documento de CLA y por la presente firmo el CLA`. El control de estado del **Asistente de CLA** de la PR permanece en rojo hasta que lo hagas, y firmar una vez cubre todas las contribuciones futuras.
+Todos los colaboradores deben firmar el [Acuerdo de Licencia del Colaborador](https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/CLA.md). Esto se aplica automáticamente en cada solicitud de extracción por la Acción de GitHub ` Asistente de CLA`: la primera vez que abres una PR, un bot te pide que firmes comentando `He leído el Documento de CLA y por la presente firmo el CLA`. El control de estado del **Asistente de CLA** de la PR permanece en rojo hasta que lo hagas, y firmar una vez cubre todas las contribuciones futuras.
 
 ---
 

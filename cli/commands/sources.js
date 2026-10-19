@@ -46,7 +46,7 @@ const providerOption = () =>
 function importSummary(r) {
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} imported ${r.imported ?? 0}, backfilled ${r.backfilled ?? 0}, skipped ${r.skipped ?? 0}, errors ${r.errors ?? 0}`
+    `${c.green("OK")} imported ${r.imported ?? 0}, backfilled ${r.backfilled ?? 0}, skipped ${r.skipped ?? 0}, errors ${r.errors ?? 0}`
   );
 }
 
@@ -104,7 +104,7 @@ async function importReimport() {
   const r = await post("/api/settings/reimport", undefined, { timeoutMs: 600_000 });
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Claude: imported ${r.imported ?? 0}, backfilled ${r.backfilled ?? 0}, skipped ${r.skipped ?? 0}` +
+    `${c.green("OK")} Claude: imported ${r.imported ?? 0}, backfilled ${r.backfilled ?? 0}, skipped ${r.skipped ?? 0}` +
       (r.cursor ? c.dim(` · Cursor: ${JSON.stringify(r.cursor)}`) : "")
   );
 }
@@ -118,7 +118,7 @@ async function importData({ args }) {
   const r = await post("/api/settings/import", { path: abs }, { timeoutMs: 600_000 });
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Restored: ${r.sessions_imported ?? 0} sessions added, ` +
+    `${c.green("OK")} Restored: ${r.sessions_imported ?? 0} sessions added, ` +
       `${r.sessions_skipped ?? 0} already present, ${r.events ?? 0} events, ` +
       `${r.model_pricing ?? 0} pricing rules ` +
       `(${r.agents ?? 0} agents · ${r.workflows ?? 0} workflows · ${r.dashboard_runs ?? 0} runs · ${r.alert_rules ?? 0} rules)`
@@ -218,7 +218,7 @@ async function addRemote({ opts }) {
     enabled: !opts.disabled,
   });
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Added remote source ${c.bold(r.source.label)} (${r.source.id})`);
+  console.log(`${c.green("OK")} Added remote source ${c.bold(r.source.label)} (${r.source.id})`);
 }
 
 async function updateRemote({ args, opts }) {
@@ -238,7 +238,7 @@ async function updateRemote({ args, opts }) {
   });
   const r = await patch(`/api/remote-sources/${enc(args[0])}`, body);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Updated remote source ${r.source.id}`);
+  console.log(`${c.green("OK")} Updated remote source ${r.source.id}`);
 }
 
 async function toggleRemote(id, enabled, opts) {
@@ -249,7 +249,7 @@ async function toggleRemote(id, enabled, opts) {
   const r = await patch(`/api/remote-sources/${enc(id)}`, { enabled });
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Remote source ${id} auto-sync ${enabled ? c.green("enabled") : c.dim("disabled")}`
+    `${c.green("OK")} Remote source ${id} auto-sync ${enabled ? c.green("enabled") : c.dim("disabled")}`
   );
 }
 
@@ -259,11 +259,11 @@ async function testRemote({ args }) {
   });
   if (!r.ok) process.exitCode = 1;
   if (isJson()) return printJson(r);
-  console.log(r.ok ? `${c.green("✔")} ${r.message}` : `${c.red("✖")} ${r.message}`);
+  console.log(r.ok ? `${c.green("OK")} ${r.message}` : `${c.red("ERR")} ${r.message}`);
   for (const provider of ["claude", "codex"]) {
     const detail = r.providers?.[provider];
     if (!detail) continue;
-    const icon = detail.status === "ok" ? c.green("✔") : c.yellow("•");
+    const icon = detail.status === "ok" ? c.green("OK") : c.yellow("•");
     console.log(
       c.dim(
         `  ${icon} ${provider === "codex" ? "Codex" : "Claude Code"}: ${detail.status} — ${detail.path}`
@@ -277,7 +277,7 @@ async function syncRemote({ args }) {
   if (args[0]) {
     const r = await post(`/api/remote-sources/${enc(args[0])}/sync`, undefined, long);
     if (isJson()) return printJson(r);
-    console.log(syncSummaryLine(`${c.green("✔")} Synced ${args[0]}`, r));
+    console.log(syncSummaryLine(`${c.green("OK")} Synced ${args[0]}`, r));
     return;
   }
   // No id → sync every source sequentially (per-source failures isolated).
@@ -296,13 +296,13 @@ async function syncRemote({ args }) {
     if (!isJson()) {
       console.log(
         r.error
-          ? `  ${c.red("✖")} ${c.bold(s.label)}: ${r.error}`
+          ? `  ${c.red("ERR")} ${c.bold(s.label)}: ${r.error}`
           : syncSummaryLine(`  ${c.bold(s.label)}`, r)
       );
     }
   }
   if (isJson()) return printJson({ synced: results.length, results });
-  console.log(`${c.green("✔")} Synced ${sources.length} source(s)`);
+  console.log(`${c.green("OK")} Synced ${sources.length} source(s)`);
 }
 
 async function removeRemote({ args, opts }) {
@@ -315,7 +315,7 @@ async function removeRemote({ args, opts }) {
   const r = await del(`/api/remote-sources/${enc(args[0])}${purge ? "?purge=true" : ""}`);
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Removed ${args[0]}${purge ? ` (purged ${r.purged} session(s))` : " (data kept)"}`
+    `${c.green("OK")} Removed ${args[0]}${purge ? ` (purged ${r.purged} session(s))` : " (data kept)"}`
   );
 }
 

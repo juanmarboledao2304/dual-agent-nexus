@@ -99,7 +99,7 @@ consumes the rest of the repo as plain files.
 
 ```mermaid
 flowchart TD
-    subgraph repo["Claude-Code-Agent-Monitor (repo root)"]
+    subgraph repo["dual-agent-nexus (repo root)"]
         server["server/<br/>Express API · SQLite · WebSocket"]
         client["client/<br/>React + Vite SPA"]
         scripts["scripts/<br/>hook installer/handler, import, seed"]

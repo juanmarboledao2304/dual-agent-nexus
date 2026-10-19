@@ -1,14 +1,14 @@
 {
   "name": "ccam-productivity",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Productivity workflows for Claude Code — daily standups, weekly reports, sprint summaries, and intelligent workflow optimization powered by Agent Monitor session data.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
     "url": "https://github.com/hoangsonww"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["productivity", "standup", "reports", "sprint", "workflow", "claude-code"],
   "skills": "./skills/",
@@ -19,7 +19,7 @@
     "developerName": "Son Nguyen",
     "category": "Productivity",
     "capabilities": ["Read"],
-    "websiteURL": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+    "websiteURL": "https://github.com/juanmarboledao2304/dual-agent-nexus",
     "defaultPrompt": [
       "Use CCAM Productivity to inspect the local CCAM dashboard.",
       "Use CCAM Productivity to analyze recent agent activity."

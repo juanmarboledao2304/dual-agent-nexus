@@ -5,7 +5,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/desktop/src/menu.ts`
+ * **Path:** `desktop/src/menu.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -212,13 +212,13 @@ export function installApplicationMenu(actions: MenuActions): Menu {
         {
           label: "Project on GitHub",
           click: () =>
-            void shell.openExternal("https://github.com/hoangsonww/Claude-Code-Agent-Monitor"),
+            void shell.openExternal("https://github.com/juanmarboledao2304/dual-agent-nexus"),
         },
         {
           label: "Report an Issue",
           click: () =>
             void shell.openExternal(
-              "https://github.com/hoangsonww/Claude-Code-Agent-Monitor/issues/new/choose"
+              "https://github.com/juanmarboledao2304/dual-agent-nexus/issues/new/choose"
             ),
         },
         {

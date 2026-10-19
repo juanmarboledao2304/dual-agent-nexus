@@ -14,8 +14,15 @@ import { api } from "../lib/api";
 import { eventBus } from "../lib/eventBus";
 import { PixelAvatar } from "../components/PixelAvatar";
 import { Analytics } from "./Analytics";
+import { resolveActivePoolNumber } from "../utils/agentTheme";
 import type { SpriteVariant } from "../utils/pixelSprites";
 import type { CascadePoolStatus, DualQuotaTelemetry, WSMessage } from "../lib/types";
+
+const POOL_LABELS: Record<1 | 2 | 3, string> = {
+  1: "Pool 1: AGY-Claude",
+  2: "Pool 2: AGY-Gemini",
+  3: "Pool 3: Claude Direct",
+};
 
 function fmtCompact(n: number): string {
   if (!Number.isFinite(n)) return "0";
@@ -117,7 +124,7 @@ export function QuotaRoi() {
   const windowUsed = quota?.claude.window_5h_tokens ?? 0;
   const windowSharePct = windowCap > 0 ? (offloaded / windowCap) * 100 : 0;
   const perDigest = digests > 0 ? offloaded / digests : 0;
-  const activePool = cascade?.active_pool ?? 1;
+  const activePool = resolveActivePoolNumber(cascade?.active_pool);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -167,7 +174,7 @@ export function QuotaRoi() {
             </p>
             <p className="text-xl font-mono font-bold text-slate-100 mt-1">Pool {activePool}</p>
             <p className="text-[10px] font-mono text-slate-500 truncate">
-              {cascade?.active_pool_label ?? "Pool 1: AGY-Claude"}
+              {POOL_LABELS[activePool]}
             </p>
           </div>
         </div>

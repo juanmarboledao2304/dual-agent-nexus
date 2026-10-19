@@ -1608,7 +1608,14 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
       .filter(Boolean)
       .join("\n");
 
-    const digestInfo = extractDigestBlock(rawOutputText, { rawBytes: bytesProc });
+    // A bridge (e.g. an agy-cascade wrapper) may report the exact raw-token count it kept out of
+    // the conductor's context; otherwise savings are estimated from the output size.
+    const reportedSavings = Number(data.offloaded_tokens_saved);
+    const digestInfo = extractDigestBlock(rawOutputText, {
+      rawBytes: bytesProc,
+      explicitSavedTokens:
+        Number.isFinite(reportedSavings) && reportedSavings > 0 ? reportedSavings : 0,
+    });
     if (digestInfo.hasDigest) {
       mergedMeta.digest = digestInfo.digestText;
       mergedMeta.digest_received = true;
@@ -1711,10 +1718,11 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
             bridgeInfo.bridgeTool,
             "working",
             bridgeInfo.prompt || `Cross-CLI delegation via ${bridgeInfo.bridgeTool}`,
-            bridgeInfo.bridgeTool,
             curAgent.id,
             JSON.stringify(bridgeMeta)
           );
+          // insertAgent has no current_tool column; set it separately.
+          stmts.updateAgent.run(null, null, null, bridgeInfo.bridgeTool, null, null, bridgeAgentId);
           stmts.updateAgentTelemetry.run(
             bridgeClassified.provider,
             "Code",
@@ -1807,10 +1815,11 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
           sub.TypeName || "self",
           "working",
           sub.Prompt || "Parallel fan-out specialist task",
-          "view_file",
           activeBridge.id,
           JSON.stringify(subMeta)
         );
+        // insertAgent has no current_tool column; set it separately.
+        stmts.updateAgent.run(null, null, null, "view_file", null, null, subConvId);
         stmts.updateAgentTelemetry.run(
           subClassified.provider,
           subRole,

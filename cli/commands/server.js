@@ -324,7 +324,7 @@ function cmdOpen(page, opts) {
     child.on("error", () => {});
     child.unref();
   }
-  console.log(`${c.green("✔")} ${opts.print ? "" : "Opening "}${url}`);
+  console.log(`${c.green("OK")} ${opts.print ? "" : "Opening "}${url}`);
 }
 
 /** `ccam info`-style summary of the CLI's own environment (no server needed). */

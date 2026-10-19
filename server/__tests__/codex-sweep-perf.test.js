@@ -28,7 +28,13 @@ const { codexHomeChangeTriggersSweep } = require("../index");
 const { findCodexTranscripts } = require("../lib/codex-ingest");
 
 after(() => {
-  fs.rmSync(TMP_ROOT, { recursive: true, force: true });
+  // On Windows the open SQLite handle under TMP_ROOT makes rmSync throw EPERM;
+  // cleanup is best-effort there (the OS reclaims os.tmpdir()), as in cc-config.test.js.
+  try {
+    fs.rmSync(TMP_ROOT, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  } catch {
+    /* best-effort temp cleanup */
+  }
 });
 
 describe("codex-home watcher trigger filter", () => {

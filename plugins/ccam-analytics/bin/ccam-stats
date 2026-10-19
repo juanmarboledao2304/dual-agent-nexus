@@ -33,7 +33,7 @@ EOF
 
 check_dashboard() {
   if ! curl -sf "${DASHBOARD_URL}/api/health" > /dev/null 2>&1; then
-    echo "✗ Dashboard unreachable at ${DASHBOARD_URL}" >&2
+    echo "ERR Dashboard unreachable at ${DASHBOARD_URL}" >&2
     echo "  Start it with: cd <agent-monitor-dir> && npm start" >&2
     exit 1
   fi

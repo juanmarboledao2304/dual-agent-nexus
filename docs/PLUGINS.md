@@ -22,7 +22,7 @@ Do not install the same capability through multiple paths unless you intentional
 ## Install for Claude Code
 
 ```bash
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
 claude plugin install ccam-platform@claude-code-agent-monitor-plugins
 ```
 
@@ -36,7 +36,7 @@ claude plugin validate . --strict
 ## Install for Codex
 
 ```bash
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
 codex plugin list --marketplace claude-code-agent-monitor-plugins --available --json
 codex plugin add ccam-platform@claude-code-agent-monitor-plugins
 ```
@@ -49,10 +49,10 @@ The repository does not need a PR to the `vercel-labs/skills` source repository.
 
 ```bash
 # List all 77 repository skills without installing
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 
 # Install one skill into the current project for Claude Code and Codex
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -62,7 +62,7 @@ npx skills add hoangsonww/Claude-Code-Agent-Monitor \
 npx skills list --json
 
 # Install the same skill globally for both agents
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -73,7 +73,7 @@ npx skills add hoangsonww/Claude-Code-Agent-Monitor \
 npx skills list --global --json
 
 # Install all discovered skills for every supported agent in the current project
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --all
+npx skills add juanmarboledao2304/dual-agent-nexus --all
 
 # Update project-scoped or global skills
 npx skills update --project --yes

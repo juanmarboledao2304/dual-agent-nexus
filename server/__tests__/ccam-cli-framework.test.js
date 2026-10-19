@@ -390,7 +390,7 @@ describe("ccam framework — sessions, agents, events", () => {
     const text = await ccam("sessions", "transcript", SESSION);
     assert.equal(text.code, 0);
     assert.match(text.out, /List the files please/);
-    assert.match(text.out, /⚙ Bash/);
+    assert.match(text.out, /TOOL Bash/);
     const raw = await ccam("sessions", "transcript", SESSION, "--json");
     assert.ok(Array.isArray(JSON.parse(raw.out).messages));
   });

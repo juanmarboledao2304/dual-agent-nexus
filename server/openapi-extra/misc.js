@@ -14,7 +14,7 @@
  *   - POST   /api/remote-sources/{id}/sync     (Remote Sources)
  *   - GET    /api/settings/snapshots           (Settings)
  *   - POST   /api/settings/snapshots/compress  (Settings)
- *   - POST   /api/settings/snapshots/prune     (Settings) ⚠ DESTRUCTIVE when applied
+ *   - POST   /api/settings/snapshots/prune     (Settings) WARN DESTRUCTIVE when applied
  *
  * Exports `{ tags, schemas, paths }` and is combined into the base spec by
  * server/openapi-extra.js. Schema names are prefixed (Sessions / Settings /
@@ -198,10 +198,7 @@ const schemas = {
         description:
           "Distinct, non-empty session working directories (the `cwd` column), sorted ascending. Powers the cwd filter dropdown.",
         items: { type: "string" },
-        example: [
-          "/Users/son/WebstormProjects/Claude-Code-Agent-Monitor",
-          "/Users/son/code/another-project",
-        ],
+        example: ["/Users/you/projects/dual-agent-nexus", "/Users/son/code/another-project"],
       },
       sources: {
         type: "array",
@@ -812,7 +809,7 @@ const paths = {
       tags: ["Settings"],
       summary: "Plan or apply a transcript snapshot prune",
       description:
-        'Selects whole finished sessions (completed/error/abandoned; never active, and the size cap also spares sessions active in the last 24 h) whose snapshots to remove: those idle longer than `max_age_days`, then oldest-first until the total is under `max_bytes`, plus — only with `orphans: true` — snapshots whose session row no longer exists. DRY RUN BY DEFAULT: nothing is deleted unless `dry_run: false` and `confirm: "PRUNE_SNAPSHOTS"` are both sent. ⚠ Applying is IRREVERSIBLE — once Claude Code/Codex/Cursor deleted the original, the snapshot is the only copy of that conversation. Cap-driven removals are tombstoned so a re-import does not recreate them (a session that later resumes is protected again).',
+        'Selects whole finished sessions (completed/error/abandoned; never active, and the size cap also spares sessions active in the last 24 h) whose snapshots to remove: those idle longer than `max_age_days`, then oldest-first until the total is under `max_bytes`, plus — only with `orphans: true` — snapshots whose session row no longer exists. DRY RUN BY DEFAULT: nothing is deleted unless `dry_run: false` and `confirm: "PRUNE_SNAPSHOTS"` are both sent. WARN Applying is IRREVERSIBLE — once Claude Code/Codex/Cursor deleted the original, the snapshot is the only copy of that conversation. Cap-driven removals are tombstoned so a re-import does not recreate them (a session that later resumes is protected again).',
       operationId: "pruneSnapshots",
       requestBody: {
         required: true,
@@ -865,10 +862,7 @@ const paths = {
             "application/json": {
               schema: { $ref: "#/components/schemas/SessionsFacetsResponse" },
               example: {
-                cwds: [
-                  "/Users/son/WebstormProjects/Claude-Code-Agent-Monitor",
-                  "/Users/son/code/another-project",
-                ],
+                cwds: ["/Users/you/projects/dual-agent-nexus", "/Users/son/code/another-project"],
                 sources: ["local", "4d1f0e2a-7b9c-4c33-8a21-9e0f7b6d4c11"],
               },
             },

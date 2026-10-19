@@ -2,19 +2,18 @@
 # This YAML mirrors the live spec served at GET /api/openapi.json.
 openapi: 3.0.3
 info:
-  title: Agent Dashboard for Claude Code, Cursor, and Codex API
-  version: 2.3.0
-  description: HTTP API for real-time Claude Code, Cursor, and Codex session monitoring, agent lifecycle tracking, analytics, provider-specific pricing, hooks ingestion, and workflow intelligence.
+  title: DualAgent Nexus API
+  version: 3.0.0
+  description: 'HTTP API for DualAgent Nexus: real-time Claude Code and Google Antigravity session monitoring, 3-pool agy-cascade waterfall telemetry, cross-CLI subagent lifecycle tracking, analytics, hooks ingestion, and workflow intelligence.'
   contact:
-    name: Son Nguyen
-    email: hoangson091104@gmail.com
-    url: https://github.com/hoangsonww/Claude-Code-Agent-Monitor
+    name: Juan Manuel Arboleda Orozco
+    url: https://github.com/juanmarboledao2304/dual-agent-nexus
   license:
     name: MIT
-    url: https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/main/LICENSE
+    url: https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/LICENSE
 externalDocs:
   description: Project documentation
-  url: https://github.com/hoangsonww/Claude-Code-Agent-Monitor#readme
+  url: https://github.com/juanmarboledao2304/dual-agent-nexus#readme
 servers:
   - url: http://localhost:7770
     description: Local dashboard server (default)
@@ -587,7 +586,7 @@ components:
         version:
           type: string
           description: Dashboard release version from package.json
-          example: 2.3.0
+          example: 3.0.0
         timestamp:
           type: string
           format: date-time
@@ -4494,7 +4493,7 @@ components:
           items:
             type: string
           example:
-            - /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+            - /Users/you/projects/dual-agent-nexus
             - /Users/son/code/another-project
         sources:
           type: array
@@ -5130,7 +5129,7 @@ paths:
                   - id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
                     name: Refactor pricing route + add cost endpoint
                     status: active
-                    cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    cwd: /Users/you/projects/dual-agent-nexus
                     model: claude-opus-4-20250514
                     started_at: '2026-06-25T14:02:11.004Z'
                     ended_at: null
@@ -5171,7 +5170,7 @@ paths:
                   - id: 1a2b3c4d-5e6f-4071-8293-a4b5c6d7e8f9
                     name: Fix flaky transcript pagination test
                     status: completed
-                    cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    cwd: /Users/you/projects/dual-agent-nexus
                     model: claude-sonnet-4-20250514
                     started_at: '2026-06-24T09:12:00.000Z'
                     ended_at: '2026-06-24T09:48:32.501Z'
@@ -5202,7 +5201,7 @@ paths:
             example:
               id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
               name: Refactor pricing route + add cost endpoint
-              cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+              cwd: /Users/you/projects/dual-agent-nexus
               model: claude-opus-4-20250514
               metadata:
                 source: hook
@@ -5219,7 +5218,7 @@ paths:
                   id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
                   name: Refactor pricing route + add cost endpoint
                   status: active
-                  cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                  cwd: /Users/you/projects/dual-agent-nexus
                   model: claude-opus-4-20250514
                   started_at: '2026-06-25T14:02:11.004Z'
                   ended_at: null
@@ -5243,7 +5242,7 @@ paths:
                   id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
                   name: Refactor pricing route + add cost endpoint
                   status: active
-                  cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                  cwd: /Users/you/projects/dual-agent-nexus
                   model: claude-opus-4-20250514
                   started_at: '2026-06-25T14:02:11.004Z'
                   ended_at: null
@@ -5288,7 +5287,7 @@ paths:
                   id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
                   name: Refactor pricing route + add cost endpoint
                   status: active
-                  cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                  cwd: /Users/you/projects/dual-agent-nexus
                   model: claude-opus-4-20250514
                   started_at: '2026-06-25T14:02:11.004Z'
                   ended_at: null
@@ -5417,7 +5416,7 @@ paths:
                   id: b7f3a2c1-4e5d-4a8b-9c2f-1d6e8a0b3c4d
                   name: Refactor pricing route + add cost endpoint
                   status: completed
-                  cwd: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                  cwd: /Users/you/projects/dual-agent-nexus
                   model: claude-opus-4-20250514
                   started_at: '2026-06-25T14:02:11.004Z'
                   ended_at: '2026-06-25T15:07:44.220Z'
@@ -7135,7 +7134,7 @@ paths:
                 $ref: '#/components/schemas/SettingsInfoResponse'
               example:
                 db:
-                  path: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor/server/data/agent-monitor.db
+                  path: server/data/agent-monitor.db
                   size: 48922624
                   counts:
                     sessions: 412
@@ -7223,7 +7222,7 @@ paths:
       tags:
         - Settings
       summary: Delete all dashboard data
-      description: '⚠ DESTRUCTIVE — IRREVERSIBLE. Deletes ALL sessions, agents, events, token_usage rows, the fired-alert feed (alert_events), and the webhook delivery log. There is no confirmation step and no undo — export first via GET /api/settings/export if you need a backup. User CONFIGURATION survives: alert *rules*, webhook *targets*, model_pricing, and gpt_model_pricing are preserved (they''re settings, not captured data). The response echoes the row counts that existed BEFORE the wipe so the UI can report what was removed.'
+      description: 'WARN DESTRUCTIVE — IRREVERSIBLE. Deletes ALL sessions, agents, events, token_usage rows, the fired-alert feed (alert_events), and the webhook delivery log. There is no confirmation step and no undo — export first via GET /api/settings/export if you need a backup. User CONFIGURATION survives: alert *rules*, webhook *targets*, model_pricing, and gpt_model_pricing are preserved (they''re settings, not captured data). The response echoes the row counts that existed BEFORE the wipe so the UI can report what was removed.'
       operationId: clearData
       responses:
         '200':
@@ -7360,7 +7359,7 @@ paths:
       tags:
         - Settings
       summary: Reset pricing defaults
-      description: '⚠ DESTRUCTIVE to pricing customizations. With `provider: claude` or `provider: codex`, deletes and re-seeds only that provider''s pricing table so the other provider''s custom rules remain untouched. Omitting the body preserves the legacy CLI/MCP behavior and resets both tables. Custom rates or model patterns in the selected scope are permanently lost — there is no undo. Captured session/token data is untouched. The response returns both current tables and identifies the reset scope.'
+      description: 'WARN DESTRUCTIVE to pricing customizations. With `provider: claude` or `provider: codex`, deletes and re-seeds only that provider''s pricing table so the other provider''s custom rules remain untouched. Omitting the body preserves the legacy CLI/MCP behavior and resets both tables. Custom rates or model patterns in the selected scope are permanently lost — there is no undo. Captured session/token data is untouched. The response returns both current tables and identifies the reset scope.'
       operationId: resetPricing
       requestBody:
         required: false
@@ -7518,7 +7517,7 @@ paths:
       tags:
         - Settings
       summary: Abandon stale sessions and optionally purge old history
-      description: 'Two-phase maintenance. Phase 1 (`abandon_hours`, non-destructive): marks any still-`active` session with no events newer than that many hours as `abandoned`, and completes its lingering agents — a tidy-up of crashed/orphaned sessions. Phase 2 (`purge_days`) is ⚠ DESTRUCTIVE and IRREVERSIBLE: it permanently DELETES completed/error/abandoned sessions (and their events, agents, and token_usage) whose `started_at` is older than that many days. Active sessions are NEVER purged. Purged sessions'' transcript snapshots (all three provider snapshot dirs) are deleted with them and reported as `purged_snapshot_files` / `purged_snapshot_bytes`. Both fields are optional and independent — send only `abandon_hours` for a safe tidy-up, or include `purge_days` to also reclaim disk. Export first if the purged history matters. The response reports counts for each phase.'
+      description: 'Two-phase maintenance. Phase 1 (`abandon_hours`, non-destructive): marks any still-`active` session with no events newer than that many hours as `abandoned`, and completes its lingering agents — a tidy-up of crashed/orphaned sessions. Phase 2 (`purge_days`) is WARN DESTRUCTIVE and IRREVERSIBLE: it permanently DELETES completed/error/abandoned sessions (and their events, agents, and token_usage) whose `started_at` is older than that many days. Active sessions are NEVER purged. Purged sessions'' transcript snapshots (all three provider snapshot dirs) are deleted with them and reported as `purged_snapshot_files` / `purged_snapshot_bytes`. Both fields are optional and independent — send only `abandon_hours` for a safe tidy-up, or include `purge_days` to also reclaim disk. Export first if the purged history matters. The response reports counts for each phase.'
       operationId: cleanupData
       requestBody:
         required: true
@@ -7880,7 +7879,7 @@ paths:
                   summary: Behind origin — update available
                   value:
                     git_repo: true
-                    repo_root: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    repo_root: /Users/you/projects/dual-agent-nexus
                     update_available: true
                     commits_behind: 4
                     remote_ref: origin/master
@@ -7892,7 +7891,7 @@ paths:
                   summary: Up to date with origin
                   value:
                     git_repo: true
-                    repo_root: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    repo_root: /Users/you/projects/dual-agent-nexus
                     update_available: false
                     commits_behind: 0
                     remote_ref: origin/master
@@ -7937,7 +7936,7 @@ paths:
                   summary: Behind origin — update available
                   value:
                     git_repo: true
-                    repo_root: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    repo_root: /Users/you/projects/dual-agent-nexus
                     update_available: true
                     commits_behind: 4
                     remote_ref: origin/master
@@ -7949,7 +7948,7 @@ paths:
                   summary: Up to date with origin
                   value:
                     git_repo: true
-                    repo_root: /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                    repo_root: /Users/you/projects/dual-agent-nexus
                     update_available: false
                     commits_behind: 0
                     remote_ref: origin/master
@@ -10627,7 +10626,7 @@ paths:
       tags:
         - Settings
       summary: Plan or apply a transcript snapshot prune
-      description: 'Selects whole finished sessions (completed/error/abandoned; never active, and the size cap also spares sessions active in the last 24 h) whose snapshots to remove: those idle longer than `max_age_days`, then oldest-first until the total is under `max_bytes`, plus — only with `orphans: true` — snapshots whose session row no longer exists. DRY RUN BY DEFAULT: nothing is deleted unless `dry_run: false` and `confirm: "PRUNE_SNAPSHOTS"` are both sent. ⚠ Applying is IRREVERSIBLE — once Claude Code/Codex/Cursor deleted the original, the snapshot is the only copy of that conversation. Cap-driven removals are tombstoned so a re-import does not recreate them (a session that later resumes is protected again).'
+      description: 'Selects whole finished sessions (completed/error/abandoned; never active, and the size cap also spares sessions active in the last 24 h) whose snapshots to remove: those idle longer than `max_age_days`, then oldest-first until the total is under `max_bytes`, plus — only with `orphans: true` — snapshots whose session row no longer exists. DRY RUN BY DEFAULT: nothing is deleted unless `dry_run: false` and `confirm: "PRUNE_SNAPSHOTS"` are both sent. WARN Applying is IRREVERSIBLE — once Claude Code/Codex/Cursor deleted the original, the snapshot is the only copy of that conversation. Cap-driven removals are tombstoned so a re-import does not recreate them (a session that later resumes is protected again).'
       operationId: pruneSnapshots
       requestBody:
         required: true
@@ -10675,7 +10674,7 @@ paths:
                 $ref: '#/components/schemas/SessionsFacetsResponse'
               example:
                 cwds:
-                  - /Users/son/WebstormProjects/Claude-Code-Agent-Monitor
+                  - /Users/you/projects/dual-agent-nexus
                   - /Users/son/code/another-project
                 sources:
                   - local
@@ -11489,4 +11488,4 @@ paths:
           description: Missing file, invalid JSON, or unrecognized export format
         '413':
           description: The export bundle exceeds the 25 MiB restore limit
-x-issues-url: https://github.com/hoangsonww/Claude-Code-Agent-Monitor/issues
+x-issues-url: https://github.com/juanmarboledao2304/dual-agent-nexus/issues

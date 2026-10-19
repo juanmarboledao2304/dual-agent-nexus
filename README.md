@@ -126,9 +126,9 @@ npm run install-hooks --all
 DualAgent Nexus ships **14 plugins**, **66 plugin skills**, **18 Claude subagents**, **34 Claude commands**, and **77 total repository skills** across Claude Code and Codex formats.
 
 ```bash
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 ```
 
 ---
@@ -136,5 +136,5 @@ npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
 ## Attribution & License
 
 - **DualAgent Nexus Architecture & 3-Pool `agy-cascade` Waterfall System:** Designed and engineered by **Juan Manuel Arboleda Orozco** ([@juanmarboledao2304](https://github.com/juanmarboledao2304)).
-- **Base Platform:** Adapted under the terms of the MIT License from `Claude-Code-Agent-Monitor` by **Son Nguyen** ([@hoangsonww](https://github.com/hoangsonww)).
+- **Base Platform:** Adapted under the terms of the MIT License from [`Claude-Code-Agent-Monitor`](https://github.com/hoangsonww/Claude-Code-Agent-Monitor) by **Son Nguyen** ([@hoangsonww](https://github.com/hoangsonww)).
 - **License:** [MIT License](./LICENSE). Free for personal and commercial use.

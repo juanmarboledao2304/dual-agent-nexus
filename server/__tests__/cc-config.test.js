@@ -10,6 +10,7 @@
 
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert/strict");
+const { SKIP_WITHOUT_SYMLINKS } = require("./helpers/symlink-support");
 const fs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
@@ -432,18 +433,22 @@ describe("/api/cc-config", () => {
     assert.equal(body.error.code, "READ_DENIED");
   });
 
-  it("file endpoint blocks symlinks inside an allowed root that escape outside", async () => {
-    const outside = path.join(TMP, "outside-secret.md");
-    const linked = path.join(FAKE_HOME, "agents", "linked-secret.md");
-    fs.writeFileSync(outside, "outside secret");
-    fs.symlinkSync(outside, linked);
-    const { status, body } = await fetchJson(
-      `/api/cc-config/file?cwd=${encodeURIComponent(FAKE_PROJECT)}&path=${encodeURIComponent(linked)}`
-    );
-    assert.equal(status, 400);
-    assert.equal(body.error.code, "READ_DENIED");
-    fs.unlinkSync(linked);
-  });
+  it(
+    "file endpoint blocks symlinks inside an allowed root that escape outside",
+    { skip: SKIP_WITHOUT_SYMLINKS },
+    async () => {
+      const outside = path.join(TMP, "outside-secret.md");
+      const linked = path.join(FAKE_HOME, "agents", "linked-secret.md");
+      fs.writeFileSync(outside, "outside secret");
+      fs.symlinkSync(outside, linked);
+      const { status, body } = await fetchJson(
+        `/api/cc-config/file?cwd=${encodeURIComponent(FAKE_PROJECT)}&path=${encodeURIComponent(linked)}`
+      );
+      assert.equal(status, 400);
+      assert.equal(body.error.code, "READ_DENIED");
+      fs.unlinkSync(linked);
+    }
+  );
 
   it("file endpoint blocks .. traversal", async () => {
     const tricky = path.join(FAKE_HOME, "..", "..", "etc", "passwd");

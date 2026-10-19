@@ -1,14 +1,14 @@
 {
   "name": "ccam-platform",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Administer CCAM's Claude Code and Codex configuration explorers, provider-aware history import, backup restore, hook installation, home directories, updates, and MCP server.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
     "url": "https://github.com/hoangsonww"
   },
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
-  "repository": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
+  "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "license": "MIT",
   "keywords": ["claude-code", "codex", "config", "hooks", "import", "backup", "mcp"],
   "skills": "./skills/",
@@ -20,7 +20,7 @@
     "developerName": "Son Nguyen",
     "category": "Developer Tools",
     "capabilities": ["Read", "Write"],
-    "websiteURL": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+    "websiteURL": "https://github.com/juanmarboledao2304/dual-agent-nexus",
     "defaultPrompt": [
       "Use CCAM Platform to inspect the local CCAM dashboard.",
       "Use CCAM Platform to analyze recent agent activity."

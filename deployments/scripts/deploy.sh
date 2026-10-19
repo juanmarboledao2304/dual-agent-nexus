@@ -30,9 +30,9 @@ NC='\033[0m'
 
 log()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $*"; }
 info()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${BLUE}ℹ${NC}  $*"; }
-ok()    { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}✔${NC}  $*"; }
-warn()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}⚠${NC}  $*" >&2; }
-err()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}✖${NC}  $*" >&2; }
+ok()    { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${GREEN}OK${NC}  $*"; }
+warn()  { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${YELLOW}WARN${NC}  $*" >&2; }
+err()   { echo -e "${CYAN}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} ${RED}ERR${NC}  $*" >&2; }
 fatal() { err "$@"; exit 1; }
 
 banner() {
@@ -85,7 +85,7 @@ ${BOLD}Options:${NC}
 
 ${BOLD}Examples:${NC}
   $(basename "$0") --env dev --method helm
-  $(basename "$0") --env production --method helm --tag 2.3.0
+  $(basename "$0") --env production --method helm --tag 3.0.0
   $(basename "$0") --env staging --method kustomize --dry-run
 
 EOF
@@ -299,7 +299,7 @@ deploy_kustomize() {
 
   local rendered
   rendered="$(mktemp)"
-  kubectl kustomize "${overlay_dir}" | sed "s|ccam-dashboard:2.3.0|${FULL_IMAGE}|g" > "${rendered}"
+  kubectl kustomize "${overlay_dir}" | sed "s|ccam-dashboard:3.0.0|${FULL_IMAGE}|g" > "${rendered}"
   if ! kubectl apply -f "${rendered}" --server-side --field-manager=ccam-deployer; then
     rm -f "${rendered}"
     err "Kustomize deployment failed!"

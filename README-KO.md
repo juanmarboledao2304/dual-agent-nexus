@@ -75,7 +75,7 @@ Claude Code, Cursor, Codex 에이전트 세션, 도구 사용, 대화 기록, �
 > 참고: 영어 원문은 [README-EN.md](./README-EN.md), 중국어 버전은 [README-CN.md](./README-CN.md) (中文版本), 베트남어 버전은 [README-VN.md](./README-VN.md) (Phiên bản tiếng Việt), 스페인어 버전은 [README-ES.md](./README-ES.md) (Español)를 확인하세요. 이 문서는 한국어 버전입니다.
 
 > [!NOTE]
-> 작업 중심의 도움이 필요하신가요? [GitHub Wiki](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/wiki)는 일상적인 사용, 팀 운영, 문제 해결, CLI/MCP 자동화 및 배포 절차를 위한 실용 핸드북입니다. [현지화된 정적 Wiki](https://hoangsonww.github.io/Claude-Code-Agent-Monitor/wiki/)는 영어, 베트남어, 중국어, 한국어 및 스페인어 제품·아키텍처 둘러보기를 계속 제공하며, 정확한 기술 계약은 [`docs/`](./docs/README.md)에 유지됩니다.
+> 작업 중심의 도움이 필요하신가요? [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki)는 일상적인 사용, 팀 운영, 문제 해결, CLI/MCP 자동화 및 배포 절차를 위한 실용 핸드북입니다. [현지화된 정적 Wiki](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/)는 영어, 베트남어, 중국어, 한국어 및 스페인어 제품·아키텍처 둘러보기를 계속 제공하며, 정확한 기술 계약은 [`docs/`](./docs/README.md)에 유지됩니다.
 
 ---
 
@@ -347,7 +347,7 @@ flowchart LR
 | **Seed Data** | 내장 script가 실제적인 demo 및 development data를 제공합니다. |
 | **Statusline** | 컬러 CLI strip이 model, context, Git branch, 방향별 token, USD session cost를 표시합니다. |
 | **Model Name Formatting** | Claude, GPT, Gemini identifier에서 provider/date/latest suffix를 제거하고, numeric version을 연결하고, context tag를 형식화해 읽기 쉬운 이름을 만듭니다. Settings에는 raw pricing pattern이 유지됩니다. |
-| **Claude + Codex Plugin Marketplace** | 하나의 14-plugin tree가 두 manifest 형식과 catalog, 66 plugin skill, 18 Claude Subagent, 34 Claude command, 3 CLI helper, OpenAI metadata를 제공합니다. `npx skills add hoangsonww/Claude-Code-Agent-Monitor --list`는 77 repository skill을 찾습니다. |
+| **Claude + Codex Plugin Marketplace** | 하나의 14-plugin tree가 두 manifest 형식과 catalog, 66 plugin skill, 18 Claude Subagent, 34 Claude command, 3 CLI helper, OpenAI metadata를 제공합니다. `npx skills add juanmarboledao2304/dual-agent-nexus --list`는 77 repository skill을 찾습니다. |
 | **Run Claude** | Conversation과 one-shot mode는 resume/view history, 동시 background run, transcript-aware reattach, model/effort/permission/cwd 제어, partial-message smoothing, thinking 보존, slash command, `@` file, context와 cost meter, live status를 지원합니다. Same-origin 보호는 drive-by spawning을 차단하고, concurrency는 기본 10000 safety ceiling이며 `RUN_MAX_CONCURRENT`로 낮출 수 있습니다. |
 | **Claude Config Explorer** | 12개 탭이 skills, agents, commands, styles, plugins, marketplaces, MCP, hooks, settings, memory, keybindings, statusline을 검사합니다. Canonical path는 symlink escape를 차단하고, 지원되는 text surface는 tree 밖 timestamp backup과 atomic create/edit/delete를 사용하며, 민감한 구성은 정확한 CLI 안내와 함께 read-only로 유지됩니다. 500 ms `cc-watcher`가 외부 변경을 broadcast합니다. |
 | **Tabby** | 의존성 없는 WebSocket mascot이 활동에서 파생된 8가지 mood, 제한된 speech, quick action, local status answer, 더 넓은 prompt를 위한 Run Claude handoff를 제공합니다. Keyboard accessible, reduced-motion aware, disconnected 상태에서도 안전하며 설정 가능하고 현지화됩니다. |
@@ -373,8 +373,8 @@ flowchart LR
 ### 1. 설치
 
 ```bash
-git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup
 ```
 
@@ -444,7 +444,7 @@ npm run seed
 
 터미널을 계속 열어 두고 싶지 않다면 선택적 **네이티브 데스크톱 앱**을 설치하세요. 서버를 인프로세스로 임베드하고, 메뉴 바 / 알림 영역(트레이) 아이콘을 추가하며, 로그인 시 자동 시작(macOS 로그인 항목 / Windows 시작 프로그램)을 지원합니다.
 
-가장 빠른 방법은 [최신 GitHub Release](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest)에서 **미리 빌드된 설치 파일을 다운로드**하는 것입니다(`master`에서 `package.json` 버전이 올라갈 때마다 CI가 `vX.Y.Z`를 자동 게시합니다):
+가장 빠른 방법은 [최신 GitHub Release](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest)에서 **미리 빌드된 설치 파일을 다운로드**하는 것입니다(`master`에서 `package.json` 버전이 올라갈 때마다 CI가 `vX.Y.Z`를 자동 게시합니다):
 
 - **macOS** — `ClaudeCodeMonitor-<version>-arm64.dmg`(Apple Silicon) 또는 `-x64.dmg`(Intel)를 받아 **Claude Code Monitor.app**을 `/Applications`로 드래그하세요.
 - **Windows** — `ClaudeCodeMonitor-Setup-<version>-x64.exe`(설치 관리자) 또는 `ClaudeCodeMonitor-<version>-x64-portable.exe`(무설치)를 받아 실행하세요.
@@ -1437,7 +1437,7 @@ flowchart LR
 {
   "git_repo": true,
   "update_available": true,
-  "repo_root": "/Users/you/Claude-Code-Agent-Monitor",
+  "repo_root": "/Users/you/dual-agent-nexus",
   "remote_ref": "upstream/master",
   "canonical_remote": "upstream",
   "current_branch": "master",
@@ -1657,7 +1657,7 @@ flowchart LR
 
 ### 받는 방법
 
-**옵션 A — 사전 빌드된 설치 프로그램 다운로드(권장).** **[Releases → latest](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest)**에서 받을 수 있습니다(공개, GitHub 로그인 불필요). `master`에서 `package.json`의 버전이 올라갈 때마다 CI가 새 `vX.Y.Z` 릴리스를 자동 게시하므로, 이 링크는 항상 현재 빌드를 제공합니다:
+**옵션 A — 사전 빌드된 설치 프로그램 다운로드(권장).** **[Releases → latest](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest)**에서 받을 수 있습니다(공개, GitHub 로그인 불필요). `master`에서 `package.json`의 버전이 올라갈 때마다 CI가 새 `vX.Y.Z` 릴리스를 자동 게시하므로, 이 링크는 항상 현재 빌드를 제공합니다:
 
 | 플랫폼 | 에셋 | 비고 |
 | --- | --- | --- |
@@ -1829,18 +1829,18 @@ CCAM은 하나의 공유 source tree에서 **14개 플러그인**을 제공합�
 
 ```bash
 # Claude Code
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
 claude plugin install ccam-platform@claude-code-agent-monitor-plugins
 
 # Codex
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
 codex plugin add ccam-platform@claude-code-agent-monitor-plugins
 
 # Open Agent Skills / skills.sh-compatible CLI
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 
 # Install one skill for Claude Code and Codex in the current project
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -1852,7 +1852,7 @@ npx skills update --project --yes
 npx skills remove mcp-server --yes
 
 # Add --global to install at user scope, then manage that scope explicitly
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -2278,7 +2278,7 @@ agent-dashboard/
 
 기여를 환영합니다 — 전체 가이드는 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)를 참조하십시오.
 
-모든 기여자는 [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)에 서명해야 합니다. 이는 ` CLA Assistant` GitHub Action에 의해 모든 풀 리퀘스트에서 자동으로 적용됩니다: 처음 PR을 열면 봇이 `I have read the CLA Document and I hereby sign the CLA`라고 댓글을 달아 서명하도록 요청합니다. 서명할 때까지 PR의 **CLA Assistant** 상태 검사는 빨간색으로 유지되며, 한 번 서명하면 이후의 모든 기여에 적용됩니다.
+모든 기여자는 [Contributor License Agreement](https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/CLA.md)에 서명해야 합니다. 이는 ` CLA Assistant` GitHub Action에 의해 모든 풀 리퀘스트에서 자동으로 적용됩니다: 처음 PR을 열면 봇이 `I have read the CLA Document and I hereby sign the CLA`라고 댓글을 달아 서명하도록 요청합니다. 서명할 때까지 PR의 **CLA Assistant** 상태 검사는 빨간색으로 유지되며, 한 번 서명하면 이후의 모든 기여에 적용됩니다.
 
 ---
 

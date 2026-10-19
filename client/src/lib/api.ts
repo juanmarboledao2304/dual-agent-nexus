@@ -63,7 +63,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/client/src/lib/api.ts`
+ * **Path:** `client/src/lib/api.ts`
  * **Purpose:** Central typed HTTP client for every REST route; attaches auth token, data-scope `sources` query params, and normalizes error payloads.
  *
  * ## Design constraints

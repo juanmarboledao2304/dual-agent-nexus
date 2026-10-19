@@ -80,7 +80,7 @@ function offlineBanner() {
     return;
   }
   console.log(
-    `${c.yellow("⚠ Offline mode")} ${c.dim(`— server not running; reading ${dbPath()} directly.`)}`
+    `${c.yellow("WARN Offline mode")} ${c.dim(`— server not running; reading ${dbPath()} directly.`)}`
   );
   console.log(
     c.dim("  Data is as of the last capture — live capture and full features need the server: ") +

@@ -278,7 +278,7 @@ async function sessionRename({ args, opts }) {
   });
   const r = await patch(`/api/sessions/${enc(id)}`, { name });
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Renamed ${c.dim(short(id))} → ${c.bold(r.session?.name || name)}`);
+  console.log(`${c.green("OK")} Renamed ${c.dim(short(id))} → ${c.bold(r.session?.name || name)}`);
 }
 
 async function sessionUpdate({ args, opts }) {
@@ -300,7 +300,7 @@ async function sessionUpdate({ args, opts }) {
   const r = await patch(`/api/sessions/${enc(args[0])}`, body);
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Updated session ${c.bold(r.session?.id || args[0])} ${colorStatus(r.session?.status)}`
+    `${c.green("OK")} Updated session ${c.bold(r.session?.id || args[0])} ${colorStatus(r.session?.status)}`
   );
 }
 
@@ -316,7 +316,7 @@ async function sessionCreate({ opts }) {
   if (isJson()) return printJson(r);
   console.log(
     r.created
-      ? `${c.green("✔")} Created session ${c.bold(r.session.id)}`
+      ? `${c.green("OK")} Created session ${c.bold(r.session.id)}`
       : `${c.dim("·")} Session ${c.bold(r.session.id)} already exists — unchanged`
   );
 }
@@ -394,7 +394,7 @@ function renderTranscript(d, { full = false } = {}) {
       else if (b.type === "tool_use") {
         const input = typeof b.input === "string" ? b.input : JSON.stringify(b.input ?? {});
         console.log(
-          `  ${c.magenta("⚙")} ${c.bold(b.name || "tool")} ${c.dim(trunc(input, full ? 4000 : 160))}`
+          `  ${c.magenta("TOOL")} ${c.bold(b.name || "tool")} ${c.dim(trunc(input, full ? 4000 : 160))}`
         );
       } else if (b.type === "tool_result") {
         const text = blockText(b.output ?? b.content);
@@ -471,7 +471,7 @@ async function transcriptImage({ args, opts }) {
   const buf = Buffer.from(await response.arrayBuffer());
   fs.writeFileSync(output, buf);
   if (isJson()) return printJson({ path: output, bytes: buf.length, content_type: contentType });
-  console.log(`${c.green("✔")} Saved transcript image to ${c.bold(output)}`);
+  console.log(`${c.green("OK")} Saved transcript image to ${c.bold(output)}`);
 }
 
 // ── Agents ──────────────────────────────────────────────────────────────────
@@ -564,7 +564,7 @@ async function agentUpdate({ args, opts }) {
   const r = await patch(`/api/agents/${enc(args[0])}`, body);
   if (isJson()) return printJson(r);
   console.log(
-    `${c.green("✔")} Updated agent ${c.bold(r.agent?.id || args[0])} ${colorStatus(r.agent?.status)}`
+    `${c.green("OK")} Updated agent ${c.bold(r.agent?.id || args[0])} ${colorStatus(r.agent?.status)}`
   );
 }
 
@@ -589,7 +589,7 @@ async function agentCreate({ opts }) {
   if (isJson()) return printJson(r);
   console.log(
     r.created
-      ? `${c.green("✔")} Created agent ${c.bold(r.agent.id)}`
+      ? `${c.green("OK")} Created agent ${c.bold(r.agent.id)}`
       : `${c.dim("·")} Agent ${c.bold(r.agent.id)} already exists — unchanged`
   );
 }

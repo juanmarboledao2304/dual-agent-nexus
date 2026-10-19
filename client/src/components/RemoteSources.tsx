@@ -16,7 +16,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/client/src/components/RemoteSources.tsx`
+ * **Path:** `client/src/components/RemoteSources.tsx`
  * **Purpose:** Supports federated dashboards: register SSH-backed or file-synced remote machines, health-check tunnels, and scope the entire UI to local vs all vs selected sources.
  *
  * ## Design constraints

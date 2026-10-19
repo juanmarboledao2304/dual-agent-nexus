@@ -297,7 +297,7 @@ function envelopeLine(e) {
         b.type === "text"
           ? `${c.cyan("assistant")} ${trunc(b.text, 160)}`
           : b.type === "tool_use"
-            ? `${c.magenta("⚙ tool")} ${c.bold(b.name)} ${c.dim(trunc(JSON.stringify(b.input || {}), 120))}`
+            ? `${c.magenta("TOOL")} ${c.bold(b.name)} ${c.dim(trunc(JSON.stringify(b.input || {}), 120))}`
             : `${c.dim(b.type)}`
       )
       .join("\n");
@@ -313,7 +313,7 @@ function envelopeLine(e) {
   }
   if (t === "result") {
     const cost = e.total_cost_usd != null ? ` ${fmtCost(e.total_cost_usd)}` : "";
-    return `${e.is_error ? c.red("✖ result") : c.green("✔ result")}${cost} ${c.dim(trunc(e.result || e.subtype || "", 120))}`;
+    return `${e.is_error ? c.red("ERR result") : c.green("OK result")}${cost} ${c.dim(trunc(e.result || e.subtype || "", 120))}`;
   }
   if (t === "system")
     return c.dim(`system ${e.subtype || ""} ${e.model ? `model=${e.model}` : ""}`);
@@ -338,7 +338,7 @@ async function followRun({ args, opts }) {
           `${JSON.stringify({ warning: { code: "ENVELOPES_MISSED", missed } })}\n`
         );
       } else {
-        console.log(c.yellow(`⚠ ${missed} envelope(s) were evicted before they could be shown`));
+        console.log(c.yellow(`WARN ${missed} envelope(s) were evicted before they could be shown`));
       }
     }
     const fresh = first
@@ -391,7 +391,7 @@ async function runStart({ opts }) {
   const r = await post("/api/run", body);
   if (opts.follow) return followRun({ args: [r.id], opts });
   jsonOr(r, (x) => {
-    console.log(`${c.green("✔")} Launched run ${c.bold(x.id)}`);
+    console.log(`${c.green("OK")} Launched run ${c.bold(x.id)}`);
     renderRunDetail(x);
     console.log(c.dim(`  Follow it with: ccam run follow ${x.id}`));
   });
@@ -404,14 +404,14 @@ async function runSend({ args, opts }) {
   });
   const provider = opts.provider || (await get(`/api/run/${enc(args[0])}`)).provider || "claude";
   const r = await post(`/api/run/${enc(args[0])}/message`, { text: opts.text, provider });
-  jsonOr(r, () => console.log(`${c.green("✔")} Message sent to run ${args[0]}`));
+  jsonOr(r, () => console.log(`${c.green("OK")} Message sent to run ${args[0]}`));
 }
 
 async function runStop({ args, opts }) {
   await confirm(opts, { prompt: `Stop run ${args[0]}?`, refusal: "run stop <id> requires --yes." });
   const r = await del(`/api/run/${enc(args[0])}`);
   if (isJson()) return printJson(r);
-  console.log(`${c.green("✔")} Stopped run ${args[0]}`);
+  console.log(`${c.green("OK")} Stopped run ${args[0]}`);
 }
 
 // ── cost ────────────────────────────────────────────────────────────────────
@@ -462,7 +462,7 @@ function renderCost(cost, sessionId, opts = {}) {
     console.log();
     console.log(
       c.yellow(
-        `⚠ ${unpriced.length} model(s) have usage but no pricing rule — excluded from the total:`
+        `WARN ${unpriced.length} model(s) have usage but no pricing rule — excluded from the total:`
       )
     );
     for (const u of unpriced) {

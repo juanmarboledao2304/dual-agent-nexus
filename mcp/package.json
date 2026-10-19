@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
-    "agent-dashboard": "file:..",
+    "dual-agent-nexus": "file:..",
     "zod": "^3.25.76"
   },
   "devDependencies": {

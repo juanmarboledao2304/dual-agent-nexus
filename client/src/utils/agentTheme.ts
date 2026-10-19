@@ -213,8 +213,14 @@ export function resolveProvider(
     .toLowerCase()
     .trim();
 
+  // Explicit providers win over model/name heuristics. "claude" is the Anthropic direct
+  // subscription (Pool 3) even on Opus/Sonnet 5.5 — mirrors server normalizeProvider().
+  if (p === "agy-claude") return "agy-claude";
+  if (p === "claude" || p === "claude-direct") return "claude";
+  if (p === "codex") return "codex";
+  if (p === "cursor") return "cursor";
+
   if (
-    p === "agy-claude" ||
     m.includes("opus-5") ||
     m.includes("opus 5") ||
     m.includes("sonnet-5") ||
@@ -726,6 +732,25 @@ export function resolveQuotaPoolBadge(provider: ThermalProvider | string): Quota
     return { pool: 2, id: "agy-gemini", label: "POOL 2 • AGY-GEMINI" };
   }
   return { pool: 3, id: "claude-direct", label: "POOL 3 • CLAUDE DIRECT" };
+}
+
+/**
+ * Normalize the waterfall's active pool to 1, 2, or 3. `/api/cascade/status` reports it as a pool
+ * id (`"agy-claude"`, `"agy-gemini"`, `"claude-direct"`); older payloads used the number.
+ *
+ * @param activePool - Pool id or number from the cascade status.
+ * @param fallback - Pool to assume when the value is missing or unknown.
+ * @returns The pool number.
+ */
+export function resolveActivePoolNumber(
+  activePool: string | number | null | undefined,
+  fallback: 1 | 2 | 3 = 1
+): 1 | 2 | 3 {
+  if (activePool === 1 || activePool === 2 || activePool === 3) return activePool;
+  if (activePool === "agy-claude") return 1;
+  if (activePool === "agy-gemini" || activePool === "antigravity") return 2;
+  if (activePool === "claude-direct" || activePool === "claude") return 3;
+  return fallback;
 }
 
 /**

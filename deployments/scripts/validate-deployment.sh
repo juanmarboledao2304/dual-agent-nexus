@@ -78,7 +78,7 @@ record_finding() {
   local name="$1" detail="$2"
   FINDINGS=$((FINDINGS + 1))
   warn_finding "$name" "$detail"
-  record "⚠️" "$name" "$detail"
+  record "WARN" "$name" "$detail"
 }
 
 # Runs one validator in a subshell so a `fatal` inside it ends only that check.
@@ -98,7 +98,7 @@ run_check() {
   cat "$out"
   group_end
   if (( status == 0 )); then
-    record "✅" "$name" "passed"
+    record "OK" "$name" "passed"
     log "${name}: passed"
   else
     detail="$(grep -m1 'ERROR:' "$out" | sed 's/^\[deployment-check\] ERROR: //')"
@@ -113,9 +113,9 @@ write_summary() {
   local total="${#SUMMARY_ROWS[@]}"
   local heading
   if (( FINDINGS == 0 )); then
-    heading="✅ Deployment stack review — no findings across ${total} checks"
+    heading="OK Deployment stack review — no findings across ${total} checks"
   else
-    heading="⚠️ Deployment stack review — ${FINDINGS} advisory finding(s) across ${total} checks"
+    heading="WARN Deployment stack review — ${FINDINGS} advisory finding(s) across ${total} checks"
   fi
   notice "${heading} (advisory: this job never fails the pipeline)"
   [[ -z "${GITHUB_STEP_SUMMARY:-}" ]] && return 0
@@ -213,7 +213,7 @@ audit_production_dependencies() {
     total="${header%%$'\t'*}"
     advisories="${header##*$'\t'}"
     if (( total == 0 )); then
-      record "✅" "${label} dependency audit" "no advisories in production dependencies"
+      record "OK" "${label} dependency audit" "no advisories in production dependencies"
       log "${label} production dependency audit passed"
       return 0
     fi

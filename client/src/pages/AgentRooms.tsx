@@ -484,7 +484,10 @@ function fmtTokens(n: number): string {
   return String(Math.round(n));
 }
 
-/** Tokens per hour: the server's burn rate when present, else lifetime average. */
+/** Shortest window a burn rate is averaged over, matching the server (15 minutes). */
+const BURN_RATE_MIN_WINDOW_HOURS = 0.25;
+
+/** Tokens per hour: the server's burn rate when present, else the lifetime average. */
 function burnRatePerHour(agent: Agent): number {
   if (typeof agent.burn_rate_per_hour === "number" && agent.burn_rate_per_hour > 0) {
     return agent.burn_rate_per_hour;
@@ -492,7 +495,9 @@ function burnRatePerHour(agent: Agent): number {
   const total = (agent.input_tokens ?? 0) + (agent.output_tokens ?? 0);
   const start = Date.parse(agent.started_at);
   const end = agent.ended_at ? Date.parse(agent.ended_at) : Date.now();
-  const hours = Number.isFinite(start) ? Math.max((end - start) / 3_600_000, 1 / 60) : 0;
+  const hours = Number.isFinite(start)
+    ? Math.max((end - start) / 3_600_000, BURN_RATE_MIN_WINDOW_HOURS)
+    : 0;
   return hours > 0 ? total / hours : 0;
 }
 

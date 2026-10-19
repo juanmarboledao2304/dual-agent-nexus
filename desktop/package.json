@@ -1,14 +1,14 @@
 {
   "name": "agent-dashboard-desktop",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "private": true,
   "description": "Native macOS and Windows desktop shell for Claude Code Agent Monitor.",
   "author": "Son Nguyen <hoangson091104@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git"
+    "url": "https://github.com/juanmarboledao2304/dual-agent-nexus.git"
   },
   "main": "out/main.js",
   "scripts": {

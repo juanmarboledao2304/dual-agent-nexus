@@ -6,7 +6,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/mcp/src/tools/domains/observability-tools.ts`
+ * **Path:** `mcp/src/tools/domains/observability-tools.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -75,7 +75,7 @@ export function registerObservabilityTools(context: ToolContext): void {
   // config.dashboardBaseUrl or it fails with an ApiError network/timeout.
   register(
     "dashboard_health_check",
-    "Check health of the local Agent Dashboard API.",
+    "Check health of the local DualAgent Nexus API.",
     {},
     async () => api.get("/api/health")
   );

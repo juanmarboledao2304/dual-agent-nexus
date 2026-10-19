@@ -6,7 +6,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/mcp/src/transports/repl.ts`
+ * **Path:** `mcp/src/transports/repl.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -342,7 +342,7 @@ async function invokeToolByName(
 ): Promise<void> {
   const tool = toolMap.get(name);
   if (!tool) {
-    process.stdout.write(`  ${c.error("✘")} Tool not found: ${c.bold(name)}\n`);
+    process.stdout.write(`  ${c.error("ERR")} Tool not found: ${c.bold(name)}\n`);
     return;
   }
 

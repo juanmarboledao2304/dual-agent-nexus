@@ -6,7 +6,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/client/src/lib/types.ts`
+ * **Path:** `client/src/lib/types.ts`
  * **Purpose:** Shared wire-format types for REST + WebSocket messages — keep in sync with `server/` serializers and OpenAPI.
  *
  * ## Design constraints
@@ -1930,7 +1930,8 @@ export interface CascadePoolStatus {
 export interface CascadeStatus {
   cache_dir: string;
   cooldown_seconds: number;
-  active_pool: 1 | 2 | 3;
+  /** Pool id ("agy-claude" | "agy-gemini" | "claude-direct"); older servers sent 1 | 2 | 3. Normalize with resolveActivePoolNumber(). */
+  active_pool: 1 | 2 | 3 | string;
   active_pool_id: "agy-claude" | "agy-gemini" | "claude-direct" | string;
   active_pool_label: string;
   waterfall_order: Array<{

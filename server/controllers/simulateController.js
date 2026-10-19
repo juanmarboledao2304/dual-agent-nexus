@@ -18,7 +18,6 @@ const {
   getCascadeStatus,
   triggerSimulatedExhaustion,
   clearSimulatedExhaustion,
-  recordOffloadedDigest,
 } = require("../watchers/cascadeCacheWatcher");
 
 const router = Router();
@@ -706,10 +705,11 @@ router.post("/swarm", (req, res) => {
           "self",
           "working",
           u.task,
-          u.tool,
           bridgeAgentId,
           JSON.stringify(subMeta)
         );
+        // insertAgent has no current_tool column; set it separately.
+        stmts.updateAgent.run(null, null, null, u.tool, null, null, u.id);
       }
       stmts.updateAgentTelemetry.run(
         "antigravity",
@@ -924,13 +924,8 @@ router.post("/swarm", (req, res) => {
       .replace("===END_DIGEST===", "")
       .trim();
 
-    recordOffloadedDigest({
-      savedTokens: 45200,
-      digestText: digestTextOnly,
-      activePool: "agy-gemini",
-      activeModel: "argon-4-ultra",
-    });
-
+    // The ===DIGEST=== is counted once, by the hooks router, when the Conductor's PostToolUse
+    // below carries it (offloaded_tokens_saved pins the reported savings to 45,200).
     const bridgeAgent = stmts.getAgent.get(bridgeAgentId);
     if (bridgeAgent) {
       let meta = {};
@@ -986,6 +981,7 @@ router.post("/swarm", (req, res) => {
       effort: "high",
       tool_name: "Bash",
       output: digestBlock,
+      offloaded_tokens_saved: 45200,
       summary: "===DIGEST=== Received (45.2k tokens offloaded)",
     });
 

@@ -16,7 +16,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/desktop/src/main.ts`
+ * **Path:** `desktop/src/main.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -108,7 +108,7 @@ const state: AppState = {
 };
 
 /**
- * Show the "Quit Claude Code Monitor?" confirmation dialog. Clicking Quit
+ * Show the "Quit DualAgent Nexus?" confirmation dialog. Clicking Quit
  * runs the synchronous teardown and exits. Pressing ⌘Q again while the
  * dialog is open is caught by `before-quit` below and skips this prompt.
  */
@@ -124,7 +124,7 @@ function requestQuit(): void {
     defaultId: 0,
     cancelId: 1,
     title: APP_NAME,
-    message: "Quit Claude Code Monitor?",
+    message: "Quit DualAgent Nexus?",
     detail:
       "The embedded server will stop and your dashboard window will close. " +
       `Press ${quitAccel} again to skip this prompt and quit immediately.`,

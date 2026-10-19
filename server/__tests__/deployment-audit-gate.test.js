@@ -252,7 +252,7 @@ describe("deployment validator exit policy", () => {
     assert.equal(result.status, 0, result.stderr);
     const written = fs.readFileSync(summary, "utf8");
     assert.match(written, /advisory finding\(s\)/);
-    assert.match(written, /\| ⚠️ \| example check \| example detail \|/);
+    assert.match(written, /\| WARN \| example check \| example detail \|/);
     assert.match(written, /CCAM_DEPLOY_VALIDATE_STRICT=1/);
   });
 });

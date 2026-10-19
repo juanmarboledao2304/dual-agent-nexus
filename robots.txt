@@ -1,5 +1,5 @@
-# https://hoangsonww.github.io/Claude-Code-Agent-Monitor/
+# https://juanmarboledao2304.github.io/dual-agent-nexus/
 User-agent: *
 Allow: /
 
-Sitemap: https://hoangsonww.github.io/Claude-Code-Agent-Monitor/sitemap.xml
+Sitemap: https://juanmarboledao2304.github.io/dual-agent-nexus/sitemap.xml

@@ -6,7 +6,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/mcp/src/index.ts`
+ * **Path:** `mcp/src/index.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -115,7 +115,7 @@ async function main() {
 
     await server.connect(stdioTransport);
 
-    logger.info("Agent Dashboard MCP server started", {
+    logger.info("DualAgent Nexus MCP server started", {
       serverName: config.serverName,
       serverVersion: config.serverVersion,
       dashboardBaseUrl: config.dashboardBaseUrl.toString(),

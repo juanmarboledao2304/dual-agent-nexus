@@ -15,7 +15,7 @@ let statusBarItem;
 let outputChannel;
 
 function activate(context) {
-  outputChannel = vscode.window.createOutputChannel("Claude Code Monitor");
+  outputChannel = vscode.window.createOutputChannel("DualAgent Nexus");
   outputChannel.appendLine("[activate] " + new Date().toISOString());
   context.subscriptions.push(outputChannel);
 
@@ -40,7 +40,7 @@ function activate(context) {
     async (target) => {
       const panel = vscode.window.createWebviewPanel(
         "agentMonitor",
-        "Claude Code Agent Monitor",
+        "DualAgent Nexus",
         vscode.ViewColumn.One,
         { enableScripts: true, retainContextWhenHidden: true }
       );
@@ -87,7 +87,7 @@ function activate(context) {
     () => {
       statusProvider.refresh();
       updateStatusBar();
-      vscode.window.showInformationMessage("Claude Code Monitor refreshed.");
+      vscode.window.showInformationMessage("DualAgent Nexus refreshed.");
     }
   );
 
@@ -279,7 +279,7 @@ function getErrorHtml() {
                 </svg>
             </div>
             <h1>Dashboard Offline</h1>
-            <div class="subtitle">Unable to connect to the Claude Code Monitor server</div>
+            <div class="subtitle">Unable to connect to the DualAgent Nexus server</div>
         </div>
 
         <div class="main-card">
@@ -288,8 +288,8 @@ function getErrorHtml() {
                 <div class="timeline">
                     <div class="t-step">
                         <div class="t-label">Initialize Repository</div>
-                        <div class="t-code">git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+                        <div class="t-code">git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup</div>
                     </div>
                     <div class="t-step" style="margin-bottom: 0;">
@@ -317,16 +317,16 @@ npm run setup</div>
                     Retry Connection
                 </button>
                 
-                <a href="https://hoangsonww.github.io/Claude-Code-Agent-Monitor/" class="btn btn-secondary">
+                <a href="https://juanmarboledao2304.github.io/dual-agent-nexus/" class="btn btn-secondary">
                     View Documentation
                 </a>
             </div>
         </div>
 
         <div class="footer">
-            <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor">GitHub</a>
-            <a href="https://hoangsonww.github.io/Claude-Code-Agent-Monitor/">Wiki</a>
-            <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/issues">Support</a>
+            <a href="https://github.com/juanmarboledao2304/dual-agent-nexus">GitHub</a>
+            <a href="https://juanmarboledao2304.github.io/dual-agent-nexus/">Wiki</a>
+            <a href="https://github.com/juanmarboledao2304/dual-agent-nexus/issues">Support</a>
         </div>
     </div>
 </body>

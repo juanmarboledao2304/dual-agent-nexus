@@ -16,7 +16,7 @@ npm run mcp:build
 
 cat <<'EOF'
 
-✅ Dev environment ready.
+OK Dev environment ready.
 
   Develop:
     npm run dev            # server on :7770 + Vite client on :5173
@@ -31,7 +31,7 @@ cat <<'EOF'
   Docs:
     npm run openapi:yaml   # regenerate openapi.yaml from the live spec
 
-⚠  Claude Code hooks are HOST-side. Do NOT run `npm run install-hooks` in this
+WARN  Claude Code hooks are HOST-side. Do NOT run `npm run install-hooks` in this
    container — it is refused on purpose (issue #193). Run it on your HOST so the
    hook handler path exists there and POSTs to http://localhost:7770 (forwarded
    from this container).

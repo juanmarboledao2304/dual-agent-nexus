@@ -18,7 +18,7 @@ Intended to be referenced from Claude Code's ``statusLine`` setting (see
 :maintainer: Son Nguyen (a.k.a. David Nguyen, hoangsonww)
 :copyright: (c) 2026 Son Nguyen
 :license: MIT
-:repository: https://github.com/hoangsonww/Claude-Code-Agent-Monitor
+:repository: https://github.com/juanmarboledao2304/dual-agent-nexus
 :requires: Python 3.6+
 :encoding: utf-8
 
@@ -34,7 +34,7 @@ __copyright__ = "Copyright (c) 2026 Son Nguyen"
 __license__ = "MIT"
 __version__ = "1.0.0"
 __status__ = "Production"
-__repository__ = "https://github.com/hoangsonww/Claude-Code-Agent-Monitor"
+__repository__ = "https://github.com/juanmarboledao2304/dual-agent-nexus"
 
 import sys
 import json

@@ -160,12 +160,12 @@ async function main() {
   for (const c of checks) {
     if (c.ok) {
       if (!JSON_MODE) {
-        console.log(`✔ ${c.name}${c.detail ? ` (${c.detail})` : ""}`);
+        console.log(`OK ${c.name}${c.detail ? ` (${c.detail})` : ""}`);
       }
     } else {
       failed += 1;
       if (!JSON_MODE) {
-        console.error(`✖ ${c.name}: ${c.detail || "failed"}`);
+        console.error(`ERR ${c.name}: ${c.detail || "failed"}`);
       }
     }
   }

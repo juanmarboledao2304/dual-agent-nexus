@@ -26,13 +26,12 @@
 # Any failure in the stages will cause the pipeline to fail, ensuring that only well-formatted, tested, and built code is merged and deployed.
 #
 # Author: Son Nguyen <hoangson091104@gmail.com>
-name: 🚀 CI / CD Pipeline for Claude Code Agent Monitor
+name: CI / CD Pipeline for DualAgent Nexus
 
 on:
   push:
     branches: ["**"]
-    # CLA signature commits (made by github-actions[bot] via cla.yml) only touch
-    # this path — skip the full CI/CD pipeline for them.
+    # Commits that only touch signatures/ (legacy CLA store) skip the full pipeline.
     paths-ignore:
       - "signatures/**"
   pull_request:
@@ -44,10 +43,10 @@ env:
 
 jobs:
   # ────────────────────────────────────────────────────────────────
-  #  🧹 Format Check                                               #
+  # Format Check                                               #
   # ────────────────────────────────────────────────────────────────
   format:
-    name: "🧹 Check Formatting"
+    name: "Check Formatting"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -61,10 +60,10 @@ jobs:
         run: npm run format:check
 
   # ────────────────────────────────────────────────────────────────
-  #  🧪 Tests                                                      #
+  # Tests                                                      #
   # ────────────────────────────────────────────────────────────────
   test:
-    name: "🧪 Run Tests"
+    name: "Run Tests"
     runs-on: ubuntu-latest
     needs: format
     steps:
@@ -87,7 +86,7 @@ jobs:
         run: npm run mcp:typecheck && npm run test:mcp
 
   # ────────────────────────────────────────────────────────────────
-  #  🖥️ Cross-OS snapshot storage tests                             #
+  # Cross-OS snapshot storage tests                             #
   #   The transcript snapshot store (server/lib/snapshot-store.js)  #
   #   does atomic renames, deletes, symlink handling and gzip I/O   #
   #   whose failure modes differ per OS (Windows file locks, case-  #
@@ -95,7 +94,7 @@ jobs:
   #   OSes at the minimum supported Node and the CI default Node.   #
   # ────────────────────────────────────────────────────────────────
   test-cross-os:
-    name: "🖥️ Snapshot Store (${{ matrix.os }}, Node ${{ matrix.node }})"
+    name: "Snapshot Store (${{ matrix.os }}, Node ${{ matrix.node }})"
     runs-on: ${{ matrix.os }}
     needs: format
     strategy:
@@ -115,10 +114,10 @@ jobs:
         run: npm run test:snapshots
 
   # ────────────────────────────────────────────────────────────────
-  #  🏗️ Build Client                                               #
+  # Build Client                                               #
   # ────────────────────────────────────────────────────────────────
   build:
-    name: "🏗️ Build & Upload Artifact"
+    name: "Build & Upload Artifact"
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -141,12 +140,12 @@ jobs:
           retention-days: 7
 
   # ────────────────────────────────────────────────────────────────
-  #  🔎 Detect changed paths                                       #
+  # Detect changed paths                                       #
   #   Drives the path-filtered desktop job below without relying   #
   #   on a hard-coded branch name.                                 #
   # ────────────────────────────────────────────────────────────────
   changes:
-    name: "🔎 Detect changed paths"
+    name: "Detect changed paths"
     runs-on: ubuntu-latest
     outputs:
       desktop: ${{ steps.filter.outputs.desktop }}
@@ -161,13 +160,13 @@ jobs:
               - '.github/workflows/ci.yml'
 
   # ────────────────────────────────────────────────────────────────
-  #  🍎 macOS Desktop App (Electron DMG)                           #
+  # macOS Desktop App (Electron DMG)                           #
   #   Runs when desktop/** changes, when the PR carries the        #
   #   'desktop' label, or on any push. Produces a downloadable     #
   #   .dmg artifact for QA.                                        #
   # ────────────────────────────────────────────────────────────────
   desktop:
-    name: "🍎 macOS Desktop (DMG)"
+    name: "macOS Desktop (DMG)"
     runs-on: macos-latest
     needs: [build, changes]
     if: |
@@ -280,14 +279,14 @@ jobs:
           retention-days: 14
 
   # ────────────────────────────────────────────────────────────────
-  #  🪟 Windows Desktop App (Electron NSIS / portable .exe)        #
+  # Windows Desktop App (Electron NSIS / portable .exe)        #
   #   Mirrors the macOS desktop job on windows-latest. Runs on any  #
   #   push, when the changes job flagged desktop/**, or when a PR    #
   #   carries the 'desktop' label. Produces an NSIS installer and a  #
   #   no-install portable .exe, uploaded as ClaudeCodeMonitor-win.   #
   # ────────────────────────────────────────────────────────────────
   desktop-win:
-    name: "🪟 Windows Desktop (EXE)"
+    name: "Windows Desktop (EXE)"
     runs-on: windows-latest
     needs: [build, changes]
     if: |
@@ -401,7 +400,7 @@ jobs:
   # 0, and continue-on-error keeps runner/setup problems from turning this into
   # a merge blocker. pipeline-status deliberately does not gate on its result.
   deployment:
-    name: "☁️ Validate Deployment Stack (advisory)"
+    name: "Validate Deployment Stack (advisory)"
     runs-on: ubuntu-latest
     needs: test
     continue-on-error: true
@@ -423,10 +422,10 @@ jobs:
         run: npm run deploy:validate
 
   # ────────────────────────────────────────────────────────────────
-  #  🐳 OCI images, attestations, and GHCR publish                 #
+  # OCI images, attestations, and GHCR publish                 #
   # ────────────────────────────────────────────────────────────────
   docker:
-    name: "🐳 OCI Supply Chain"
+    name: "OCI Supply Chain"
     runs-on: ubuntu-latest
     needs: [test, build, deployment]
     permissions:
@@ -549,7 +548,7 @@ jobs:
           cosign sign --yes "ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-mcp@${MCP_DIGEST}"
 
   # ────────────────────────────────────────────────────────────────
-  #  🚢 Publish GitHub Release                                      #
+  # Publish GitHub Release                                      #
   #   On a successful push to the default branch, publish a Release #
   #   for the current package.json version (tagged vX.Y.Z, matching #
   #   the existing v1.0.0 / v1.1.0 convention) and attach the macOS  #
@@ -558,7 +557,7 @@ jobs:
   #   are left unchanged when the workflow runs again.              #
   # ────────────────────────────────────────────────────────────────
   release:
-    name: "🚢 Publish Release"
+    name: "Publish Release"
     runs-on: ubuntu-latest
     needs: [desktop, desktop-win, docker]
     if: |
@@ -604,11 +603,11 @@ jobs:
         run: node scripts/publish-release.js
 
   # ────────────────────────────────────────────────────────────────
-  #  🎉 Pipeline Summary                                            #
+  # Pipeline Summary                                            #
   #   Runs after all jobs — reports final status to step summary    #
   # ────────────────────────────────────────────────────────────────
   pipeline-status:
-    name: "🎉 Pipeline Status"
+    name: "Pipeline Status"
     if: always()
     runs-on: ubuntu-latest
     needs: [format, test, test-cross-os, build, deployment, desktop, desktop-win, docker, release]
@@ -657,11 +656,11 @@ jobs:
         run: |
           icon() {
             case "$1" in
-              success)   echo "✅" ;;
-              failure)   echo "❌" ;;
-              cancelled) echo "⚪" ;;
+              success)   echo "OK" ;;
+              failure)   echo "ERR" ;;
+              cancelled) echo "" ;;
               skipped)   echo "⏭️" ;;
-              *)         echo "❓" ;;
+              *)         echo "" ;;
             esac
           }
           {

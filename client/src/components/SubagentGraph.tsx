@@ -183,8 +183,8 @@ export function SubagentGraph({
             </div>
             {!collapsed && (
               <p className="text-[10px] text-slate-400">
-                L1 Conductor / L2 `agy-cascade` Bridge / L3 Internal `agy` Fan-Out Specialists
-                (`===DIGEST===` &amp; Git Checkpoints).
+                L1 Conductor / L2 agy-cascade Bridge / L3 Internal agy Fan-Out Specialists
+                (===DIGEST=== &amp; Git Checkpoints).
               </p>
             )}
           </div>

@@ -57,18 +57,18 @@ const STATUS_THEME = {
   active: { icon: "●", paint: c.green },
   working: { icon: "◐", paint: c.green },
   waiting: { icon: "○", paint: c.yellow },
-  completed: { icon: "✔", paint: c.gray },
-  error: { icon: "✖", paint: c.red },
-  failed: { icon: "✖", paint: c.red },
+  completed: { icon: "OK", paint: c.gray },
+  error: { icon: "ERR", paint: c.red },
+  failed: { icon: "ERR", paint: c.red },
   abandoned: { icon: "◦", paint: c.gray },
   connected: { icon: "●", paint: c.green },
   idle: { icon: "·", paint: c.gray },
   running: { icon: "●", paint: c.green },
   spawning: { icon: "◌", paint: c.cyan },
   syncing: { icon: "◐", paint: c.cyan },
-  ok: { icon: "✔", paint: c.green },
+  ok: { icon: "OK", paint: c.green },
   killed: { icon: "■", paint: c.gray },
-  exited: { icon: "✔", paint: c.gray },
+  exited: { icon: "OK", paint: c.gray },
 };
 
 function colorStatus(s) {
@@ -274,8 +274,8 @@ function printJson(data) {
 }
 
 /** Status-line helpers so success/warning glyphs are consistent. */
-const ok = (msg) => console.log(`${c.green("✔")} ${msg}`);
-const warn = (msg) => console.log(`${c.yellow("⚠")} ${msg}`);
+const ok = (msg) => console.log(`${c.green("OK")} ${msg}`);
+const warn = (msg) => console.log(`${c.yellow("WARN")} ${msg}`);
 const note = (msg) => console.log(c.dim(msg));
 
 // ── Formatters ──────────────────────────────────────────────────────────────

@@ -2,12 +2,12 @@ apiVersion: v2
 name: agent-monitor
 description: Production-safe single-writer CCAM deployment for Claude Code and Codex monitoring
 type: application
-version: 2.3.0
-appVersion: "2.3.0"
+version: 3.0.0
+appVersion: "3.0.0"
 
-home: https://github.com/hoangsonww/Claude-Code-Agent-Monitor
+home: https://github.com/juanmarboledao2304/dual-agent-nexus
 sources:
-  - https://github.com/hoangsonww/Claude-Code-Agent-Monitor
+  - https://github.com/juanmarboledao2304/dual-agent-nexus
 
 keywords:
   - claude
@@ -23,7 +23,7 @@ maintainers:
   - name: David Nguyen
     url: https://github.com/hoangsonww
 
-icon: https://raw.githubusercontent.com/hoangsonww/Claude-Code-Agent-Monitor/master/favicon.svg
+icon: https://raw.githubusercontent.com/juanmarboledao2304/dual-agent-nexus/main/favicon.svg
 
 annotations:
   artifacthub.io/license: MIT

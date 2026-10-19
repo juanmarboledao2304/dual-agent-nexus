@@ -741,7 +741,7 @@ export function buildPaletteCommands(ctx: PaletteContext): PaletteCommand[] {
       icon: Github,
       run: () =>
         window.open(
-          "https://github.com/hoangsonww/Claude-Code-Agent-Monitor",
+          "https://github.com/juanmarboledao2304/dual-agent-nexus",
           "_blank",
           "noopener,noreferrer"
         ),
@@ -772,7 +772,7 @@ export function buildPaletteCommands(ctx: PaletteContext): PaletteCommand[] {
       icon: Github,
       run: () =>
         window.open(
-          "https://github.com/hoangsonww/Claude-Code-Agent-Monitor/issues/new",
+          "https://github.com/juanmarboledao2304/dual-agent-nexus/issues/new",
           "_blank",
           "noopener,noreferrer"
         ),
@@ -786,7 +786,7 @@ export function buildPaletteCommands(ctx: PaletteContext): PaletteCommand[] {
       icon: History,
       run: () =>
         window.open(
-          "https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases",
+          "https://github.com/juanmarboledao2304/dual-agent-nexus/releases",
           "_blank",
           "noopener,noreferrer"
         ),

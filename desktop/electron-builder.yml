@@ -13,8 +13,8 @@
 #
 # No code changes are required to enable notarization later.
 
-appId: com.hoangsonww.ccam.desktop
-productName: Claude Code Monitor
+appId: com.juanmarboledao2304.dualagentnexus.desktop
+productName: DualAgent Nexus
 copyright: Copyright (c) 2026 Son Nguyen. MIT License.
 
 directories:

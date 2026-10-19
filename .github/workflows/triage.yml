@@ -16,7 +16,7 @@
 #                    ever removed — `good first issue`, `help wanted`, `question` and
 #                    anything else applied by hand are left untouched.
 #   2. Assignees   — a new PR is assigned to its author; a new issue is assigned
-#                    to the repo owner (hoangsonww) AND its author.
+#                    to the repo owner (juanmarboledao2304) AND its author.
 #   3. Project     — adds every new issue / PR to the repo's linked GitHub
 #                    Project board (#44, "Claude Code AI Agents Monitor Project Board").
 #
@@ -44,7 +44,7 @@
 #     see the diff in the job summary without touching anything.
 #
 # Author: Son Nguyen <hoangson091104@gmail.com>
-name: 🏷️ Auto-Triage Issues & PRs
+name: Auto-Triage Issues & PRs
 
 on:
   issues:
@@ -268,8 +268,8 @@ jobs:
             const isPR = Boolean(context.payload.pull_request);
             const target = isPR ? context.payload.pull_request : context.payload.issue;
             const creator = target.user.login;
-            // PR: author; issue: owner (hoangsonww) + author.
-            const assignees = isPR ? [creator] : [...new Set(["hoangsonww", creator])];
+            // PR: author; issue: owner (juanmarboledao2304) + author.
+            const assignees = isPR ? [creator] : [...new Set(["juanmarboledao2304", creator])];
             try {
               await github.rest.issues.addAssignees({
                 owner,
@@ -285,5 +285,5 @@ jobs:
         if: ${{ github.event.action == 'opened' && env.PROJECT_TOKEN != '' }}
         uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/users/hoangsonww/projects/44
+          project-url: https://github.com/users/juanmarboledao2304/projects/1
           github-token: ${{ secrets.TRIAGE_PROJECT_TOKEN }}

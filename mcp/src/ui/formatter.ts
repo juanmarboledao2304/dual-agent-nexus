@@ -6,7 +6,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/mcp/src/ui/formatter.ts`
+ * **Path:** `mcp/src/ui/formatter.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -305,7 +305,7 @@ export function badge(status: string): string {
  */
 export function formatToolResult(name: string, data: unknown, durationMs: number): string {
   const lines: string[] = [];
-  const header = `${c.success("✔")} ${c.bold(c.brightWhite(name))} ${c.muted(`(${durationMs}ms)`)}`;
+  const header = `${c.success("OK")} ${c.bold(c.brightWhite(name))} ${c.muted(`(${durationMs}ms)`)}`;
   lines.push(header);
 
   if (data === null || data === undefined) {
@@ -336,7 +336,7 @@ export function formatToolResult(name: string, data: unknown, durationMs: number
  */
 export function formatToolError(name: string, error: string, durationMs: number): string {
   return (
-    `${c.error("✘")} ${c.bold(c.brightWhite(name))} ${c.muted(`(${durationMs}ms)`)}\n` +
+    `${c.error("ERR")} ${c.bold(c.brightWhite(name))} ${c.muted(`(${durationMs}ms)`)}\n` +
     `  ${c.red(error)}`
   );
 }

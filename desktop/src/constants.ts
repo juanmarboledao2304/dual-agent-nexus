@@ -10,7 +10,7 @@
 /* =============================================================================
  * MODULE_GUIDE — extended in-file reference (comments only; safe to read, never executed)
  * =============================================================================
- * **Path:** `/Users/davidnguyen/WebstormProjects/Claude-Code-Agent-Monitor/desktop/src/constants.ts`
+ * **Path:** `desktop/src/constants.ts`
  * **Purpose:** Dashboard module consumed by the React client, MCP tools, or desktop shell depending on deployment mode.
  *
  * ## Design constraints
@@ -84,7 +84,7 @@
  * ----------------------------------------------------------------------------- */
 
 /** Human-readable product name shown in window title and About menu. */
-export const APP_NAME = "Claude Code Monitor";
+export const APP_NAME = "DualAgent Nexus";
 
 /**
  * Application identifier. Must match `appId` in electron-builder.yml: on Windows

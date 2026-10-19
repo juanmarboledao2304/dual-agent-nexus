@@ -51,7 +51,7 @@ function startUpdateScheduler({ broadcast }) {
       if (becameAvailable) {
         const line = "━".repeat(52);
         console.log(`\n${line}`);
-        console.log("  Agent Dashboard: upstream update available");
+        console.log("  DualAgent Nexus: upstream update available");
         console.log(`  ${status.message || ""}`);
         if (status.situation_note) {
           console.log(`  ${status.situation_note}`);

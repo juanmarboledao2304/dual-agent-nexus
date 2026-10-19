@@ -76,7 +76,7 @@
 切换文档：[`README-EN.md`](./README-EN.md) · [`README-CN.md`](./README-CN.md) · [`README-VN.md`](./README-VN.md) · [`README-KO.md`](./README-KO.md) · [`README-ES.md`](./README-ES.md)
 
 > [!NOTE]
-> 需要按任务查阅的帮助？[GitHub Wiki](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/wiki) 是面向日常使用、团队运维、故障排查、CLI/MCP 自动化和部署操作的实用手册。[本地化静态 Wiki](https://hoangsonww.github.io/Claude-Code-Agent-Monitor/wiki/) 继续提供英语、越南语、中文、韩语和西班牙语的产品与架构导览；精确的技术契约仍以 [`docs/`](./docs/README.md) 为准。
+> 需要按任务查阅的帮助？[GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) 是面向日常使用、团队运维、故障排查、CLI/MCP 自动化和部署操作的实用手册。[本地化静态 Wiki](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) 继续提供英语、越南语、中文、韩语和西班牙语的产品与架构导览；精确的技术契约仍以 [`docs/`](./docs/README.md) 为准。
 
 ---
 
@@ -349,7 +349,7 @@ Dashboard 覆盖完整的本地 Agent 生命周期。详细运行契约仍见相
 | **示例数据** | 内置脚本提供贴近实际的演示和开发数据。 |
 | **状态栏** | 彩色 CLI 条显示模型、上下文、Git 分支、方向性 Token 和美元会话成本。 |
 | **模型名称格式化** | Claude、GPT 和 Gemini 标识符会移除 Provider、日期和 `latest` 后缀，合并数字版本并格式化上下文标签，转换为可读名称；Settings 保留原始定价模式。 |
-| **Claude + Codex 插件市场** | 同一套 14 个共享插件目录树提供两种 Manifest 和 Catalog、66 个插件技能、18 个 Claude Subagent、34 个 Claude 命令、3 个 CLI 辅助工具和 OpenAI 元数据。`npx skills add hoangsonww/Claude-Code-Agent-Monitor --list` 可发现 77 个仓库技能。 |
+| **Claude + Codex 插件市场** | 同一套 14 个共享插件目录树提供两种 Manifest 和 Catalog、66 个插件技能、18 个 Claude Subagent、34 个 Claude 命令、3 个 CLI 辅助工具和 OpenAI 元数据。`npx skills add juanmarboledao2304/dual-agent-nexus --list` 可发现 77 个仓库技能。 |
 | **Run Claude** | 对话和单次模式支持恢复/查看历史、并行后台运行、Transcript 感知的重新连接、模型/effort/权限/cwd 控制、部分消息平滑、保留思考过程、斜杠命令、`@` 文件、上下文与成本计量，以及实时状态。同源保护阻止绕过页面的启动；并发默认安全上限为 10000，可用 `RUN_MAX_CONCURRENT` 降低。 |
 | **Claude Config Explorer** | 12 个标签页检查技能、Agent、命令、样式、插件、市场、MCP、Hook、设置、Memory、Keybinding 和状态栏。规范路径阻止符号链接逃逸；受支持的文本界面使用原子创建/编辑/删除并在根目录外生成带时间戳备份，敏感配置保持只读并提供准确 CLI 指引。`cc-watcher` 以 500 ms 防抖广播外部变化。 |
 | **Tabby** | 无依赖的 WebSocket 吉祥物，包含由活动派生的 8 种情绪、节流台词、快捷操作、本地状态回答，以及对更广泛问题的 Run Claude 移交。支持键盘、减少动态效果、断线安全、配置和本地化。 |
@@ -374,8 +374,8 @@ Dashboard 覆盖完整的本地 Agent 生命周期。详细运行契约仍见相
 ### 1. 安装
 
 ```bash
-git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup
 ```
 
@@ -447,7 +447,7 @@ npm run seed
 
 如果你不想一直开着终端窗口，可以安装可选的**原生桌面应用**。它将 Express 服务器以进程内方式嵌入运行，提供菜单栏 / 通知区域（托盘）图标，并支持开机自启（macOS 登录项 / Windows 启动项）。
 
-最快的方式是从 [最新 GitHub Release](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest) **下载预构建的安装包**（每当 `master` 上的 `package.json` 版本号被提升时，CI 都会自动发布一个新的 `vX.Y.Z`）：
+最快的方式是从 [最新 GitHub Release](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest) **下载预构建的安装包**（每当 `master` 上的 `package.json` 版本号被提升时，CI 都会自动发布一个新的 `vX.Y.Z`）：
 
 - **macOS** —— 下载 `ClaudeCodeMonitor-<version>-arm64.dmg`（Apple Silicon）或 `-x64.dmg`（Intel），并将 **Claude Code Monitor.app** 拖入 `/Applications`。
 - **Windows** —— 下载 `ClaudeCodeMonitor-Setup-<version>-x64.exe`（安装版）或 `ClaudeCodeMonitor-<version>-x64-portable.exe`（免安装版），然后运行它。
@@ -1441,7 +1441,7 @@ flowchart LR
 {
   "git_repo": true,
   "update_available": true,
-  "repo_root": "/Users/you/Claude-Code-Agent-Monitor",
+  "repo_root": "/Users/you/dual-agent-nexus",
   "remote_ref": "upstream/master",
   "canonical_remote": "upstream",
   "current_branch": "master",
@@ -1661,7 +1661,7 @@ flowchart LR
 
 ### 获取应用
 
-**方案 A：下载预构建安装包，推荐。** 从 **[Releases → latest](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/releases/latest)** 下载，无需登录 GitHub。每当 `master` 上 `package.json` 的版本提升时，CI 会自动发布新的 `vX.Y.Z`，因此该链接始终提供当前构建：
+**方案 A：下载预构建安装包，推荐。** 从 **[Releases → latest](https://github.com/juanmarboledao2304/dual-agent-nexus/releases/latest)** 下载，无需登录 GitHub。每当 `master` 上 `package.json` 的版本提升时，CI 会自动发布新的 `vX.Y.Z`，因此该链接始终提供当前构建：
 
 | 平台 | 资源 | 说明 |
 | --- | --- | --- |
@@ -1832,18 +1832,18 @@ CCAM 从同一套共享源码目录提供 **14 个共享插件**。Claude Code �
 
 ```bash
 # Claude Code
-claude plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+claude plugin marketplace add juanmarboledao2304/dual-agent-nexus
 claude plugin install ccam-platform@claude-code-agent-monitor-plugins
 
 # Codex
-codex plugin marketplace add hoangsonww/Claude-Code-Agent-Monitor
+codex plugin marketplace add juanmarboledao2304/dual-agent-nexus
 codex plugin add ccam-platform@claude-code-agent-monitor-plugins
 
 # Open Agent Skills / skills.sh-compatible CLI
-npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
+npx skills add juanmarboledao2304/dual-agent-nexus --list
 
 # Install one skill for Claude Code and Codex in the current project
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -1855,7 +1855,7 @@ npx skills update --project --yes
 npx skills remove mcp-server --yes
 
 # Add --global to install at user scope, then manage that scope explicitly
-npx skills add hoangsonww/Claude-Code-Agent-Monitor \
+npx skills add juanmarboledao2304/dual-agent-nexus \
   --skill mcp-server \
   --agent claude-code \
   --agent codex \
@@ -2244,7 +2244,7 @@ agent-dashboard/
 
 欢迎贡献，请参阅 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) 中的完整指南。
 
-所有贡献者都必须签署[贡献者许可协议](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)。每个 Pull Request 都会由 ` CLA Assistant` GitHub Action 自动检查。首次提交 PR 时，Bot 会要求通过评论 `I have read the CLA Document and I hereby sign the CLA` 完成签署。一次签署覆盖之后的全部贡献。
+所有贡献者都必须签署[贡献者许可协议](https://github.com/juanmarboledao2304/dual-agent-nexus/blob/main/CLA.md)。每个 Pull Request 都会由 ` CLA Assistant` GitHub Action 自动检查。首次提交 PR 时，Bot 会要求通过评论 `I have read the CLA Document and I hereby sign the CLA` 完成签署。一次签署覆盖之后的全部贡献。
 
 ---
 

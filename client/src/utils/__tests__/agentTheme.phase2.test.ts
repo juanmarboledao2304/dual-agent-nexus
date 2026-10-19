@@ -10,6 +10,7 @@ import {
   getAgentThermalTheme,
   formatAgentModelBadge,
   parseAgentMetadata,
+  resolveActivePoolNumber,
   THERMAL_LEGEND_ITEMS,
 } from "../agentTheme";
 
@@ -29,6 +30,33 @@ describe("Phase 7 — Chromatic Thermal UI & Pool 1 agy-claude Palette", () => {
     expect(formatAgentModelBadge("claude-opus-5-5-thinking", "agy-claude", "heavy")).toBe(
       "Opus 5.5"
     );
+  });
+
+  it("normalizes the cascade's active pool id to a pool number", () => {
+    expect(resolveActivePoolNumber("agy-claude")).toBe(1);
+    expect(resolveActivePoolNumber("agy-gemini")).toBe(2);
+    expect(resolveActivePoolNumber("claude-direct")).toBe(3);
+    expect(resolveActivePoolNumber(2)).toBe(2);
+    expect(resolveActivePoolNumber(undefined, 3)).toBe(3);
+    expect(resolveActivePoolNumber("unknown")).toBe(1);
+  });
+
+  it("keeps an explicit Claude provider in Pool 3 regardless of model or agent name", () => {
+    // Regression: a conductor named "... agy-cascade Waterfall" was painted as Pool 1, and
+    // Claude Code sessions on Opus 5.5 were attributed to the Antigravity Claude pool.
+    const conductor = getAgentThermalTheme({
+      provider: "claude",
+      model: "claude-opus-4-6",
+      type: "main",
+      name: "Main Agent - Claude Conductor: 3-Pool agy-cascade Waterfall & Fan-Out",
+    });
+    expect(conductor.provider).toBe("claude");
+    expect(conductor.strokeHex).toBe("#ef4444");
+    expect(getAgentThermalTheme({ provider: "claude", model: "claude-opus-5-5" }).provider).toBe(
+      "claude"
+    );
+    // Without an explicit provider, 5.5-generation models still resolve to Pool 1.
+    expect(getAgentThermalTheme({ model: "claude-opus-5-5-thinking" }).provider).toBe("agy-claude");
   });
 
   it("renders Pool 1 Standard (Sonnet 5.5 / GPT-OSS 120B) in Neon Indigo (#6366f1)", () => {

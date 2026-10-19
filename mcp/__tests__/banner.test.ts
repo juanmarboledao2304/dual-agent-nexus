@@ -55,7 +55,7 @@ describe("banner", () => {
         })
       );
       const text = stripAnsi(output);
-      assert.ok(text.includes("Agent Dashboard MCP Server"));
+      assert.ok(text.includes("DualAgent Nexus MCP Server"));
       assert.ok(text.includes("2.0.0"));
       assert.ok(text.includes("HTTP"));
       assert.ok(text.includes("localhost:7770"));
@@ -101,7 +101,7 @@ describe("banner", () => {
     it("outputs ready message with transport", () => {
       const output = captureStdout(() => printReady("http"));
       const text = stripAnsi(output);
-      assert.ok(text.includes("✔"));
+      assert.ok(text.includes("OK"));
       assert.ok(text.includes("Server ready"));
       assert.ok(text.includes("http"));
     });

@@ -10,7 +10,7 @@
  */
 
 import { parseAgentMetadata } from "./agentTheme";
-import { isAwaitingApproval } from "./pixelSprites";
+import { isAwaitingApproval, toolBadgeLabel } from "./pixelSprites";
 import type { Agent, DashboardEvent } from "../lib/types";
 
 /** The four Agent Rooms zones, in floor-plan order. */
@@ -159,6 +159,37 @@ function clockTime(iso?: string | null): string {
   return safe.toTimeString().slice(0, 8);
 }
 
+/** Short terminal labels for lifecycle hook events that carry no tool. */
+const EVENT_LABELS: Record<string, string> = {
+  UserPromptSubmit: "PROMPT",
+  SessionStart: "START",
+  SessionEnd: "END",
+  Stop: "STOP",
+  SubagentStart: "SUB-START",
+  SubagentStop: "SUB-DONE",
+  Notification: "NOTIFY",
+  Compaction: "COMPACT",
+  PreCompact: "COMPACT",
+  APIError: "ERROR",
+  TurnDuration: "TURN",
+};
+
+/**
+ * Terminal label for a tool-less hook event.
+ *
+ * @param eventType - Hook event name.
+ * @returns A short uppercase label.
+ */
+export function eventLabel(eventType: string): string {
+  return (
+    EVENT_LABELS[eventType] ??
+    eventType
+      .replace(/[^a-z0-9]/gi, "")
+      .toUpperCase()
+      .slice(0, 8)
+  );
+}
+
 function pushLine(store: TraceStore, agentId: string, line: Omit<TraceLine, "seq">): void {
   store.seq += 1;
   const list = store.lines.get(agentId) ?? [];
@@ -192,7 +223,7 @@ export function recordEventTrace(
   }
   pushLine(store, agentId, {
     time: clockTime(event.created_at),
-    label: tool ? tool.toUpperCase().slice(0, 12) : event.event_type.toUpperCase().slice(0, 12),
+    label: tool ? (toolBadgeLabel(tool) ?? "TOOL") : eventLabel(event.event_type),
     text: (event.summary || event.event_type).replace(/\s+/g, " ").trim(),
     stream: tool ? "tool" : "event",
   });
