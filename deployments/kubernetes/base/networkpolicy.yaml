@@ -28,13 +28,13 @@ spec:
               app.kubernetes.io/name: ingress-nginx
       ports:
         - protocol: TCP
-          port: 4820
+          port: 7770
     # Allow monitoring and operational access from same-namespace pods.
     - from:
         - podSelector: {}
       ports:
         - protocol: TCP
-          port: 4820
+          port: 7770
   egress:
     # Allow DNS resolution (required for service discovery)
     - ports:

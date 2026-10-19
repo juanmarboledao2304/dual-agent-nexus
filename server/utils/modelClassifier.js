@@ -1,6 +1,6 @@
 /**
  * @file Deterministic model tier, reasoning effort, subagent role, and context telemetry classifier for Claude Code and Google Antigravity.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const CONTEXT_WINDOWS = {

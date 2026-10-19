@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
  * Dev orchestrator. Picks a free port for the dev server (starting at the
- * conventional 4820), exports it via `DASHBOARD_PORT`, then spawns the
+ * conventional 7770), exports it via `DASHBOARD_PORT`, then spawns the
  * existing concurrently pipeline. Both `dev:server` (server/index.js) and
  * `dev:client` (vite.config.ts) read the same env var, so they stay in
  * lockstep.
  *
- * Why this exists: on machines that hold 4820 via an SSH `LocalForward`,
- * SSH binds the loopback specifically (`127.0.0.1:4820` and `[::1]:4820`),
- * Node's wildcard `server.listen(4820)` "succeeds" without binding the
- * loopback, and every Vite proxy request to `localhost:4820` lands on SSH
+ * Why this exists: on machines that hold 7770 via an SSH `LocalForward`,
+ * SSH binds the loopback specifically (`127.0.0.1:7770` and `[::1]:7770`),
+ * Node's wildcard `server.listen(7770)` "succeeds" without binding the
+ * loopback, and every Vite proxy request to `localhost:7770` lands on SSH
  * instead of Express — silent `ECONNRESET`s everywhere. Probing both IP
  * families before we ever try to bind catches that.
  *
@@ -21,7 +21,7 @@ const net = require("node:net");
 const http = require("node:http");
 const { spawn } = require("node:child_process");
 
-const START = parseInt(process.env.DASHBOARD_PORT || "4820", 10);
+const START = parseInt(process.env.DASHBOARD_PORT || "7770", 10);
 const RANGE = 40;
 
 /** Resolve true if a healthy dashboard already answers /api/health on `port`. */
@@ -94,7 +94,7 @@ async function pickPort() {
     // twice — inflating counts. Warn so the developer can stop the other one.
     if (await healthyDashboardOn(START)) {
       console.log(
-        `[dev] ⚠ another dashboard is already running on :${START} and shares this database. ` +
+        `[dev] WARNING: another dashboard is already running on :${START} and shares this database. ` +
           `Live hook events will be counted by BOTH — stop the other dashboard (e.g. the desktop app) for accurate dev data.`
       );
     }

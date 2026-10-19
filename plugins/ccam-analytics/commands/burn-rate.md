@@ -8,13 +8,13 @@ Estimate the recent daily spend trend (burn rate) for Claude Code usage from the
 Fetch analytics, which includes the 365-day daily series and token totals:
 
 ```
-curl -s http://localhost:4820/api/analytics
+curl -s http://localhost:7770/api/analytics
 ```
 
 Use `daily_sessions` (365 days of `{ date, count }`) together with per-session cost to estimate daily spend. If `daily_sessions` does not carry cost directly, fetch the session list to map cost to dates:
 
 ```
-curl -s "http://localhost:4820/api/sessions?limit=200"
+curl -s "http://localhost:7770/api/sessions?limit=200"
 ```
 
 Then compute and print:

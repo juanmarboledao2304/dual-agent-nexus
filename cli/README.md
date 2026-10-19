@@ -62,7 +62,7 @@ Valid anywhere on the command line and inherited by every command:
 1. `--server` / `CCAM_URL`
 2. `CLAUDE_DASHBOARD_PORT` / `DASHBOARD_PORT` → `http://127.0.0.1:<port>`
 3. The live-server discovery file `~/.claude/.agent-dashboard.json` (PID liveness checked)
-4. `http://127.0.0.1:4820`
+4. `http://127.0.0.1:7770`
 
 ## Offline mode
 

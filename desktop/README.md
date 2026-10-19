@@ -61,12 +61,12 @@ npm run desktop:win          # NSIS installer → release/ClaudeCodeMonitor-Setu
 npm run desktop:win:portable # no-install portable → release/ClaudeCodeMonitor-<ver>-x64-portable.exe
 ```
 
-> ⚠️ `desktop:dmg` is slower because it builds the app **twice** — once per
+> `desktop:dmg` is slower because it builds the app **twice** — once per
 > architecture — and emits **two** per-arch DMGs (`arm64` + `x64`). It does not
 > merge them into a universal binary. For running on your own Mac, use the
 > arch-specific command. See [Build performance](#build-performance--read-this).
 
-> 🪟 **Windows builds run on Windows** (DMGs build on macOS). `desktop:win`
+> **Windows builds run on Windows** (DMGs build on macOS). `desktop:win`
 > produces an **unsigned** installer — fine to run; SmartScreen may show a
 > "More info → Run anyway" prompt on first launch. The icon (`assets/icon.ico`)
 > is generated from `assets/icon.png` by `npm run build:win-icon`
@@ -105,7 +105,7 @@ flowchart TD
         scripts["scripts/<br/>hook installer/handler, import, seed"]
         mcp["mcp/<br/>local MCP server"]
         vscode["vscode-extension/"]
-        desktop["desktop/<br/>★ Electron shell (this workspace)"]
+        desktop["desktop/<br/> Electron shell (this workspace)"]
     end
 
     desktop -- "require() in-process" --> server
@@ -182,7 +182,7 @@ sequenceDiagram
         Main->>OS: exit(0) — focus existing instance
     end
     Main->>Host: startEmbeddedServer()
-    Host->>Host: probe port 4820 — adopt if a healthy server answers
+    Host->>Host: probe port 7770 — adopt if a healthy server answers
     alt no server to adopt
         Host->>Host: pickFreePort() · patch better-sqlite3 ABI
         Host->>Srv: require() · createApp() · startServer(port)
@@ -222,13 +222,13 @@ a port, boots the server, and returns a `ServerHandle`.
 flowchart TD
     start["startEmbeddedServer()"] --> forced{"CCAM_DESKTOP_BIND_PORT set?"}
     forced -->|yes| bind["bind exactly that port<br/>(no adoption, no fallback)"]
-    forced -->|no| adopt{"healthy server<br/>already on :4820?"}
+    forced -->|no| adopt{"healthy server<br/>already on :7770?"}
     adopt -->|yes| reuse["adopt it<br/>ownedByUs = false"]
     adopt -->|no| pick["pickFreePort()"]
 
-    pick --> p1{":4820 free?"}
-    p1 -->|yes| use4820["use 4820"]
-    p1 -->|no| p2{"any of<br/>:4821–:4829 free?"}
+    pick --> p1{":7770 free?"}
+    p1 -->|yes| use4820["use 7770"]
+    p1 -->|no| p2{"any of<br/>:7771–:7779 free?"}
     p2 -->|yes| usefb["use that"]
     p2 -->|no| p3{"any of<br/>:49152–:49500 free?"}
     p3 -->|yes| userand["use that"]
@@ -249,7 +249,7 @@ flowchart TD
 
 **Adoption** — `probePort()` connects, then checks that the listener answers
 `GET /api/health` with `{ status: "ok" }`. If a healthy dashboard server is
-already on `:4820` (e.g. you ran `npm start` in a terminal), the desktop app
+already on `:7770` (e.g. you ran `npm start` in a terminal), the desktop app
 **adopts** it rather than double-binding. An adopted server is *not* owned by
 the app — quitting the app leaves it running.
 
@@ -257,7 +257,7 @@ the app — quitting the app leaves it running.
 
 ```ts
 interface ServerHandle {
-  url: string;          // e.g. "http://127.0.0.1:4820"
+  url: string;          // e.g. "http://127.0.0.1:7770"
   port: number;
   ownedByUs: boolean;   // false when adopted
   stop: () => Promise<void>;
@@ -265,10 +265,10 @@ interface ServerHandle {
 ```
 
 **Hook port discovery** — because the embedded server may bind a fallback port
-(4821+) when 4820 is taken, the Claude Code hook handler must not assume 4820.
+(7771+) when 7770 is taken, the Claude Code hook handler must not assume 7770.
 On startup the server writes its live port to `~/.claude/.agent-dashboard.json`
 (`server/lib/server-info.js`); `scripts/hook-handler.js` reads that file to
-target the running server. Without this, hook events would be POSTed to 4820 —
+target the running server. Without this, hook events would be POSTed to 7770 —
 nothing would receive them and the dashboard would stay empty.
 
 ---
@@ -392,7 +392,7 @@ flowchart TD
     menu --> m2["Open in Browser…"]
     menu --> m3["Restart Server"]
     menu --> m4["Show Logs"]
-    menu --> m5["Open at Login ☑"]
+    menu --> m5["Open at Login"]
     menu --> m6["Quit"]
 
     win["BrowserWindow"]
@@ -458,7 +458,7 @@ When macOS launches the app at login (`wasOpenedAtLogin`), it starts
 desktop/
 ├── src/
 │   ├── main.ts          # main process entry — lifecycle, dialogs, wiring
-│   ├── server-host.ts   # ★ in-process Express boot, port discovery, adoption,
+│   ├── server-host.ts   # in-process Express boot, port discovery, adoption,
 │   │                    #   better-sqlite3 ABI patch, DB + discovery-file close,
 │   │                    #   /api/stats snapshot poller for the tray dropdown
 │   ├── window.ts        # BrowserWindow + persisted geometry; native macOS
@@ -668,7 +668,7 @@ workaround is in [`../DESKTOP.md`](../DESKTOP.md):
 
 ## Continuous integration
 
-The `🍎 macOS Desktop (DMG)` job in `.github/workflows/ci.yml`:
+The ` macOS Desktop (DMG)` job in `.github/workflows/ci.yml`:
 
 ```mermaid
 flowchart LR
@@ -729,7 +729,7 @@ sequenceDiagram
 
 `CCAM_DESKTOP_BIND_PORT` forces the server onto an exact port (no adoption, no
 fallback) so the test can be certain it probed *this* process and not an
-unrelated server on `:4820`.
+unrelated server on `:7770`.
 
 ---
 
@@ -738,7 +738,7 @@ unrelated server on `:4820`.
 | Variable | Used by | Effect |
 |---|---|---|
 | `CCAM_DESKTOP_BIND_PORT` | `server-host.ts` | Bind exactly this port — disables adoption and fallback. Used by the smoke test. |
-| `CCAM_DESKTOP_NO_ADOPT` | `server-host.ts` | `=1` → never adopt an existing `:4820` server; always start our own. |
+| `CCAM_DESKTOP_NO_ADOPT` | `server-host.ts` | `=1` → never adopt an existing `:7770` server; always start our own. |
 | `CCAM_DESKTOP_VERBOSE` | `logger.ts` | Mirror `info`/`warn` log lines to stdout (errors always go to stderr). |
 | `DASHBOARD_DATA_DIR` | `server-host.ts` → server | Set automatically to `app.getPath('userData')/data` so the SQLite database and VAPID keys live in the per-user Application Support directory, never inside the (possibly read-only) `.app` bundle. |
 | `CSC_IDENTITY_AUTO_DISCOVERY` | electron-builder | Set to `false` by the `package` script — forces ad-hoc signing. |
@@ -818,7 +818,7 @@ By design, changes outside `desktop/` are kept to a minimum:
   build). The standalone server path is unchanged: the native leg is a no-op
   there, and Web Push delivers as before.
 - **`scripts/dev.js`** *(new)* — `npm run dev`'s entry point. Probes both
-  `127.0.0.1` and `::1` for a free port in `4820–4859` (so an SSH
+  `127.0.0.1` and `::1` for a free port in `7770–4859` (so an SSH
   `LocalForward` with loopback-specific binds can't shadow Node's wildcard
   listen), exports `DASHBOARD_PORT`, then spawns the existing
   `concurrently` server + client pipeline. `npm run dev:raw` bypasses it

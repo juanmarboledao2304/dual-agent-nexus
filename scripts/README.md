@@ -6,7 +6,7 @@ Node (and one Python) utilities for development, hook delivery, data management,
 
 | Script          | npm script           | Purpose |
 | --------------- | -------------------- | ------- |
-| `dev.js`        | `npm run dev`        | Picks a free port (starting at 4820, probing IPv4 and IPv6 loopback), exports it as `DASHBOARD_PORT`, then runs the server and Vite client together. Avoids silent collisions with an SSH `LocalForward` on 4820. |
+| `dev.js`        | `npm run dev`        | Picks a free port (starting at 7770, probing IPv4 and IPv6 loopback), exports it as `DASHBOARD_PORT`, then runs the server and Vite client together. Avoids silent collisions with an SSH `LocalForward` on 7770. |
 | `dev-server.js` | `npm run dev:server` | Runs `server/index.js` under a debounced, cross-platform watcher of `server/` and `scripts/`; save bursts become one graceful restart. |
 | `postinstall.js`| (`postinstall` hook) | After a root `npm install`, also installs `client/` dependencies. Safe no-op when `client/` is absent (Docker stages, published tarball). |
 | `run-npm.js`    | used by `npm run setup`, `mcp:install` | Runs nested npm installs with inherited `npm_config_allow_scripts` stripped, so npm ≥ 11 does not fail with `EALLOWSCRIPTS`. |

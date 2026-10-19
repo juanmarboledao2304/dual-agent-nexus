@@ -110,7 +110,7 @@ graph TB
         end
     end
     
-    subgraph "Server (localhost:4820)"
+    subgraph "Server (localhost:7770)"
         REST[REST API]
         WSS[WebSocket Server]
     end
@@ -580,7 +580,7 @@ sequenceDiagram
 graph LR
     Component[React Component] --> API[api.ts]
     API --> Fetch[fetch API]
-    Fetch --> Server[Server :4820]
+    Fetch --> Server[Server :7770]
     Server --> Response[JSON Response]
     Response --> API
     API --> Component
@@ -593,7 +593,7 @@ graph LR
 
 ```typescript
 // lib/api.ts
-const BASE_URL = 'http://localhost:4820';
+const BASE_URL = 'http://localhost:7770';
 
 class APIClient {
   private async request(path: string, options?: RequestInit) {
@@ -636,7 +636,7 @@ class APIClient {
 export const api = new APIClient();
 ```
 
-> **API reference:** the endpoints this client calls are fully documented by the server's OpenAPI 3.0.3 spec. With the dashboard running (default port `4820`), explore them at `/api/docs` (interactive Swagger UI), `/api/redoc` (read-optimized ReDoc reference), or `/api/openapi.json` (raw spec). A committed `openapi.yaml` at the repo root mirrors the live spec.
+> **API reference:** the endpoints this client calls are fully documented by the server's OpenAPI 3.0.3 spec. With the dashboard running (default port `7770`), explore them at `/api/docs` (interactive Swagger UI), `/api/redoc` (read-optimized ReDoc reference), or `/api/openapi.json` (raw spec). A committed `openapi.yaml` at the repo root mirrors the live spec.
 
 ### Error Handling
 
@@ -690,7 +690,7 @@ Only non-session picks are remembered: a session id stops resolving as soon as t
 
 ```text
 ┌────────────────────────────────────────────────────────┐
-│ 🔍  Search pages, sessions, and actions…    12 results │
+│  Search pages, sessions, and actions…    12 results │
 ├────────────────────────────────────────────────────────┤
 │ RECENT                                                 │
 │    Cost Analytics                        Analytics     │
@@ -760,7 +760,7 @@ interface SessionCardProps {
 **Visual Structure:**
 ```
 ┌────────────────────────────────────────┐
-│ 🟢 Session Title         $0.45         │
+│ Session Title         $0.45         │
 │ claude-sonnet-4                        │
 │ Started: 2 hours ago                   │
 │ Agents: 3 | Tools: 12                  │
@@ -1196,16 +1196,16 @@ npm run dev
 
 ### Environment Variables
 
-The client uses hardcoded API URL (`http://localhost:4820`). For custom configuration, update `lib/api.ts`:
+The client uses hardcoded API URL (`http://localhost:7770`). For custom configuration, update `lib/api.ts`:
 
 ```typescript
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4820';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:7770';
 ```
 
 Then create `.env`:
 
 ```
-VITE_API_URL=http://localhost:4820
+VITE_API_URL=http://localhost:7770
 ```
 
 ### Hot Module Replacement (HMR)
@@ -1333,13 +1333,13 @@ graph TB
 
 ### Implementation Checklist
 
-- ✅ Semantic HTML5 elements (`<nav>`, `<main>`, `<article>`)
-- ✅ ARIA labels on interactive elements
-- ✅ Keyboard navigation (Tab, Enter, Escape)
-- ✅ Focus indicators (outline on :focus)
-- ✅ Color contrast ratio >= 4.5:1 for text
-- ✅ Alternative text for icons (aria-label)
-- ✅ Skip links for screen readers
+- Semantic HTML5 elements (`<nav>`, `<main>`, `<article>`)
+- ARIA labels on interactive elements
+- Keyboard navigation (Tab, Enter, Escape)
+- Focus indicators (outline on :focus)
+- Color contrast ratio >= 4.5:1 for text
+- Alternative text for icons (aria-label)
+- Skip links for screen readers
 
 ### Example
 
@@ -1359,11 +1359,11 @@ graph TB
 
 The client is a production-ready React application with:
 
-- 🚀 **Modern Stack** - React 19, TypeScript, Vite 7, Tailwind
-- ⚡ **Real-time** - WebSocket integration for live updates
-- 🧪 **Tested** - Vitest + React Testing Library
-- 📦 **Optimized** - Code splitting, tree shaking, lazy loading
-- ♿ **Accessible** - WCAG 2.1 AA compliant
-- 🎨 **Maintainable** - Clear architecture, type-safe, well-documented
+- **Modern Stack** - React 19, TypeScript, Vite 7, Tailwind
+- **Real-time** - WebSocket integration for live updates
+- **Tested** - Vitest + React Testing Library
+- **Optimized** - Code splitting, tree shaking, lazy loading
+- **Accessible** - WCAG 2.1 AA compliant
+- **Maintainable** - Clear architecture, type-safe, well-documented
 
 For server documentation, see [server/README.md](../server/README.md).

@@ -1,7 +1,7 @@
 ---
 name: db-inspector
 description: >
-  Inspects Agent Monitor data integrity via the dashboard API (port 4820).
+  Inspects Agent Monitor data integrity via the dashboard API (port 7770).
   Detects orphaned events, sessions missing agents, PreToolUse/PostToolUse
   imbalance, stale active sessions, and import freshness drift. Cross-checks
   /api/stats counts against /api/sessions, /api/events, and /api/analytics to
@@ -16,7 +16,7 @@ tools:
 # Database Inspector
 
 You are a data-integrity inspector for the Claude Code Agent Monitor. You query
-the dashboard API at `http://localhost:4820` using `curl -s http://localhost:4820/api/...`
+the dashboard API at `http://localhost:7770` using `curl -s http://localhost:7770/api/...`
 to verify that ingested data is internally consistent and fresh. You read only —
 you never mutate data.
 

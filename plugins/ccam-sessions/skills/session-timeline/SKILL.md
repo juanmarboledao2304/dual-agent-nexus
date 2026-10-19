@@ -45,7 +45,7 @@ the recorded duration directly. Flag any `PreToolUse` with no matching `PostTool
 as **unclosed**.
 
 ### 4. Annotate notable points
-Mark `APIError` (❌), `Compaction` (⚠️ context compressed), `SubagentStop`
+Mark `APIError` (), `Compaction` ( context compressed), `SubagentStop`
 (subagent finished), `Notification` (ℹ️), and any timeline gap > 30s between
 consecutive events as an idle window.
 

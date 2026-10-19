@@ -5,7 +5,7 @@
  * telemetry, 4-bar Effort Signal Meter, expandable `===DIGEST===` Execution Summary,
  * Git Checkpoint commit history, system prompt / task description, live
  * tool call & reasoning trace, stdout/stderr stream, and a SIGTERM process kill switch.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 import { useEffect, useState, useCallback } from "react";
@@ -16,8 +16,6 @@ import {
   Cpu,
   Wrench,
   Terminal,
-  Sparkles,
-  Flame,
   Clock,
   Activity,
   Layers,
@@ -35,6 +33,8 @@ import {
   parseAgentMetadata,
 } from "../utils/agentTheme";
 import { timeAgo } from "../lib/format";
+import { PixelAvatar } from "./PixelAvatar";
+import { EffortMeter, PoolPill } from "./NexusBadges";
 import type {
   Agent,
   DashboardEvent,
@@ -132,18 +132,10 @@ export function AgentInspectorDrawer({
         {/* Header */}
         <div className={`p-5 border-b border-slate-800 ${theme.bgGradientClass}`}>
           <div className="flex items-start justify-between gap-3">
-            <div className="space-y-1.5 min-w-0">
+            <PixelAvatar agent={agent} session={session} size={48} />
+            <div className="space-y-1.5 min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${theme.providerPillClass}`}
-                >
-                  {theme.provider === "claude" ? (
-                    <Flame className="w-3 h-3" />
-                  ) : (
-                    <Sparkles className="w-3 h-3" />
-                  )}
-                  {theme.providerLabel}
-                </span>
+                <PoolPill theme={theme} />
                 <span
                   className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${theme.badgeClass}`}
                 >
@@ -152,23 +144,8 @@ export function AgentInspectorDrawer({
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900/90 text-slate-200 border border-slate-700/80">
                   {modelBadge}
                 </span>
-                {/* 4-Bar Effort Signal Meter */}
-                <span
-                  className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-900/90 border border-slate-700/80 text-[10px] font-mono text-slate-300"
-                  title={`Reasoning Effort: ${theme.effortLabel}`}
-                >
-                  <span className="flex items-end gap-0.5 h-3">
-                    {[1, 2, 3, 4].map((bar) => (
-                      <span
-                        key={bar}
-                        className={`w-1 rounded-sm transition-all ${
-                          bar <= theme.effortBars ? theme.barActiveClass : "bg-slate-700/50"
-                        }`}
-                        style={{ height: `${bar * 25}%` }}
-                      />
-                    ))}
-                  </span>
-                  <span>{theme.effortLabel}</span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-900/90 border border-slate-700/80">
+                  <EffortMeter theme={theme} />
                 </span>
               </div>
               <h2 className="text-base font-bold text-slate-100 truncate" title={agent.name}>
@@ -295,7 +272,7 @@ export function AgentInspectorDrawer({
                 <div className="space-y-1 font-mono text-[11px] bg-slate-950/90 p-2.5 rounded-lg border border-cyan-500/25 text-cyan-200">
                   {meta.git_checkpoint_commits.map((msg, idx) => (
                     <div key={`${idx}-${msg}`} className="flex items-center gap-2">
-                      <span className="text-cyan-500">●</span>
+                      <span className="w-1.5 h-1.5 bg-cyan-500 flex-shrink-0" aria-hidden />
                       <span className="truncate">{msg}</span>
                     </div>
                   ))}

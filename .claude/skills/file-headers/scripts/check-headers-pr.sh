@@ -7,13 +7,15 @@
 #   check-headers-pr.sh [<base-sha> <head-sha>]
 #
 # When omitted, compares the current branch against origin/master (or master).
-# @author Son Nguyen <hoangson091104@gmail.com>
+# Accepted author lines match check-headers.sh: the DualAgent Nexus maintainer
+# or the original upstream author of inherited files.
+# @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-AUTHOR_MARK="@author Son Nguyen"
-AUTHOR_EMAIL="hoangson091104@gmail.com"
+AUTHOR_PATTERN="@author (Juan Manuel Arboleda Orozco|Son Nguyen)"
+NEXUS_AUTHOR="@author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)"
 
 usage() {
   cat <<'EOF'
@@ -86,24 +88,21 @@ header_hint_for() {
   local f="$1"
   case "$f" in
     *.py)
-      echo '  expected: module docstring with @author Son Nguyen <hoangson091104@gmail.com>'
+      echo "  expected: module docstring with ${NEXUS_AUTHOR}"
       ;;
     *.sh)
-      echo '  expected: # block after shebang with @author Son Nguyen <hoangson091104@gmail.com>'
-      ;;
-    *.css)
-      echo '  expected: /** @file ... @author Son Nguyen <hoangson091104@gmail.com> */'
+      echo "  expected: # block after shebang with ${NEXUS_AUTHOR}"
       ;;
     *)
-      echo '  expected: /** @file ... @author Son Nguyen <hoangson091104@gmail.com> */'
+      echo "  expected: /** @file ... ${NEXUS_AUTHOR} */"
       ;;
   esac
 }
 
-# Require the exact author mark anywhere in the file (same rule as check-headers.sh).
+# Require an accepted author line anywhere in the file (same rule as check-headers.sh).
 has_author_header() {
   local f="$1"
-  grep -q "$AUTHOR_MARK" "$f" && grep -q "$AUTHOR_EMAIL" "$f"
+  grep -qE "$AUTHOR_PATTERN" "$f"
 }
 
 BASE_SHORT="$(git rev-parse --short "${BASE_SHA}" 2>/dev/null || echo "${BASE_SHA}")"
@@ -139,12 +138,12 @@ while IFS= read -r f; do
 done < <(git diff --name-only --diff-filter=ACMR "${BASE_SHA}" "${HEAD_SHA}")
 
 if [[ "$checked" -eq 0 ]]; then
-  echo "✔ No applicable source files changed in this diff (skipped ${skipped} path(s))."
+  echo "OK: No applicable source files changed in this diff (skipped ${skipped} path(s))."
   exit 0
 fi
 
 if [[ "$missing" -eq 0 ]]; then
-  echo "✔ All ${checked} applicable changed file(s) carry the authorship header."
+  echo "OK: All ${checked} applicable changed file(s) carry the authorship header."
   exit 0
 fi
 

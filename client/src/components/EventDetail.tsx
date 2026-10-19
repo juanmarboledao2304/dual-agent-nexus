@@ -324,7 +324,10 @@ function SummaryBlock({
       </div>
       <div className="p-3 space-y-1.5">
         <div className="flex items-start gap-2">
-          <span className="text-base leading-none" aria-hidden="true">
+          <span
+            className="px-1 py-px rounded-sm border border-border text-[9px] leading-tight font-mono font-bold tracking-wider text-gray-300 flex-shrink-0"
+            aria-hidden="true"
+          >
             {summary.icon}
           </span>
           <span className="text-[12px] text-gray-100 font-medium break-words">

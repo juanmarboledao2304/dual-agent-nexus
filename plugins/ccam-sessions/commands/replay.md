@@ -6,13 +6,13 @@ argument-hint: "[session-id]"
 Produce a concise recap of one Claude Code session tracked by the Agent Monitor.
 
 The session id is **$ARGUMENTS**. If empty, resolve the latest:
-`curl -s "http://localhost:4820/api/sessions?limit=1"` and use its `id`.
+`curl -s "http://localhost:7770/api/sessions?limit=1"` and use its `id`.
 
 Fetch the session header and its transcript:
 
 ```
-curl -s "http://localhost:4820/api/sessions/$ARGUMENTS"
-curl -s "http://localhost:4820/api/sessions/$ARGUMENTS/transcript"
+curl -s "http://localhost:7770/api/sessions/$ARGUMENTS"
+curl -s "http://localhost:7770/api/sessions/$ARGUMENTS/transcript"
 ```
 
 The first returns the session detail (status, model, cwd, started_at, ended_at, cost,

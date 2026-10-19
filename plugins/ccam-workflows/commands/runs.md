@@ -2,14 +2,14 @@
 description: List recent Workflow-tool fleet runs with status and agent counts.
 ---
 
-List recent Workflow-tool (Workflow()) fleet runs from the Agent Monitor at `http://localhost:4820`.
+List recent Workflow-tool (Workflow()) fleet runs from the Agent Monitor at `http://localhost:7770`.
 
 These fleets emit **no hooks** — the dashboard ingests them from on-disk run journals, so this is independent of the hook event stream. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
 
 Fetch the run journals:
 
 ```
-curl -s http://localhost:4820/api/workflows/runs
+curl -s http://localhost:7770/api/workflows/runs
 ```
 
 Each run has a run id, status, agent count, and timing.

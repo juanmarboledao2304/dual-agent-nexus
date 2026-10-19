@@ -1862,12 +1862,12 @@ npm run setup
 npm run install-hooks
 
 # Optional: develop in a preconfigured VS Code Dev Container / Codespace
-# (Node 24 LTS + native build tools + Python, ports 4820/5173). Opt-in only —
+# (Node 24 LTS + native build tools + Python, ports 7770/5173). Opt-in only —
 # host-based dev is unaffected. See .devcontainer/.
 
 # 3. Start in development mode
 npm run dev
-# → Express server on http://localhost:4820
+# → Express server on http://localhost:7770
 # → Vite dev server on http://localhost:5173
 
 # 4. (Optional) Build and run the local MCP server
@@ -1879,7 +1879,7 @@ npm run mcp:start:repl         # interactive CLI with tab completion
 
 # 5. Open the dashboard
 # http://localhost:5173  (dev)
-# http://localhost:4820  (prod after npm run build && npm start)</code></pre>
+# http://localhost:7770  (prod after npm run build && npm start)</code></pre>
 
           <p>
             The manual installer is interactive: Claude Code starts selected; use arrow keys,
@@ -1913,7 +1913,7 @@ podman compose up -d --build
 # Plain Docker / Podman
 docker build -t agent-monitor .
 docker run -d --name agent-monitor \
-  -p 127.0.0.1:4820:4820 \
+  -p 127.0.0.1:7770:7770 \
   -v "$HOME/.claude:/home/node/.claude:ro" \
   -v "$HOME/.codex:/home/node/.codex:ro" \
   -v agent-monitor-data:/app/data \
@@ -2022,19 +2022,19 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
               <tbody>
                 <tr>
                   <td><code>DASHBOARD_PORT</code></td>
-                  <td><code>4820</code></td>
+                  <td><code>7770</code></td>
                   <td>Port the Express server listens on</td>
                 </tr>
                 <tr>
                   <td><code>CLAUDE_DASHBOARD_PORT</code></td>
-                  <td><code>4820</code></td>
+                  <td><code>7770</code></td>
                   <td>
                     Port used by the hook handler to reach the server (for custom port setups)
                   </td>
                 </tr>
                 <tr>
                   <td><code>MCP_DASHBOARD_BASE_URL</code></td>
-                  <td><code>http://127.0.0.1:4820</code></td>
+                  <td><code>http://127.0.0.1:7770</code></td>
                   <td>
                     Base URL used by the local MCP server when calling dashboard APIs. Direct
                     loopback HTTP is allowed with a bearer token; tokenized container-host aliases
@@ -2652,7 +2652,7 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
                   HH["hook-handler.js"]
                 end
 
-                subgraph Server["Server Process — port 4820"]
+                subgraph Server["Server Process — port 7770"]
                   direction TB
                   EX["Express App"]
                   HR["/api/hooks"]
@@ -3793,7 +3793,7 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
               <tbody>
                 <tr>
                   <td>Path</td>
-                  <td><code>ws://localhost:4820/ws</code></td>
+                  <td><code>ws://localhost:7770/ws</code></td>
                 </tr>
                 <tr>
                   <td>Protocol</td>
@@ -3881,7 +3881,7 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
               flowchart TD
                 START[Claude Code fires hook] --> STDIN[Read stdin to EOF]
                 STDIN --> PARSE{Parse JSON?}
-                PARSE -->|Success| POST["POST to 127.0.0.1:4820\n/api/hooks/event"]
+                PARSE -->|Success| POST["POST to 127.0.0.1:7770\n/api/hooks/event"]
                 PARSE -->|Failure| WRAP["Wrap raw input payload"]
                 WRAP --> POST
                 POST --> RESP{Response?}
@@ -4386,7 +4386,7 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
                   MCP_STDIO["MCP Server (stdio)"]
                   MCP_HTTP["MCP Server (HTTP+SSE :8819)"]
                   MCP_REPL["MCP Server (REPL)"]
-                  API["Dashboard API\nhttp://127.0.0.1:4820"]
+                  API["Dashboard API\nhttp://127.0.0.1:7770"]
                 end
 
                 CC --> CL
@@ -4759,7 +4759,7 @@ ccam-export all --output backup.json</code></pre>
 
           <h3>Data Model Reference</h3>
           <p>
-            All plugins query the Agent Monitor API at <code>http://localhost:4820</code>. Key
+            All plugins query the Agent Monitor API at <code>http://localhost:7770</code>. Key
             capabilities they leverage:
           </p>
           <div class="table-wrap">
@@ -4979,7 +4979,7 @@ ccam-export all --output backup.json</code></pre>
                         <div style="position: absolute; left: -31px; top: 4px; width: 13px; height: 13px; background: var(--bg-card); border: 2px solid var(--accent); border-radius: 50%;"></div>
                         <div class="t-label" style="font-weight: 600; color: #fff; font-size: 16px; margin-bottom: 8px;">Smart Auto-Detection & Connection</div>
                         <p style="font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.6;">
-                            Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>4820</code> (Production) 
+                            Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>7770</code> (Production) 
                             on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> 
                             modes in the sidebar as you start or stop your local server.
                         </p>
@@ -5018,7 +5018,7 @@ ccam-export all --output backup.json</code></pre>
             <code>require()</code>s <code>server/index.js</code> directly in the same Node
             runtime as the Electron main process (no child process, no IPC) — and renders the
             already-built React client in a <code>BrowserWindow</code>. Everything you see in
-            the browser at <code>localhost:4820</code> lives inside this window, with native OS
+            the browser at <code>localhost:7770</code> lives inside this window, with native OS
             lifecycle on top.
           </p>
 
@@ -5222,7 +5222,7 @@ ccam-export all --output backup.json</code></pre>
           <h3>Port Discovery</h3>
           <p>
             On launch the Electron main process picks a free port. If a healthy dashboard
-            server already answers <code>/api/health</code> on port <code>4820</code> (for
+            server already answers <code>/api/health</code> on port <code>7770</code> (for
             example, you ran <code>npm start</code> in a terminal), the app
             <strong>adopts</strong> that server instead of starting a second one — no
             double-binding, no SQLite contention. An adopted server is not owned by the app,
@@ -5240,15 +5240,15 @@ ccam-export all --output backup.json</code></pre>
               <tbody>
                 <tr>
                   <td>Adopt</td>
-                  <td>A healthy server already on <code>4820</code> is adopted as-is</td>
+                  <td>A healthy server already on <code>7770</code> is adopted as-is</td>
                 </tr>
                 <tr>
                   <td>Preferred</td>
-                  <td><code>4820</code> when free</td>
+                  <td><code>7770</code> when free</td>
                 </tr>
                 <tr>
                   <td>Fallback</td>
-                  <td>The first free port in <code>4821</code>–<code>4829</code></td>
+                  <td>The first free port in <code>7771</code>–<code>7779</code></td>
                 </tr>
                 <tr>
                   <td>Last resort</td>
@@ -6334,7 +6334,7 @@ xattr -cr "/Applications/Claude Code Monitor.app"</code></pre>
               <div class="feature-icon ic-violet">🛡</div>
               <h3>Scrape &amp; auth guard</h3>
               <p>
-                Loopback scrapes (<code>127.0.0.1:4820</code>) work out of the box. When Prometheus
+                Loopback scrapes (<code>127.0.0.1:7770</code>) work out of the box. When Prometheus
                 runs in Docker and reaches the host via <code>host.docker.internal</code>, add that
                 host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns
                 <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send
@@ -6706,7 +6706,7 @@ xattr -cr "/Applications/Claude Code Monitor.app"</code></pre>
               graph LR
                 subgraph dev["Development — 2 processes"]
                   D_CMD["npm run dev\n(concurrently)"]
-                  D_SRV["scripts/dev-server.js\nport 4820 — debounced restart"]
+                  D_SRV["scripts/dev-server.js\nport 7770 — debounced restart"]
                   D_VITE["vite dev server\nport 5173 — HMR"]
                   D_BROWSER["Browser"]
                   D_CMD --> D_SRV
@@ -6719,7 +6719,7 @@ xattr -cr "/Applications/Claude Code Monitor.app"</code></pre>
                   P_BUILD["npm run build\n(tsc + vite build)"]
                   P_DIST["client/dist/\nstatic files"]
                   P_START["npm start"]
-                  P_SRV["node server/index.js\nport 4820 — serves dist"]
+                  P_SRV["node server/index.js\nport 7770 — serves dist"]
                   P_BROWSER["Browser"]
                   P_BUILD --> P_DIST
                   P_START --> P_SRV
@@ -6747,11 +6747,11 @@ xattr -cr "/Applications/Claude Code Monitor.app"</code></pre>
                 <tr>
                   <td>Client URL</td>
                   <td><code>http://localhost:5173</code></td>
-                  <td><code>http://localhost:4820</code></td>
+                  <td><code>http://localhost:7770</code></td>
                 </tr>
                 <tr>
                   <td>API proxy</td>
-                  <td>Vite proxies <code>/api</code> + <code>/ws</code> to :4820</td>
+                  <td>Vite proxies <code>/api</code> + <code>/ws</code> to :7770</td>
                   <td>Same origin, no proxy</td>
                 </tr>
                 <tr>
@@ -6840,7 +6840,7 @@ npm run deploy:validate</code></pre>
             <table>
               <thead><tr><th>Service</th><th>Loopback port</th><th>Protection</th></tr></thead>
               <tbody>
-                <tr><td>Dashboard</td><td><code>4820</code></td><td><code>dashboard-token</code></td></tr>
+                <tr><td>Dashboard</td><td><code>7770</code></td><td><code>dashboard-token</code></td></tr>
                 <tr><td>MCP HTTP/SSE</td><td><code>8819</code></td><td><code>mcp-token</code></td></tr>
                 <tr><td>Nginx edge</td><td><code>8080</code></td><td>hooks, metrics, MCP blocked by default</td></tr>
                 <tr><td>Prometheus</td><td><code>9090</code></td><td>private bearer scrape</td></tr>
@@ -7010,7 +7010,7 @@ npm run deploy:validate</code></pre>
 
           <h4>Check 1 — Is the server running?</h4>
           <div class="code-header"><span class="code-lang">bash</span></div>
-          <pre><code>curl http://localhost:4820/api/health
+          <pre><code>curl http://localhost:7770/api/health
 # Expected: {"status":"ok","timestamp":"..."}</code></pre>
 
           <h4>Check 2 — Are hooks installed?</h4>
@@ -7068,9 +7068,9 @@ npm run install-hooks</code></pre>
                   </td>
                 </tr>
                 <tr>
-                  <td>Port 4820 already in use</td>
+                  <td>Port 7770 already in use</td>
                   <td>
-                    Run <code>DASHBOARD_PORT=4821 npm run dev</code>, update Vite proxy in
+                    Run <code>DASHBOARD_PORT=7771 npm run dev</code>, update Vite proxy in
                     <code>client/vite.config.ts</code>, and re-run
                     <code>npm run install-hooks</code>.
                   </td>
@@ -7100,7 +7100,7 @@ npm run install-hooks</code></pre>
                     Hooks run on the host, not inside the container. Run
                     <code>npm run install-hooks</code> on the host after the container starts.
                     Verify hooks in <code>~/.claude/settings.json</code> point to
-                    <code>localhost:4820</code>.
+                    <code>localhost:7770</code>.
                   </td>
                 </tr>
               </tbody>

@@ -8,7 +8,7 @@ services:
       file: docker-compose.yml
       service: agent-monitor
     ports:
-      - "${CCAM_DASHBOARD_BIND:-127.0.0.1}:${DASHBOARD_PORT:-4820}:4820"
+      - "${CCAM_DASHBOARD_BIND:-127.0.0.1}:${DASHBOARD_PORT:-7770}:7770"
     environment:
       DASHBOARD_ALLOWED_HOSTS: ${DASHBOARD_ALLOWED_HOSTS:-localhost,agent-monitor,ccam-nginx}
 

@@ -1,10 +1,10 @@
 {
-  "name": "agent-dashboard",
+  "name": "dual-agent-nexus",
   "version": "2.3.0",
   "bin": {
     "ccam": "bin/ccam.js"
   },
-  "description": "Real-time dashboard for tracking Claude Code, Cursor, and Codex agent activity",
+  "description": "DualAgent Nexus: real-time 3-pool agy-cascade waterfall and cross-CLI subagent mission control for Claude Code and Google Antigravity",
   "private": true,
   "type": "commonjs",
   "main": "server/index.js",
@@ -17,23 +17,27 @@
     "README.md",
     "LICENSE"
   ],
-  "author": "Son Nguyen",
-  "funding": "https://github.com/sponsors/hoangsonww",
+  "author": "Juan Manuel Arboleda Orozco (https://github.com/juanmarboledao2304)",
+  "contributors": [
+    "Son Nguyen (https://github.com/hoangsonww) - original Claude Code Agent Monitor"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git"
+    "url": "git+https://github.com/juanmarboledao2304/dual-agent-nexus.git"
   },
   "bugs": {
-    "url": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor/issues"
+    "url": "https://github.com/juanmarboledao2304/dual-agent-nexus/issues"
   },
   "license": "MIT",
-  "homepage": "https://github.com/hoangsonww/Claude-Code-Agent-Monitor#readme",
+  "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus#readme",
   "keywords": [
     "claude",
     "claude-code",
     "anthropic",
-    "cursor",
-    "codex",
+    "antigravity",
+    "agy-cascade",
+    "gemini",
+    "subagents",
     "agent",
     "dashboard",
     "real-time",

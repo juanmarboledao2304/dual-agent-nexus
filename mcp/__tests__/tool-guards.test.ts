@@ -13,7 +13,7 @@ function fakeConfig(overrides: Partial<AppConfig> = {}): AppConfig {
   return {
     serverName: "test",
     serverVersion: "1.0.0",
-    dashboardBaseUrl: new URL("http://127.0.0.1:4820"),
+    dashboardBaseUrl: new URL("http://127.0.0.1:7770"),
     requestTimeoutMs: 10_000,
     retryCount: 2,
     retryBackoffMs: 250,

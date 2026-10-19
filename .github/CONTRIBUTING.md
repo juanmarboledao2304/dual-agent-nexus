@@ -31,7 +31,7 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 All contributions require a signed **[Contributor License Agreement](../CLA.md)**. This is enforced automatically — there is nothing to set up ahead of time.
 
 1. Open your pull request as normal.
-2. On your **first** PR, the `🖋️ CLA Assistant` bot comments asking you to sign. Read [`CLA.md`](../CLA.md), then post this comment on the PR, verbatim:
+2. On your **first** PR, the ` CLA Assistant` bot comments asking you to sign. Read [`CLA.md`](../CLA.md), then post this comment on the PR, verbatim:
 
    ```
    I have read the CLA Document and I hereby sign the CLA
@@ -59,7 +59,7 @@ npm run setup
 npm run dev
 ```
 
-The Express server runs on `http://localhost:4820` and the Vite dev server on `http://localhost:5173`.
+The Express server runs on `http://localhost:7770` and the Vite dev server on `http://localhost:5173`.
 
 ---
 

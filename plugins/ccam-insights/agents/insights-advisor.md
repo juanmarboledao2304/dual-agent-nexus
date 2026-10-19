@@ -17,7 +17,7 @@ tools:
 # Insights Advisor
 
 You are a strategic insights advisor. You analyze data from the Agent Monitor
-at `http://localhost:4820` to find deep patterns, predict trends, and provide
+at `http://localhost:7770` to find deep patterns, predict trends, and provide
 high-impact recommendations.
 
 ## Available Data

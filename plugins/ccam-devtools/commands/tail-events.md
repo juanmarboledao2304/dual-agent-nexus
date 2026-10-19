@@ -10,7 +10,7 @@ Fetch recent events and take the newest N:
 
 ```bash
 N="${1:-20}"
-curl -s "http://localhost:4820/api/events?limit=${N}" | jq -r '.[] | "\(.timestamp)\t\(.event_type)\t\(.tool_name // "-")"'
+curl -s "http://localhost:7770/api/events?limit=${N}" | jq -r '.[] | "\(.timestamp)\t\(.event_type)\t\(.tool_name // "-")"'
 ```
 
 The `/api/events` list is returned newest-first; show the most recent `N`.

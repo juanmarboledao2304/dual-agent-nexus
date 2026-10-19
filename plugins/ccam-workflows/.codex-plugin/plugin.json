@@ -1,7 +1,7 @@
 {
   "name": "ccam-workflows",
   "version": "2.3.0",
-  "description": "Analyze multi-agent orchestration and Workflow-tool fleet runs — DAGs, delegation, concurrency, error propagation, and effectiveness — via the Agent Monitor workflow intelligence API at http://localhost:4820. Maps parent→child subagent edges, scores model delegation and subagent success, surfaces concurrency lanes and serialization bottlenecks, and traces error cascades by agent depth.",
+  "description": "Analyze multi-agent orchestration and Workflow-tool fleet runs — DAGs, delegation, concurrency, error propagation, and effectiveness — via the Agent Monitor workflow intelligence API at http://localhost:7770. Maps parent→child subagent edges, scores model delegation and subagent success, surfaces concurrency lanes and serialization bottlenecks, and traces error cascades by agent depth.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
@@ -24,7 +24,7 @@
   "interface": {
     "displayName": "CCAM Workflows",
     "shortDescription": "Analyze multi-agent orchestration and Workflow-tool fleet runs — DAGs, delegation,...",
-    "longDescription": "Analyze multi-agent orchestration and Workflow-tool fleet runs — DAGs, delegation, concurrency, error propagation, and effectiveness — via the Agent Monitor workflow intelligence API at http://localhost:4820. Maps parent→child subagent edges, scores model delegation and subagent success, surfaces concurrency lanes and serialization bottlenecks, and traces error cascades by agent depth.",
+    "longDescription": "Analyze multi-agent orchestration and Workflow-tool fleet runs — DAGs, delegation, concurrency, error propagation, and effectiveness — via the Agent Monitor workflow intelligence API at http://localhost:7770. Maps parent→child subagent edges, scores model delegation and subagent success, surfaces concurrency lanes and serialization bottlenecks, and traces error cascades by agent depth.",
     "developerName": "Son Nguyen",
     "category": "Productivity",
     "capabilities": ["Read"],

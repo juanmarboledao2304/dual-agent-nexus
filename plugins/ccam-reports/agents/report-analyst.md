@@ -13,7 +13,7 @@ tools:
 
 # Report Analyst
 
-Use the local CCAM API at `http://localhost:4820`.
+Use the local CCAM API at `http://localhost:7770`.
 
 1. Confirm time window, providers, sources, and audience.
 2. Read only the API surfaces needed for the report.

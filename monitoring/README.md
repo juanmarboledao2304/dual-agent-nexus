@@ -72,9 +72,9 @@ monitoring/
 
 ## Quick start (npm — no Docker)
 
-1. **Start the dashboard** on loopback (default `npm start` on port 4820). No
+1. **Start the dashboard** on loopback (default `npm start` on port 7770). No
    `DASHBOARD_ALLOWED_HOSTS` override is needed — Prometheus scrapes
-   `127.0.0.1:4820`, which the server's Host guard already accepts.
+   `127.0.0.1:7770`, which the server's Host guard already accepts.
 
    ```bash
    npm start
@@ -157,7 +157,7 @@ Stop with `npm run docker:full:down`.
 | **npm** (`npm start`) | **npm** | `monitoring:install` → `monitoring:up` |
 | **npm** | **Docker** | `DASHBOARD_ALLOWED_HOSTS=host.docker.internal npm start` → `monitoring:docker:up` |
 | **Docker** (`docker:up`) | **Docker** | `DASHBOARD_ALLOWED_HOSTS=host.docker.internal docker compose up -d` → `monitoring:docker:up` |
-| **Docker** | **npm** | `docker:up` + `monitoring:up` (scrapes host `127.0.0.1:4820`) |
+| **Docker** | **npm** | `docker:up` + `monitoring:up` (scrapes host `127.0.0.1:7770`) |
 | **Docker/Podman full stack** | **included** | create secrets → `docker:full:up` |
 
 Verify any running stack: `npm run monitoring:verify`.
@@ -223,7 +223,7 @@ Also reachable from the Prometheus UI menu: **Consoles → index.html**.
 
 The console runs real PromQL against your scraped metrics: session totals,
 cumulative events/tokens, working agents, and drill-down links into the Graph UI.
-If the page warns about a missing scrape target, start CCAM on port 4820 and
+If the page warns about a missing scrape target, start CCAM on port 7770 and
 wait ~15s for the first poll.
 
 ### Graph tab bookmarks
@@ -249,11 +249,11 @@ Pre-filled graph links (bookmark these):
 
 - **npm-managed stack.** Scrape target lives in
   [`prometheus/prometheus-native.yml`](./prometheus/prometheus-native.yml)
-  (default `127.0.0.1:4820`). Binary versions are pinned in
+  (default `127.0.0.1:7770`). Binary versions are pinned in
   [`scripts/paths.js`](./scripts/paths.js).
 - **Docker stack.** Host-native dashboard: [`prometheus/prometheus.yml`](./prometheus/prometheus.yml)
-  (`host.docker.internal:4820`). All-Docker stack: [`prometheus/prometheus-docker.yml`](./prometheus/prometheus-docker.yml)
-  (`agent-monitor:4820`, used by `docker-compose.full.yml`).
+  (`host.docker.internal:7770`). All-Docker stack: [`prometheus/prometheus-docker.yml`](./prometheus/prometheus-docker.yml)
+  (`agent-monitor:7770`, used by `docker-compose.full.yml`).
 - **<a id="auth"></a>Auth (`DASHBOARD_TOKEN`).** If the server requires a token,
   uncomment the `authorization` block in the relevant prometheus config and set
   `credentials` to your `DASHBOARD_TOKEN`. (The `DASHBOARD_ALLOWED_HOSTS` step is

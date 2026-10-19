@@ -1,6 +1,6 @@
 # Bảng điều khiển Agent cho Claude Code, Cursor & Codex
 
-### Nền tảng giám sát thời gian thực cho hoạt động Agent Claude Code, Cursor & Codex 🚀
+### Nền tảng giám sát thời gian thực cho hoạt động Agent Claude Code, Cursor & Codex
 
 Bảng điều khiển chuyên nghiệp để theo dõi Claude Code, Cursor và Codex: phiên, công cụ, lịch sử hội thoại, chi phí và điều phối agent phụ theo thời gian thực. Hệ thống kết hợp hook gốc với phát hiện transcript cục bộ theo nhà cung cấp.
 
@@ -154,115 +154,115 @@ Giao diện tối thích ứng bao quát toàn bộ quy trình. Mỗi bản xem 
 <p align="center">
   <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Tổng quan Dashboard" width="100%"></a>
   <br>
-  <em>📡 <strong>Dashboard</strong> · tổng số Agent, Agent đang hoạt động, hoạt động gần đây và tín hiệu sức khỏe trực tiếp</em>
+  <em> <strong>Dashboard</strong> · tổng số Agent, Agent đang hoạt động, hoạt động gần đây và tín hiệu sức khỏe trực tiếp</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="Tổng quan tiến độ công việc" width="100%"></a>
   <br>
-  <em>📋 <strong>Tiến độ công việc</strong> · mức hoàn tất gọn và bản xem trước công việc theo chủ sở hữu</em>
+  <em> <strong>Tiến độ công việc</strong> · mức hoàn tất gọn và bản xem trước công việc theo chủ sở hữu</em>
 </p>
 
 <p align="center">
   <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Chế độ xem sức khỏe Dashboard" width="100%"></a>
   <br>
-  <em>🩺 <strong>Sức khỏe hệ thống</strong> · lưu trữ, cache, lỗi, công cụ, model, Subagent và compaction</em>
+  <em> <strong>Sức khỏe hệ thống</strong> · lưu trữ, cache, lỗi, công cụ, model, Subagent và compaction</em>
 </p>
 
 <p align="center">
   <a href="images/board.png"><img src="images/readme/board.png" alt="Chế độ Agent trên Bảng Kanban" width="100%"></a>
   <br>
-  <em>📋 <strong>Bảng Kanban · Agent</strong> · Agent đang làm việc, đang chờ, hoàn tất và lỗi, kèm lý do chờ rõ ràng</em>
+  <em> <strong>Bảng Kanban · Agent</strong> · Agent đang làm việc, đang chờ, hoàn tất và lỗi, kèm lý do chờ rõ ràng</em>
 </p>
 
 <p align="center">
   <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Chế độ phiên trên Bảng Kanban" width="100%"></a>
   <br>
-  <em>🗂️ <strong>Bảng Kanban · Phiên</strong> · phiên đang hoạt động, đang chờ, hoàn tất, lỗi và bị bỏ dở</em>
+  <em> <strong>Bảng Kanban · Phiên</strong> · phiên đang hoạt động, đang chờ, hoàn tất, lỗi và bị bỏ dở</em>
 </p>
 
 <p align="center">
   <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Tổng quan Phiên" width="100%"></a>
   <br>
-  <em>📂 <strong>Phiên</strong> · lịch sử có tìm kiếm, bộ lọc và phân trang phía máy chủ, kèm chi phí và hoạt động</em>
+  <em> <strong>Phiên</strong> · lịch sử có tìm kiếm, bộ lọc và phân trang phía máy chủ, kèm chi phí và hoạt động</em>
 </p>
 
 <p align="center">
   <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="Tổng quan Agent trong phiên" width="100%"></a>
   <br>
-  <em>🤖 <strong>Agent trong phiên</strong> · tổng số trực tiếp, mức dùng công cụ, luồng token và hệ thống phân cấp Agent</em>
+  <em> <strong>Agent trong phiên</strong> · tổng số trực tiếp, mức dùng công cụ, luồng token và hệ thống phân cấp Agent</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="Chi tiết tiến độ công việc của phiên" width="100%"></a>
   <br>
-  <em>✅ <strong>Chi tiết công việc</strong> · các đoạn hoàn tất, công việc hiện tại, chủ sở hữu và tác vụ được phân trang</em>
+  <em> <strong>Chi tiết công việc</strong> · các đoạn hoàn tất, công việc hiện tại, chủ sở hữu và tác vụ được phân trang</em>
 </p>
 
 <p align="center">
   <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="Chế độ xem hội thoại của phiên" width="100%"></a>
   <br>
-  <em>💬 <strong>Hội thoại</strong> · transcript đã kết xuất, mã, lời gọi công cụ, đầu ra lệnh và dấu mốc phiên</em>
+  <em> <strong>Hội thoại</strong> · transcript đã kết xuất, mã, lời gọi công cụ, đầu ra lệnh và dấu mốc phiên</em>
 </p>
 
 <p align="center">
   <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="Dòng thời gian sự kiện của phiên" width="100%"></a>
   <br>
-  <em>🔬 <strong>Dòng thời gian</strong> · sự kiện theo thời gian, bộ lọc đa chiều và hoạt động công cụ được ghép cặp</em>
+  <em> <strong>Dòng thời gian</strong> · sự kiện theo thời gian, bộ lọc đa chiều và hoạt động công cụ được ghép cặp</em>
 </p>
 
 <p align="center">
   <a href="images/feed.png"><img src="images/readme/feed.png" alt="Tổng quan Luồng hoạt động" width="100%"></a>
   <br>
-  <em>📰 <strong>Luồng hoạt động</strong> · sự kiện trực tiếp có thể tạm dừng, nhóm, lọc và chuyển tới phiên</em>
+  <em> <strong>Luồng hoạt động</strong> · sự kiện trực tiếp có thể tạm dừng, nhóm, lọc và chuyển tới phiên</em>
 </p>
 
 <p align="center">
   <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Tổng quan Phân tích" width="100%"></a>
   <br>
-  <em>📊 <strong>Phân tích</strong> · token theo model, tần suất công cụ, heatmap hoạt động và xu hướng phiên</em>
+  <em> <strong>Phân tích</strong> · token theo model, tần suất công cụ, heatmap hoạt động và xu hướng phiên</em>
 </p>
 
 <p align="center">
   <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Tổng quan phân tích quy trình" width="100%"></a>
   <br>
-  <em>🔀 <strong>Quy trình</strong> · đồ thị điều phối, luồng công cụ, cộng tác, ủy quyền và mẫu</em>
+  <em> <strong>Quy trình</strong> · đồ thị điều phối, luồng công cụ, cộng tác, ủy quyền và mẫu</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="Các lần chạy quy trình động" width="100%"></a>
   <br>
-  <em>🧬 <strong>Lần chạy quy trình</strong> · trạng thái dựa trên journal, Agent, token, công cụ và thời lượng</em>
+  <em> <strong>Lần chạy quy trình</strong> · trạng thái dựa trên journal, Agent, token, công cụ và thời lượng</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="Lần chạy quy trình động được mở rộng" width="100%"></a>
   <br>
-  <em>🧬 <strong>Lần chạy mở rộng</strong> · bộ lọc giai đoạn, chỉ số theo Agent, lời nhắc và kết quả đầy đủ</em>
+  <em> <strong>Lần chạy mở rộng</strong> · bộ lọc giai đoạn, chỉ số theo Agent, lời nhắc và kết quả đầy đủ</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="Lần chạy quy trình trong chi tiết phiên" width="100%"></a>
   <br>
-  <em>🧬 <strong>Quy trình của phiên</strong> · lần chạy động được liên kết và chi phí token được gộp vào</em>
+  <em> <strong>Quy trình của phiên</strong> · lần chạy động được liên kết và chi phí token được gộp vào</em>
 </p>
 
 <p align="center">
   <a href="images/config.png"><img src="images/readme/config.png" alt="Trình khám phá cấu hình Claude Code và Codex" width="100%"></a>
   <br>
-  <em>🧰 <strong>Cấu hình Agent</strong> · kiểm tra và chỉnh sửa an toàn cấu hình Claude Code và Codex được hỗ trợ</em>
+  <em> <strong>Cấu hình Agent</strong> · kiểm tra và chỉnh sửa an toàn cấu hình Claude Code và Codex được hỗ trợ</em>
 </p>
 
 <p align="center">
   <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Trình khám phá cấu hình Codex" width="100%"></a>
   <br>
-  <em>🧰 <strong>Cấu hình Codex</strong> · model, profile, MCP, dự án, skill, hook, quy tắc, plugin và chỉ dẫn</em>
+  <em> <strong>Cấu hình Codex</strong> · model, profile, MCP, dự án, skill, hook, quy tắc, plugin và chỉ dẫn</em>
 </p>
 
 <p align="center">
   <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Trình khám phá skill Claude Code" width="100%"></a>
   <br>
-  <em>🧩 <strong>Skill</strong> · skill user, dự án và plugin có tìm kiếm cùng chỉnh sửa có sao lưu</em>
+  <em> <strong>Skill</strong> · skill user, dự án và plugin có tìm kiếm cùng chỉnh sửa có sao lưu</em>
 </p>
 
 <p align="center">
@@ -274,25 +274,25 @@ Giao diện tối thích ứng bao quát toàn bộ quy trình. Mỗi bản xem 
 <p align="center">
   <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Đầu ra trực tiếp của Chạy Agent" width="100%"></a>
   <br>
-  <em>💬 <strong>Lần chạy trực tiếp</strong> · chat phát trực tiếp, suy luận, lệnh, thay đổi tệp, công cụ và gắn lại</em>
+  <em> <strong>Lần chạy trực tiếp</strong> · chat phát trực tiếp, suy luận, lệnh, thay đổi tệp, công cụ và gắn lại</em>
 </p>
 
 <p align="center">
   <a href="images/settings.png"><img src="images/readme/settings.png" alt="Tổng quan Cài đặt" width="100%"></a>
   <br>
-  <em>⚙️ <strong>Cài đặt</strong> · định giá, hook, thông báo, dữ liệu, nguồn từ xa và trạng thái hệ thống</em>
+  <em> <strong>Cài đặt</strong> · định giá, hook, thông báo, dữ liệu, nguồn từ xa và trạng thái hệ thống</em>
 </p>
 
 <p align="center">
   <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="Cài đặt cảnh báo và webhook" width="100%"></a>
   <br>
-  <em>🔔 <strong>Cảnh báo</strong> · quy tắc, cooldown, hoạt động và webhook tích hợp hoặc generic có chữ ký</em>
+  <em> <strong>Cảnh báo</strong> · quy tắc, cooldown, hoạt động và webhook tích hợp hoặc generic có chữ ký</em>
 </p>
 
 <p align="center">
   <a href="images/remote.png"><img src="images/readme/remote.png" alt="Cài đặt Nguồn dữ liệu từ xa" width="100%"></a>
   <br>
-  <em>🛰️ <strong>Nguồn dữ liệu từ xa</strong> · đồng bộ SSH theo nhà cung cấp và theo dõi theo phạm vi nguồn</em>
+  <em> <strong>Nguồn dữ liệu từ xa</strong> · đồng bộ SSH theo nhà cung cấp và theo dõi theo phạm vi nguồn</em>
 </p>
 
 <p align="center">
@@ -413,7 +413,7 @@ npm run build && npm start
 | Chế độ | URL |
 | --- | --- |
 | Phát triển | `http://localhost:5173` |
-| Sản xuất | `http://localhost:4820` |
+| Sản xuất | `http://localhost:7770` |
 
 ### 5. Tùy chọn: Chạy máy chủ MCP cục bộ
 
@@ -476,7 +476,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-Mọi cổng host mặc định chỉ bind vào loopback: dashboard `4820`, MCP `8819`, Nginx `8080`, Prometheus `9090` và Grafana `3000`. Thư mục Claude và Codex được mount chỉ đọc; named volume lưu bền SQLite và cấu hình do dashboard sở hữu. Nginx proxy UI, REST API có xác thực và WebSocket, còn hook, metrics và MCP bị chặn ở edge trừ khi được bật rõ ràng. Docker target `agent-runtime` tùy chọn bổ sung Claude Code và Codex CLI được ghim phiên bản cho quy trình Run Agent gốc trong container.
+Mọi cổng host mặc định chỉ bind vào loopback: dashboard `7770`, MCP `8819`, Nginx `8080`, Prometheus `9090` và Grafana `3000`. Thư mục Claude và Codex được mount chỉ đọc; named volume lưu bền SQLite và cấu hình do dashboard sở hữu. Nginx proxy UI, REST API có xác thực và WebSocket, còn hook, metrics và MCP bị chặn ở edge trừ khi được bật rõ ràng. Docker target `agent-runtime` tùy chọn bổ sung Claude Code và Codex CLI được ghim phiên bản cho quy trình Run Agent gốc trong container.
 
 > [!IMPORTANT]
 > Cài hook Claude Code/Codex trên host sau khi container khởi động. Với hook đám mây từ xa, đặt `CCAM_DASHBOARD_URL=https://...` và một `CCAM_HOOK_TOKEN` riêng; URL hook không phải loopback bắt buộc dùng HTTPS. Xem [DEPLOYMENT.md](DEPLOYMENT.md).
@@ -614,8 +614,8 @@ flowchart LR
 
 | Biến môi trường | Mặc định | Mục đích |
 | --- | --- | --- |
-| `DASHBOARD_PORT` | `4820` | Cổng máy chủ Express. |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Cổng trình xử lý hook sử dụng. |
+| `DASHBOARD_PORT` | `7770` | Cổng máy chủ Express. |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Cổng trình xử lý hook sử dụng. |
 | `NODE_ENV` | `development` | Dùng `production` để phục vụ client đã build. |
 | `DASHBOARD_UPDATE_CHECK` | bật | Đặt `0`, `false` hoặc `off` để tắt kiểm tra upstream theo lịch. |
 | `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` | `300000` | Khoảng thời gian cập nhật, tối thiểu 60,000 ms. **Check now** thủ công vẫn dùng được. |
@@ -657,7 +657,7 @@ Bản sao Git định kỳ fetch remote chuẩn và so sánh nhánh mặc địn
 
 ## CLI `ccam`
 
-CLI **`ccam`** (`bin/ccam.js` → `cli/`) cung cấp dashboard từ mọi terminal qua cây lệnh Commander.js với tùy chọn kế thừa, xác thực, gợi ý, trợ giúp được tạo và hoàn thành shell. `npm run setup` tự động liên kết CLI. Quá trình phân giải máy chủ kiểm tra `--server` / `CCAM_URL`, các cổng đã cấu hình, sổ đăng ký máy chủ trực tiếp, rồi `http://127.0.0.1:4820`.
+CLI **`ccam`** (`bin/ccam.js` → `cli/`) cung cấp dashboard từ mọi terminal qua cây lệnh Commander.js với tùy chọn kế thừa, xác thực, gợi ý, trợ giúp được tạo và hoàn thành shell. `npm run setup` tự động liên kết CLI. Quá trình phân giải máy chủ kiểm tra `--server` / `CCAM_URL`, các cổng đã cấu hình, sổ đăng ký máy chủ trực tiếp, rồi `http://127.0.0.1:7770`.
 
 ```bash
 # Server
@@ -720,7 +720,7 @@ Nhóm mặc định liệt kê tài nguyên (`ccam alerts` tương đương `cca
 
 - **Đầu ra:** TTY nhận bảng, biểu tượng trạng thái, biểu đồ, sparkline, cây Agent, chế độ xem transcript và trợ giúp có màu. Pipe nhận văn bản thuần. `--json` hoặc `CCAM_OUTPUT=json` trả JSON ổn định, với NDJSON cho `tail`, `stream` và `run follow`; lỗi dùng `{"error":{"code":"…","message":"…"}}` trên stderr và mã thoát `0` hoặc `1`.
 - **Ghi:** Dùng `y/N` tương tác hoặc `--yes`; ghi không tương tác bắt buộc có `--yes`, và `clear-data` luôn yêu cầu cờ nguyên văn.
-- **Chế độ ngoại tuyến:** Lệnh chỉ đọc chuyển sang `data/dashboard.db`, hiển thị banner `⚠ Offline mode` và sửa phiên đang hoạt động đã chết qua chế độ xem liveness. Lệnh chỉ dùng máy chủ giải thích vì sao dashboard không khả dụng.
+- **Chế độ ngoại tuyến:** Lệnh chỉ đọc chuyển sang `data/dashboard.db`, hiển thị banner ` Offline mode` và sửa phiên đang hoạt động đã chết qua chế độ xem liveness. Lệnh chỉ dùng máy chủ giải thích vì sao dashboard không khả dụng.
 - **REPL và hoàn thành:** `ccam repl` bổ sung hoàn thành dựa trên cây, lịch sử bền vững, dấu nhắc trực tiếp cùng lệnh tích hợp `help`, `json` và `watch`, mỗi dòng được cô lập trong một tiến trình con. Bật hoàn thành zsh bằng `source <(ccam completion zsh)`.
 
 Nếu `ccam` không có trên `PATH`, hãy chạy `npm link` một lần từ thư mục gốc kho mã. Xem [docs/CLI.md](./docs/CLI.md) để biết hợp đồng đầy đủ.
@@ -953,13 +953,13 @@ flowchart TD
     VALIDATE --> TYPE{"Tool type?"}
     TYPE -->|Read-only| EXEC["Execute"]
     TYPE -->|Mutation| M_FLAG{"ALLOW_MUTATIONS?"}
-    M_FLAG -->|No| DENY1["❌ Reject"]
+    M_FLAG -->|No| DENY1[" Reject"]
     M_FLAG -->|Yes| DEST{"Destructive?"}
     DEST -->|No| EXEC
     DEST -->|Yes| D_FLAG{"ALLOW_DESTRUCTIVE?"}
-    D_FLAG -->|No| DENY2["❌ Reject"]
+    D_FLAG -->|No| DENY2[" Reject"]
     D_FLAG -->|Yes| TOKEN{"confirmation_token?"}
-    TOKEN -->|Invalid| DENY3["❌ Reject"]
+    TOKEN -->|Invalid| DENY3[" Reject"]
     TOKEN -->|Valid| EXEC
     EXEC --> RESULT["Return tool result"]
 
@@ -1196,19 +1196,19 @@ npm run monitoring:verify
 <p align="center">
   <a href="images/grafana.png"><img src="images/readme/grafana.png" alt="Dashboard CCAM Overview trên Grafana" width="100%"></a>
   <br>
-  <em>📊 <strong>Grafana · CCAM Overview</strong> · trạng thái toàn bộ Agent, tổng số cơ sở dữ liệu, phân tích và tốc độ từ lần scrape <code>/api/metrics</code> trực tiếp</em>
+  <em> <strong>Grafana · CCAM Overview</strong> · trạng thái toàn bộ Agent, tổng số cơ sở dữ liệu, phân tích và tốc độ từ lần scrape <code>/api/metrics</code> trực tiếp</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-console.png"><img src="images/readme/prometheus-console.png" alt="Console CCAM trên Prometheus" width="100%"></a>
   <br>
-  <em>🔥 <strong>Prometheus · CCAM console</strong> · sức khỏe scrape, phiên, sự kiện, token và liên kết drill-down Graph</em>
+  <em> <strong>Prometheus · CCAM console</strong> · sức khỏe scrape, phiên, sự kiện, token và liên kết drill-down Graph</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-query.png"><img src="images/readme/prometheus-query.png" alt="Prometheus Graph với truy vấn CCAM PromQL" width="100%"></a>
   <br>
-  <em>📈 <strong>Prometheus · Graph</strong> · chạy PromQL trên metric CCAM đã scrape từ các liên kết khởi đầu trong console</em>
+  <em> <strong>Prometheus · Graph</strong> · chạy PromQL trên metric CCAM đã scrape từ các liên kết khởi đầu trong console</em>
 </p>
 
 Xem [docs/API.md → Metrics](./docs/API.md#metrics) để biết tên metric, xác thực và cấu hình scrape.
@@ -1282,7 +1282,7 @@ flowchart LR
 
 ### WebSocket
 
-Kết nối với `ws://localhost:4820/ws` để nhận tin nhắn đẩy theo thời gian thực:
+Kết nối với `ws://localhost:7770/ws` để nhận tin nhắn đẩy theo thời gian thực:
 
 ```json
 {
@@ -1557,7 +1557,7 @@ Bấm vào nhãn **Live** / **Disconnected** ở chân thanh bên để mở m�
   <a href="vscode-extension/vscode.png"><img src="images/readme/vscode.png" alt="Ảnh chụp tiện ích mở rộng VS Code" width="100%"></a>
 </p>
 
-### 🚀 Tính năng chính
+### Tính năng chính
 
 - **Thanh bên trực tiếp:** Chế độ xem Activity Bar chuyên dụng hiển thị tình trạng Agent theo thời gian thực (Đang làm việc, Đang chờ, Hoàn tất, v.v.).
 - **Phân tích mức dùng:** Theo dõi tổng token, chi phí USD trực tiếp và số sự kiện ngay trong thanh bên.
@@ -1565,7 +1565,7 @@ Bấm vào nhãn **Live** / **Disconnected** ở chân thanh bên để mở m�
 - **Điều hướng sâu:** Truy cập một lần bấm tới chế độ xem dashboard cụ thể (Kanban, Analytics, Settings) hoặc phiên gần đây.
 - **Tab tích hợp:** Mở toàn bộ dashboard theo dõi dưới dạng tab webview VS Code gốc.
 
-### 📦 Cài đặt và thiết lập
+### Cài đặt và thiết lập
 
 1. Mở thư mục [vscode-extension](./vscode-extension).
 2. Cài tiện ích mở rộng Marketplace hoặc tự đóng gói bằng `vsce package`.
@@ -1586,16 +1586,16 @@ Bấm vào nhãn **Live** / **Disconnected** ở chân thanh bên để mở m�
 <p align="center">
   <a href="images/macos.png"><img src="images/readme/macos.png" alt="Claude Code Monitor chạy dưới dạng ứng dụng máy tính để bàn gốc" width="100%"></a>
   <br>
-  <em>🍎🪟 <strong>Ứng dụng máy tính để bàn</strong> · shell gốc với biểu tượng menu-bar / khu vực thông báo (tray), Open-at-Login và khóa một phiên bản. Cùng dashboard trong cửa sổ hệ điều hành thật, ảnh minh họa trên macOS.</em>
+  <em> <strong>Ứng dụng máy tính để bàn</strong> · shell gốc với biểu tượng menu-bar / khu vực thông báo (tray), Open-at-Login và khóa một phiên bản. Cùng dashboard trong cửa sổ hệ điều hành thật, ảnh minh họa trên macOS.</em>
 </p>
 
 <p align="center">
   <a href="images/windows_app.png"><img src="images/readme/windows_app.png" alt="Claude Code Monitor chạy dưới dạng ứng dụng Windows gốc, hiển thị Luồng hoạt động cùng thanh menu cửa sổ Windows và bảng Tabby" width="100%"></a>
   <br>
-  <em>🪟 Cùng dashboard dưới dạng ứng dụng Windows gốc, với biểu tượng khu vực thông báo (tray), menu cửa sổ gốc và Open-at-Login.</em>
+  <em> Cùng dashboard dưới dạng ứng dụng Windows gốc, với biểu tượng khu vực thông báo (tray), menu cửa sổ gốc và Open-at-Login.</em>
 </p>
 
-Ứng dụng bổ sung hành vi cửa sổ, tray, menu, đăng nhập và tắt máy gốc quanh cùng UI được phục vụ tại `localhost:4820`.
+Ứng dụng bổ sung hành vi cửa sổ, tray, menu, đăng nhập và tắt máy gốc quanh cùng UI được phục vụ tại `localhost:7770`.
 
 ### Cách hoạt động
 
@@ -1628,8 +1628,8 @@ flowchart LR
 
 Khi khởi chạy, ứng dụng:
 
-1. Chọn cổng trống, ưu tiên **4820**, sau đó **4821–4829**, rồi cổng cao ngẫu nhiên nếu tất cả đều bận.
-2. Nếu máy chủ dashboard khỏe mạnh đã trả lời `/api/health` trên `4820` (ví dụ bạn chạy `npm start` trong terminal), ứng dụng **tiếp nhận máy chủ đó** thay vì bind hai lần. Không có xung đột cổng hay tranh chấp SQLite. Máy chủ được tiếp nhận tiếp tục chạy sau khi thoát ứng dụng.
+1. Chọn cổng trống, ưu tiên **7770**, sau đó **7771–7779**, rồi cổng cao ngẫu nhiên nếu tất cả đều bận.
+2. Nếu máy chủ dashboard khỏe mạnh đã trả lời `/api/health` trên `7770` (ví dụ bạn chạy `npm start` trong terminal), ứng dụng **tiếp nhận máy chủ đó** thay vì bind hai lần. Không có xung đột cổng hay tranh chấp SQLite. Máy chủ được tiếp nhận tiếp tục chạy sau khi thoát ứng dụng.
 3. Nếu không, ứng dụng khởi động máy chủ nhúng và ở **lần khởi động máy chủ do ứng dụng sở hữu đầu tiên**, tự cài hook Claude Code rồi khởi động các dịch vụ nền (bộ lập lịch cập nhật, `cc-watcher`, đối chiếu run mồ côi). Vì vậy người chỉ dùng DMG nhận sự kiện với **không cần thiết lập thủ công**, không cần checkout hay `npm run install-hooks`.
 4. **(macOS)** Khôi phục **`PATH` của login shell** để **Run Claude** tìm và tạo Claude CLI. Ứng dụng khởi chạy từ Finder/Dock nếu không chỉ kế thừa `PATH` tối thiểu của launchd và bỏ lỡ CLI trong `~/.local/bin`, `/opt/homebrew/bin`, thư mục bin của trình quản lý phiên bản, v.v. Trên Windows, tiến trình đã kế thừa `PATH` của người dùng.
 5. Mở cửa sổ dashboard, trừ khi ứng dụng được khởi chạy lúc đăng nhập (trên macOS qua Login Items; trên Windows qua mục `HKCU\…\Run` có tag), khi đó ứng dụng chỉ nằm ở tray.
@@ -1654,7 +1654,7 @@ Khi khởi chạy, ứng dụng:
 | Windows (trình cài) | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | cài theo người dùng, không cần admin |
 | Windows (portable) | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | chạy không cần cài đặt |
 
-Build mới theo từng commit cũng có dưới dạng artifact CI, yêu cầu đăng nhập và lưu 14 ngày: `ClaudeCodeMonitor-dmg` từ job `🍎 macOS Desktop (DMG)` và `ClaudeCodeMonitor-win` từ job `🪟 Windows Desktop (EXE)`. Chúng hữu ích để thử `master` trước tag phát hành tiếp theo.
+Build mới theo từng commit cũng có dưới dạng artifact CI, yêu cầu đăng nhập và lưu 14 ngày: `ClaudeCodeMonitor-dmg` từ job ` macOS Desktop (DMG)` và `ClaudeCodeMonitor-win` từ job ` Windows Desktop (EXE)`. Chúng hữu ích để thử `master` trước tag phát hành tiếp theo.
 
 **Lựa chọn B, tự build.** Từ thư mục gốc kho mã:
 
@@ -1692,19 +1692,19 @@ Chạy `ClaudeCodeMonitor-Setup-<ver>-x64.exe` để cài theo người dùng, k
 <p align="center">
   <a href="images/setup_win_wizard.png"><img src="images/readme/setup_win_wizard.png" alt="Tùy chọn trình cài đặt Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Tùy chọn cài đặt</strong> · chọn cài theo người dùng hoặc cho mọi người dùng</em>
+  <em> <strong>Tùy chọn cài đặt</strong> · chọn cài theo người dùng hoặc cho mọi người dùng</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard2.png"><img src="images/readme/setup_win_wizard2.png" alt="Thư mục đích của trình cài đặt Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Vị trí cài đặt</strong> · xác nhận hoặc thay đổi thư mục đích</em>
+  <em> <strong>Vị trí cài đặt</strong> · xác nhận hoặc thay đổi thư mục đích</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard3.png"><img src="images/readme/setup_win_wizard3.png" alt="Màn hình hoàn tất trình cài đặt Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Thiết lập Windows hoàn tất</strong> · kết thúc trình cài đặt và khởi chạy Claude Code Monitor</em>
+  <em> <strong>Thiết lập Windows hoàn tất</strong> · kết thúc trình cài đặt và khởi chạy Claude Code Monitor</em>
 </p>
 
 ### Lệnh build
@@ -1960,7 +1960,7 @@ graph LR
 flowchart TD
     START["Claude Code fires hook"] --> STDIN["Read stdin to EOF"]
     STDIN --> PARSE{"Parse JSON?"}
-    PARSE -->|Success| POST["POST to 127.0.0.1:4820<br/>/api/hooks/event"]
+    PARSE -->|Success| POST["POST to 127.0.0.1:7770<br/>/api/hooks/event"]
     PARSE -->|Failure| WRAP["Wrap raw input as JSON"]
     WRAP --> POST
     POST --> RESP{"Response?"}
@@ -1982,7 +1982,7 @@ Chúng tôi hỗ trợ cả hai chế độ triển khai phát triển và sản
 ```mermaid
 graph LR
     subgraph dev["Development — 2 processes"]
-        D_CMD["npm run dev"] --> D_SRV["Express :4820<br/>trình theo dõi chống dội"]
+        D_CMD["npm run dev"] --> D_SRV["Express :7770<br/>trình theo dõi chống dội"]
         D_CMD --> D_VITE["Vite :5173<br/>HMR"]
         D_BROWSER["Browser"] --> D_VITE
         D_VITE -->|"proxy /api + /ws"| D_SRV
@@ -1990,7 +1990,7 @@ graph LR
 
     subgraph prod["Production — 1 process"]
         P_BUILD["npm run build"] --> P_DIST["client/dist/"]
-        P_START["npm start"] --> P_SRV["Express :4820<br/>serves static + API"]
+        P_START["npm start"] --> P_SRV["Express :7770<br/>serves static + API"]
         P_BROWSER["Browser"] --> P_SRV
     end
 
@@ -2032,7 +2032,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["Operator"] -->|"interactive CLI"| M_REPL
 
-    M_STDIO --> D["Dashboard Server<br/>:4820"]
+    M_STDIO --> D["Dashboard Server<br/>:7770"]
     M_HTTP --> D
     M_REPL --> D
 
@@ -2232,8 +2232,8 @@ agent-dashboard/
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `better-sqlite3` không cài đặt được | Điều này không gây tử vong - máy chủ sẽ tự động quay trở lại trạng thái `node:sqlite` tích hợp của Node.js (Node 22+). Trên các phiên bản Node cũ hơn, hãy cài đặt công cụ xây dựng Python 3 và C++, sau đó chạy `npm rebuild better-sqlite3` |
 | Móc không bắn                  | Chạy `npm run install-hooks` và khởi động lại Claude Code. Xác minh hook tồn tại trong `~/.claude/settings.json`                                                             |
-| Bảng điều khiển không hiển thị dữ liệu           | Đảm bảo máy chủ đang chạy (`npm run dev`) trước khi bắt đầu phiên Claude Code. Kiểm tra `http://localhost:4820/api/health`                                     |
-| WebSocket bị ngắt kết nối            | Máy khách tự động kết nối lại sau mỗi 2 giây. Kiểm tra xem cổng 4820 có bị tường lửa chặn không                                                                    |
+| Bảng điều khiển không hiển thị dữ liệu           | Đảm bảo máy chủ đang chạy (`npm run dev`) trước khi bắt đầu phiên Claude Code. Kiểm tra `http://localhost:7770/api/health`                                     |
+| WebSocket bị ngắt kết nối            | Máy khách tự động kết nối lại sau mỗi 2 giây. Kiểm tra xem cổng 7770 có bị tường lửa chặn không                                                                    |
 | Dữ liệu cũ sau khi khởi động lại          | Cơ sở dữ liệu vẫn tồn tại trong suốt quá trình khởi động lại. Chạy `npm run seed` để có dữ liệu demo mới hoặc xóa `data/dashboard.db` để đặt lại                                            |
 | Công cụ MCP không kết nối được         | Xác nhận API bảng điều khiển đã hoạt động trên `MCP_DASHBOARD_BASE_URL` và xây dựng lại/khởi động MCP (`npm run mcp:build`, `npm run mcp:start`)                                         |
 | Lần chạy đầu macOS hiện "Apple could not verify…" | DMG được ký ad-hoc theo mặc định. Chạy `xattr -cr "/Applications/Claude Code Monitor.app"`, hoặc nhấp *Open Anyway* trong *System Settings → Privacy & Security* |
@@ -2247,7 +2247,7 @@ agent-dashboard/
 
 Mọi đóng góp đều được chào đón. Xem [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) để biết hướng dẫn đầy đủ.
 
-Mọi người đóng góp phải ký [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Điều này được tự động áp dụng trên mỗi pull request bởi GitHub Action `🖋️ CLA Assistant`: lần đầu mở PR, bot yêu cầu bạn ký bằng cách bình luận `I have read the CLA Document and I hereby sign the CLA`. Kiểm tra trạng thái **CLA Assistant** của PR giữ màu đỏ cho tới khi hoàn tất, và một lần ký áp dụng cho mọi đóng góp về sau.
+Mọi người đóng góp phải ký [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Điều này được tự động áp dụng trên mỗi pull request bởi GitHub Action ` CLA Assistant`: lần đầu mở PR, bot yêu cầu bạn ký bằng cách bình luận `I have read the CLA Document and I hereby sign the CLA`. Kiểm tra trạng thái **CLA Assistant** của PR giữ màu đỏ cho tới khi hoàn tất, và một lần ký áp dụng cho mọi đóng góp về sau.
 
 ---
 

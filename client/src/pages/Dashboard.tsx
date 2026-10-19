@@ -419,7 +419,7 @@ function SystemHealthTab() {
               raw={`Write velocity (events):\n5 min: ${info.db.load_stats?.m5 ?? 0}\n15 min: ${info.db.load_stats?.m15 ?? 0}\n1 hr: ${info.db.load_stats?.h1 ?? 0}`}
             >
               <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10 cursor-default">
-                ⚡ {info.db.load_stats?.m5 ?? 0}/{info.db.load_stats?.m15 ?? 0}/
+                LOAD {info.db.load_stats?.m5 ?? 0}/{info.db.load_stats?.m15 ?? 0}/
                 {info.db.load_stats?.h1 ?? 0}
               </span>
             </Tip>
@@ -1383,7 +1383,7 @@ export function Dashboard() {
             <div ref={agentsContainerRef} className="min-w-0 overflow-y-auto pr-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-medium text-gray-300">{t("activeAgentsSection")}</h3>
-                <button onClick={() => navigate("/kanban")} className="btn-ghost text-xs">
+                <button onClick={() => navigate("/rooms")} className="btn-ghost text-xs">
                   {t("viewBoard")} <ArrowRight className="w-3 h-3" />
                 </button>
               </div>

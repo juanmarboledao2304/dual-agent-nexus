@@ -1,7 +1,7 @@
 /**
  * @file Main extension file for Claude Code Agent Monitor VSCode extension
  * Sets up the extension, registers commands, and manages the status bar item.
- * Implements a dynamic dashboard view that checks for active servers on ports 5173 and 4820.
+ * Implements a dynamic dashboard view that checks for active servers on ports 5173 and 7770.
  * Provides real-time status updates in the sidebar and status bar with background polling.
  *
  * @author Son Nguyen <hoangson091104@gmail.com>
@@ -46,7 +46,7 @@ function activate(context) {
       );
 
       const updateWebview = async () => {
-        const ports = [5173, 4820];
+        const ports = [5173, 7770];
         let activePort = null;
         for (const port of ports) {
           if (await checkPort(port)) {
@@ -77,7 +77,7 @@ function activate(context) {
     "claude-code-agent-monitor.openInBrowser",
     async () => {
       const isDevUp = await checkPort(5173);
-      const url = isDevUp ? "http://localhost:5173" : "http://localhost:4820";
+      const url = isDevUp ? "http://localhost:5173" : "http://localhost:7770";
       vscode.env.openExternal(vscode.Uri.parse(url));
     }
   );
@@ -99,7 +99,7 @@ function activate(context) {
         "Yes"
       ) {
         try {
-          const res = await request("DELETE", 4820, "/api/sessions");
+          const res = await request("DELETE", 7770, "/api/sessions");
           if (res.statusCode === 200) {
             statusProvider.refresh();
             updateStatusBar();
@@ -118,7 +118,7 @@ function activate(context) {
 
 async function updateStatusBar() {
   try {
-    const stats = await fetchJson(4820, "/api/stats");
+    const stats = await fetchJson(7770, "/api/stats");
     if (stats) {
       statusBarItem.text = `$(pulse) Claude: ${stats.sessions || 0}s | ${stats.agents || 0}a`;
       statusBarItem.show();
@@ -309,7 +309,7 @@ npm run setup</div>
                         </svg>
                         Troubleshooting
                     </h3>
-                    <p>Ensure no other services are occupying ports 5173 or 4820. If the problem persists, check the documentation.</p>
+                    <p>Ensure no other services are occupying ports 5173 or 7770. If the problem persists, check the documentation.</p>
                 </div>
                 
                 <button class="btn btn-primary" onclick="acquireVsCodeApi().postMessage({command:'retry'})">

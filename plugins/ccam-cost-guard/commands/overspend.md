@@ -8,7 +8,7 @@ List the sessions driving Claude Code spend up — the **top $ARGUMENTS** most e
 
 1. Fetch a wide slice of sessions:
    ```
-   curl -s "http://localhost:4820/api/sessions?limit=200"
+   curl -s "http://localhost:7770/api/sessions?limit=200"
    ```
 
 2. Sort the returned sessions by inline `cost` **descending** and take the top N.

@@ -47,7 +47,7 @@ describe("banner", () => {
         printServerInfo({
           transport: "http",
           version: "2.0.0",
-          dashboard: "http://localhost:4820/",
+          dashboard: "http://localhost:7770/",
           port: 8819,
           mutations: true,
           destructive: false,
@@ -58,7 +58,7 @@ describe("banner", () => {
       assert.ok(text.includes("Agent Dashboard MCP Server"));
       assert.ok(text.includes("2.0.0"));
       assert.ok(text.includes("HTTP"));
-      assert.ok(text.includes("localhost:4820"));
+      assert.ok(text.includes("localhost:7770"));
       assert.ok(text.includes("8819"));
       assert.ok(text.includes("25"));
       assert.ok(text.includes("ENABLED")); // mutations
@@ -70,7 +70,7 @@ describe("banner", () => {
         printServerInfo({
           transport: "stdio",
           version: "1.0.0",
-          dashboard: "http://127.0.0.1:4820/",
+          dashboard: "http://127.0.0.1:7770/",
           mutations: false,
           destructive: false,
           tools: 25,
@@ -85,7 +85,7 @@ describe("banner", () => {
         printServerInfo({
           transport: "repl",
           version: "1.0.0",
-          dashboard: "http://127.0.0.1:4820/",
+          dashboard: "http://127.0.0.1:7770/",
           mutations: false,
           destructive: false,
           tools: 25,

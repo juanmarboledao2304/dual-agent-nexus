@@ -8,7 +8,7 @@ figure, e.g. `50`). If `$ARGUMENTS` is empty, just report spend-to-date and ask 
 
 1. Fetch current spend:
    ```
-   curl -s http://localhost:4820/api/pricing/cost
+   curl -s http://localhost:7770/api/pricing/cost
    ```
    Read `total_cost` (spend-to-date) and the per-model `breakdown`.
 

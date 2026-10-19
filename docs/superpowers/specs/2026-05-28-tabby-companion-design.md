@@ -172,7 +172,7 @@ Constants (tunable, defined in `useTabbyBrain`): `STUCK_MS` (~10 min), `SLEEP_MS
 - **Accessibility:** bubble container is `aria-live="polite"` so screen readers announce notable events without stealing focus.
 
 Example quips (from `quips.ts`, randomized):
-- happy: "session wrapped 🐾", "nice, that one's done", "4m12s — clean run"
+- happy: "session wrapped", "nice, that one's done", "4m12s — clean run"
 - worried: "ow, an error", "a hook tripped — peek?"
 - stuck: "this one's been quiet a while…", "still chewing on something?"
 - sleeping: "zzz", "wake me if something happens"
@@ -183,7 +183,7 @@ Example quips (from `quips.ts`, randomized):
 
 Opens as a small card anchored above the avatar. Themed with `surface-3`/`border`/`accent`.
 
-**Status header:** `🐾 N live · M errored · ●connected` (from brain's `statusSummary`; `●` reflects WS state, colored by health).
+**Status header:** ` N live · M errored · ●connected` (from brain's `statusSummary`; `●` reflects WS state, colored by health).
 
 **Quick actions** (each = `useNavigate` to an existing route, or a local toggle):
 - Jump to errored session → `/sessions/:id` (most recent error) or `/sessions?status=error`.

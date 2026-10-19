@@ -26,20 +26,28 @@ describe("Sidebar", () => {
 
   it("should render the brand name", () => {
     renderSidebar(true);
-    expect(screen.getByText("Agent Dashboard")).toBeInTheDocument();
+    expect(screen.getByText("DualAgent Nexus")).toBeInTheDocument();
   });
 
   it("should render the subtitle", () => {
     renderSidebar(true);
-    expect(screen.getByText("Claude Code Monitor")).toBeInTheDocument();
+    expect(screen.getByText("AI Orchestration & Telemetry")).toBeInTheDocument();
+  });
+
+  it("should render the 8-bit app mark", () => {
+    renderSidebar(true);
+    expect(screen.getAllByRole("img", { name: "DualAgent Nexus" }).length).toBeGreaterThan(0);
   });
 
   it("should render all navigation links", () => {
     renderSidebar(true);
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
-    expect(screen.getByText("Kanban Board")).toBeInTheDocument();
-    expect(screen.getByText("Sessions")).toBeInTheDocument();
-    expect(screen.getByText("Activity Feed")).toBeInTheDocument();
+    expect(screen.getByText("Overview Deck")).toBeInTheDocument();
+    expect(screen.getByText("Agent Rooms")).toBeInTheDocument();
+    expect(screen.getByText("Cascade Hierarchy")).toBeInTheDocument();
+    expect(screen.getByText("Session Logs")).toBeInTheDocument();
+    expect(screen.getByText("Activity Stream")).toBeInTheDocument();
+    expect(screen.getByText("Quota & Digest ROI")).toBeInTheDocument();
+    expect(screen.getByText("System Configuration")).toBeInTheDocument();
   });
 
   it('should show "Live" when WebSocket is connected', () => {
@@ -65,9 +73,14 @@ describe("Sidebar", () => {
     const links = screen.getAllByRole("link");
     const hrefs = links.map((link) => link.getAttribute("href"));
     expect(hrefs).toContain("/");
-    expect(hrefs).toContain("/kanban");
+    expect(hrefs).toContain("/rooms");
+    expect(hrefs).toContain("/cascade-graph");
     expect(hrefs).toContain("/sessions");
     expect(hrefs).toContain("/activity");
+    expect(hrefs).toContain("/quota-roi");
+    expect(hrefs).toContain("/settings");
+    expect(hrefs).not.toContain("/kanban");
+    expect(hrefs).toContain("https://github.com/juanmarboledao2304/dual-agent-nexus");
   });
 
   it("should expose all five languages through the custom dropdown", async () => {
@@ -92,7 +105,7 @@ describe("Sidebar", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Tổng quan")).toBeInTheDocument();
-      expect(screen.getByText("Bảng Kanban")).toBeInTheDocument();
+      expect(screen.getByText("Phòng Agent")).toBeInTheDocument();
     });
   });
 
@@ -104,8 +117,8 @@ describe("Sidebar", () => {
     await user.click(screen.getByRole("option", { name: "Korean 한국어" }));
 
     await waitFor(() => {
-      expect(screen.getByText("대시보드")).toBeInTheDocument();
-      expect(screen.getByText("칸반 보드")).toBeInTheDocument();
+      expect(screen.getByText("개요")).toBeInTheDocument();
+      expect(screen.getByText("Agent 룸")).toBeInTheDocument();
     });
   });
 
@@ -123,8 +136,8 @@ describe("Sidebar", () => {
     await user.click(screen.getByRole("option", { name: "Spanish ES" }));
 
     await waitFor(() => {
-      expect(screen.getByTitle("Panel")).toBeInTheDocument();
-      expect(screen.getByTitle("Tablero Kanban")).toBeInTheDocument();
+      expect(screen.getByTitle("Vista general")).toBeInTheDocument();
+      expect(screen.getByTitle("Salas de agentes")).toBeInTheDocument();
     });
   });
 });

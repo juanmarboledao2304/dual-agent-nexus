@@ -36,7 +36,7 @@ scrape_configs:
     # Static target for standalone deployments
     static_configs:
       - targets:
-          - "agent-monitor:4820"
+          - "agent-monitor:7770"
         labels:
           app: agent-monitor
           component: server

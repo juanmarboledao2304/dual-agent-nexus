@@ -161,7 +161,7 @@ function ensureNativeModulesPatched(): void {
  * already running.
  */
 export interface ServerHandle {
-  /** Origin (e.g. `http://127.0.0.1:4820`) used by the window. */
+  /** Origin (e.g. `http://127.0.0.1:7770`) used by the window. */
   url: string;
   /** TCP port the server listens on. */
   port: number;
@@ -464,8 +464,8 @@ async function probePort(port: number, timeoutMs = 1500): Promise<"healthy" | "b
 /**
  * Choose a port for a server we are about to start ourselves (i.e. we already
  * know `PREFERRED_PORT` has nothing healthy to adopt). Tries, in order:
- *   1. `PREFERRED_PORT` (4820) — the project's documented default.
- *   2. The next nine ports (4821–4829) — small, predictable fallbacks that
+ *   1. `PREFERRED_PORT` (7770) — the project's documented default.
+ *   2. The next nine ports (7771–7779) — small, predictable fallbacks that
  *      are still easy for a user to guess/bookmark.
  *   3. The full `FALLBACK_PORT_RANGE` (49152–49500, the IANA dynamic/private
  *      range) — scanned sequentially as a last resort.
@@ -477,7 +477,7 @@ async function pickFreePort(): Promise<number> {
   const initial = await probePort(PREFERRED_PORT);
   if (initial === "free") return PREFERRED_PORT;
 
-  // Try the next 9 well-known fallbacks first (4821..4829) before going random.
+  // Try the next 9 well-known fallbacks first (7771..7779) before going random.
   for (let p = PREFERRED_PORT + 1; p < PREFERRED_PORT + 10; p++) {
     if ((await probePort(p)) === "free") return p;
   }
@@ -517,7 +517,7 @@ async function waitForHealthy(port: number, timeoutMs = HEALTH_TIMEOUT_MS): Prom
  *     Used by the smoke test to verify the spawned process actually started a
  *     server rather than finding an unrelated one.
  *   - `CCAM_DESKTOP_NO_ADOPT=1`: skip the "is there already a healthy server
- *     on 4820?" check and always start our own.
+ *     on 7770?" check and always start our own.
  */
 export async function startEmbeddedServer(): Promise<ServerHandle> {
   const forcedPort = process.env.CCAM_DESKTOP_BIND_PORT

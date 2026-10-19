@@ -11,7 +11,7 @@ description: >
 # Hook Inventory
 
 Catalogue every Claude Code hook the user has configured and assess its safety —
-read through the Agent Monitor dashboard at `http://localhost:4820`.
+read through the Agent Monitor dashboard at `http://localhost:7770`.
 
 ## Input
 
@@ -65,5 +65,5 @@ For every `type: "command"` entry escalate:
 - Note: hooks live inside settings.json and are read-only via the Config
   Explorer; edit them in the `file` named by the source, then reinstall with
   the dashboard's hook setup if needed.
-- If the dashboard is unreachable at `http://localhost:4820`, say so and tell
+- If the dashboard is unreachable at `http://localhost:7770`, say so and tell
   the user to start it with `npm start` from the repo root.

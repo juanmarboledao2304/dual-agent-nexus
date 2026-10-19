@@ -13,7 +13,7 @@ Set `TYPE` and `FORMAT` from the args (apply the defaults if missing), then run:
 
 ```bash
 TYPE="${1:-all}"; FORMAT="${2:-json}"
-curl -s "http://localhost:4820/api/settings/export?type=${TYPE}&format=${FORMAT}" \
+curl -s "http://localhost:7770/api/settings/export?type=${TYPE}&format=${FORMAT}" \
   -o "ccam-export-${TYPE}.${FORMAT}"
 ```
 

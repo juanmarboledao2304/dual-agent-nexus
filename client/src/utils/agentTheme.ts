@@ -2,7 +2,7 @@
  * @file Chromatic Thermal UI System for DualAgent Nexus.
  * Maps Claude Code (Warm Spectrum: Red/Orange/Yellow) and Google Antigravity (Cool Spectrum: Purple/Blue/Emerald)
  * agents to deterministic Tailwind classes, SVG connector stroke colors, model badges, and 4-bar effort meters.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 export type ThermalProvider = "claude" | "agy-claude" | "antigravity" | "codex" | "cursor";
@@ -701,6 +701,31 @@ export function getAgentThermalTheme(
     glowHex: "rgba(249,115,22,0.3)",
     spectrumLabel: "Vibrant Orange",
   };
+}
+
+/** One of the three operational quota pools DualAgent Nexus tracks. */
+export interface QuotaPoolBadge {
+  pool: 1 | 2 | 3;
+  id: "agy-claude" | "agy-gemini" | "claude-direct";
+  /** Pill text, e.g. "POOL 1 • AGY-CLAUDE". */
+  label: string;
+}
+
+/**
+ * Map a thermal provider to its operational quota pool. Pool 1 is Google-paid Claude/GPT-OSS
+ * via `agy-cascade`, Pool 2 is Google-paid Gemini/Argon via `agy-cascade`, and Pool 3 is the
+ * direct Anthropic subscription (Main conductor and Haiku Explore subagents). Codex and Cursor
+ * rows are not part of the waterfall and are reported under Pool 3.
+ *
+ * @param provider - Provider resolved by {@link resolveProvider} or {@link getAgentThermalTheme}.
+ * @returns Pool number, id, and pill label.
+ */
+export function resolveQuotaPoolBadge(provider: ThermalProvider | string): QuotaPoolBadge {
+  if (provider === "agy-claude") return { pool: 1, id: "agy-claude", label: "POOL 1 • AGY-CLAUDE" };
+  if (provider === "antigravity" || provider === "agy-gemini") {
+    return { pool: 2, id: "agy-gemini", label: "POOL 2 • AGY-GEMINI" };
+  }
+  return { pool: 3, id: "claude-direct", label: "POOL 3 • CLAUDE DIRECT" };
 }
 
 /**

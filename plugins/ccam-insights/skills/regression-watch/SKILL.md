@@ -76,7 +76,7 @@ likely driver (e.g., cache hit rate fell → cost per session climbed).
 ## Output
 
 - A Markdown table: metric | baseline | recent | Δ | direction (▲ worse / ▼ better) | verdict.
-- Tag each regressed metric 🔴 (clear regression), 🟡 (mild/within noise), or 🟢 (improved).
+- Tag each regressed metric (clear regression), (mild/within noise), or (improved).
 - Currency in USD to 4 decimals; rates as percentages to 2 decimals.
 - List the specific session IDs that contributed most to any regression.
 - End with the single highest-priority regression to address and a concrete next step.

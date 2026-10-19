@@ -3,14 +3,14 @@
  * @description Automated cross-platform smoke test for DualAgent Nexus.
  * Spawns the backend server, verifies /api/cascade/status and /api/simulate/swarm,
  * and shuts down cleanly without leaving background processes.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const { spawn } = require("child_process");
 const http = require("http");
 const path = require("path");
 
-const PORT = process.env.PORT || 4820;
+const PORT = process.env.PORT || 7770;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 function httpRequest(options, postData = null) {

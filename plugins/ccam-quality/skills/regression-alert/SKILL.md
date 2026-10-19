@@ -57,8 +57,8 @@ Roll up which rates regressed, rank by relative worsening, and name the most lik
 ## Output
 
 - A Markdown table: metric | baseline | recent | Δ (pp) | Δ (%) | direction (▲ worse / ▼ better) | verdict.
-- Tag each metric 🔴 (clear regression), 🟡 (within noise), or 🟢 (improved).
+- Tag each metric (clear regression), (within noise), or (improved).
 - Rates as percentages to 2 decimals; any currency in USD to 4 decimals.
 - List the specific session IDs that contributed most to any regression.
 - End with the single highest-priority regression and a concrete next step (and, if armed, the new rule's id/threshold).
-- Read-only **except** the explicit "arm" path, which is the only write. Never mutate alert rules otherwise. If `curl` cannot reach `http://localhost:4820`, tell the user to start the dashboard with `npm start` from the repo root.
+- Read-only **except** the explicit "arm" path, which is the only write. Never mutate alert rules otherwise. If `curl` cannot reach `http://localhost:7770`, tell the user to start the dashboard with `npm start` from the repo root.

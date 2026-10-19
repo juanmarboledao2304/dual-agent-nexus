@@ -101,11 +101,11 @@ export const APP_ID = "com.hoangsonww.ccam.desktop";
  * already-healthy server on; a server found on any other port is never
  * treated as "ours" to reuse.
  */
-export const PREFERRED_PORT = 4820;
+export const PREFERRED_PORT = 7770;
 
 /**
  * Last-resort port scan range when `PREFERRED_PORT` and its nine immediate
- * fallbacks (4821–4829) are all taken. Set to the IANA-registered
+ * fallbacks (7771–7779) are all taken. Set to the IANA-registered
  * dynamic/private port range (49152–65535, truncated here to 49500 — far more
  * headroom than `pickFreePort()` should ever need) so we never guess at a
  * port some other, unrelated service might be registered on.

@@ -111,6 +111,7 @@ import {
   Cloud,
   Volume2,
   VolumeX,
+  PawPrint,
 } from "lucide-react";
 import { useLocation } from "react-router";
 import { api, type SnapshotStorage as SnapshotStorageInfo } from "../lib/api";
@@ -2759,9 +2760,7 @@ export function Settings() {
       {/* ─── TABBY COMPANION ─── */}
       <section id="tabby" className="scroll-mt-24">
         <h3 className="text-sm font-medium text-gray-300 flex items-center gap-2 mb-1">
-          <span className="text-base leading-none" aria-hidden>
-            🐾
-          </span>
+          <PawPrint className="w-4 h-4 text-gray-400" aria-hidden />
           {t("tabby.title", "Tabby companion")}
         </h3>
         <p className="text-xs text-gray-500 mb-4">
@@ -2777,9 +2776,10 @@ export function Settings() {
                   : "bg-surface-2 border border-border"
               }`}
             >
-              <span className="text-lg leading-none" aria-hidden>
-                🐾
-              </span>
+              <PawPrint
+                className={`w-4 h-4 ${tabbyEnabled ? "text-blue-400" : "text-gray-500"}`}
+                aria-hidden
+              />
             </div>
             <Toggle
               checked={tabbyEnabled}

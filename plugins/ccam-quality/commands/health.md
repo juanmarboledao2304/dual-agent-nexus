@@ -3,12 +3,12 @@ description: One-line reliability verdict (OK / DEGRADED / FAILING) for Claude C
 ---
 
 Print a single reliability verdict for Claude Code usage from the Agent Monitor
-dashboard at `http://localhost:4820`. No arguments.
+dashboard at `http://localhost:7770`. No arguments.
 
 1. Fetch state:
    ```bash
-   curl -s http://localhost:4820/api/stats
-   curl -s http://localhost:4820/api/analytics
+   curl -s http://localhost:7770/api/stats
+   curl -s http://localhost:7770/api/analytics
    ```
    From `stats`: `total_events`, `events_today`, `sessions_by_status`. From
    `analytics`: `event_types` (PreToolUse, PostToolUse, APIError).
@@ -24,8 +24,8 @@ dashboard at `http://localhost:4820`. No arguments.
 
 4. Print exactly one line:
    `Reliability: <OK|DEGRADED|FAILING> — errors X.XX%, tool failures Y.YY% (N events)`
-   Prefix with ✅ (OK), ⚠️ (DEGRADED), or ❌ (FAILING).
+   Prefix with (OK), (DEGRADED), or (FAILING).
 
 Output rules: cite only fields the API returned — never fabricate. One line only;
-no extra prose. If `curl` cannot reach `http://localhost:4820`, print
+no extra prose. If `curl` cannot reach `http://localhost:7770`, print
 `Reliability: UNKNOWN — dashboard unreachable; start it with \`npm start\` from the repo root.`

@@ -1,6 +1,6 @@
 /**
  * @file Watcher for ~/.cache/agy-cascade state files (models.list, claude.exhausted, gemini.exhausted) and ===DIGEST=== token offload telemetry.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const fs = require("fs");
@@ -225,7 +225,7 @@ function getCascadeStatus(db = registeredDb) {
     id: "agy-claude",
     pool: "agy-claude",
     label: "Pool 1: AGY-Claude",
-    short_chain: "Opus 5.5 ➔ Sonnet 5.5 ➔ GPT-OSS 120B",
+    short_chain: "Opus 5.5 / Sonnet 5.5 / GPT-OSS 120B",
     status: pool1State.exhausted ? "exhausted" : activePool === "agy-claude" ? "active" : "standby",
     ...pool1State,
   };
@@ -233,7 +233,7 @@ function getCascadeStatus(db = registeredDb) {
     id: "agy-gemini",
     pool: "agy-gemini",
     label: "Pool 2: AGY-Gemini",
-    short_chain: "Argon ➔ Gemini Pro ➔ 3.8 Flash",
+    short_chain: "Argon 4 / Gemini Pro / 3.8 Flash",
     status: pool2State.exhausted ? "exhausted" : activePool === "agy-gemini" ? "active" : "standby",
     ...pool2State,
   };
@@ -241,7 +241,7 @@ function getCascadeStatus(db = registeredDb) {
     id: "claude-direct",
     pool: "claude-direct",
     label: "Pool 3: Claude Direct",
-    short_chain: "Opus 4.6 ➔ Sonnet 4.6 ➔ Haiku 4.5",
+    short_chain: "Opus 4.6 / Sonnet 4.6 / Haiku 4.5",
     status: activePool === "claude-direct" ? "active" : "conductor",
     exhausted: false,
     remaining_seconds: 0,

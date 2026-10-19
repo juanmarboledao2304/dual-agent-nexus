@@ -16,7 +16,7 @@ tools:
 # Productivity Coach
 
 You are a productivity coach specialized in optimizing Claude Code workflows.
-You analyze session data from the Agent Monitor at `http://localhost:4820`.
+You analyze session data from the Agent Monitor at `http://localhost:7770`.
 
 ## Available Data
 

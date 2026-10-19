@@ -401,7 +401,7 @@ describe("sameOriginGuard helper", () => {
     const next = () => "OK";
     const res = {};
     const result = runRoute.__sameOriginGuard(
-      { headers: { origin: "http://127.0.0.1:4820" } },
+      { headers: { origin: "http://127.0.0.1:7770" } },
       res,
       next
     );

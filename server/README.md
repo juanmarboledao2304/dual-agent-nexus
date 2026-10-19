@@ -60,7 +60,7 @@ graph TB
         HH[hook-handler.js]
     end
     
-    subgraph "Server Process :4820"
+    subgraph "Server Process :7770"
         Express[Express Server]
         HookRouter[Hook Router]
         APIRouter[API Router]
@@ -1021,7 +1021,7 @@ broadcast({ type: 'session.created', data: session });
 sequenceDiagram
     participant Claude as Claude Code
     participant Hook as hook-handler.js
-    participant Server as Server :4820
+    participant Server as Server :7770
     participant DB as SQLite
     participant WS as WebSocket
     participant Client as Browser
@@ -1529,7 +1529,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 
 test("POST /api/hooks/event ingests hook payload", async () => {
-  const response = await fetch("http://localhost:4820/api/hooks/event", {
+  const response = await fetch("http://localhost:7770/api/hooks/event", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -1546,7 +1546,7 @@ test("POST /api/hooks/event ingests hook payload", async () => {
   assert.strictEqual(data.ok, true);
   
   // Verify session created
-  const session = await fetch('http://localhost:4820/api/sessions/test_session');
+  const session = await fetch('http://localhost:7770/api/sessions/test_session');
   const sessionData = await session.json();
   assert.strictEqual(sessionData.session.model, 'claude-sonnet-4');
 });
@@ -1576,7 +1576,7 @@ graph TB
     end
     
     subgraph "Post-Deployment"
-        Verify[Verify API<br/>curl localhost:4820/api/sessions]
+        Verify[Verify API<br/>curl localhost:7770/api/sessions]
         WebSocket[Test WebSocket<br/>Browser connection]
     end
     
@@ -1596,7 +1596,7 @@ graph TB
 
 ```bash
 # Server configuration
-DASHBOARD_PORT=4820                # Server port
+DASHBOARD_PORT=7770                # Server port
 NODE_ENV=production                # Environment mode
 
 # Network exposure & hardening (see server/lib/security.js)
@@ -1680,7 +1680,7 @@ replica with a retained ReadWriteOnce PVC. See [`DEPLOYMENT.md`](../DEPLOYMENT.m
 ### Server Configuration (index.js)
 
 ```javascript
-const PORT = parseInt(process.env.DASHBOARD_PORT || '4820', 10);
+const PORT = parseInt(process.env.DASHBOARD_PORT || '7770', 10);
 const HOST = process.env.DASHBOARD_HOST || '127.0.0.1';
 const DB_PATH = process.env.DASHBOARD_DB_PATH || './data/dashboard.db';
 
@@ -1748,13 +1748,13 @@ const HEARTBEAT_INTERVAL = 30000; // 30s
 
 The server is production-ready with:
 
-- 🚀 **High Performance** - Sub-5ms hook processing, prepared statements, WAL mode
-- 📊 **Comprehensive API** - RESTful endpoints for all data access
-- ⚡ **Real-time Updates** - WebSocket broadcasting with heartbeat
-- 🗄️ **Robust Storage** - SQLite with indexes, migrations, transactions
-- 💰 **Flexible Pricing** - Custom pricing rules with pattern matching
-- 🧪 **Well Tested** - Integration tests with Node.js test runner
-- 🔒 **Secure** - Prepared statements, input validation, loopback bind by default, Host-header allowlist, loopback-only CORS, optional `DASHBOARD_TOKEN` auth
-- 📈 **Scalable** - Handles 1000s of sessions, 100+ concurrent clients
+- **High Performance** - Sub-5ms hook processing, prepared statements, WAL mode
+- **Comprehensive API** - RESTful endpoints for all data access
+- **Real-time Updates** - WebSocket broadcasting with heartbeat
+- **Robust Storage** - SQLite with indexes, migrations, transactions
+- **Flexible Pricing** - Custom pricing rules with pattern matching
+- **Well Tested** - Integration tests with Node.js test runner
+- **Secure** - Prepared statements, input validation, loopback bind by default, Host-header allowlist, loopback-only CORS, optional `DASHBOARD_TOKEN` auth
+- **Scalable** - Handles 1000s of sessions, 100+ concurrent clients
 
 For client documentation, see [client/README.md](../client/README.md).

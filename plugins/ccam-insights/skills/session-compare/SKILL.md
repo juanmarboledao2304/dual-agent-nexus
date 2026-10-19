@@ -26,7 +26,7 @@ This may be:
 ## Procedure
 
 1. **Identify sessions to compare**:
-   - If two IDs given: fetch both from `http://localhost:4820/api/sessions/{id}`
+   - If two IDs given: fetch both from `http://localhost:7770/api/sessions/{id}`
    - If "best vs worst": fetch sessions, score by completion + cost efficiency, pick extremes
    - If "latest 2": `GET /api/sessions?limit=2` (default sort: most recently updated first)
    - If "vs average": fetch session + compute averages from last 50 sessions

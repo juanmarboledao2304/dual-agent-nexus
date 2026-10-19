@@ -87,7 +87,7 @@ export interface AppConfig {
   /** Base URL of the local dashboard API {@link DashboardApiClient} calls.
    * Must be http(s) targeting a loopback/local-container host (see
    * {@link parseDashboardUrl}) — a hard boundary against reaching a remote
-   * origin. From `MCP_DASHBOARD_BASE_URL`, default `http://127.0.0.1:4820`. */
+   * origin. From `MCP_DASHBOARD_BASE_URL`, default `http://127.0.0.1:7770`. */
   dashboardBaseUrl: URL;
   /** Optional bearer token for dashboards started with DASHBOARD_API_TOKEN.
    * Read from MCP_DASHBOARD_API_TOKEN first, then DASHBOARD_API_TOKEN. */
@@ -203,11 +203,11 @@ function parseLogLevel(value: string | undefined): LogLevel {
  * @throws {Error} on an invalid URL, a non-http(s) scheme, or a hostname
  *   outside {@link LOCAL_DASHBOARD_HOSTS}.
  *
- * @param raw - Raw `MCP_DASHBOARD_BASE_URL`; defaults to `http://127.0.0.1:4820`.
+ * @param raw - Raw `MCP_DASHBOARD_BASE_URL`; defaults to `http://127.0.0.1:7770`.
  * @returns The validated URL.
  */
 function parseDashboardUrl(raw: string | undefined): URL {
-  const value = (raw ?? "http://127.0.0.1:4820").trim();
+  const value = (raw ?? "http://127.0.0.1:7770").trim();
   let url: URL;
   try {
     url = new URL(value);

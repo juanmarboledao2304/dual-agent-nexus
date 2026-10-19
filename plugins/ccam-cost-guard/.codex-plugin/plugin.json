@@ -1,7 +1,7 @@
 {
   "name": "ccam-cost-guard",
   "version": "2.3.0",
-  "description": "Budget tracking, spend forecasting, and cost-threshold alerts for Claude Code usage via the Agent Monitor pricing engine. Watches spend against a target budget, projects month-end cost from the daily trend, surfaces the priciest sessions, estimates savings from cheaper-model routing, and wires up cost alert rules — all backed by the dashboard at http://localhost:4820.",
+  "description": "Budget tracking, spend forecasting, and cost-threshold alerts for Claude Code usage via the Agent Monitor pricing engine. Watches spend against a target budget, projects month-end cost from the daily trend, surfaces the priciest sessions, estimates savings from cheaper-model routing, and wires up cost alert rules — all backed by the dashboard at http://localhost:7770.",
   "author": {
     "name": "Son Nguyen",
     "email": "hoangson091104@gmail.com",
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "CCAM Cost Guard",
     "shortDescription": "Budget tracking, spend forecasting, and cost-threshold alerts for Claude Code usage via the...",
-    "longDescription": "Budget tracking, spend forecasting, and cost-threshold alerts for Claude Code usage via the Agent Monitor pricing engine. Watches spend against a target budget, projects month-end cost from the daily trend, surfaces the priciest sessions, estimates savings from cheaper-model routing, and wires up cost alert rules — all backed by the dashboard at http://localhost:4820.",
+    "longDescription": "Budget tracking, spend forecasting, and cost-threshold alerts for Claude Code usage via the Agent Monitor pricing engine. Watches spend against a target budget, projects month-end cost from the daily trend, surfaces the priciest sessions, estimates savings from cheaper-model routing, and wires up cost alert rules — all backed by the dashboard at http://localhost:7770.",
     "developerName": "Son Nguyen",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],

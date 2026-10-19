@@ -65,7 +65,7 @@ flowchart LR
     PROG -->|"--server / CCAM_URL"| URL["explicit base URL"]
     PROG -->|"else env"| ENV["CLAUDE_DASHBOARD_PORT /\nDASHBOARD_PORT"]
     PROG -->|"else discovery"| REG["~/.claude/.agent-dashboard.json\n(PID-liveness-checked)"]
-    PROG -->|"else fallback"| DEF["http://127.0.0.1:4820"]
+    PROG -->|"else fallback"| DEF["http://127.0.0.1:7770"]
     URL --> API["Dashboard REST API + /ws"]
     ENV --> API
     REG --> API
@@ -94,7 +94,7 @@ If linking needed elevated permissions in your environment, setup still succeeds
 | 1 | `--server <url>` / `CCAM_URL` | A full base URL (e.g. a dashboard behind a reverse proxy) |
 | 2 | `CLAUDE_DASHBOARD_PORT` / `DASHBOARD_PORT` env vars | Explicit port override, same contract as the hook handler |
 | 3 | `~/.claude/.agent-dashboard.json` | Written by every running dashboard; stale entries are skipped via a PID liveness check |
-| 4 | `http://127.0.0.1:4820` | Default port fallback |
+| 4 | `http://127.0.0.1:7770` | Default port fallback |
 
 `ccam where` prints the resolved target, repo root, and server-log path.
 
@@ -119,7 +119,7 @@ Valid anywhere on the command line, inherited by every command:
 API-backed commands need the server. When it isn't running, each prints the same indicator and exits `1` (read-only commands first try [Offline Mode](#offline-mode)):
 
 ```
-○ Dashboard server is NOT running (tried http://127.0.0.1:4820)
+○ Dashboard server is NOT running (tried http://127.0.0.1:7770)
   No offline fallback for this command: cost math (pricing rules, compaction baselines) runs server-side.
   This command needs the server. Start it with one of:
     ccam start        # production server in the background
@@ -144,9 +144,9 @@ API-backed commands need the server. When it isn't running, each prints the same
 `ccam repl` opens a persistent prompt where you type commands **without the `ccam` prefix**. It prints a CCAM word-mark banner with the version and live server status.
 
 ```
-● ccam 127.0.0.1:4820 › sessions --status active
+● ccam 127.0.0.1:7770 › sessions --status active
 … table …
-● ccam 127.0.0.1:4820 [json] › stats     # after the `json` built-in
+● ccam 127.0.0.1:7770 [json] › stats     # after the `json` built-in
 ○ ccam offline › stats                   # prompt dot turns red when the server is down
 ```
 
@@ -170,7 +170,7 @@ API-backed commands need the server. When it isn't running, each prints the same
 When the server is down, **read-only commands fall back to reading `data/dashboard.db` directly** (a safe second SQLite reader), under a banner (on stderr as a JSON `warning` in `--json` mode):
 
 ```
-⚠ Offline mode — server not running; reading data/dashboard.db directly.
+ Offline mode — server not running; reading data/dashboard.db directly.
   Data is as of the last capture — live capture and full features need the server: ccam start
 ```
 
@@ -205,7 +205,7 @@ When the server is down, **read-only commands fall back to reading `data/dashboa
 | `ccam sessions cost <id>` | Per-model cost for one session |
 | `ccam sessions agents <id>` | The agent tree alone |
 | `ccam sessions events <id> [--type] [--tool] [--limit]` | One session's events |
-| `ccam sessions transcript <id> [--agent id] [--run id] [--limit n] [--offset n] [--after line] [--before line] [--full]` | The conversation as a **readable chat log** (user/assistant turns, `⚙` tool calls, `↳` results, long blocks clipped unless `--full`); `--json` returns the raw DTO |
+| `ccam sessions transcript <id> [--agent id] [--run id] [--limit n] [--offset n] [--after line] [--before line] [--full]` | The conversation as a **readable chat log** (user/assistant turns, `` tool calls, `↳` results, long blocks clipped unless `--full`); `--json` returns the raw DTO |
 | `ccam sessions transcripts <id>` | Transcript files for the session (main + subagents) |
 | `ccam sessions facets` | Distinct working directories, sources, providers |
 | `ccam sessions rename <id> <name…>` | Rename (confirmed) |
@@ -229,7 +229,7 @@ When the server is down, **read-only commands fall back to reading `data/dashboa
 | `ccam runs get <run-id>` | One run: phases, inner agents, attributed event count |
 | `ccam run [list]` · `run history` · `run get <id> [--envelopes]` · `run models\|binary [provider]` · `run cwds` · `run files --cwd dir` | Dashboard-launched Claude Code/Codex runs (raw JSON by default; `--format pretty` for tables/cards) |
 | `ccam run start --cwd dir --prompt text [--provider] [--mode] [--model] [--permission] [--resume] [--effort] [--sandbox] [-f] --yes` | Launch a monitored agent; `-f` streams its output immediately |
-| `ccam run follow <id>` (alias `logs`) | **Stream a run's output** (assistant text, `⚙` tool calls, results, final cost) until it ends; `Ctrl+C` detaches without stopping it; NDJSON with `--json` |
+| `ccam run follow <id>` (alias `logs`) | **Stream a run's output** (assistant text, `` tool calls, results, final cost) until it ends; `Ctrl+C` detaches without stopping it; NDJSON with `--json` |
 | `ccam run send <id> --text msg --yes` · `ccam run stop <id> --yes` | Follow-up message / stop |
 | `ccam cost [--session id] [--daily] [--days n]` | Total estimated cost with a per-model chart, a daily sparkline (`--daily` for the per-day chart), server-tool surcharges, and a warning listing models with usage but **no pricing rule** |
 
@@ -343,7 +343,7 @@ ccam completion fish > ~/.config/fish/completions/ccam.fish     # fish
 
 ## Output & Scripting
 
-Human output is a full terminal UI: box-drawn tables (right-aligned numbers, terminal-width fitting with ellipsis clipping), status icons (`● active`, `◐ working`, `○ waiting`, `✔ completed`, `✖ error`, `◦ abandoned`), inline bar charts, Unicode sparklines, real `├─`/`└─` trees, key/value cards, a chat-log transcript view, and colored grouped help. Colors follow CLI conventions:
+Human output is a full terminal UI: box-drawn tables (right-aligned numbers, terminal-width fitting with ellipsis clipping), status icons (`● active`, `◐ working`, `○ waiting`, ` completed`, ` error`, `◦ abandoned`), inline bar charts, Unicode sparklines, real `├─`/`└─` trees, key/value cards, a chat-log transcript view, and colored grouped help. Colors follow CLI conventions:
 
 | Condition | Effect |
 | --------- | ------ |

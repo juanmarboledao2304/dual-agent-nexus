@@ -315,12 +315,13 @@ export function CatAvatar({ mood, reducedMotion, hovered = false, size = 60 }: C
 
       {/* A brief hello for pointer hover: CSS reveals and floats these hearts. */}
       <g className="tabby-hover-hearts" aria-hidden="true">
-        <text x="72" y="35">
-          ♥
-        </text>
-        <text x="80" y="26">
-          ♥
-        </text>
+        {/* 5x4 pixel hearts; the wrapper carries placement so CSS can animate the path. */}
+        <g transform="translate(71 26) scale(1.6)">
+          <path d="M1 0h1v1h1V0h1v1h1v1H4v1H3v1H2V3H1V2H0V1h1z" />
+        </g>
+        <g transform="translate(79 17) scale(1.6)">
+          <path d="M1 0h1v1h1V0h1v1h1v1H4v1H3v1H2V3H1V2H0V1h1z" />
+        </g>
       </g>
     </svg>
   );

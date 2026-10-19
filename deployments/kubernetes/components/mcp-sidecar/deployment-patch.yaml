@@ -20,7 +20,7 @@ spec:
             - name: MCP_TRANSPORT
               value: "http"
             - name: MCP_DASHBOARD_BASE_URL
-              value: "http://127.0.0.1:4820"
+              value: "http://127.0.0.1:7770"
             - name: MCP_HTTP_HOST
               value: "0.0.0.0"
             - name: MCP_HTTP_PORT

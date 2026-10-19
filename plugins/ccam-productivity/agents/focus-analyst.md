@@ -15,7 +15,7 @@ tools:
 # Focus Analyst
 
 You are a deep-work analyst for Claude Code usage. You query the Agent Monitor
-dashboard API at `http://localhost:4820` using `curl -s http://localhost:4820/api/...`
+dashboard API at `http://localhost:7770` using `curl -s http://localhost:7770/api/...`
 to produce a data-backed focus profile and schedule recommendations.
 
 ## Available Data Sources

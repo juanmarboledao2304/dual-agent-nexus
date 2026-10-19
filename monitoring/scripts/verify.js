@@ -6,7 +6,7 @@
  */
 const { GRAFANA_ADMIN_USER, GRAFANA_ADMIN_PASSWORD } = require("./paths");
 
-const DASHBOARD_URL = process.env.CCAM_DASHBOARD_URL || "http://127.0.0.1:4820";
+const DASHBOARD_URL = process.env.CCAM_DASHBOARD_URL || "http://127.0.0.1:7770";
 const PROMETHEUS_URL = process.env.CCAM_PROMETHEUS_URL || "http://127.0.0.1:9090";
 const GRAFANA_URL = process.env.CCAM_GRAFANA_URL || "http://127.0.0.1:3000";
 const JSON_MODE = process.argv.includes("--json");

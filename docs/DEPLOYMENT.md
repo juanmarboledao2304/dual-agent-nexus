@@ -95,7 +95,7 @@ docker compose up -d --build
 podman compose up -d --build
 ```
 
-The dashboard is published on `127.0.0.1:4820`. Claude, Codex, and Cursor homes are mounted read-only (set host-side `CURSOR_HOME` when Cursor is not at `~/.cursor`). Cursor IDE chat titles come from `state.vscdb` outside that home; to use them in a container, mount Cursor's whole `User/globalStorage` directory read-only (not the single file — the store runs in WAL mode) and point `DASHBOARD_CURSOR_STATE_DB` at `state.vscdb` inside it. SQLite and persisted Settings overrides live in named volumes. The image runs as UID/GID 1000, uses a read-only root filesystem through Compose, drops all Linux capabilities, enables `no-new-privileges`, includes Git/OpenSSH/SQLite CLI, and uses Tini as PID 1.
+The dashboard is published on `127.0.0.1:7770`. Claude, Codex, and Cursor homes are mounted read-only (set host-side `CURSOR_HOME` when Cursor is not at `~/.cursor`). Cursor IDE chat titles come from `state.vscdb` outside that home; to use them in a container, mount Cursor's whole `User/globalStorage` directory read-only (not the single file — the store runs in WAL mode) and point `DASHBOARD_CURSOR_STATE_DB` at `state.vscdb` inside it. SQLite and persisted Settings overrides live in named volumes. The image runs as UID/GID 1000, uses a read-only root filesystem through Compose, drops all Linux capabilities, enables `no-new-privileges`, includes Git/OpenSSH/SQLite CLI, and uses Tini as PID 1.
 
 ### Complete stack
 
@@ -108,7 +108,7 @@ Services:
 
 | Service | Host endpoint | Default exposure |
 | --- | --- | --- |
-| Dashboard | `127.0.0.1:4820` | loopback |
+| Dashboard | `127.0.0.1:7770` | loopback |
 | MCP HTTP/SSE | `127.0.0.1:8819` | loopback, bearer token required |
 | Nginx edge | `127.0.0.1:8080` | loopback |
 | Prometheus | `127.0.0.1:9090` | loopback |

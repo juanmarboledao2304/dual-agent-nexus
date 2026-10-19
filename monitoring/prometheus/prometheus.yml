@@ -1,6 +1,6 @@
 # Prometheus scrape config for the CCAM dashboard's /api/metrics endpoint.
 #
-# CCAM normally runs on the HOST (a plain `npm start` on port 4820), so from
+# CCAM normally runs on the HOST (a plain `npm start` on port 7770), so from
 # inside the Prometheus container it is reached via host.docker.internal. If the
 # dashboard runs elsewhere or on a different port, edit the `targets` below.
 #
@@ -21,7 +21,7 @@ scrape_configs:
   - job_name: ccam
     metrics_path: /api/metrics
     static_configs:
-      - targets: ["host.docker.internal:4820"]
+      - targets: ["host.docker.internal:7770"]
     authorization:
       type: Bearer
       credentials_file: /run/ccam-secrets/dashboard-token

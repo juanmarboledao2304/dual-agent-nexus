@@ -12,7 +12,7 @@ The query is **$ARGUMENTS** — any mix of a project / cwd substring, a model
 Fetch the session list (each carries an inline `cost` field):
 
 ```
-curl -s "http://localhost:4820/api/sessions?limit=200"
+curl -s "http://localhost:7770/api/sessions?limit=200"
 ```
 
 Then:

@@ -17,29 +17,39 @@ Monitor and command **Claude Code** and **Google Antigravity (`agy` CLI / `~/.ge
 
 ---
 
-## ⚡ 10-Second Quick Start & Live Swarm Demo
+## 10-Second Quick Start & Live Swarm Demo
 
 **Prerequisites:** Node.js 22.22+ and npm 9+.
 
 ```bash
-git clone https://github.com/hoangsonww/Claude-Code-Agent-Monitor.git
-cd Claude-Code-Agent-Monitor
+git clone https://github.com/juanmarboledao2304/dual-agent-nexus.git
+cd dual-agent-nexus
 npm run setup
 npm run dev
 ```
 
-1. Open **[http://localhost:5173](http://localhost:5173)** (or run `npm run build && npm start` for production on **[http://localhost:4820](http://localhost:4820)**).
-2. Click **`⚡ Simulate Swarm`** in the top **Dual-Subscription & 3-Pool Waterfall Header**.
+1. Open **[http://localhost:5173](http://localhost:5173)** (or run `npm run build && npm start` for production on **[http://localhost:7770](http://localhost:7770)**).
+2. Click **Run Swarm Simulation** in the top **Dual-Subscription & 3-Pool Waterfall Header**, then open **Agent Rooms** (`/rooms`) or **Cascade Hierarchy** (`/cascade-graph`).
 3. Watch the **25-Second 3-Level Swarm Simulation**:
-   - **0s–5s:** Level 1 Conductor (`claude-opus-4-6`) delegates a heavy analysis task.
-   - **5s–10s:** Level 2 Cross-CLI Bridge activates in Pool 1 (`agy-claude` / `claude-opus-5-5-thinking`).
-   - **10s–15s:** Pool 1 simulates quota exhaustion (Exit Code `10`), activates a 30m countdown, and cascades to Pool 2 (`agy-gemini` / `argon-4-ultra`).
-   - **15s–20s:** Pool 2 spawns 3 concurrent Level 3 subagents (`security-auditor`, `perf-analyzer`, `doc-synthesizer`).
-   - **20s–25s:** Specialists complete, save Git checkpoints, and emit a structured `===DIGEST===` saving **+45,200 tokens**.
+   - **0s–4s:** Level 1 Opus Conductor (`claude-opus-4-6`) and Haiku Explore scouts start on Pool 3 Claude Direct.
+   - **4s–7.5s:** Level 2 `agy-cascade` bridge starts on Pool 1 (`agy-claude` / `claude-opus-5-5-thinking`); a Haiku scout repeats the same Grep four times and trips the Attention Radar loop detector.
+   - **7.5s:** Pool 1 returns Exit Code `10`, starts a 30-minute cooldown, and the bridge cascades to Pool 2 (`agy-gemini` / `argon-4-ultra`).
+   - **10s–17s:** the bridge fans out 3 Level 3 units on Gemini 3.8 Flash; the Conductor waits on a y/n permission prompt (12.5s–17s).
+   - **15s–25s:** units commit Git checkpoints, the bridge returns a `===DIGEST===` that offloads **45,200 tokens**, and every pod moves to the Completed Digest Vault.
 
 ---
 
-## 🌊 The 3-Pool Waterfall Architecture
+## What's New in v3
+
+- **Agent Rooms (`/rooms`):** a spatial workstation grid with four zones — Conductor Bridge (L1), Cascade Engine Room (L2), Specialist Fan-Out Pods (L3), Completed Digest Vault. Each pod shows its 8-bit sprite, role, pool pill, model, 4-bar effort meter, a 3-line mini-terminal, context use, token burn rate, and git checkpoint count. The Attention Radar flags y/n approvals, Exit Code `10`, and tools repeated 4+ times in a row. The classic status board lives at `/rooms?layout=board`.
+- **8-bit sprite engine:** every agent renders as a pure-SVG pixel character chosen by pool and tier (Opus Conductor, Sonnet Engineer, Haiku Scout, Opus 5.5 Thinking, Sonnet 5.5 / GPT-OSS, Argon 4 Ultra, Gemini Pro, Gemini 3.8 Flash), animated by state: thinking, working (tool badge), approval required, completed (`DIGEST`).
+- **Quick Workflow Presets** in the Command Center Dock: `Spec + agy-cascade --yolo`, `3-Unit Fan-Out + DIGEST`, `Haiku Fast Explore`, `Git Checkpoint + Diff Audit`. A preset loads engine, model, effort, and a prompt template; dispatching stays an explicit click.
+- **Navigation:** Overview Deck (`/`), Agent Rooms (`/rooms`), Cascade Hierarchy (`/cascade-graph`), Session Logs (`/sessions`), Activity Stream (`/activity`), Quota & Digest ROI (`/quota-roi`), System Configuration (`/settings`). The v2 paths `/kanban`, `/workflows`, and `/analytics` redirect and keep their query strings.
+- **Default port `7770`** (fallbacks `7771`–`7779`). After upgrading, re-run `node scripts/install-hooks.js --claude --antigravity` so curl hooks written for the old port are rewritten in place.
+
+---
+
+## The 3-Pool Waterfall Architecture
 
 ```mermaid
 flowchart TD
@@ -48,9 +58,9 @@ flowchart TD
 
   subgraph Waterfall["<b>3-Pool Waterfall Strategy</b>"]
     direction TB
-    Pool1["<b>Pool 1: agy-claude (Google Subscription)</b><br/>Claude Opus 5.5 Thinking ➔ Sonnet 5.5 Thinking ➔ GPT-OSS 120B"]
-    Pool2["<b>Pool 2: agy-gemini (Google Subscription)</b><br/>Gemini 4 Argon Ultra ➔ Gemini Pro ➔ Gemini 3.8 Flash (High ➔ Low)"]
-    Pool3["<b>Pool 3: claude-direct (Anthropic Direct Subscription)</b><br/>Direct Claude Opus 4.6 ➔ Sonnet 4.6 Fallback"]
+    Pool1["<b>Pool 1: agy-claude (Google Subscription)</b><br/>Claude Opus 5.5 Thinking Sonnet 5.5 Thinking GPT-OSS 120B"]
+    Pool2["<b>Pool 2: agy-gemini (Google Subscription)</b><br/>Gemini 4 Argon Ultra Gemini Pro Gemini 3.8 Flash (High Low)"]
+    Pool3["<b>Pool 3: claude-direct (Anthropic Direct Subscription)</b><br/>Direct Claude Opus 4.6 Sonnet 4.6 Fallback"]
 
     Pool1 -->|"Exit 10 (30m Cooldown)"| Pool2
     Pool2 -->|"Exit 10 (30m Cooldown)"| Pool3
@@ -63,32 +73,32 @@ flowchart TD
 ```
 
 ### Quota Pools Overview
-1. **Pool 1 (`agy-claude`):** Google-paid Claude Opus 5.5 (High ➔ Med) ➔ Sonnet 5.5 (High) ➔ GPT-OSS 120B.
-2. **Pool 2 (`agy-gemini`):** Google-paid Gemini 4/Argon ➔ Gemini Pro ➔ Gemini 3.8 Flash (High ➔ Med ➔ Low).
+1. **Pool 1 (`agy-claude`):** Google-paid Claude Opus 5.5 (High Med) Sonnet 5.5 (High) GPT-OSS 120B.
+2. **Pool 2 (`agy-gemini`):** Google-paid Gemini 4/Argon Gemini Pro Gemini 3.8 Flash (High Med Low).
 3. **Pool 3 (`claude-direct`):** Anthropic direct subscription (Main Conductor + final fallback on exit code `10`).
 
 Cooldowns are tracked reactively via `~/.cache/agy-cascade/<pool>.exhausted` with automated 30-minute expiration timers and real-time WebSocket broadcast (`cascade:status`).
 
 ---
 
-## 🎨 3-Pool Chromatic Thermal Matrix
+## 3-Pool Chromatic Thermal Matrix
 
 Every agent card, subagent node, SVG bezier edge, and quota gauge is deterministically color-encoded across the 3 pools and reasoning effort tiers:
 
 | Pool ID | Quota Source | Tier / Effort | Thermal Accent | Hex / Tailwind | Models & Roles |
 | --- | --- | --- | --- | --- | --- |
-| 🪭 **Pool 1: `agy-claude`** | Google Subscription | `heavy` (`high` / `max`) | 🔮 **Electric Fuchsia** | `#d946ef` (`fuchsia-500`) | `claude-opus-5-5-thinking`, Deep Refactoring |
-| 🪭 **Pool 1: `agy-claude`** | Google Subscription | `standard` (`medium`) | 🌌 **Neon Indigo** | `#6366f1` (`indigo-500`) | `claude-sonnet-5-5-thinking`, `gpt-oss-120b` |
-| ❄️ **Pool 2: `agy-gemini`** | Google Subscription | `heavy` (`high` / `max`) | 🟣 **Electric Purple / Amber** | `#a855f7` / `#f59e0b` | `argon-4-ultra`, `gemini-3-pro`, Architecture Swarm |
-| ❄️ **Pool 2: `agy-gemini`** | Google Subscription | `standard` (`medium`) | 🔵 **Cyber Blue** | `#3b82f6` (`blue-500`) | `gemini-3-flow`, Rapid Agentic Coding |
-| ❄️ **Pool 2: `agy-gemini`** | Google Subscription | `light` (`low`) | 🟢 **Emerald Green / Cyan** | `#10b981` / `#06b6d4` | `gemini-3.8-flash`, Parallel Subagent Recon |
-| 🔥 **Pool 3: `claude-direct`** | Anthropic Direct | `heavy` (`high` / `max`) | 🔴 **Crimson Red** | `#ef4444` (`red-500`) | `claude-opus-4-6`, Conductor Root |
-| 🔥 **Pool 3: `claude-direct`** | Anthropic Direct | `standard` (`medium`) | 🟠 **Vibrant Orange** | `#f97316` (`orange-500`) | `claude-sonnet-4-6`, Direct Primary Coding |
-| 🔥 **Pool 3: `claude-direct`** | Anthropic Direct | `light` (`low`) | 🟡 **Amber Yellow** | `#fbbf24` (`amber-400`) | `claude-haiku-4-5`, High-Speed Subagents |
+| **Pool 1: `agy-claude`** | Google Subscription | `heavy` (`high` / `max`) | **Electric Fuchsia** | `#d946ef` (`fuchsia-500`) | `claude-opus-5-5-thinking`, Deep Refactoring |
+| **Pool 1: `agy-claude`** | Google Subscription | `standard` (`medium`) | **Neon Indigo** | `#6366f1` (`indigo-500`) | `claude-sonnet-5-5-thinking`, `gpt-oss-120b` |
+| **Pool 2: `agy-gemini`** | Google Subscription | `heavy` (`high` / `max`) | **Electric Purple / Amber** | `#a855f7` / `#f59e0b` | `argon-4-ultra`, `gemini-3-pro`, Architecture Swarm |
+| **Pool 2: `agy-gemini`** | Google Subscription | `standard` (`medium`) | **Cyber Blue** | `#3b82f6` (`blue-500`) | `gemini-3-flow`, Rapid Agentic Coding |
+| **Pool 2: `agy-gemini`** | Google Subscription | `light` (`low`) | **Emerald Green / Cyan** | `#10b981` / `#06b6d4` | `gemini-3.8-flash`, Parallel Subagent Recon |
+| **Pool 3: `claude-direct`** | Anthropic Direct | `heavy` (`high` / `max`) | **Crimson Red** | `#ef4444` (`red-500`) | `claude-opus-4-6`, Conductor Root |
+| **Pool 3: `claude-direct`** | Anthropic Direct | `standard` (`medium`) | **Vibrant Orange** | `#f97316` (`orange-500`) | `claude-sonnet-4-6`, Direct Primary Coding |
+| **Pool 3: `claude-direct`** | Anthropic Direct | `light` (`low`) | **Amber Yellow** | `#fbbf24` (`amber-400`) | `claude-haiku-4-5`, High-Speed Subagents |
 
 ---
 
-## 🧰 The `contrib/agy-cascade` Starter Kit
+## The `contrib/agy-cascade` Starter Kit
 
 The repository includes a ready-to-use kit in [`contrib/agy-cascade/`](./contrib/agy-cascade/):
 - **[`contrib/agy-cascade/README.md`](./contrib/agy-cascade/README.md):** Complete architectural manual for 3-pool waterfall execution.
@@ -97,7 +107,7 @@ The repository includes a ready-to-use kit in [`contrib/agy-cascade/`](./contrib
 
 ---
 
-## 🔌 Connecting Existing Terminal Sessions (Non-Destructive)
+## Connecting Existing Terminal Sessions (Non-Destructive)
 
 Wire both Claude Code and Google Antigravity to the dashboard with a single command:
 
@@ -105,13 +115,13 @@ Wire both Claude Code and Google Antigravity to the dashboard with a single comm
 npm run install-hooks --all
 ```
 
-- **Claude Code hooks** (`~/.claude/settings.json`) stream to `http://127.0.0.1:4820/api/hooks`.
-- **Google Antigravity hooks** (`~/.gemini/config/hooks.json`) stream to `http://127.0.0.1:4820/api/events?provider=antigravity`.
+- **Claude Code hooks** (`~/.claude/settings.json`) stream to `http://127.0.0.1:7770/api/hooks`.
+- **Google Antigravity hooks** (`~/.gemini/config/hooks.json`) stream to `http://127.0.0.1:7770/api/events?provider=antigravity`.
 - **Live Transcript Watcher** tails `~/.claude/projects/**/*.jsonl` and `~/.gemini/**/*.jsonl` in real time to capture subagent invocations, `conversationId` links, and byte throughput.
 
 ---
 
-## 🧩 Extensions and Marketplace
+## Extensions and Marketplace
 
 DualAgent Nexus ships **14 plugins**, **66 plugin skills**, **18 Claude subagents**, **34 Claude commands**, and **77 total repository skills** across Claude Code and Codex formats.
 
@@ -123,7 +133,7 @@ npx skills add hoangsonww/Claude-Code-Agent-Monitor --list
 
 ---
 
-## ⚖️ Attribution & License
+## Attribution & License
 
 - **DualAgent Nexus Architecture & 3-Pool `agy-cascade` Waterfall System:** Designed and engineered by **Juan Manuel Arboleda Orozco** ([@juanmarboledao2304](https://github.com/juanmarboledao2304)).
 - **Base Platform:** Adapted under the terms of the MIT License from `Claude-Code-Agent-Monitor` by **Son Nguyen** ([@hoangsonww](https://github.com/hoangsonww)).

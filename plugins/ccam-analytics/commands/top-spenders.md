@@ -10,7 +10,7 @@ List the most expensive Claude Code sessions from the Agent Monitor dashboard.
 Fetch the session list (each session carries an inline `cost` field from bulk pricing):
 
 ```
-curl -s "http://localhost:4820/api/sessions?limit=200"
+curl -s "http://localhost:7770/api/sessions?limit=200"
 ```
 
 Then:

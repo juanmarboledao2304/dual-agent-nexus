@@ -41,7 +41,7 @@ Verify:
 Test that the dashboard API is reachable:
 
 ```bash
-curl -sf http://localhost:4820/api/health
+curl -sf http://localhost:7770/api/health
 ```
 
 Verify:
@@ -64,7 +64,7 @@ Send a test event and verify it arrives:
 
 ```bash
 echo '{"hook_type":"test","session_id":"diag-test","data":{}}' | \
-  curl -sf -X POST http://localhost:4820/api/hooks/event \
+  curl -sf -X POST http://localhost:7770/api/hooks/event \
   -H 'Content-Type: application/json' -d @-
 ```
 
@@ -72,8 +72,8 @@ echo '{"hook_type":"test","session_id":"diag-test","data":{}}' | \
 Verify the database is writable and events are persisted:
 
 ```bash
-curl -sf http://localhost:4820/api/stats
-curl -sf http://localhost:4820/api/events?limit=5
+curl -sf http://localhost:7770/api/stats
+curl -sf http://localhost:7770/api/events?limit=5
 ```
 
 ### 6. Recent Event Flow
@@ -88,12 +88,12 @@ Present as a diagnostic report with:
 ```
 Hook Diagnostics Report
 ━━━━━━━━━━━━━━━━━━━━━━
-✅ Hook Installation .............. PASS
-✅ Dashboard Connectivity ......... PASS
-✅ Handler Script ................. PASS
-⚠️ Event Delivery ................ WARN (slow)
-✅ Database ....................... PASS
-❌ Recent Event Flow .............. FAIL (no events in 2h)
+ Hook Installation .............. PASS
+ Dashboard Connectivity ......... PASS
+ Handler Script ................. PASS
+ Event Delivery ................ WARN (slow)
+ Database ....................... PASS
+ Recent Event Flow .............. FAIL (no events in 2h)
 ━━━━━━━━━━━━━━━━━━━━━━
 Overall: 5/6 checks passed
 ```

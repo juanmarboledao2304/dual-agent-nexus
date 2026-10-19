@@ -210,7 +210,7 @@ async function stopServer() {
   if (!Number.isSafeInteger(pid) || pid <= 0) {
     throw new CliError(`Could not determine server PID from ${serverInfoPath}`, {
       code: "PID_UNKNOWN",
-      hints: ["Kill it manually: find the node process on port 4820"],
+      hints: ["Kill it manually: find the node process on port 7770"],
     });
   }
   try {
@@ -368,7 +368,7 @@ function register(program) {
     .command("start")
     .helpGroup(GROUP)
     .description("Start the server in the background and wait until healthy")
-    .option("--port <n>", "port to bind (default 4820)", posIntArg)
+    .option("--port <n>", "port to bind (default 7770)", posIntArg)
     .action(run(({ opts }) => startServer(opts)));
 
   program
@@ -381,7 +381,7 @@ function register(program) {
     .command("restart")
     .helpGroup(GROUP)
     .description("Stop the server (if running) and start it again in the background")
-    .option("--port <n>", "port to bind (default 4820)", posIntArg)
+    .option("--port <n>", "port to bind (default 7770)", posIntArg)
     .action(run(({ opts }) => cmdRestart(opts)));
 
   program

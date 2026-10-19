@@ -26,7 +26,7 @@ This may be:
 
 ## Procedure
 
-1. **Fetch baseline data** from `http://localhost:4820`:
+1. **Fetch baseline data** from `http://localhost:7770`:
    - `GET /api/sessions?limit=500` — historical sessions for baseline
    - `GET /api/analytics` — aggregated metrics
    - `GET /api/pricing/cost` — cost data per session
@@ -65,9 +65,9 @@ This may be:
    - Token usage growing faster than session count
 
 4. **Classify each anomaly**:
-   - **🔴 Critical**: Likely indicates a real problem requiring attention
-   - **🟡 Warning**: Unusual but may be expected for certain tasks
-   - **🔵 Info**: Interesting deviation worth noting
+   - ** Critical**: Likely indicates a real problem requiring attention
+   - ** Warning**: Unusual but may be expected for certain tasks
+   - ** Info**: Interesting deviation worth noting
 
 ## Output Format
 
@@ -77,7 +77,7 @@ Present as an **Anomaly Report**:
 ═══════════════════════════════════════════════
   ANOMALY DETECTION REPORT
   Analyzed: N sessions | Baseline: last 30 days
-  Anomalies found: N (🔴 N critical, 🟡 N warn, 🔵 N info)
+  Anomalies found: N ( N critical, N warn, N info)
 ═══════════════════════════════════════════════
 ```
 

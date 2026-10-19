@@ -22,14 +22,14 @@ This may be:
 
 ## Procedure
 
-1. **Fetch weekly data** from `http://localhost:4820`:
+1. **Fetch weekly data** from `http://localhost:7770`:
    - `GET /api/sessions?limit=200` — filter to target week (default sort: most recently updated first)
    - `GET /api/analytics` — aggregated analytics
    - `GET /api/pricing/cost` — cost data
 
 2. **Build the weekly report**:
 
-   ### 📊 Week at a Glance
+   ### Week at a Glance
    | Metric | This Week | Last Week | Change |
    |--------|-----------|-----------|--------|
    | Sessions | N | N | ↑/↓ N% |
@@ -38,29 +38,29 @@ This may be:
    | Total Cost | $X.XX | $X.XX | ↑/↓ N% |
    | Completion Rate | N% | N% | ↑/↓ |
 
-   ### 🏆 Highlights
+   ### Highlights
    - Most productive day (by sessions completed)
    - Longest session and what it accomplished
    - Most used tools and any new tools adopted
    - Notable achievements (complex tasks completed, errors resolved)
 
-   ### 📈 Daily Breakdown
+   ### Daily Breakdown
    | Day | Sessions | Hours | Cost | Completion |
    |-----|----------|-------|------|------------|
    For each day of the week with activity.
 
-   ### 🔧 Tool Usage Report
+   ### Tool Usage Report
    - Top 10 tools by invocation count
    - Tools with highest error rate
    - Tool usage distribution chart (text-based)
 
-   ### 💡 Productivity Insights
+   ### Productivity Insights
    - Peak productivity hours
    - Average session duration and trend
    - Cost efficiency trend
    - Model usage distribution
 
-   ### 🎯 Recommendations for Next Week
+   ### Recommendations for Next Week
    - Based on error patterns: what to improve
    - Based on cost trends: optimization opportunities
    - Based on tool usage: workflow suggestions

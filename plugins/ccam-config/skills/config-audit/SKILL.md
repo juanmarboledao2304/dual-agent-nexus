@@ -13,7 +13,7 @@ description: >
 
 Produce a complete, data-backed audit of how the user's `~/.claude`
 configuration has grown, what overlaps, and what is risky — all read through
-the Agent Monitor dashboard at `http://localhost:4820`.
+the Agent Monitor dashboard at `http://localhost:7770`.
 
 ## Input
 
@@ -75,5 +75,5 @@ surfaces; for read-only ones, name the source `file` to edit by hand.
 - Section 3 as a table (`Scope | Event | Matcher | Command | Risk`).
 - Sizes in KB; any cost in USD to 4 decimals; use ▲/▼ for scope deltas.
 - Cite only fields the API returned — never fabricate counts or commands.
-- If the dashboard is unreachable at `http://localhost:4820`, say so and tell
+- If the dashboard is unreachable at `http://localhost:7770`, say so and tell
   the user to start it with `npm start` from the repo root.

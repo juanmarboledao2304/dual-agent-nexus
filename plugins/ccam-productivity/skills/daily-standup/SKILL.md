@@ -22,14 +22,14 @@ This may be:
 
 ## Procedure
 
-1. **Fetch recent session data** from `http://localhost:4820`:
+1. **Fetch recent session data** from `http://localhost:7770`:
    - `GET /api/sessions?limit=50` (default sort: most recently updated first)
    - Filter sessions that started within the target day
    - For each matching session: `GET /api/events?session_id={session_id}`
 
 2. **Compile standup sections**:
 
-   ### ✅ What I accomplished
+   ### What I accomplished
    - List each completed session with:
      - Brief description (from session name or first tool's context)
      - Working directory (project context)
@@ -37,20 +37,20 @@ This may be:
      - Duration and model used
    - Group by project/working directory if multiple
 
-   ### ⚠️ Issues encountered
+   ### Issues encountered
    - Sessions that ended in `error` or `abandoned` status
    - Tools that failed (from error events)
    - Compaction events (hit context limits)
    - Unusually long sessions (>2x average duration)
 
-   ### 📋 Key metrics
+   ### Key metrics
    - Total sessions: N
    - Total time spent: X hours Y minutes
    - Tools invoked: N (top 3 listed)
    - Estimated cost: $X.XX
    - Completion rate: N%
 
-   ### 🔮 Suggested focus areas
+   ### Suggested focus areas
    - Based on incomplete/error sessions, suggest what to revisit
    - Based on tool patterns, suggest workflow improvements
 

@@ -12,7 +12,7 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly APP_NAME="agent-monitor"
-readonly APP_PORT=4820
+readonly APP_PORT=7770
 
 # ── Colors & logging ───────────────────────────────────────────────────────
 RED='\033[0;31m'

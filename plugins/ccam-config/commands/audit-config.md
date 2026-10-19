@@ -3,10 +3,10 @@ description: Quick Claude Code config audit — counts per surface (user vs proj
 ---
 
 Run a fast configuration audit against the Agent Monitor Config Explorer at
-`http://localhost:4820`. Fetch the overview in one call:
+`http://localhost:7770`. Fetch the overview in one call:
 
 ```bash
-curl -s http://localhost:4820/api/cc-config/overview
+curl -s http://localhost:7770/api/cc-config/overview
 ```
 
 The response is `{ roots, counts }` where `counts` includes:

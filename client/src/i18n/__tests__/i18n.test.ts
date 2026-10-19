@@ -65,7 +65,7 @@ describe("i18n resources", () => {
     await i18n.changeLanguage("vi");
 
     expect(i18n.t("nav:dashboard")).toBe("Tổng quan");
-    expect(i18n.t("nav:agentBoard")).toBe("Bảng Kanban");
+    expect(i18n.t("nav:agentBoard")).toBe("Phòng Agent");
     expect(i18n.t("nav:languageShort.vi")).toBe("VI");
   });
 
@@ -90,8 +90,8 @@ describe("i18n resources", () => {
   it("should provide Spanish translations for navigation keys", async () => {
     await i18n.changeLanguage("es");
 
-    expect(i18n.t("nav:dashboard")).toBe("Panel");
-    expect(i18n.t("nav:agentBoard")).toBe("Tablero Kanban");
+    expect(i18n.t("nav:dashboard")).toBe("Vista general");
+    expect(i18n.t("nav:agentBoard")).toBe("Salas de agentes");
     expect(i18n.t("nav:languageShort.es")).toBe("ES");
   });
 
@@ -110,7 +110,7 @@ describe("i18n resources", () => {
     await i18n.changeLanguage("es-ES");
 
     expect(i18n.resolvedLanguage?.startsWith("es")).toBe(true);
-    expect(i18n.t("nav:dashboard")).toBe("Panel");
+    expect(i18n.t("nav:dashboard")).toBe("Vista general");
   });
 
   it("should support non-explicit Vietnamese locale tags", async () => {
@@ -123,8 +123,8 @@ describe("i18n resources", () => {
   it("should provide Korean translations for navigation keys", async () => {
     await i18n.changeLanguage("ko");
 
-    expect(i18n.t("nav:dashboard")).toBe("대시보드");
-    expect(i18n.t("nav:agentBoard")).toBe("칸반 보드");
+    expect(i18n.t("nav:dashboard")).toBe("개요");
+    expect(i18n.t("nav:agentBoard")).toBe("Agent 룸");
     expect(i18n.t("nav:languageShort.ko")).toBe("한국어");
   });
 
@@ -132,7 +132,7 @@ describe("i18n resources", () => {
     await i18n.changeLanguage("ko-KR");
 
     expect(i18n.resolvedLanguage?.startsWith("ko")).toBe(true);
-    expect(i18n.t("nav:dashboard")).toBe("대시보드");
+    expect(i18n.t("nav:dashboard")).toBe("개요");
   });
 
   it("pluralizes the subagent count labels in English", async () => {

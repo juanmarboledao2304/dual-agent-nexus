@@ -2,7 +2,7 @@
 name: issue-triager
 description: >
   Triages Agent Monitor issues by systematically checking the Express API
-  (port 4820), SQLite database (better-sqlite3 with WAL mode), WebSocket
+  (port 7770), SQLite database (better-sqlite3 with WAL mode), WebSocket
   broadcast, hook handler (scripts/hook-handler.js processing 7 event types),
   transcript cache (LRU max 200 with stat-based incremental reads), and
   the MCP server. Classifies by severity and provides specific remediation.
@@ -22,7 +22,7 @@ provide resolution guidance.
 ## System Architecture
 
 The Agent Monitor has these components:
-- **Server** (`server/`): Express API on port 4820
+- **Server** (`server/`): Express API on port 7770
 - **Database** (`data/dashboard.db`): SQLite via better-sqlite3
 - **WebSocket** (`server/websocket.js`): Real-time event broadcast
 - **Hook Handler** (`scripts/hook-handler.js`): Receives Claude Code hook events
@@ -42,10 +42,10 @@ The Agent Monitor has these components:
 
 ```bash
 # API health
-curl -sf http://localhost:4820/api/health
+curl -sf http://localhost:7770/api/health
 
 # Check if server is running
-lsof -i :4820
+lsof -i :7770
 
 # Database status
 ls -la data/dashboard.db
@@ -54,7 +54,7 @@ ls -la data/dashboard.db
 cat ~/.claude/settings.json | jq '.hooks'
 
 # Recent events
-curl -sf 'http://localhost:4820/api/events?limit=10'
+curl -sf 'http://localhost:7770/api/events?limit=10'
 
 # Server logs (if running in foreground)
 # Check process stderr/stdout

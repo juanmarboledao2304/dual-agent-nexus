@@ -68,7 +68,7 @@ console.log("");
 
 if (DRY_RUN) {
   db.close();
-  console.log("⚠️  DRY RUN — no data was deleted.");
+  console.log("WARNING: DRY RUN — no data was deleted.");
   console.log("");
   console.log("This is a DESTRUCTIVE operation. To actually wipe the database,");
   console.log("re-run with --yes:");
@@ -94,7 +94,7 @@ if (BACKUP) {
   const backupPath = path.join(backupDir, `dashboard.${stamp}.db`);
   // Use SQLite VACUUM INTO for a consistent snapshot
   db.exec(`VACUUM INTO '${backupPath.replace(/'/g, "''")}'`);
-  console.log(`📦 Backup written: ${backupPath}`);
+  console.log(`Backup written: ${backupPath}`);
 }
 
 if (DEMO_ONLY) {
@@ -121,7 +121,7 @@ if (DEMO_ONLY) {
     `Cleared demo fixture rows (${FIXTURE_SESSION_IDS.length} sessions and their children).`
   );
 } else {
-  console.log(`⚠️  Wiping ${totalRows.toLocaleString()} rows…`);
+  console.log(`WARNING: Wiping ${totalRows.toLocaleString()} rows…`);
   db.exec("DELETE FROM token_usage; DELETE FROM events; DELETE FROM agents; DELETE FROM sessions;");
   console.log("Database cleared.");
 }

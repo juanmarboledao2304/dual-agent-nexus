@@ -12,7 +12,7 @@ description: >
 
 Map every skill available to the user — both their own (user/project scope) and
 the ones contributed by installed plugins — read through the Agent Monitor
-dashboard at `http://localhost:4820`.
+dashboard at `http://localhost:7770`.
 
 ## Input
 
@@ -63,5 +63,5 @@ dead weight to clean up via the Claude Code plugin manager.
 - Cite only fields the API returned — never fabricate skills or counts.
 - Note: plugins are read-only via the Config Explorer; manage them with the
   Claude Code plugin commands, not this dashboard.
-- If the dashboard is unreachable at `http://localhost:4820`, say so and tell
+- If the dashboard is unreachable at `http://localhost:7770`, say so and tell
   the user to start it with `npm start` from the repo root.

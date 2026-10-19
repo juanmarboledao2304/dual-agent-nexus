@@ -23,7 +23,7 @@ This may be:
 
 ## Procedure
 
-1. **Gather optimization data** from `http://localhost:4820`:
+1. **Gather optimization data** from `http://localhost:7770`:
    - `GET /api/sessions?limit=200` — session history
    - `GET /api/analytics` — tool and token analytics
    - `GET /api/pricing/cost` — cost data
@@ -32,7 +32,7 @@ This may be:
 
 2. **Analyze optimization opportunities**:
 
-   ### 💰 Cost Optimization
+   ### Cost Optimization
    - **Model downgrade opportunities**: Tasks completed with expensive models that could use cheaper ones
      - Compare success rates per model per task type
      - Calculate savings from model substitution
@@ -43,19 +43,19 @@ This may be:
    - **Compaction reduction**: Sessions hitting context limits
      - Suggest breaking large tasks into smaller sessions
 
-   ### ⚡ Speed Optimization
+   ### Speed Optimization
    - **Tool selection**: Faster alternatives for commonly-used tool patterns
    - **Subagent parallelization**: Tasks that could run in parallel
    - **Session planning**: Better upfront context to reduce back-and-forth
    - **Preemptive context loading**: Frequently needed files/context
 
-   ### 🛡 Quality Optimization
+   ### Quality Optimization
    - **Error prevention**: Common error patterns with preventive measures
    - **Tool reliability**: Tools with high failure rates and alternatives
    - **Validation gaps**: Sessions lacking verification steps
    - **Recovery strategies**: Better error handling patterns
 
-   ### 🔄 Workflow Optimization
+   ### Workflow Optimization
    - **Session sizing**: Optimal session scope based on historical success
    - **Task decomposition**: Complex sessions that should be split
    - **Automation candidates**: Repetitive workflows to automate
@@ -73,8 +73,8 @@ Present as a prioritized optimization plan:
 
 | # | Recommendation | Category | Impact | Effort | Priority |
 |---|---------------|----------|--------|--------|----------|
-| 1 | Specific action | 💰/⚡/🛡/🔄 | High | Low | ★★★★★ |
-| 2 | Specific action | ... | ... | ... | ★★★★☆ |
+| 1 | Specific action |/// | High | Low | |
+| 2 | Specific action | ... | ... | ... | |
 
 For the top 5 recommendations, include:
 - Detailed explanation with supporting data

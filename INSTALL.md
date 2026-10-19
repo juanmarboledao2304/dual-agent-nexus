@@ -57,7 +57,7 @@ This starts two processes concurrently:
 
 | Process | URL | Description |
 |---|---|---|
-| Express server | http://localhost:4820 | API, WebSocket, SQLite |
+| Express server | http://localhost:7770 | API, WebSocket, SQLite |
 | Vite dev server | http://localhost:5173 | React frontend with HMR |
 
 Open **http://localhost:5173** in your browser.
@@ -166,16 +166,16 @@ To run as a single process serving the built client:
 
 ```bash
 npm run build   # Build the React client
-npm start       # Start Express serving client/dist on port 4820
+npm start       # Start Express serving client/dist on port 7770
 ```
 
-Open **http://localhost:4820** in your browser.
+Open **http://localhost:7770** in your browser.
 
 ---
 
 ## Desktop App (macOS & Windows) (optional)
 
-If you'd rather not keep a terminal window open, the project also ships an Electron 35-based **native desktop app** (the `desktop/` workspace), available for both **macOS** and **Windows**. It embeds the Express server in-process, renders the built React client in a `BrowserWindow`, registers a menu-bar / notification-area (tray) icon, and offers a one-click "Open at Login" toggle. Everything you'd see in the browser at `localhost:4820` lives inside a single app you install once — distributed as a macOS `.app` (in a `.dmg`) and a Windows `.exe` (an NSIS installer plus a no-install portable build).
+If you'd rather not keep a terminal window open, the project also ships an Electron 35-based **native desktop app** (the `desktop/` workspace), available for both **macOS** and **Windows**. It embeds the Express server in-process, renders the built React client in a `BrowserWindow`, registers a menu-bar / notification-area (tray) icon, and offers a one-click "Open at Login" toggle. Everything you'd see in the browser at `localhost:7770` lives inside a single app you install once — distributed as a macOS `.app` (in a `.dmg`) and a Windows `.exe` (an NSIS installer plus a no-install portable build).
 
 ### Prerequisites
 
@@ -203,7 +203,7 @@ Open [**Releases → latest**](https://github.com/hoangsonww/Claude-Code-Agent-M
 
 **1b. From the per-commit CI artifact** *(useful for testing master before it's tagged — sign-in required, 14-day retention)*
 
-Every green run of the desktop CI jobs uploads a packaged artifact — `ClaudeCodeMonitor-dmg` from the `🍎 macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the `🪟 Windows Desktop (EXE)` job:
+Every green run of the desktop CI jobs uploads a packaged artifact — `ClaudeCodeMonitor-dmg` from the ` macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the ` Windows Desktop (EXE)` job:
 
 - **Via the GitHub UI:** open the latest passing run under [Actions](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/actions/workflows/ci.yml?query=branch%3Amaster+is%3Asuccess), scroll to **Artifacts**, and download `ClaudeCodeMonitor-dmg` (macOS) or `ClaudeCodeMonitor-win` (Windows).
 - **Via the `gh` CLI:**
@@ -280,7 +280,7 @@ open desktop/release/ClaudeCodeMonitor-*-arm64.dmg   # the arch you built
 2. The installer is **unsigned** by default, so Windows **SmartScreen** may show *"Windows protected your PC"* on first launch — click **More info → Run anyway**.
 3. Launch from the Start menu / desktop shortcut.
 
-Once running, the embedded server boots on port `4820` (or adopts an already-healthy server on `4820`, or falls back to `4821`–`4829` / a random high port), the menu-bar / notification-area (tray) icon appears, and the dashboard window opens. **Hooks are installed automatically on first boot** — an install-only user does not need `npm run install-hooks`; just start a new Claude Code session. Closing the window hides it but keeps the server running; **Quit** from the tray exits.
+Once running, the embedded server boots on port `7770` (or adopts an already-healthy server on `7770`, or falls back to `7771`–`7779` / a random high port), the menu-bar / notification-area (tray) icon appears, and the dashboard window opens. **Hooks are installed automatically on first boot** — an install-only user does not need `npm run install-hooks`; just start a new Claude Code session. Closing the window hides it but keeps the server running; **Quit** from the tray exits.
 
 > [!NOTE]
 > The packaged app stores its SQLite database and VAPID keys in a per-user app-data directory **outside** the app bundle / install dir — `~/Library/Application Support/Claude Code Monitor/data/` on macOS, `%APPDATA%\Claude Code Monitor\data\` on Windows. Your imported history and events therefore **survive app reinstalls and updates** (the Windows NSIS uninstaller keeps this data by default). (Older macOS builds kept the database inside the bundle, which is read-only once installed and code-signed — that broke History Import; it is now fixed. If you are upgrading from a pre-fix build, there is a one-time data gap: re-run **Settings → Import History → Rescan** once.)
@@ -309,7 +309,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp<br/>GET /sse"| HTTP["HTTP mode<br/>mcp:start:http<br/>:8819"]
     OP["Operator"] -->|"interactive CLI"| REPL["REPL mode<br/>mcp:start:repl"]
 
-    STDIO --> API["Dashboard API<br/>http://127.0.0.1:4820/api/*"]
+    STDIO --> API["Dashboard API<br/>http://127.0.0.1:7770/api/*"]
     HTTP --> API
     REPL --> API
 
@@ -402,7 +402,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-Host ports bind loopback by default: dashboard `4820`, MCP `8819`, Nginx
+Host ports bind loopback by default: dashboard `7770`, MCP `8819`, Nginx
 `8080`, Prometheus `9090`, and Grafana `3000`. Claude and Codex homes mount
 read-only at `/home/node/.claude` and `/home/node/.codex`. Named volumes retain
 SQLite and dashboard-owned config.
@@ -488,7 +488,7 @@ npm run setup
 
 ### Server starts but client shows a blank page
 
-The Vite dev server and Express server run on different ports. Make sure both are running (`npm run dev` starts both). Open **http://localhost:5173**, not `http://localhost:4820`, during development.
+The Vite dev server and Express server run on different ports. Make sure both are running (`npm run dev` starts both). Open **http://localhost:5173**, not `http://localhost:7770`, during development.
 
 ### No sessions appearing after starting Claude Code
 
@@ -512,5 +512,5 @@ See [SETUP.md — Troubleshooting](./SETUP.md#troubleshooting) for detailed hook
 
 | Service | Default | Override |
 |---|---|---|
-| Dashboard server | `4820` | `DASHBOARD_PORT=xxxx npm run dev` |
+| Dashboard server | `7770` | `DASHBOARD_PORT=xxxx npm run dev` |
 | Client dev server | `5173` | Edit `client/vite.config.ts` |

@@ -1,6 +1,6 @@
 # Claude Code、Cursor 与 Codex Agent Dashboard（Agent 监控面板）
 
-### Claude Code、Cursor 与 Codex Agent 活动实时监控平台 🚀
+### Claude Code、Cursor 与 Codex Agent 活动实时监控平台
 
 专业的 Dashboard，用于实时追踪和可视化 Claude Code、Cursor 与 Codex Agent 会话、工具使用、对话历史、成本和子 Agent 编排。基于 Node.js、Express、React 和 SQLite，结合原生 Hook 与按提供方识别的本地 transcript 发现。
 
@@ -156,115 +156,115 @@ flowchart LR
 <p align="center">
   <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard 概览" width="100%"></a>
   <br>
-  <em>📡 <strong>Dashboard</strong> · Agent 总量、活跃 Agent、最近活动和实时健康信号</em>
+  <em> <strong>Dashboard</strong> · Agent 总量、活跃 Agent、最近活动和实时健康信号</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="任务进度概览" width="100%"></a>
   <br>
-  <em>📋 <strong>任务进度</strong> · 紧凑显示完成度和带归属信息的工作预览</em>
+  <em> <strong>任务进度</strong> · 紧凑显示完成度和带归属信息的工作预览</em>
 </p>
 
 <p align="center">
   <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard 健康视图" width="100%"></a>
   <br>
-  <em>🩺 <strong>系统健康</strong> · 存储、缓存、错误、工具、模型、Subagent 和压缩指标</em>
+  <em> <strong>系统健康</strong> · 存储、缓存、错误、工具、模型、Subagent 和压缩指标</em>
 </p>
 
 <p align="center">
   <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban 看板 Agent 视图" width="100%"></a>
   <br>
-  <em>📋 <strong>Kanban 看板 · Agent</strong> · 清晰展示工作中、等待中、已完成和失败的 Agent 及等待原因</em>
+  <em> <strong>Kanban 看板 · Agent</strong> · 清晰展示工作中、等待中、已完成和失败的 Agent 及等待原因</em>
 </p>
 
 <p align="center">
   <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban 看板会话视图" width="100%"></a>
   <br>
-  <em>🗂️ <strong>Kanban 看板 · 会话</strong> · 展示活跃、等待中、已完成、错误和已废弃会话</em>
+  <em> <strong>Kanban 看板 · 会话</strong> · 展示活跃、等待中、已完成、错误和已废弃会话</em>
 </p>
 
 <p align="center">
   <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="会话概览" width="100%"></a>
   <br>
-  <em>📂 <strong>会话</strong> · 可搜索、可筛选、服务端分页的历史记录，包含成本和活动</em>
+  <em> <strong>会话</strong> · 可搜索、可筛选、服务端分页的历史记录，包含成本和活动</em>
 </p>
 
 <p align="center">
   <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="会话 Agent 概览" width="100%"></a>
   <br>
-  <em>🤖 <strong>会话 Agent</strong> · 实时总量、工具用量、Token 流和 Agent 层级</em>
+  <em> <strong>会话 Agent</strong> · 实时总量、工具用量、Token 流和 Agent 层级</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="会话任务进度详情" width="100%"></a>
   <br>
-  <em>✅ <strong>任务详情</strong> · 完成度分段、当前工作、归属信息和分页任务</em>
+  <em> <strong>任务详情</strong> · 完成度分段、当前工作、归属信息和分页任务</em>
 </p>
 
 <p align="center">
   <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="会话对话视图" width="100%"></a>
   <br>
-  <em>💬 <strong>对话</strong> · 渲染 Transcript、代码、工具调用、命令输出和会话标记</em>
+  <em> <strong>对话</strong> · 渲染 Transcript、代码、工具调用、命令输出和会话标记</em>
 </p>
 
 <p align="center">
   <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="会话事件时间线" width="100%"></a>
   <br>
-  <em>🔬 <strong>时间线</strong> · 按时间排列的事件、多维筛选和配对工具活动</em>
+  <em> <strong>时间线</strong> · 按时间排列的事件、多维筛选和配对工具活动</em>
 </p>
 
 <p align="center">
   <a href="images/feed.png"><img src="images/readme/feed.png" alt="活动流概览" width="100%"></a>
   <br>
-  <em>📰 <strong>活动流</strong> · 可暂停的实时事件、分组、筛选和会话跳转</em>
+  <em> <strong>活动流</strong> · 可暂停的实时事件、分组、筛选和会话跳转</em>
 </p>
 
 <p align="center">
   <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="分析概览" width="100%"></a>
   <br>
-  <em>📊 <strong>分析</strong> · 模型 Token、工具频率、活动热力图和会话趋势</em>
+  <em> <strong>分析</strong> · 模型 Token、工具频率、活动热力图和会话趋势</em>
 </p>
 
 <p align="center">
   <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="工作流分析概览" width="100%"></a>
   <br>
-  <em>🔀 <strong>工作流</strong> · 编排图、工具流、协作、委派和模式</em>
+  <em> <strong>工作流</strong> · 编排图、工具流、协作、委派和模式</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="动态工作流运行" width="100%"></a>
   <br>
-  <em>🧬 <strong>工作流运行</strong> · 基于日志的状态、Agent、Token、工具和时长</em>
+  <em> <strong>工作流运行</strong> · 基于日志的状态、Agent、Token、工具和时长</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="展开的动态工作流运行" width="100%"></a>
   <br>
-  <em>🧬 <strong>展开的运行</strong> · 阶段筛选、逐 Agent 指标、提示和完整结果</em>
+  <em> <strong>展开的运行</strong> · 阶段筛选、逐 Agent 指标、提示和完整结果</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="会话详情中的工作流运行" width="100%"></a>
   <br>
-  <em>🧬 <strong>会话工作流</strong> · 关联动态运行和合并计算的 Token 成本</em>
+  <em> <strong>会话工作流</strong> · 关联动态运行和合并计算的 Token 成本</em>
 </p>
 
 <p align="center">
   <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code 和 Codex 配置浏览器" width="100%"></a>
   <br>
-  <em>🧰 <strong>Agent 配置</strong> · 检查并安全编辑支持的 Claude Code 和 Codex 配置</em>
+  <em> <strong>Agent 配置</strong> · 检查并安全编辑支持的 Claude Code 和 Codex 配置</em>
 </p>
 
 <p align="center">
   <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex 配置浏览器" width="100%"></a>
   <br>
-  <em>🧰 <strong>Codex 配置</strong> · 模型、Profile、MCP、项目、技能、Hook、规则、插件和指令</em>
+  <em> <strong>Codex 配置</strong> · 模型、Profile、MCP、项目、技能、Hook、规则、插件和指令</em>
 </p>
 
 <p align="center">
   <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code 技能浏览器" width="100%"></a>
   <br>
-  <em>🧩 <strong>技能</strong> · 可搜索的用户、项目和插件技能，支持带备份编辑</em>
+  <em> <strong>技能</strong> · 可搜索的用户、项目和插件技能，支持带备份编辑</em>
 </p>
 
 <p align="center">
@@ -276,25 +276,25 @@ flowchart LR
 <p align="center">
   <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent 实时输出" width="100%"></a>
   <br>
-  <em>💬 <strong>实时运行</strong> · 流式聊天、推理、命令、文件变更、工具和重新连接</em>
+  <em> <strong>实时运行</strong> · 流式聊天、推理、命令、文件变更、工具和重新连接</em>
 </p>
 
 <p align="center">
   <a href="images/settings.png"><img src="images/readme/settings.png" alt="设置概览" width="100%"></a>
   <br>
-  <em>⚙️ <strong>设置</strong> · 定价、Hook、通知、数据、远程数据源和系统状态</em>
+  <em> <strong>设置</strong> · 定价、Hook、通知、数据、远程数据源和系统状态</em>
 </p>
 
 <p align="center">
   <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="告警与 Webhook 设置" width="100%"></a>
   <br>
-  <em>🔔 <strong>告警</strong> · 规则、冷却时间、活动，以及内置或签名通用 Webhook</em>
+  <em> <strong>告警</strong> · 规则、冷却时间、活动，以及内置或签名通用 Webhook</em>
 </p>
 
 <p align="center">
   <a href="images/remote.png"><img src="images/readme/remote.png" alt="远程数据源设置" width="100%"></a>
   <br>
-  <em>🛰️ <strong>远程数据源</strong> · Provider 感知的 SSH 同步和按来源监控</em>
+  <em> <strong>远程数据源</strong> · Provider 感知的 SSH 同步和按来源监控</em>
 </p>
 
 <p align="center">
@@ -412,7 +412,7 @@ npm run build && npm start
 | 模式 | 地址 |
 | ----------- | ----------------------- |
 | 开发 | `http://localhost:5173` |
-| 生产 | `http://localhost:4820` |
+| 生产 | `http://localhost:7770` |
 
 > [!NOTE]
 > 服务器默认绑定 `127.0.0.1`（开箱即用不可从网络访问 —— GHSA-gr74-4xfh-6jw9）；如需在局域网暴露，请设置 `DASHBOARD_HOST` 和 `DASHBOARD_TOKEN`（设置后 `/api/*` 与 WebSocket 都需要该 token），并在 `DASHBOARD_ALLOWED_HOSTS` 中列出局域网主机名。参见 `.env.example` / `.github/SECURITY.md`。
@@ -484,7 +484,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-宿主机端口默认仅绑定 loopback：Dashboard `4820`、MCP `8819`、Nginx `8080`、Prometheus `9090`、Grafana `3000`。Claude/Codex home 只读挂载，命名卷保存 SQLite 与 Dashboard 配置。Nginx 代理 UI、认证 REST 与 WebSocket，默认在边缘阻止 Hook、指标和 MCP。
+宿主机端口默认仅绑定 loopback：Dashboard `7770`、MCP `8819`、Nginx `8080`、Prometheus `9090`、Grafana `3000`。Claude/Codex home 只读挂载，命名卷保存 SQLite 与 Dashboard 配置。Nginx 代理 UI、认证 REST 与 WebSocket，默认在边缘阻止 Hook、指标和 MCP。
 
 > [!IMPORTANT]
 > Hook 必须在宿主机安装。远程 Hook 使用 `CCAM_DASHBOARD_URL=https://...` 和 `CCAM_HOOK_TOKEN`；非 loopback URL 必须使用 HTTPS。详见 [DEPLOYMENT.md](DEPLOYMENT.md)。
@@ -616,8 +616,8 @@ flowchart LR
 
 | 环境变量 | 默认值 | 用途 |
 | --- | --- | --- |
-| `DASHBOARD_PORT` | `4820` | Express 服务器端口。 |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Hook Handler 使用的端口。 |
+| `DASHBOARD_PORT` | `7770` | Express 服务器端口。 |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Hook Handler 使用的端口。 |
 | `NODE_ENV` | `development` | 设为 `production` 时提供构建后的客户端。 |
 | `DASHBOARD_UPDATE_CHECK` | 已启用 | 设为 `0`、`false` 或 `off` 可禁用定时上游检查。 |
 | `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` | `300000` | 更新检查间隔，最小 60,000 ms。手动 **Check now** 仍可使用。 |
@@ -658,7 +658,7 @@ Git clone 会定期拉取规范远程，并将其默认分支与当前检出比�
 
 ## `ccam` CLI
 
-**`ccam`** CLI（`bin/ccam.js` → `cli/`）通过 Commander.js 命令树在任意终端中提供 Dashboard 功能，包括继承选项、校验、建议、生成式帮助和 Shell 补全。`npm run setup` 会自动链接它。服务器解析依次检查 `--server` / `CCAM_URL`、已配置端口、实时服务器注册表，最后使用 `http://127.0.0.1:4820`。
+**`ccam`** CLI（`bin/ccam.js` → `cli/`）通过 Commander.js 命令树在任意终端中提供 Dashboard 功能，包括继承选项、校验、建议、生成式帮助和 Shell 补全。`npm run setup` 会自动链接它。服务器解析依次检查 `--server` / `CCAM_URL`、已配置端口、实时服务器注册表，最后使用 `http://127.0.0.1:7770`。
 
 ```bash
 # 服务器
@@ -721,7 +721,7 @@ ccam help [command…] | commands [--json] | completion bash|zsh|fish | version
 
 - **输出：** TTY 显示表格、状态图标、图表、迷你走势图、Agent 树、Transcript 视图和彩色帮助。管道输出为纯文本。`--json` 或 `CCAM_OUTPUT=json` 返回稳定 JSON；`tail`、`stream` 和 `run follow` 使用 NDJSON；错误以 `{"error":{"code":"…","message":"…"}}` 写到 stderr，退出码为 `0` 或 `1`。
 - **写入：** 使用交互式 `y/N` 或 `--yes`；非交互写入必须带 `--yes`，`clear-data` 始终要求该字面 Flag。
-- **离线模式：** 只读命令会回退到 `data/dashboard.db`，显示 `⚠ Offline mode` 横幅，并通过存活视图修正已结束但仍标为 active 的会话。仅限服务器的命令会说明 Dashboard 不可用的原因。
+- **离线模式：** 只读命令会回退到 `data/dashboard.db`，显示 ` Offline mode` 横幅，并通过存活视图修正已结束但仍标为 active 的会话。仅限服务器的命令会说明 Dashboard 不可用的原因。
 - **REPL 与补全：** `ccam repl` 提供由命令树驱动的补全、持久历史、实时提示符，以及 `help`、`json` 和 `watch` 内置命令，每行都在独立子进程中运行。使用 `source <(ccam completion zsh)` 启用 zsh 补全。
 
 如果 `ccam` 不在 `PATH` 中，请在仓库根目录运行一次 `npm link`。完整契约见 [docs/CLI.md](./docs/CLI.md)。
@@ -972,13 +972,13 @@ flowchart TD
     VALIDATE --> TYPE{"工具类型?"}
     TYPE -->|只读| EXEC["执行"]
     TYPE -->|变更| M_FLAG{"ALLOW_MUTATIONS?"}
-    M_FLAG -->|否| DENY1["❌ 拒绝"]
+    M_FLAG -->|否| DENY1[" 拒绝"]
     M_FLAG -->|是| DEST{"破坏性?"}
     DEST -->|否| EXEC
     DEST -->|是| D_FLAG{"ALLOW_DESTRUCTIVE?"}
-    D_FLAG -->|否| DENY2["❌ 拒绝"]
+    D_FLAG -->|否| DENY2[" 拒绝"]
     D_FLAG -->|是| TOKEN{"confirmation_token?"}
-    TOKEN -->|无效| DENY3["❌ 拒绝"]
+    TOKEN -->|无效| DENY3[" 拒绝"]
     TOKEN -->|有效| EXEC
     EXEC --> RESULT["返回工具结果"]
 
@@ -1215,19 +1215,19 @@ npm run monitoring:verify
 <p align="center">
   <a href="images/grafana.png"><img src="images/readme/grafana.png" alt="Grafana CCAM Overview Dashboard" width="100%"></a>
   <br>
-  <em>📊 <strong>Grafana · CCAM Overview</strong> · 来自实时 <code>/api/metrics</code> 抓取的 Agent 总体状态、数据库总量、分类与速率</em>
+  <em> <strong>Grafana · CCAM Overview</strong> · 来自实时 <code>/api/metrics</code> 抓取的 Agent 总体状态、数据库总量、分类与速率</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-console.png"><img src="images/readme/prometheus-console.png" alt="Prometheus CCAM 控制台" width="100%"></a>
   <br>
-  <em>🔥 <strong>Prometheus · CCAM 控制台</strong> · 抓取健康度、会话、事件、Token 和 Graph 下钻链接</em>
+  <em> <strong>Prometheus · CCAM 控制台</strong> · 抓取健康度、会话、事件、Token 和 Graph 下钻链接</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-query.png"><img src="images/readme/prometheus-query.png" alt="带 CCAM PromQL 查询的 Prometheus Graph" width="100%"></a>
   <br>
-  <em>📈 <strong>Prometheus · Graph</strong> · 对已抓取的 CCAM 指标运行 PromQL 查询</em>
+  <em> <strong>Prometheus · Graph</strong> · 对已抓取的 CCAM 指标运行 PromQL 查询</em>
 </p>
 
 指标名称、认证和抓取配置见 [docs/API.md → Metrics](./docs/API.md#metrics)。
@@ -1300,7 +1300,7 @@ flowchart LR
 - **进度：** 节流的 `import.progress` WebSocket 阶段包括 `start`、`scan`、`extract`、`parse`、`complete` 和 `error`。UI 提供拖放指引，以及 imported、enriched、skipped 和 error 总计。
 ### WebSocket
 
-连接 `ws://localhost:4820/ws` 接收实时推送消息：
+连接 `ws://localhost:7770/ws` 接收实时推送消息：
 
 ```json
 {
@@ -1575,14 +1575,14 @@ Dashboard 为实时会话活动提供**轻柔的音频反馈**，即使放在副
   <a href="vscode-extension/vscode.png"><img src="images/readme/vscode.png" alt="VS Code Extension Screenshot" width="100%"></a>
 </p>
 
-### 🚀 核心功能
+### 核心功能
 - **实时侧边栏**：专用的 Activity Bar 视图，实时显示 Agent 状态（工作中、等待中、已完成、错误）。
 - **使用分析**：直接在侧边栏追踪总 Token 消耗、实时美元成本和事件计数。
 - **状态栏集成**：底部状态栏显示活跃会话和 Agent 的实时脉搏。
 - **深度导航**：一键访问特定的 Dashboard 页面（看板、分析、设置）或近期会话。
 - **集成标签页**：作为原生 VS Code Webview 标签页打开完整的监控面板。
 
-### 📦 安装与设置
+### 安装与设置
 1. 打开 [vscode-extension](./vscode-extension) 目录。
 2. 从 Marketplace 安装或使用 `vsce package` 自行打包安装。
 3. 确保本地 Dashboard 服务器正在运行（`npm run dev`）。
@@ -1602,16 +1602,16 @@ Dashboard 为实时会话活动提供**轻柔的音频反馈**，即使放在副
 <p align="center">
   <a href="images/macos.png"><img src="images/readme/macos.png" alt="以原生桌面应用运行的 Claude Code Monitor" width="100%"></a>
   <br>
-  <em>🍎🪟 <strong>桌面应用</strong> · 带菜单栏 / 通知区域（托盘）图标、登录时启动和单实例锁的原生外壳。同一个 Dashboard，运行在真正的操作系统窗口中，图示为 macOS。</em>
+  <em> <strong>桌面应用</strong> · 带菜单栏 / 通知区域（托盘）图标、登录时启动和单实例锁的原生外壳。同一个 Dashboard，运行在真正的操作系统窗口中，图示为 macOS。</em>
 </p>
 
 <p align="center">
   <a href="images/windows_app.png"><img src="images/readme/windows_app.png" alt="以原生 Windows 桌面应用运行的 Claude Code Monitor，显示活动流、Windows 原生窗口菜单栏与 Tabby 面板" width="100%"></a>
   <br>
-  <em>🪟 同一个 Dashboard 的原生 Windows 应用，带通知区域（托盘）图标、原生窗口菜单和登录时启动。</em>
+  <em> 同一个 Dashboard 的原生 Windows 应用，带通知区域（托盘）图标、原生窗口菜单和登录时启动。</em>
 </p>
 
-它在 `localhost:4820` 提供的同一 UI 外层增加原生窗口、托盘、菜单、登录和关闭行为。
+它在 `localhost:7770` 提供的同一 UI 外层增加原生窗口、托盘、菜单、登录和关闭行为。
 
 ### 工作原理
 
@@ -1644,8 +1644,8 @@ flowchart LR
 
 启动时，应用会：
 
-1. 选择空闲端口，优先 **4820**，然后尝试 **4821–4829**，如果都被占用则使用随机高位端口。
-2. 如果 `4820` 上已有健康的 Dashboard Server 响应 `/api/health`，例如终端中运行了 `npm start`，应用会**接管该服务器**，避免端口冲突和 SQLite 争用。退出应用后，被接管的服务器继续运行。
+1. 选择空闲端口，优先 **7770**，然后尝试 **7771–7779**，如果都被占用则使用随机高位端口。
+2. 如果 `7770` 上已有健康的 Dashboard Server 响应 `/api/health`，例如终端中运行了 `npm start`，应用会**接管该服务器**，避免端口冲突和 SQLite 争用。退出应用后，被接管的服务器继续运行。
 3. 否则启动嵌入式服务器，并在**首次拥有服务器的启动**中自动安装 Claude Code Hook，再启动后台服务，包括更新调度器、`cc-watcher` 和孤立 Run 协调。仅使用 DMG 的用户无需 Checkout 或 `npm run install-hooks` 即可收到事件。
 4. **macOS：** 恢复登录 Shell 的 `PATH`，使 **Run Claude** 能找到并启动 `claude` CLI。否则从 Finder/Dock 启动的应用只会继承 launchd 的最小 `PATH`，从而错过 `~/.local/bin`、`/opt/homebrew/bin` 和版本管理器目录等。Windows 进程已继承用户 `PATH`。
 5. 打开 Dashboard 窗口。若应用由登录项启动，在 macOS 上通过 Login Items，在 Windows 上通过带标记的 `HKCU\…\Run` 条目，则保持仅托盘运行。
@@ -1670,7 +1670,7 @@ flowchart LR
 | Windows（安装版） | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | 当前用户安装，无需管理员权限 |
 | Windows（便携版） | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | 无需安装即可运行 |
 
-每个提交的新鲜构建也作为 CI Artifact 提供，需要登录，保留 14 天。`🍎 macOS Desktop (DMG)` Job 生成 `ClaudeCodeMonitor-dmg`，`🪟 Windows Desktop (EXE)` Job 生成 `ClaudeCodeMonitor-win`，适合在下一个 Release Tag 前测试 `master`。
+每个提交的新鲜构建也作为 CI Artifact 提供，需要登录，保留 14 天。` macOS Desktop (DMG)` Job 生成 `ClaudeCodeMonitor-dmg`，` Windows Desktop (EXE)` Job 生成 `ClaudeCodeMonitor-win`，适合在下一个 Release Tag 前测试 `master`。
 
 **方案 B：自行构建。** 在仓库根目录运行：
 
@@ -1708,19 +1708,19 @@ npm run desktop:win          # Windows: NSIS installer → desktop/release/Claud
 <p align="center">
   <a href="images/setup_win_wizard.png"><img src="images/readme/setup_win_wizard.png" alt="Windows 安装选项" width="100%"></a>
   <br>
-  <em>🪟 <strong>Windows 安装 · 选项</strong> · 选择仅为当前用户或所有用户安装</em>
+  <em> <strong>Windows 安装 · 选项</strong> · 选择仅为当前用户或所有用户安装</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard2.png"><img src="images/readme/setup_win_wizard2.png" alt="Windows 安装目标目录" width="100%"></a>
   <br>
-  <em>🪟 <strong>Windows 安装 · 位置</strong> · 选择安装目录，默认为 <code>%LOCALAPPDATA%\Programs</code></em>
+  <em> <strong>Windows 安装 · 位置</strong> · 选择安装目录，默认为 <code>%LOCALAPPDATA%\Programs</code></em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard3.png"><img src="images/readme/setup_win_wizard3.png" alt="Windows 安装完成画面" width="100%"></a>
   <br>
-  <em>🪟 <strong>Windows 安装完成</strong> · 完成安装并启动 Claude Code Monitor</em>
+  <em> <strong>Windows 安装完成</strong> · 完成安装并启动 Claude Code Monitor</em>
 </p>
 
 ### 构建命令
@@ -1974,7 +1974,7 @@ graph LR
 flowchart TD
     START["Claude Code 触发 Hook"] --> STDIN["读取 stdin 至 EOF"]
     STDIN --> PARSE{"解析 JSON?"}
-    PARSE -->|成功| POST["POST 到 127.0.0.1:4820<br/>/api/hooks/event"]
+    PARSE -->|成功| POST["POST 到 127.0.0.1:7770<br/>/api/hooks/event"]
     PARSE -->|失败| WRAP["将原始输入包装为 JSON"]
     WRAP --> POST
     POST --> RESP{"响应?"}
@@ -1996,7 +1996,7 @@ flowchart TD
 ```mermaid
 graph LR
     subgraph dev["开发模式 — 2 个进程"]
-        D_CMD["npm run dev"] --> D_SRV["Express :4820<br/>防抖监视器"]
+        D_CMD["npm run dev"] --> D_SRV["Express :7770<br/>防抖监视器"]
         D_CMD --> D_VITE["Vite :5173<br/>HMR"]
         D_BROWSER["浏览器"] --> D_VITE
         D_VITE -->|"代理 /api + /ws"| D_SRV
@@ -2004,7 +2004,7 @@ graph LR
 
     subgraph prod["生产模式 — 1 个进程"]
         P_BUILD["npm run build"] --> P_DIST["client/dist/"]
-        P_START["npm start"] --> P_SRV["Express :4820<br/>静态文件 + API"]
+        P_START["npm start"] --> P_SRV["Express :7770<br/>静态文件 + API"]
         P_BROWSER["浏览器"] --> P_SRV
     end
 
@@ -2028,7 +2028,7 @@ graph LR
     RC["远程客户端"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["操作员"] -->|"交互式 CLI"| M_REPL
 
-    M_STDIO --> D["Dashboard 服务器<br/>:4820"]
+    M_STDIO --> D["Dashboard 服务器<br/>:7770"]
     M_HTTP --> D
     M_REPL --> D
 
@@ -2233,8 +2233,8 @@ agent-dashboard/
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `better-sqlite3` 安装失败 | 这是非致命错误 — 服务器会自动回退到 Node.js 内置的 `node:sqlite`（Node 22+）。在旧版 Node 上，安装 Python 3 和 C++ 构建工具，然后运行 `npm rebuild better-sqlite3` |
 | Hook 未触发 | 运行 `npm run install-hooks` 并重启 Claude Code。验证 `~/.claude/settings.json` 中存在 Hook 配置 |
-| Dashboard 无数据 | 确保服务器正在运行（`npm run dev`）后再启动 Claude Code 会话。检查 `http://localhost:4820/api/health` |
-| WebSocket 断开连接 | 客户端每 2 秒自动重连。检查端口 4820 未被防火墙阻止 |
+| Dashboard 无数据 | 确保服务器正在运行（`npm run dev`）后再启动 Claude Code 会话。检查 `http://localhost:7770/api/health` |
+| WebSocket 断开连接 | 客户端每 2 秒自动重连。检查端口 7770 未被防火墙阻止 |
 | 重启后数据过期 | 数据库在重启间持久化。运行 `npm run seed` 获取新的演示数据，或删除 `data/dashboard.db` 重置 |
 | MCP 工具连接失败 | 确认 Dashboard API 在 `MCP_DASHBOARD_BASE_URL` 上正常运行，并重新构建/启动 MCP（`npm run mcp:build`、`npm run mcp:start`） |
 
@@ -2244,7 +2244,7 @@ agent-dashboard/
 
 欢迎贡献，请参阅 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) 中的完整指南。
 
-所有贡献者都必须签署[贡献者许可协议](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)。每个 Pull Request 都会由 `🖋️ CLA Assistant` GitHub Action 自动检查。首次提交 PR 时，Bot 会要求通过评论 `I have read the CLA Document and I hereby sign the CLA` 完成签署。一次签署覆盖之后的全部贡献。
+所有贡献者都必须签署[贡献者许可协议](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)。每个 Pull Request 都会由 ` CLA Assistant` GitHub Action 自动检查。首次提交 PR 时，Bot 会要求通过评论 `I have read the CLA Document and I hereby sign the CLA` 完成签署。一次签署覆盖之后的全部贡献。
 
 ---
 

@@ -32,22 +32,22 @@ Produce a single-line or compact summary:
 
 **Default format:**
 ```
-📊 127 sessions | 💰 $4.2301 total cost | 🔧 4,892 events | ⚡ 3 active | 🏆 Top tool: Read (1,204)
+ 127 sessions | $4.2301 total cost | 4,892 events | 3 active | Top tool: Read (1,204)
 ```
 
 **Cost format:**
 ```
-💰 Total: $4.2301 | Sonnet: $3.1200 | Opus: $0.9800 | Haiku: $0.1301 | Cache efficiency: 67%
+ Total: $4.2301 | Sonnet: $3.1200 | Opus: $0.9800 | Haiku: $0.1301 | Cache efficiency: 67%
 ```
 
 **Sessions format:**
 ```
-📋 127 total | ✅ 98 completed | ❌ 12 errored | 🏃 3 active | 💤 14 abandoned | Rate: 87%
+ 127 total | 98 completed | 12 errored | 3 active | 14 abandoned | Rate: 87%
 ```
 
 **Tokens format:**
 ```
-🔤 Input: 2.4M | Output: 890K | Cache Read: 1.8M | Cache Write: 340K
+ Input: 2.4M | Output: 890K | Cache Read: 1.8M | Cache Write: 340K
 ```
 
 Keep it short enough to scan in a terminal prompt.

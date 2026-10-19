@@ -134,7 +134,7 @@ describe("CommandPalette", () => {
     // sidebar routes: the rest of the catalog is one keystroke away, and dumping
     // ~150 rows into an empty launcher would bury them.
     expect(screen.getAllByRole("option")).toHaveLength(9);
-    expect(screen.getByText("Analytics")).toBeInTheDocument();
+    expect(screen.getByText("Quota & Digest ROI")).toBeInTheDocument();
   });
 
   it("offers the current page's own actions before anything is typed", () => {
@@ -164,16 +164,16 @@ describe("CommandPalette", () => {
 
     const labels = screen.getAllByRole("option").map((o) => o.textContent);
     expect(labels.some((l) => l?.includes("Analytics"))).toBe(true);
-    expect(labels.some((l) => l?.includes("Kanban"))).toBe(false);
+    expect(labels.some((l) => l?.includes("Agent Rooms"))).toBe(false);
   });
 
   it("navigates to the highlighted page on Enter", () => {
     renderPalette();
     pressHotkey();
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "workflows" } });
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "cascade hierarchy" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
 
-    expect(screen.getByTestId("location")).toHaveTextContent("/workflows");
+    expect(screen.getByTestId("location")).toHaveTextContent("/cascade-graph");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
@@ -391,26 +391,35 @@ describe("CommandPalette", () => {
     act(() => openCommandPalette());
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "cost analytics" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
-    expect(screen.getByTestId("location")).toHaveTextContent("/analytics?tab=cost");
+    expect(screen.getByTestId("location")).toHaveTextContent("/quota-roi?tab=cost");
   });
 
   it("matches on a subsequence, not just a substring", () => {
     renderPalette();
     pressHotkey();
-    // "kb" is not a substring of "Kanban Board" — only a subsequence of it.
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "kbrd" } });
-    expect(optionLabels().some((label) => label.includes("Kanban"))).toBe(true);
+    // "agrm" is not a substring of "Agent Rooms" — only a subsequence of it.
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "agrm" } });
+    expect(optionLabels().some((label) => label.includes("Agent Rooms"))).toBe(true);
+  });
+
+  it("still finds renamed pages by their v2 names", () => {
+    renderPalette();
+    pressHotkey();
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "kanban" } });
+    expect(optionLabels()[0]).toContain("Agent Rooms");
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
+    expect(screen.getByTestId("location")).toHaveTextContent("/rooms");
   });
 
   it("remembers the last command run and offers it first on reopen", () => {
     renderPalette();
     pressHotkey();
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "workflows" } });
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "cascade hierarchy" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
 
     act(() => openCommandPalette());
     expect(screen.getByText("Recent")).toBeInTheDocument();
-    expect(optionLabels()[0]).toContain("Workflows");
+    expect(optionLabels()[0]).toContain("Cascade Hierarchy");
   });
 
   it("does not remember session picks, whose ids stop resolving", async () => {

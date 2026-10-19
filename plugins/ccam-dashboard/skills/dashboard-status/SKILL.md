@@ -2,7 +2,7 @@
 name: dashboard-status
 description: >
   Quick dashboard health and status overview — checks the Agent Monitor API
-  (port 4820), reports session/agent/event counts from /api/stats, confirms
+  (port 7770), reports session/agent/event counts from /api/stats, confirms
   WebSocket connectivity, reads the redacted hook status returned by
   /api/settings/info, and shows data freshness (last event timestamp). Use to verify the monitoring
   system is operational.
@@ -30,7 +30,7 @@ Options: empty (default: full status), "quick" (API only), "verbose" (include en
 ## Status Report
 
 ### 1. API Server
-- Reachable at `http://localhost:4820`? Response time?
+- Reachable at `http://localhost:7770`? Response time?
 - If unreachable: suggest `npm start` from the project directory
 
 ### 2. System Counts
@@ -66,7 +66,7 @@ Compact status card:
 ╔══════════════════════════════════════╗
 ║   AGENT MONITOR STATUS              ║
 ╠══════════════════════════════════════╣
-║   API:        ✅ Online (42ms)      ║
+║   API: Online (42ms)      ║
 ║   Sessions:   127 tracked           ║
 ║   Events:     4,892 ingested        ║
 ║   Hooks:      7/7 configured        ║

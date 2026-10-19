@@ -13,7 +13,7 @@ description: >
 
 Curate the user's file-based agent memory: the long-form CLAUDE.md files plus
 the per-project auto-memory store — read through the Agent Monitor dashboard at
-`http://localhost:4820`.
+`http://localhost:7770`.
 
 ## Input
 
@@ -63,7 +63,7 @@ Auto-memory files are editable through the Config Explorer. To create/overwrite
 a fact:
 
 ```bash
-curl -s -X PUT http://localhost:4820/api/cc-config/file \
+curl -s -X PUT http://localhost:7770/api/cc-config/file \
   -H 'Content-Type: application/json' \
   -d '{"scope":"auto-memory","type":"auto-memory","project":"<slug>","name":"<fact>.md","content":"..."}'
 ```
@@ -71,7 +71,7 @@ curl -s -X PUT http://localhost:4820/api/cc-config/file \
 To delete a fact:
 
 ```bash
-curl -s -X DELETE http://localhost:4820/api/cc-config/file \
+curl -s -X DELETE http://localhost:7770/api/cc-config/file \
   -H 'Content-Type: application/json' \
   -d '{"scope":"auto-memory","type":"auto-memory","project":"<slug>","name":"<fact>.md"}'
 ```
@@ -87,5 +87,5 @@ from the user** — default to read-only review.
 - Section 2 grouped by project, index first, then facts.
 - Sizes in KB; timestamps as relative age; use ▲ for oversized / stale flags.
 - Cite only fields the API returned — never invent facts, names, or sizes.
-- If the dashboard is unreachable at `http://localhost:4820`, say so and tell
+- If the dashboard is unreachable at `http://localhost:7770`, say so and tell
   the user to start it with `npm start` from the repo root.

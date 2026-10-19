@@ -61,14 +61,14 @@ Update `agentTheme.ts` and `modelClassifier.js` so the UI visually distinguishes
 ## 4. UPGRADE `DualQuotaHeader.tsx`, `CommandCenterDock.tsx` & `simulateController.js`
 1. **3-Pool Waterfall Status Bar in `DualQuotaHeader.tsx`:**
    - Add a sleek **Cascade Waterfall Bar** displaying the live flow:
-     `[Pool 1: AGY-Claude (Opus 5.5 -> Sonnet 5.5)] ➔ [Pool 2: AGY-Gemini (Argon -> 3.8 Flash)] ➔ [Pool 3: Claude Direct]`
+     `[Pool 1: AGY-Claude (Opus 5.5 -> Sonnet 5.5)] [Pool 2: AGY-Gemini (Argon -> 3.8 Flash)] [Pool 3: Claude Direct]`
    - Show active/exhausted state per pool, live 30-minute cooldown countdown (`MM:SS`) if `claude.exhausted` or `gemini.exhausted` is active, and a **"Tokens Offloaded via `===DIGEST===`"** counter.
 2. **New Execution Presets in `CommandCenterDock.tsx` & `dispatchController.js`:**
    Add two specialized orchestration modes to the Engine Selector in `CommandCenterDock.tsx`:
-   - **`🌊 agy-cascade --yolo` (Waterfall Mode):** Executes `agy-cascade --dir <workspace> --yolo "<prompt>"` (with graceful simulated fallback if `agy-cascade` is not in PATH).
-   - **`🪭 AGY Fan-Out Swarm (3x Subagents + Digest)`:** Wraps the user's task in the official `define_subagent` + `invoke_subagent` 3-unit fan-out recipe with `--yolo --digest --timeout 10m`.
+   - **` agy-cascade --yolo` (Waterfall Mode):** Executes `agy-cascade --dir <workspace> --yolo "<prompt>"` (with graceful simulated fallback if `agy-cascade` is not in PATH).
+   - **` AGY Fan-Out Swarm (3x Subagents + Digest)`:** Wraps the user's task in the official `define_subagent` + `invoke_subagent` 3-unit fan-out recipe with `--yolo --digest --timeout 10m`.
 3. **Upgrade `POST /api/simulate/swarm` (`simulateController.js`):**
-   Make the **⚡ Simulate Swarm** button showcase our real 3-level `agy-cascade` waterfall in a 25-second sequence:
+   Make the ** Simulate Swarm** button showcase our real 3-level `agy-cascade` waterfall in a 25-second sequence:
    - **0s–4s:** Level-1 **Claude Conductor (Crimson Red)** writes the closed spec and runs `agy-cascade --dir . --yolo`.
    - **4s–10s:** Level-2 **`agy-cascade` Worker** starts on **AGY Claude Opus 5.5 High (Electric Fuchsia)**, then triggers a simulated **Exit Code 10 (`claude.exhausted` 30m cooldown!)**, flipping the header indicator and automatically cascading to **AGY Gemini 3.8 Flash High (Emerald/Blue)**.
    - **10s–20s:** The Level-2 node invokes `define_subagent` and `invoke_subagent`, fanning out **3 Level-3 Specialist Subagents** in parallel (`conversationId` nodes), logging per-unit git commit checkpoints.

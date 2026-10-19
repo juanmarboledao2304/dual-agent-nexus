@@ -1,7 +1,12 @@
 /**
  * @file Dual-Subscription Quota Telemetry & One-Click 25-Second Swarm Simulator for Claude Code and Google Antigravity.
- * Powers the DualQuotaHeader and POST /api/simulate/swarm live WebSocket demonstration.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * Powers the DualQuotaHeader and POST /api/simulate/swarm. The swarm drives every Agent Rooms zone
+ * and the 3-level Cascade Hierarchy: L1 Opus Conductor -> L2 agy-cascade bridge on Pool 1 Opus 5.5
+ * Thinking -> Exit Code 10 -> Pool 2 Argon 4 Ultra -> 3x L3 Gemini 3.8 Flash specialists -> git
+ * checkpoints and a ===DIGEST=== token-offload summary. Along the way it raises each Attention Radar
+ * signal once (a 4x Grep loop, Exit Code 10 quota exhaustion, and a y/n permission prompt) and
+ * streams per-agent stdout so every workstation pod's mini-terminal fills in.
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const { Router } = require("express");
@@ -19,6 +24,36 @@ const {
 const router = Router();
 
 let activeSimulation = null;
+
+/**
+ * Write one synthetic hook event for a specific agent and broadcast it, bypassing the hook
+ * router's actor heuristics so the simulation can target an exact pod (used for the loop demo).
+ */
+function emitAgentEvent(sessionId, agentId, eventType, toolName, summary) {
+  stmts.insertEvent.run(sessionId, agentId, eventType, toolName, summary, null);
+  broadcast("new_event", {
+    session_id: sessionId,
+    agent_id: agentId,
+    event_type: eventType,
+    tool_name: toolName,
+    summary,
+    created_at: new Date().toISOString(),
+  });
+}
+
+/** Broadcast one stdout/stderr line attributed to an agent, for the pods' mini-terminals. */
+function emitAgentStream(dispatchId, sessionId, agentId, provider, line, stream = "stdout") {
+  broadcast("dispatch_stream", {
+    dispatch_id: dispatchId,
+    session_id: sessionId,
+    agent_id: agentId,
+    provider,
+    stream,
+    line,
+    chunk: line + "\n",
+    timestamp: new Date().toISOString(),
+  });
+}
 
 /**
  * Compute real-time Dual Subscription Quota telemetry for Left Wing (Claude Code),
@@ -437,7 +472,7 @@ router.post("/swarm", (req, res) => {
             id: agyFlashIds[2],
             TypeName: "research",
             Role: "Explore: run_command diagnostics",
-            Prompt: "Verify port 4820 telemetry throughput and WebSocket latency",
+            Prompt: "Verify port 7770 telemetry throughput and WebSocket latency",
             Model: "gemini-3.8-flash",
             Effort: "low",
           },
@@ -463,7 +498,7 @@ router.post("/swarm", (req, res) => {
       effort: "high",
       tool_name: "Bash",
       tool_input: {
-        command: `agy-cascade --dir "${cwd}" --yolo --digest --timeout 10m "Execute 3-unit fan-out via define_subagent and invoke_subagent: Unit 1 Backend API, Unit 2 Thermal UI, Unit 3 Test Suite"`,
+        command: `agy-cascade --dir "${cwd}" --model claude-opus-5-5-thinking --yolo --digest --timeout 10m "Execute 3-unit fan-out via define_subagent and invoke_subagent: Unit 1 Backend API, Unit 2 Thermal UI, Unit 3 Test Suite"`,
       },
       pid: 41040,
       metrics: {
@@ -525,26 +560,50 @@ router.post("/swarm", (req, res) => {
       },
     });
 
-    const line1 = "[Level-2 agy-cascade | Pool 1: AGY-Claude Opus 5.5 High] Starting cross-CLI bridge (--yolo --digest --timeout 10m)...";
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: bridgeAgentId,
-      provider: "agy-claude",
-      stream: "stdout",
-      line: line1,
-      chunk: line1 + "\n",
-      timestamp: new Date().toISOString(),
+    const line1 =
+      "[Level-2 agy-cascade | Pool 1: AGY-Claude Opus 5.5 Thinking] Starting cross-CLI bridge (--yolo --digest --timeout 10m)...";
+    emitAgentStream(simRunId, claudeSessionId, bridgeAgentId, "agy-claude", line1);
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      bridgeAgentId,
+      "agy-claude",
+      "Reading spec: 3 units, disjoint write scopes, ===DIGEST=== required"
+    );
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      claudeSonnetId,
+      "claude",
+      "tsc --noEmit on shared interfaces: 0 errors"
+    );
+  });
+
+  // 5s-7s: Haiku scout #2 re-runs the same Grep four times in a row, tripping the
+  // Attention Radar loop detector (same tool executed 4+ consecutive times).
+  [5000, 5600, 6200, 6800].forEach((delay, idx) => {
+    schedule(delay, () => {
+      const loopAgent = stmts.getAgent.get(claudeHaikuIds[1]);
+      if (!loopAgent || loopAgent.status !== "working") return;
+      stmts.updateAgent.run(null, "working", null, "Grep", null, null, claudeHaikuIds[1]);
+      broadcast("agent_updated", stmts.getAgent.get(claudeHaikuIds[1]));
+      emitAgentEvent(
+        claudeSessionId,
+        claudeHaikuIds[1],
+        "PreToolUse",
+        "Grep",
+        `Grep "broadcast\\(" server/ (attempt ${idx + 1}, 0 new matches)`
+      );
     });
   });
 
-  // T+7500ms: Simulate Exit Code 10 (Quota Exhausted) on Pool 1 (AGY-Claude Opus 5.5) ->
-  // Trigger `claude.exhausted` 30m cooldown banner -> Cascade Level-2 Bridge Agent to Pool 2: AGY-Gemini (3.8 Flash High)
+  // T+7500ms: Simulate Exit Code 10 (Quota Exhausted) on Pool 1 (AGY-Claude Opus 5.5 Thinking) ->
+  // Trigger `claude.exhausted` 30m cooldown banner -> Cascade Level-2 Bridge Agent to Pool 2: AGY-Gemini (Argon 4 Ultra)
   schedule(7500, () => {
     triggerSimulatedExhaustion("agy-claude", 1800, {
       reason: "Exit Code 10 (claude.exhausted — Pool 1 Opus 5.5 / Sonnet 5.5 quota exhausted)",
       cascadedTo: "agy-gemini",
-      activeModel: "gemini-3.8-flash-high",
+      activeModel: "argon-4-ultra",
     });
 
     const bridgeAgent = stmts.getAgent.get(bridgeAgentId);
@@ -558,10 +617,11 @@ router.post("/swarm", (req, res) => {
       meta.pool_cascaded = true;
       meta.exhausted_pool = "agy-claude";
       meta.active_pool = "agy-gemini";
+      meta.cascade_exit_code = 10;
       meta.exit_code_10_handled = true;
 
       stmts.updateAgent.run(
-        "agy-cascade (Pool 2: 3.8 Flash High)",
+        "agy-cascade (Pool 2: Argon 4 Ultra)",
         "working",
         null,
         "define_subagent",
@@ -572,8 +632,8 @@ router.post("/swarm", (req, res) => {
       stmts.updateAgentTelemetry.run(
         "antigravity",
         "Code",
-        "gemini-3.8-flash-high",
-        "light",
+        "argon-4-ultra",
+        "heavy",
         "high",
         "tool_use",
         18400,
@@ -590,17 +650,16 @@ router.post("/swarm", (req, res) => {
       broadcast("agent_updated", stmts.getAgent.get(bridgeAgentId));
     }
 
-    const line2 = "⚠️ [agy-cascade] Pool 1 (AGY-Claude Opus 5.5 High) returned Exit Code 10 -> ~/.cache/agy-cascade/claude.exhausted locked (30:00 cooldown). Cascading automatically to Pool 2: AGY-Gemini (Gemini 3.8 Flash High)!";
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: bridgeAgentId,
-      provider: "antigravity",
-      stream: "stderr",
-      line: line2,
-      chunk: line2 + "\n",
-      timestamp: new Date().toISOString(),
-    });
+    const line2 =
+      "[agy-cascade] EXIT 10: Pool 1 (AGY-Claude Opus 5.5 Thinking) quota exhausted -> ~/.cache/agy-cascade/claude.exhausted locked (30:00 cooldown).";
+    emitAgentStream(simRunId, claudeSessionId, bridgeAgentId, "antigravity", line2, "stderr");
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      bridgeAgentId,
+      "antigravity",
+      "[agy-cascade] Cascading to Pool 2: AGY-Gemini (Argon 4 Ultra, high effort)"
+    );
   });
 
   // 10s–20s: Level-2 `agy-cascade` agent calls `define_subagent` and `invoke_subagent`,
@@ -673,17 +732,60 @@ router.post("/swarm", (req, res) => {
       broadcast("agent_created", stmts.getAgent.get(u.id));
     });
 
-    const l3Msg = `🪭 [Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 3.8 Flash High!`;
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: bridgeAgentId,
-      provider: "antigravity",
-      stream: "stdout",
-      line: l3Msg,
-      chunk: l3Msg + "\n",
-      timestamp: new Date().toISOString(),
+    const l3Msg = `[Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 3.8 Flash High`;
+    emitAgentStream(simRunId, claudeSessionId, bridgeAgentId, "antigravity", l3Msg);
+
+    const unitLines = [
+      [
+        "replace_file_content server/watchers/cascadeCacheWatcher.js (+142 -8)",
+        "run_command node --test server/__tests__/phase2-cascade.test.js: 9 pass",
+      ],
+      [
+        "replace_file_content client/src/components/SubagentGraph.tsx (+96 -31)",
+        "run_command npx tsc --noEmit: 0 errors",
+      ],
+      ["run_command npm --prefix client test -- --run", "Test Files 51 passed | Tests 499 passed"],
+    ];
+    fanOutUnitIds.forEach((uid, idx) => {
+      for (const line of unitLines[idx]) {
+        emitAgentStream(simRunId, claudeSessionId, uid, "antigravity", line);
+      }
     });
+  });
+
+  // T+12500ms: the Level-1 Conductor hits a y/n permission prompt (Attention Radar: approval).
+  schedule(12500, () => {
+    hooksRouter.processEvent("Notification", {
+      session_id: claudeSessionId,
+      provider: "claude",
+      model: "claude-opus-4-6",
+      notification_type: "permission_prompt",
+      message: "Claude needs your permission to use Bash",
+    });
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      `${claudeSessionId}-main`,
+      "claude",
+      'Permission required: Bash(git commit -m "checkpoint: pre-fanout") [y/n]'
+    );
+  });
+
+  // T+17000ms: the operator approves; the Conductor resumes.
+  schedule(17000, () => {
+    const mainId = `${claudeSessionId}-main`;
+    stmts.clearSessionAwaitingInput.run(claudeSessionId);
+    stmts.clearAgentAwaitingInput.run(mainId);
+    stmts.updateAgent.run(null, "working", null, "Bash", null, null, mainId);
+    broadcast("session_updated", stmts.getSession.get(claudeSessionId));
+    broadcast("agent_updated", stmts.getAgent.get(mainId));
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      mainId,
+      "claude",
+      "Approved (y). Checkpoint committed: [main 41b0c2e]"
+    );
   });
 
   // T+15000ms: Level-3 Specialist Subagents create git checkpoints (`git commit -m "checkpoint: ..."`);
@@ -748,17 +850,18 @@ router.post("/swarm", (req, res) => {
       }
     });
 
-    const checkLine = `✓ [Level-3 Checkpoints] All 3 fan-out units committed git checkpoints ([main 7c2e91a], [main 8d4f02b], [main 9e1a33c]).`;
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: fanOutUnitIds[0],
-      provider: "antigravity",
-      stream: "stdout",
-      line: checkLine,
-      chunk: checkLine + "\n",
-      timestamp: new Date().toISOString(),
+    const commitShas = ["7c2e91a", "8d4f02b", "9e1a33c"];
+    fanOutUnitIds.forEach((uid, idx) => {
+      emitAgentStream(
+        simRunId,
+        claudeSessionId,
+        uid,
+        "antigravity",
+        `git commit -m "${checkpointMsgs[idx]}" -> [main ${commitShas[idx]}]`
+      );
     });
+    const checkLine = `[OK] [Level-3 Checkpoints] All 3 fan-out units committed git checkpoints ([main 7c2e91a], [main 8d4f02b], [main 9e1a33c]).`;
+    emitAgentStream(simRunId, claudeSessionId, bridgeAgentId, "antigravity", checkLine);
   });
 
   // 20s–25s: Level-3 subagents complete -> Level-2 `agy-cascade` compresses 45,200+ raw tokens into a
@@ -808,7 +911,7 @@ router.post("/swarm", (req, res) => {
 
     const digestBlock = [
       "===DIGEST===",
-      "1. Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) hit Exit Code 10 -> auto-cascaded to Pool 2 (AGY-Gemini 3.8 Flash High).",
+      "1. Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 Thinking) hit Exit Code 10 -> auto-cascaded to Pool 2 (AGY-Gemini Argon 4 Ultra); 3 L3 units ran on Gemini 3.8 Flash High.",
       "2. Unit 1 (conv-unit-1): Built cascadeCacheWatcher.js, /api/cascade/status, and 3-pool modelClassifier [commit 7c2e91a].",
       "3. Unit 2 (conv-unit-2): Added Electric Fuchsia/Indigo AGY-Claude spectrum & 3-level SubagentGraph DAG [commit 8d4f02b].",
       "4. Unit 3 (conv-unit-3): Verified zero TypeScript errors and 100% unit test pass rate [commit 9e1a33c].",
@@ -825,7 +928,7 @@ router.post("/swarm", (req, res) => {
       savedTokens: 45200,
       digestText: digestTextOnly,
       activePool: "agy-gemini",
-      activeModel: "gemini-3.8-flash-high",
+      activeModel: "argon-4-ultra",
     });
 
     const bridgeAgent = stmts.getAgent.get(bridgeAgentId);
@@ -900,17 +1003,16 @@ router.post("/swarm", (req, res) => {
       },
     });
 
-    const digestNotice = "📦 [===DIGEST=== Received] Offloaded 45,200 verbose tokens from Claude Conductor! Running git diff --stat && npm test...";
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: `${claudeSessionId}-main`,
-      provider: "claude",
-      stream: "stdout",
-      line: digestNotice,
-      chunk: digestNotice + "\n",
-      timestamp: new Date().toISOString(),
-    });
+    const digestNotice =
+      "[===DIGEST=== Received] Offloaded 45,200 verbose tokens from the Claude Conductor. Running git diff --stat && npm test...";
+    emitAgentStream(simRunId, claudeSessionId, `${claudeSessionId}-main`, "claude", digestNotice);
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      bridgeAgentId,
+      "antigravity",
+      "===DIGEST=== 45,200 raw tokens -> 180-token summary (99.6% context reduction)"
+    );
   });
 
   // T+25000ms: Gracefully complete both swarm orchestrators
@@ -954,15 +1056,13 @@ router.post("/swarm", (req, res) => {
       },
     });
 
-    broadcast("dispatch_stream", {
-      dispatch_id: simRunId,
-      session_id: claudeSessionId,
-      agent_id: `${claudeSessionId}-main`,
-      provider: "claude",
-      stream: "stdout",
-      line: "✓ [3-Level Waterfall Mission Complete] Claude Conductor + agy-cascade Bridge + 3x Fan-Out Subagents finished in 25.0s (45.2k tokens saved via ===DIGEST===).",
-      timestamp: new Date().toISOString(),
-    });
+    emitAgentStream(
+      simRunId,
+      claudeSessionId,
+      `${claudeSessionId}-main`,
+      "claude",
+      "[DONE] [3-Level Waterfall Mission Complete] Claude Conductor + agy-cascade Bridge + 3x Fan-Out Subagents finished in 25.0s (45.2k tokens saved via ===DIGEST===)."
+    );
 
     if (activeSimulation && activeSimulation.id === simRunId) {
       activeSimulation.running = false;

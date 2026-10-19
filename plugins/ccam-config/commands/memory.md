@@ -4,11 +4,11 @@ argument-hint: "[project-filter]"
 ---
 
 List the user's file-based memory store from the Agent Monitor Config Explorer
-at `http://localhost:4820`. If **$ARGUMENTS** is given, treat it as a
+at `http://localhost:7770`. If **$ARGUMENTS** is given, treat it as a
 project-slug filter and show only matching auto-memory groups.
 
 ```bash
-curl -s http://localhost:4820/api/cc-config/memory
+curl -s http://localhost:7770/api/cc-config/memory
 ```
 
 The response is `{ items: [...] }`. Two kinds of entry:

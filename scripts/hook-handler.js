@@ -25,7 +25,7 @@ const hookType = process.argv[2] || "unknown";
 
 /**
  * Resolve every live dashboard server's port via the discovery file. Falls
- * back to the `CLAUDE_DASHBOARD_PORT` override or the conventional 4820 if
+ * back to the `CLAUDE_DASHBOARD_PORT` override or the conventional 7770 if
  * the discovery module can't load for any reason. Never throws.
  */
 function resolvePorts() {
@@ -33,7 +33,7 @@ function resolvePorts() {
     return require("../server/lib/server-info").resolveHookIngestPorts();
   } catch {
     const envPort = parseInt(process.env.CLAUDE_DASHBOARD_PORT || "", 10);
-    return [Number.isInteger(envPort) && envPort > 0 ? envPort : 4820];
+    return [Number.isInteger(envPort) && envPort > 0 ? envPort : 7770];
   }
 }
 

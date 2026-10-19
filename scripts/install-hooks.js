@@ -60,7 +60,7 @@ function isInsideContainer() {
 /** Multi-line message explaining why a container install is refused. */
 function containerRefusalMessage() {
   return [
-    "✖ Refusing to install Claude Code hooks from inside a container.",
+    "ERROR: Refusing to install Claude Code hooks from inside a container.",
     "",
     `  The hook command would embed this handler path:`,
     `      ${HOOK_HANDLER}`,
@@ -71,11 +71,11 @@ function containerRefusalMessage() {
     "  container-internal handler path does not exist on the host, so every host",
     "  hook fails with MODULE_NOT_FOUND (e.g. the SessionEnd hook). See issue #193.",
     "",
-    "  → Install hooks ON THE HOST instead:",
+    "  -> Install hooks ON THE HOST instead:",
     "        npm run install-hooks",
     "        # or: node /path/to/Claude-Code-Agent-Monitor/scripts/install-hooks.js",
     "",
-    "  The host handler POSTs to http://localhost:4820, which the container already",
+    "  The host handler POSTs to http://localhost:7770, which the container already",
     "  publishes — so a host-installed hook reaches the containerized dashboard.",
     "",
     "  If you genuinely run Claude Code inside this same container, override with:",
@@ -103,9 +103,9 @@ const HOOK_TYPES = [...HOOKS_WITH_MATCHER, ...HOOKS_WITHOUT_MATCHER];
 
 const ANTIGRAVITY_HOOK_TYPES = ["PreToolUse", "PostToolUse", "SessionStart", "Stop"];
 const ANTIGRAVITY_CURL_CMD =
-  "curl -s -X POST http://127.0.0.1:4820/api/events?provider=antigravity -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
+  "curl -s -X POST http://127.0.0.1:7770/api/events?provider=antigravity -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
 const CLAUDE_CURL_CMD =
-  "curl -s -X POST http://127.0.0.1:4820/api/events?provider=claude -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
+  "curl -s -X POST http://127.0.0.1:7770/api/events?provider=claude -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
 
 function getAntigravityHooksPath() {
   if (process.env.GEMINI_HOOKS_PATH) return process.env.GEMINI_HOOKS_PATH;
@@ -143,22 +143,23 @@ function makeAntigravityHookEntry(hookType) {
   return entry;
 }
 
+// Port-agnostic so re-running the installer replaces curl hooks written for an
+// older default port (v2 used 4820) instead of stacking new ones beside them.
+const DASHBOARD_EVENTS_URL_RE = /127\.0\.0\.1:\d+\/api\/events/;
+
+function isOurCommand(command) {
+  return (
+    typeof command === "string" &&
+    (command.includes("hook-handler.js") || DASHBOARD_EVENTS_URL_RE.test(command))
+  );
+}
+
 function isOurEntry(entry) {
   if (!entry) return false;
   // Matches old format (entry.command) and new format (entry.hooks[].command)
-  if (
-    entry.command &&
-    (entry.command.includes("hook-handler.js") ||
-      entry.command.includes("127.0.0.1:4820/api/events"))
-  ) {
-    return true;
-  }
+  if (isOurCommand(entry.command)) return true;
   if (Array.isArray(entry.hooks)) {
-    return entry.hooks.some(
-      (h) =>
-        h.command &&
-        (h.command.includes("hook-handler.js") || h.command.includes("127.0.0.1:4820/api/events"))
-    );
+    return entry.hooks.some((h) => isOurCommand(h.command));
   }
   return false;
 }

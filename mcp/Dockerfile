@@ -38,7 +38,7 @@ ENV NODE_ENV=production \
     MCP_TRANSPORT=http \
     MCP_HTTP_HOST=0.0.0.0 \
     MCP_HTTP_PORT=8819 \
-    MCP_DASHBOARD_BASE_URL=http://127.0.0.1:4820
+    MCP_DASHBOARD_BASE_URL=http://127.0.0.1:7770
 
 COPY --chown=node:node --from=deps /workspace/mcp/node_modules ./node_modules
 COPY --chown=node:node --from=build /workspace/mcp/build ./build

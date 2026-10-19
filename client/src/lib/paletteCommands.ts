@@ -396,21 +396,27 @@ export const PAGE_ACTION_COMMANDS: {
   },
 ];
 
-/** The nine sidebar destinations. */
+/** The nine sidebar destinations. `keywords` keep v2 page names searchable after the v3 rename. */
 export const PAGE_COMMANDS: {
   to: string;
   icon: LucideIcon;
   navKey: string;
+  keywords?: string[];
 }[] = [
-  { to: "/", icon: LayoutDashboard, navKey: "nav:dashboard" },
-  { to: "/kanban", icon: Columns3, navKey: "nav:agentBoard" },
-  { to: "/sessions", icon: FolderOpen, navKey: "nav:sessions" },
-  { to: "/activity", icon: Activity, navKey: "nav:activityFeed" },
-  { to: "/analytics", icon: BarChart3, navKey: "nav:analytics" },
-  { to: "/workflows", icon: Workflow, navKey: "nav:workflows" },
+  { to: "/", icon: LayoutDashboard, navKey: "nav:dashboard", keywords: ["dashboard"] },
+  { to: "/rooms", icon: Columns3, navKey: "nav:agentBoard", keywords: ["kanban", "board"] },
+  {
+    to: "/cascade-graph",
+    icon: Workflow,
+    navKey: "nav:workflows",
+    keywords: ["workflows", "graph"],
+  },
+  { to: "/sessions", icon: FolderOpen, navKey: "nav:sessions", keywords: ["sessions"] },
+  { to: "/activity", icon: Activity, navKey: "nav:activityFeed", keywords: ["feed"] },
+  { to: "/quota-roi", icon: BarChart3, navKey: "nav:analytics", keywords: ["analytics"] },
   { to: "/cc-config", icon: Boxes, navKey: "nav:ccConfig" },
   { to: "/run", icon: Play, navKey: "nav:run" },
-  { to: "/settings", icon: SettingsIcon, navKey: "nav:settings" },
+  { to: "/settings", icon: SettingsIcon, navKey: "nav:settings", keywords: ["settings"] },
 ];
 
 /**
@@ -476,42 +482,42 @@ const VIEW_COMMANDS: {
   },
   {
     id: "view:kanban:agents",
-    to: "/kanban?view=agents",
+    to: "/rooms?layout=board&view=agents",
     labelKey: "kanban:viewToggle.agents",
     ownerKey: "nav:agentBoard",
     icon: UserRound,
   },
   {
     id: "view:kanban:sessions",
-    to: "/kanban?view=sessions",
+    to: "/rooms?layout=board&view=sessions",
     labelKey: "kanban:viewToggle.sessions",
     ownerKey: "nav:agentBoard",
     icon: FolderOpen,
   },
   {
     id: "view:analytics:cost",
-    to: "/analytics?tab=cost",
+    to: "/quota-roi?tab=cost",
     labelKey: "analytics:tabs.costAnalytics",
     ownerKey: "nav:analytics",
     icon: DollarSign,
   },
   {
     id: "view:analytics:tokens",
-    to: "/analytics?tab=tokens",
+    to: "/quota-roi?tab=tokens",
     labelKey: "analytics:tabs.tokenAnalytics",
     ownerKey: "nav:analytics",
     icon: BarChart3,
   },
   {
     id: "view:analytics:productivity",
-    to: "/analytics?tab=productivity",
+    to: "/quota-roi?tab=productivity",
     labelKey: "analytics:tabs.productivityAnalytics",
     ownerKey: "nav:analytics",
     icon: Clock,
   },
   {
     id: "view:analytics:workflow",
-    to: "/analytics?tab=workflow",
+    to: "/quota-roi?tab=workflow",
     labelKey: "analytics:tabs.workflowIntelligence",
     ownerKey: "nav:analytics",
     icon: Workflow,
@@ -555,7 +561,7 @@ export function buildPaletteCommands(ctx: PaletteContext): PaletteCommand[] {
     id: `page:${page.to}`,
     label: t(page.navKey),
     detail: page.to,
-    keywords: [page.to],
+    keywords: [page.to, ...(page.keywords ?? [])],
     group: "pages",
     icon: page.icon,
     run: go(page.to),

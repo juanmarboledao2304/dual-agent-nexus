@@ -72,13 +72,13 @@ export function DocumentTitle() {
     title = `${t("sessions")} · ${sessionId.slice(0, 8)}`;
   } else if (path.startsWith("/sessions")) {
     title = t("sessions");
-  } else if (path.startsWith("/kanban")) {
+  } else if (path.startsWith("/rooms") || path.startsWith("/kanban")) {
     title = t("agentBoard");
   } else if (path.startsWith("/activity")) {
     title = t("activityFeed");
-  } else if (path.startsWith("/analytics")) {
+  } else if (path.startsWith("/quota-roi") || path.startsWith("/analytics")) {
     title = t("analytics");
-  } else if (path.startsWith("/workflows")) {
+  } else if (path.startsWith("/cascade-graph") || path.startsWith("/workflows")) {
     title = t("workflows");
   } else if (path.startsWith("/cc-config")) {
     title = t("ccConfig");

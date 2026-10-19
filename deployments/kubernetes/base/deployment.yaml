@@ -49,7 +49,7 @@ spec:
 
           ports:
             - name: http
-              containerPort: 4820
+              containerPort: 7770
               protocol: TCP
 
           envFrom:

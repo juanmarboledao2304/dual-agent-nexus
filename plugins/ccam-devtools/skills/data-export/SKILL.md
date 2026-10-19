@@ -27,7 +27,7 @@ This may be:
    - Format: output format
    - Filters: time range, status, session ID
 
-2. **Fetch data** from `http://localhost:4820`:
+2. **Fetch data** from `http://localhost:7770`:
    - Sessions: `GET /api/sessions?limit=1000`
    - Events: `GET /api/events?limit=5000`
    - Analytics: `GET /api/analytics`

@@ -68,7 +68,7 @@ List any `token_threshold` rules from `/api/alerts/rules` so the user sees what 
 Show the exact JSON body you would POST, with each field annotated. Then give the ready-to-run command (only run it on explicit confirmation):
 
 ```
-curl -s -X POST http://localhost:4820/api/alerts/rules \
+curl -s -X POST http://localhost:7770/api/alerts/rules \
   -H 'Content-Type: application/json' \
   -d '{"name":"Monthly $50 budget","rule_type":"token_threshold","config":{"total_tokens":12500000},"cooldown_seconds":3600}'
 ```

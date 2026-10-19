@@ -41,7 +41,7 @@ Compute each SLI from `GET /api/analytics` / `GET /api/stats`:
 Within a window, derive the numerators/denominators from `daily_events` / `daily_sessions`.
 
 ### 2. SLO Scorecard
-For each SLI, compare to its target and mark MET ✅ or BREACHED ❌.
+For each SLI, compare to its target and mark MET or BREACHED.
 
 ### 3. Error Budget
 For each objective, report the **error budget** and how much remains:
@@ -59,4 +59,4 @@ For any breached SLO, list the sessions contributing most to the breach (most fa
 - Rates as percentages to 2 decimals; any currency in USD to 4 decimals.
 - Cite exact counts and `session_id` values — never fabricate numerators or denominators.
 - End with the SLO most at risk and the single action that would recover the most budget.
-- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:4820`, tell the user to start the dashboard with `npm start` from the repo root.
+- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:7770`, tell the user to start the dashboard with `npm start` from the repo root.

@@ -19,7 +19,7 @@ cat <<'EOF'
 ✅ Dev environment ready.
 
   Develop:
-    npm run dev            # server on :4820 + Vite client on :5173
+    npm run dev            # server on :7770 + Vite client on :5173
     npm start              # production-style server (serves client/dist)
 
   Test:
@@ -33,7 +33,7 @@ cat <<'EOF'
 
 ⚠  Claude Code hooks are HOST-side. Do NOT run `npm run install-hooks` in this
    container — it is refused on purpose (issue #193). Run it on your HOST so the
-   hook handler path exists there and POSTs to http://localhost:4820 (forwarded
+   hook handler path exists there and POSTs to http://localhost:7770 (forwarded
    from this container).
 
    Electron desktop builds (npm run desktop:*) also need a host with a display

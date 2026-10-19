@@ -1,6 +1,6 @@
 # Claude Code Monitor — Desktop App (macOS & Windows)
 
-The dashboard ships with an optional **native desktop app** (built with Electron 35) that wraps the existing server + client into a single application you install once and forget — a macOS `.app` (shipped as a `.dmg`) and a Windows `.exe` (an NSIS installer plus a no-install portable build). Everything you see in the browser at `localhost:4820` lives inside this window, with native OS lifecycle on top: a menu-bar / notification-area (tray) icon, a native application menu, auto-start at login, and a single quit button that cleans up the server.
+The dashboard ships with an optional **native desktop app** (built with Electron 35) that wraps the existing server + client into a single application you install once and forget — a macOS `.app` (shipped as a `.dmg`) and a Windows `.exe` (an NSIS installer plus a no-install portable build). Everything you see in the browser at `localhost:7770` lives inside this window, with native OS lifecycle on top: a menu-bar / notification-area (tray) icon, a native application menu, auto-start at login, and a single quit button that cleans up the server.
 
 ## Why this exists in addition to the PWA
 
@@ -8,12 +8,12 @@ The PWA (added in #144) makes the dashboard installable in Chromium-based browse
 
 | Capability | PWA | Desktop App |
 |---|---|---|
-| Installs to dock / Applications | ✅ | ✅ |
-| Manages the Express server | ❌ — user must `npm start` separately | ✅ — embedded in-process |
-| Auto-starts at login | ❌ | ✅ via macOS Login Items / Windows `HKCU\…\Run` |
-| Menu-bar / notification-area (tray) icon for always-on status | ❌ | ✅ |
-| Native application menu (⌘ / Ctrl shortcuts, etc.) | ❌ | ✅ |
-| Survives browser restart | ⚠️ depends on browser | ✅ |
+| Installs to dock / Applications | Yes | Yes |
+| Manages the Express server | — user must `npm start` separately | — embedded in-process |
+| Auto-starts at login | No | via macOS Login Items / Windows `HKCU\…\Run` |
+| Menu-bar / notification-area (tray) icon for always-on status | No | Yes |
+| Native application menu (⌘ / Ctrl shortcuts, etc.) | No | Yes |
+| Survives browser restart | depends on browser | Yes |
 
 The two coexist — install whichever fits your workflow.
 
@@ -30,7 +30,7 @@ The two coexist — install whichever fits your workflow.
    | Windows (installer) | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | per-user install, no admin |
    | Windows (portable) | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | run without installing |
 
-2. Want a **per-commit build** instead of waiting for a release? Every green CI run uploads a workflow artifact (sign-in required, 14-day retention) — `ClaudeCodeMonitor-dmg` from the `🍎 macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the `🪟 Windows Desktop (EXE)` job:
+2. Want a **per-commit build** instead of waiting for a release? Every green CI run uploads a workflow artifact (sign-in required, 14-day retention) — `ClaudeCodeMonitor-dmg` from the ` macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the ` Windows Desktop (EXE)` job:
    ```bash
    gh run download <run-id> -R hoangsonww/Claude-Code-Agent-Monitor -n ClaudeCodeMonitor-dmg   # or ClaudeCodeMonitor-win
    ```
@@ -74,10 +74,10 @@ open desktop/release/ClaudeCodeMonitor-*-arm64.dmg   # …-x64.dmg for the Intel
 
 ## What happens when you launch the app
 
-1. The Electron main process picks a free port — preferring **4820**, falling back to 4821–4829, then a random high port if all those are taken.
-2. If something already answers `/api/health` on port 4820 (e.g. you ran `npm start` in a terminal), the app **adopts that server** and skips starting a second one. No double-binding, no SQLite contention.
+1. The Electron main process picks a free port — preferring **7770**, falling back to 7771–7779, then a random high port if all those are taken.
+2. If something already answers `/api/health` on port 7770 (e.g. you ran `npm start` in a terminal), the app **adopts that server** and skips starting a second one. No double-binding, no SQLite contention.
 3. Otherwise it `require()`s `server/index.js` directly in-process — same Node runtime as the main process, same memory. Boot is typically under two seconds.
-4. On startup the server records its **live port** to `~/.claude/.agent-dashboard.json`. The Claude Code hook handler reads that file, so events still reach the dashboard when the app bound a fallback port instead of 4820.
+4. On startup the server records its **live port** to `~/.claude/.agent-dashboard.json`. The Claude Code hook handler reads that file, so events still reach the dashboard when the app bound a fallback port instead of 7770.
 5. The dashboard window opens — unless the app was launched at login (on macOS via Login Items; on Windows via the `HKCU\…\Run` entry, detected through a `--ccam-hidden` launch arg since Windows has no `wasOpenedAtLogin`), in which case it stays tray-only.
 6. A tray icon appears — the macOS **menu bar** or the Windows **notification area**. One click opens a dropdown with a **live status snapshot** (server port, active sessions, working agents, events today — all clickable to jump into the dashboard) plus *Open Dashboard*, *Open in Browser*, *Restart Server*, *Show Logs*, *Open at Login* (toggle), and *Quit*.
 
@@ -129,7 +129,7 @@ desktop/
 
 - `server/index.js` — a behavior-preserving refactor: the post-listen bootstrap (one-time legacy-session import, update scheduler, Claude Code config watcher, orphaned-run reconciliation) was extracted into an exported `startBackgroundServices()` so the embedded server runs exactly what `node server/index.js` runs. The standalone server path is functionally unchanged. (The legacy-session import previously sat in the standalone-only `require.main` block, so the desktop dashboard started empty — moving it into `startBackgroundServices()` fixes that.) It also now publishes its live port via `server/lib/server-info.js` on startup.
 - `server/lib/server-info.js` *(new)* — writes/reads the `~/.claude/.agent-dashboard.json` port discovery file.
-- `scripts/hook-handler.js` — resolves the dashboard port from the discovery file (falling back to `CLAUDE_DASHBOARD_PORT`, then 4820), so hook events reach the server even when it bound a fallback port.
+- `scripts/hook-handler.js` — resolves the dashboard port from the discovery file (falling back to `CLAUDE_DASHBOARD_PORT`, then 7770), so hook events reach the server even when it bound a fallback port.
 
 `client/`, `mcp/`, and `vscode-extension/` are untouched. The Electron main process is otherwise just a host for the same code.
 
@@ -243,8 +243,8 @@ The smoke test does not exercise the BrowserWindow (no display on headless CI). 
 | App didn't auto-start at login (Windows) | The `HKCU\…\Run` startup entry is missing or was disabled | Toggle *Open at Login* off and on again from the tray menu, then confirm the entry under *Task Manager → Startup* is **Enabled** |
 | `npm run desktop:win` / `:win:portable` fails or produces nothing | electron-builder packages for the host OS — you ran it on macOS/Linux | Build the Windows `.exe` **on Windows** (and DMGs on macOS) |
 | Desktop build/install fails on `better-sqlite3` / native binary missing | No C++ toolchain, or no prebuilt for your Node version | Run `npm run desktop:install` and follow the printed help, or use the no-toolchain alternative (`npm install --ignore-scripts` → `node node_modules/electron/install.js` → `npx electron-builder install-app-deps`); or use Node LTS 20/22 |
-| Port 4820 already in use, app refuses to start | Something other than the dashboard is on 4820 and it doesn't answer `/api/health` | The app will pick a fallback (4821–4829, then a random high port) — check the tray menu's port indicator |
-| Dashboard stays empty — 0 sessions, 0 agents, no real-time updates | The app bound a fallback port (4820 was taken), and the Claude Code hooks were posting events to the wrong port | Fixed — the server publishes its live port to `~/.claude/.agent-dashboard.json` and the hook handler reads it. After upgrading from a pre-fix build, **start a new Claude Code session** so the updated hooks take effect |
+| Port 7770 already in use, app refuses to start | Something other than the dashboard is on 7770 and it doesn't answer `/api/health` | The app will pick a fallback (7771–7779, then a random high port) — check the tray menu's port indicator |
+| Dashboard stays empty — 0 sessions, 0 agents, no real-time updates | The app bound a fallback port (7770 was taken), and the Claude Code hooks were posting events to the wrong port | Fixed — the server publishes its live port to `~/.claude/.agent-dashboard.json` and the hook handler reads it. After upgrading from a pre-fix build, **start a new Claude Code session** so the updated hooks take effect |
 | `desktop:dmg` seems slow | Not stuck — it packages two architectures back-to-back (`arch=x64` then `arch=arm64`) | Wait it out, or build a single architecture with `desktop:dmg:arm64` / `desktop:dmg:x64` |
 | Build fails: `entry file out/main.js does not exist` | `electron-builder` was run without compiling TypeScript first | Build via `npm run desktop:dmg*` (chains the build); don't invoke `electron-builder` bare |
 | Signing fails with `Application … could not be found` | A code-signing certificate in your keychain was auto-discovered | Fixed — the `package` script sets `CSC_IDENTITY_AUTO_DISCOVERY=false`; build via `npm run desktop:dmg*` |

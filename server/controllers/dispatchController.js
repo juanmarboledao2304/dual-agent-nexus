@@ -1,7 +1,7 @@
 /**
  * @file Unified Prompt Dispatcher & Process Manager for Claude Code CLI, Google Antigravity CLI (agy), and Dual Swarm mode.
  * Spawns child processes, streams stdout/stderr over WebSockets, records telemetry in SQLite, and provides a SIGTERM kill switch.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const { Router } = require("express");
@@ -66,7 +66,7 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
   const digestOutput = [
     "===DIGEST===",
     `- Task Completed: ${prompt.slice(0, 72)}`,
-    `- Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) ➔ Pool 2 (AGY-Gemini 3.8 Flash High)`,
+    `- Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) -> Pool 2 (AGY-Gemini 3.8 Flash High)`,
     `- Fan-Out Units: ${isFanOut ? "3 specialist subagents (Unit 1, Unit 2, Unit 3)" : "Direct waterfall execution"}`,
     `- Git Checkpoints: ${isFanOut ? "3 commits verified cleanly" : "1 checkpoint commit verified"}`,
     `- Offloaded Verbose Trace: ~${isFanOut ? "38,400" : "19,200"} raw tokens compressed into 6-line digest`,

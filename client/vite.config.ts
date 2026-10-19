@@ -35,9 +35,9 @@ const APP_VERSION = resolveAppVersion();
 
 /**
  * Port of the dashboard server the dev proxy forwards to. Honors `DASHBOARD_PORT`, so the proxy
- * follows when `npm run dev:server` is moved off the default 4820 (for example when an SSH
- * `LocalForward` already holds 4820 on `127.0.0.1` and `::1`). The dev server reads the same
- * variable from `server/index.js`, so a single `DASHBOARD_PORT=4821 npm run dev` keeps both sides
+ * follows when `npm run dev:server` is moved off the default 7770 (for example when an SSH
+ * `LocalForward` already holds 7770 on `127.0.0.1` and `::1`). The dev server reads the same
+ * variable from `server/index.js`, so a single `DASHBOARD_PORT=7771 npm run dev` keeps both sides
  * in step.
  *
  * The proxy targets `127.0.0.1` rather than `localhost`: when several listeners share a port across
@@ -45,7 +45,7 @@ const APP_VERSION = resolveAppVersion();
  * socket specificity, so `localhost` can reach the wrong process. An explicit IPv4 loopback is also
  * what the embedded production server binds to.
  */
-const DASHBOARD_PORT = parseInt(process.env.DASHBOARD_PORT || "4820", 10);
+const DASHBOARD_PORT = parseInt(process.env.DASHBOARD_PORT || "7770", 10);
 
 export default defineConfig({
   plugins: [react()],

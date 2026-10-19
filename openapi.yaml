@@ -16,9 +16,9 @@ externalDocs:
   description: Project documentation
   url: https://github.com/hoangsonww/Claude-Code-Agent-Monitor#readme
 servers:
-  - url: http://localhost:4820
+  - url: http://localhost:7770
     description: Local dashboard server (default)
-  - url: http://127.0.0.1:4820
+  - url: http://127.0.0.1:7770
     description: Local loopback endpoint used by hook-handler
 tags:
   - name: Health

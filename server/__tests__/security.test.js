@@ -53,25 +53,25 @@ describe("resolveHost", () => {
 
 describe("Host allowlist (DNS-rebinding defense)", () => {
   it("allows loopback Host headers", () => {
-    assert.equal(sec.isHostAllowed("localhost:4820"), true);
-    assert.equal(sec.isHostAllowed("127.0.0.1:4820"), true);
-    assert.equal(sec.isHostAllowed("[::1]:4820"), true);
+    assert.equal(sec.isHostAllowed("localhost:7770"), true);
+    assert.equal(sec.isHostAllowed("127.0.0.1:7770"), true);
+    assert.equal(sec.isHostAllowed("[::1]:7770"), true);
     assert.equal(sec.isHostAllowed(""), true); // missing Host (HTTP/1.0 / local tooling)
   });
   it("rejects a rebound attacker Host", () => {
     assert.equal(sec.isHostAllowed("evil.example"), false);
-    assert.equal(sec.isHostAllowed("attacker.example:4820"), false);
+    assert.equal(sec.isHostAllowed("attacker.example:7770"), false);
   });
   it("permits operator-allowlisted hostnames", () => {
     process.env.DASHBOARD_ALLOWED_HOSTS = "dash.internal, 192.168.1.50";
-    assert.equal(sec.isHostAllowed("dash.internal:4820"), true);
-    assert.equal(sec.isHostAllowed("192.168.1.50:4820"), true);
+    assert.equal(sec.isHostAllowed("dash.internal:7770"), true);
+    assert.equal(sec.isHostAllowed("192.168.1.50:7770"), true);
     assert.equal(sec.isHostAllowed("evil.example"), false);
   });
   it("permits the Kubernetes downward-API pod IP", () => {
     process.env.POD_IP = "10.42.1.23";
-    assert.equal(sec.isHostAllowed("10.42.1.23:4820"), true);
-    assert.equal(sec.isHostAllowed("10.42.1.24:4820"), false);
+    assert.equal(sec.isHostAllowed("10.42.1.23:7770"), true);
+    assert.equal(sec.isHostAllowed("10.42.1.24:7770"), false);
   });
   it("hostGuard middleware 403s a disallowed Host", () => {
     const res = mockRes();
@@ -83,7 +83,7 @@ describe("Host allowlist (DNS-rebinding defense)", () => {
   });
   it("hostGuard middleware allows loopback", () => {
     let nexted = false;
-    sec.hostGuard({ headers: { host: "localhost:4820" } }, mockRes(), () => (nexted = true));
+    sec.hostGuard({ headers: { host: "localhost:7770" } }, mockRes(), () => (nexted = true));
     assert.equal(nexted, true);
   });
 });
@@ -97,7 +97,7 @@ describe("CORS", () => {
   });
   it("allows loopback origins", async () => {
     assert.equal(await allowed("http://localhost:5173"), true);
-    assert.equal(await allowed("http://127.0.0.1:4820"), true);
+    assert.equal(await allowed("http://127.0.0.1:7770"), true);
   });
   it("refuses cross-origin pages", async () => {
     assert.equal(await allowed("https://evil.example"), false);

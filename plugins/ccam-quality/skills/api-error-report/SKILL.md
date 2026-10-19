@@ -55,4 +55,4 @@ List the most recent APIErrors with `timestamp`, `session_id`, `model`, classifi
 - Rates as percentages to 2 decimals; any currency in USD to 4 decimals.
 - Cite exact `session_id`, `model`, `timestamp`, and `summary` values — never invent a cause not supported by the payload; bucket as "Other" when unclear.
 - End with the dominant cause and a concrete mitigation (e.g., back off and retry on 529, reduce context to cut context errors, slow request rate on 429).
-- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:4820`, tell the user to start the dashboard with `npm start` from the repo root.
+- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:7770`, tell the user to start the dashboard with `npm start` from the repo root.

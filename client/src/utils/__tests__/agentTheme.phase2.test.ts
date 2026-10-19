@@ -2,7 +2,7 @@
  * @file agentTheme.phase2.test.ts
  * @description Unit tests for Phase 7 Chromatic Thermal UI (Pool 1 agy-claude Electric Fuchsia &
  * Neon Indigo, Pool 2 agy-gemini, Pool 3 claude-direct) and parseAgentMetadata helper.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 import { describe, it, expect } from "vitest";

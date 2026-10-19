@@ -303,11 +303,11 @@ describe("ccam framework — JSON for agents", () => {
 describe("ccam framework — stop target", () => {
   it("uses the URL port, else the protocol default, before discovery", () => {
     const { stopTargetPort } = require("../../cli/commands/server");
-    const fallback = () => 4820;
+    const fallback = () => 7770;
     assert.equal(stopTargetPort(new URL("http://127.0.0.1:4899"), fallback), 4899);
     assert.equal(stopTargetPort(new URL("http://localhost"), fallback), 80);
     assert.equal(stopTargetPort(new URL("https://localhost"), fallback), 443);
-    assert.equal(stopTargetPort(null, fallback), 4820);
+    assert.equal(stopTargetPort(null, fallback), 7770);
   });
 });
 

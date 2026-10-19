@@ -66,7 +66,7 @@ function probeHealth(port) {
 
 let electronProc;
 // Pick a unique high port for each test run so we never accidentally probe an
-// unrelated server (e.g. the user's own `npm start` on 4820). The env var
+// unrelated server (e.g. the user's own `npm start` on 7770). The env var
 // `CCAM_DESKTOP_BIND_PORT` tells the desktop process to bind exactly this port,
 // skipping the "adopt an existing healthy server" code path.
 const TEST_PORT = 50000 + Math.floor(Math.random() * 5000);

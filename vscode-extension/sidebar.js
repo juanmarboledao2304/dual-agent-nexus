@@ -172,7 +172,7 @@ class DashboardWebviewProvider {
   async fetchAll() {
     if (this._fetching) return this._fetching;
     this._fetching = (async () => {
-      const ports = [4820, 5173];
+      const ports = [7770, 5173];
       let foundActive = false;
 
       for (const p of ports) {
@@ -183,9 +183,9 @@ class DashboardWebviewProvider {
           this.data.port = p;
           foundActive = true;
           try {
-            this.data.stats = await this.f(4820, "/api/stats");
-            this.data.analytics = await this.f(4820, "/api/analytics");
-            const sess = await this.f(4820, "/api/sessions?limit=12");
+            this.data.stats = await this.f(7770, "/api/stats");
+            this.data.analytics = await this.f(7770, "/api/analytics");
+            const sess = await this.f(7770, "/api/sessions?limit=12");
             this.data.sessions = Array.isArray(sess)
               ? sess
               : (sess && (sess.sessions || sess.rows || sess.data)) || [];
@@ -245,7 +245,7 @@ class DashboardWebviewProvider {
         resolve(v);
       };
       const req = http.get(
-        { hostname: "127.0.0.1", port: p, path: p === 4820 ? "/api/health" : "/", timeout: 800 },
+        { hostname: "127.0.0.1", port: p, path: p === 7770 ? "/api/health" : "/", timeout: 800 },
         (res) => {
           res.resume();
           finish(true);
@@ -716,8 +716,8 @@ try {
     pill.classList.toggle('off', !isOn);
     $('pill-text').textContent = isOn ? 'Online' : 'Offline';
     $('hero-sub').textContent = isOn
-      ? ('localhost:' + (s.port || '4820') + ' · live')
-      : 'No backend detected on 4820 / 5173';
+      ? ('localhost:' + (s.port || '7770') + ' · live')
+      : 'No backend detected on 7770 / 5173';
     if (isOn) renderOnline(s); else renderOffline();
   };
 

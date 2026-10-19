@@ -10,7 +10,7 @@ List the most recent Claude Code sessions tracked by the Agent Monitor.
 Fetch the most recent sessions (the API returns them most-recently-updated first):
 
 ```
-curl -s "http://localhost:4820/api/sessions?limit=$ARGUMENTS"
+curl -s "http://localhost:7770/api/sessions?limit=$ARGUMENTS"
 ```
 
 This returns a session list; each entry has id, status, model, cwd, started_at,

@@ -8,8 +8,8 @@ Give a quick spend projection for the end of the **$ARGUMENTS** period (`week` o
 
 1. Fetch the trend and current spend in parallel:
    ```
-   curl -s http://localhost:4820/api/analytics
-   curl -s http://localhost:4820/api/pricing/cost
+   curl -s http://localhost:7770/api/analytics
+   curl -s http://localhost:7770/api/pricing/cost
    ```
    From `/api/analytics` read `daily_sessions` (`[{ date, count }]`) and the session
    total; from `/api/pricing/cost` read `total_cost`.

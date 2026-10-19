@@ -87,7 +87,7 @@
 
 import type { DashboardEvent } from "./types";
 
-/** Rendered result of {@link buildEventSummary}: an emoji icon, a one-line
+/** Rendered result of {@link buildEventSummary}: a short uppercase badge, a one-line
  *  headline, and zero or more supporting detail lines shown underneath it. */
 export type EventSummary = {
   /** Single emoji representing the event kind (tool-specific or lifecycle). */
@@ -278,7 +278,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
     // Only the first line keeps the bullet compact for multi-line messages.
     if (msg) bullets.push(`Last message: ${trunc(msg.split(/\r?\n/)[0] ?? "", 80)}`);
     return {
-      icon: "🛑",
+      icon: "STOP",
       headline: event.event_type === "SubagentStop" ? "Subagent turn ended" : "Turn ended",
       bullets,
     };
@@ -288,7 +288,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
   if (event.event_type === "TurnDuration") {
     const durationMs = typeof data?.durationMs === "number" ? data.durationMs : null;
     return {
-      icon: "⏱️",
+      icon: "TIME",
       headline: durationMs != null ? `Turn took ${formatDuration(durationMs)}` : "Turn finished",
       bullets: [],
     };
@@ -297,7 +297,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
   // Compaction: the transcript was summarized to reclaim context window.
   if (event.event_type === "Compaction") {
     return {
-      icon: "🗜️",
+      icon: "COMPACT",
       headline: "Transcript compacted",
       bullets: ["Token usage reset for the following turn"],
     };
@@ -308,7 +308,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
     const msg = str(data?.message);
     const type = str(data?.notification_type);
     return {
-      icon: "🔔",
+      icon: "NOTIFY",
       headline: msg ? `Notification: ${trunc(msg, 80)}` : "Notification",
       bullets: type ? [`Type: ${type}`] : [],
     };
@@ -320,7 +320,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
     const source = str(data?.source);
     const model = str(data?.model);
     return {
-      icon: event.event_type === "SessionStart" ? "🎬" : "🏁",
+      icon: event.event_type === "SessionStart" ? "START" : "END",
       headline: event.event_type === "SessionStart" ? "Session started" : "Session ended",
       bullets: [source && `Source: ${source}`, model && `Model: ${model}`].filter(
         Boolean
@@ -331,7 +331,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
   // APIError: a provider / API failure was recorded for this event.
   if (event.event_type === "APIError") {
     return {
-      icon: "⚠️",
+      icon: "ERROR",
       headline: "API error recorded",
       bullets: [],
     };
@@ -362,7 +362,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       if (resTop) bullets.push(`Response: ${trunc(resTop, 80)}`);
       else bullets.push(`Returned ${Object.keys(response).length} fields`);
     }
-    return { icon: "🧩", headline, bullets };
+    return { icon: "MCP", headline, bullets };
   }
 
   // ── Native tools ───────────────────────────────────────────────────
@@ -384,9 +384,9 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       // Distinguish "empty stderr" (we have a response) from "unknown" (no
       // response yet) — only claim "no stderr" once some output / response exists.
       else if (stdout || response) bullets.push("no stderr");
-      if (interrupted) bullets.push("⚠ interrupted");
+      if (interrupted) bullets.push("interrupted");
       return {
-        icon: "💻",
+        icon: "BASH",
         // Headline leads with the binary, then the full (clamped) command.
         headline: cmd ? `Ran ${trunc(firstWord(cmd), 40)}: ${trunc(cmd, 80)}` : `${tool} call`,
         bullets,
@@ -407,7 +407,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       if (hunks > 0) bullets.push(`${hunks} hunk${hunks === 1 ? "" : "s"} · +${added} −${removed}`);
       if (replaceAll) bullets.push("replace_all mode");
       return {
-        icon: "✏️",
+        icon: "EDIT",
         headline: path ? `Edited ${shortPath(path)}` : `${tool} call`,
         bullets,
       };
@@ -420,7 +420,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       const bullets: string[] = [];
       if (content) bullets.push(`${lineCount(content)} lines · ${content.length} bytes`);
       return {
-        icon: "📝",
+        icon: "WRITE",
         headline: path ? `Wrote ${shortPath(path)}` : `Write call`,
         bullets,
       };
@@ -447,7 +447,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
         bullets.push(`${lineCount(response)} lines returned`);
       }
       return {
-        icon: "📖",
+        icon: "READ",
         headline: path ? `Read ${shortPath(path)}` : "Read call",
         bullets,
       };
@@ -462,7 +462,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       // Pluralize "match" / "matches" based on the count.
       if (matchCount != null) bullets.push(`${matchCount} match${matchCount === 1 ? "" : "es"}`);
       return {
-        icon: "🔍",
+        icon: "GREP",
         headline: pattern
           ? `Searched "${trunc(pattern, 50)}"${path ? ` in ${shortPath(path)}` : ""}`
           : "Grep call",
@@ -477,7 +477,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       const fileCount = countFiles(response);
       if (fileCount != null) bullets.push(`${fileCount} file${fileCount === 1 ? "" : "s"}`);
       return {
-        icon: "🗂️",
+        icon: "GLOB",
         headline: pattern ? `Listed files matching "${pattern}"` : "Glob call",
         bullets,
       };
@@ -498,7 +498,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
         host = url;
       }
       return {
-        icon: "🌐",
+        icon: "WEB",
         headline: url ? `Fetched ${host}` : "WebFetch call",
         bullets,
       };
@@ -513,14 +513,14 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       if (subtype) bullets.push(`Subagent: ${subtype}`);
       if (desc) bullets.push(`Description: ${trunc(desc, 80)}`);
       if (typeof response === "string") bullets.push(`${lineCount(response)} lines output`);
-      return { icon: "🤖", headline: `Spawned subagent`, bullets };
+      return { icon: "AGENT", headline: `Spawned subagent`, bullets };
     }
 
     case "TaskCreate": {
       // A task was created — headline its description.
       const d = str(input?.description);
       return {
-        icon: "✅",
+        icon: "TASK",
         headline: d ? `Created task: ${trunc(d, 80)}` : "TaskCreate",
         bullets: [],
       };
@@ -529,7 +529,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       // A task was updated — prefer its description, falling back to its id.
       const d = str(input?.description) || str(input?.id);
       return {
-        icon: "🔄",
+        icon: "UPDATE",
         headline: d ? `Updated task: ${trunc(d, 80)}` : "TaskUpdate",
         bullets: [],
       };
@@ -541,7 +541,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       const first = qs && qs.length > 0 ? obj(qs[0]) : null;
       const q = first ? str(first.question) : "";
       return {
-        icon: "❓",
+        icon: "ASK",
         headline: q ? `Asked: "${trunc(q, 80)}"` : "Asked user",
         bullets: [],
       };
@@ -552,7 +552,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       const delay = input?.delaySeconds;
       const reason = str(input?.reason);
       return {
-        icon: "😴",
+        icon: "WAKE",
         headline: typeof delay === "number" ? `Scheduled wakeup in ${delay}s` : "Scheduled wakeup",
         bullets: reason ? [`Reason: ${trunc(reason, 80)}`] : [],
       };
@@ -563,7 +563,7 @@ export function buildEventSummary(event: DashboardEvent): EventSummary | null {
       // there is nothing worth showing, so return null (no summary card).
       if (!input && !response) return null;
       return {
-        icon: "🔧",
+        icon: "TOOL",
         headline: `${tool} call`,
         // At least report how many input fields were passed.
         bullets: input ? [`${Object.keys(input).length} input fields`] : [],

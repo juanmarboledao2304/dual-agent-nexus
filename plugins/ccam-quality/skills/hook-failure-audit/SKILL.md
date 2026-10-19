@@ -48,8 +48,8 @@ For the sessions with the largest gaps or missing terminators, pull `GET /api/ev
 
 ## Output
 
-- A check-by-check report with a PASS / WARN / FAIL marker each (✅ / ⚠️ / ❌) and the expected-vs-observed numbers.
+- A check-by-check report with a PASS / WARN / FAIL marker each ( / /) and the expected-vs-observed numbers.
 - Rates as percentages to 2 decimals.
 - Cite exact `event_type` counts and `session_id` values — never fabricate.
 - End with an overall verdict (e.g., "4/4 checks passed" or "hook delivery DEGRADED") and the single highest-impact remediation (e.g., reinstall hooks via the dashboard Settings, or restart the server with `npm start`).
-- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:4820`, tell the user to start the dashboard with `npm start` from the repo root.
+- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:7770`, tell the user to start the dashboard with `npm start` from the repo root.

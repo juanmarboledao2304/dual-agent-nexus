@@ -4,7 +4,7 @@ Welcome to the **DualAgent Nexus `agy-cascade` Starter Kit**! This toolkit enabl
 
 ---
 
-## 🌊 The Architecture: Two AIs, One Terminal, Three Quota Pools
+## The Architecture: Two AIs, One Terminal, Three Quota Pools
 
 DualAgent Nexus treats Claude Code as your **Conductor (Level 1)** and Google Antigravity as your **Heavy Task Worker & Subagent Swarm Engine (Level 2 & Level 3)**. Work is routed through a prioritized 3-pool waterfall that guarantees maximum throughput, lowest cost, and zero context thrashing.
 
@@ -15,9 +15,9 @@ flowchart TD
 
     subgraph Waterfall["<b>3-Pool Waterfall Strategy</b>"]
         direction TB
-        Pool1["<b>Pool 1: agy-claude (Google Quota)</b><br/>Claude Opus 5.5 (High ➔ Med) ➔ Sonnet 5.5 ➔ GPT-OSS 120B"]
-        Pool2["<b>Pool 2: agy-gemini (Google Quota)</b><br/>Gemini 4 Argon Ultra ➔ Gemini Pro ➔ Gemini 3.8 Flash (High ➔ Med)"]
-        Pool3["<b>Pool 3: claude-direct (Anthropic Direct Quota)</b><br/>Direct Claude Opus 4.6 ➔ Sonnet 4.6 Fallback"]
+        Pool1["<b>Pool 1: agy-claude (Google Quota)</b><br/>Claude Opus 5.5 (High Med) Sonnet 5.5 GPT-OSS 120B"]
+        Pool2["<b>Pool 2: agy-gemini (Google Quota)</b><br/>Gemini 4 Argon Ultra Gemini Pro Gemini 3.8 Flash (High Med)"]
+        Pool3["<b>Pool 3: claude-direct (Anthropic Direct Quota)</b><br/>Direct Claude Opus 4.6 Sonnet 4.6 Fallback"]
 
         Pool1 -->|"Exit 10 (Quota Cooldown: 30m)"| Pool2
         Pool2 -->|"Exit 10 (Quota Cooldown: 30m)"| Pool3
@@ -43,7 +43,7 @@ flowchart TD
 
 ---
 
-## 🪭 The `===DIGEST===` Context Discipline
+## The `===DIGEST===` Context Discipline
 
 When invoking deep swarms (Level 3), running full transcripts back into the Conductor consumes precious context window tokens and degrades reasoning.
 
@@ -64,7 +64,7 @@ DualAgent Nexus automatically detects this block, records up to **+45,000 offloa
 
 ---
 
-## 🚀 Quick Setup Guide
+## Quick Setup Guide
 
 ### 1. Add the Rule to Your Claude Code Config
 Copy [`CLAUDE.snippet.md`](./CLAUDE.snippet.md) into your local project's `CLAUDE.md` or global `~/.claude/CLAUDE.md`.
@@ -80,14 +80,14 @@ chmod +x ~/.local/bin/agy-cascade
 ```bash
 npm run install-hooks --all
 ```
-Both `~/.claude/settings.json` and `~/.gemini/config/hooks.json` will report events live to `http://127.0.0.1:4820/api/events`.
+Both `~/.claude/settings.json` and `~/.gemini/config/hooks.json` will report events live to `http://127.0.0.1:7770/api/events`.
 
 ### 4. Monitor Live Waterfall & Cooldowns
 Launch the dashboard:
 ```bash
 npm run dev
 ```
-Open [http://localhost:4820](http://localhost:4820) to view:
+Open [http://localhost:7770](http://localhost:7770) to view:
 - **3-Pool Waterfall Header** with active countdown timers for cooling-down pools.
-- **Subagent Topology Graph** showing Conductor ➔ Bridge ➔ L3 Fan-Out Specialists.
+- **Subagent Topology Graph** showing Conductor Bridge L3 Fan-Out Specialists.
 - **Tokens Offloaded Counter** tracking cumulative context savings.

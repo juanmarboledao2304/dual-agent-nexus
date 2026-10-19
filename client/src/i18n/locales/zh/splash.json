@@ -6,9 +6,9 @@
     "night": "夜深了"
   },
   "tagline": "你的 Agent 所做的一切，都不会隐于黑暗。",
-  "sub1": "实时观察 Claude Code、Cursor 与 Codex 会话。",
+  "sub1": "Claude Code 与 Google Antigravity 会话的实时编排与遥测。",
   "sub2": "Token、工具、成本与工作流，全部实时呈现。",
-  "brand": "Claude Code 监控",
+  "brand": "DualAgent Nexus",
   "provider": {
     "title": "您想监控什么？",
     "description": "选择要在整个仪表板中显示的数据。您稍后可在设置中更改。",

@@ -12,7 +12,7 @@ Claude Code  →  hook fires  →  hook-handler.js  →  POST /api/hooks/event
 Browser  ←  WebSocket broadcast  ←  Express server  ←  SQLite
 ```
 
-No extra Claude Code configuration is required in the normal host-run path — when you start the dashboard with `npm run dev` or `npm start`, the server configures the hooks automatically on startup. Container deployments are the exception: after the container is up, run `npm run install-hooks` on the host so Claude Code points at `http://localhost:4820`.
+No extra Claude Code configuration is required in the normal host-run path — when you start the dashboard with `npm run dev` or `npm start`, the server configures the hooks automatically on startup. Container deployments are the exception: after the container is up, run `npm run install-hooks` on the host so Claude Code points at `http://localhost:7770`.
 
 ---
 
@@ -51,7 +51,7 @@ npm run install-hooks
 > Container note: do not rely on hook auto-install from inside Docker or Podman. The hook path written by a container would point at the container filesystem, not the host. Start the container first, then run `npm run install-hooks` on the host. As a safeguard (issue #193), the installer now **detects container execution and refuses to run** (exiting non-zero) so it can never poison a bind-mounted host `~/.claude`; the containerized server logs the same guidance instead of silently writing a bad path. If you genuinely run Claude Code inside the same container, override with `CCAM_ALLOW_CONTAINER_HOOKS=1 npm run install-hooks`.
 
 > [!NOTE]
-> Prefer a ready-made dev environment? This repo ships an **optional** Dev Container (`.devcontainer/`) for VS Code / GitHub Codespaces — Node 24 LTS, native build tools for `better-sqlite3`, Python, and ports `4820`/`5173` preconfigured. It's purely opt-in and changes nothing for host-based development. See [`.devcontainer/README.md`](.devcontainer/README.md). (Hooks remain host-side there too.)
+> Prefer a ready-made dev environment? This repo ships an **optional** Dev Container (`.devcontainer/`) for VS Code / GitHub Codespaces — Node 24 LTS, native build tools for `better-sqlite3`, Python, and ports `7770`/`5173` preconfigured. It's purely opt-in and changes nothing for host-based development. See [`.devcontainer/README.md`](.devcontainer/README.md). (Hooks remain host-side there too.)
 
 ### Container runtime (Docker / Podman)
 
@@ -76,7 +76,7 @@ docker compose up -d --build
 
 Container behavior:
 
-- dashboard `4820`, MCP `8819`, Nginx `8080`, Prometheus `9090`, and Grafana `3000` bind host loopback by default
+- dashboard `7770`, MCP `8819`, Nginx `8080`, Prometheus `9090`, and Grafana `3000` bind host loopback by default
 - Claude and Codex homes mount read-only at `/home/node/.claude` and `/home/node/.codex`
 - named volumes persist `/app/data` and `/app/config`
 - the root filesystem is read-only, all capabilities are dropped, and `no-new-privileges` is enabled
@@ -90,14 +90,14 @@ For cloud deployment, Run Agent containers, remote hooks, Kubernetes, Terraform,
 
 | Variable | Default | Description |
 |---|---|---|
-| `DASHBOARD_PORT` | `4820` | Port the Express server listens on |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Port the hook handler uses when posting events to the dashboard |
+| `DASHBOARD_PORT` | `7770` | Port the Express server listens on |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Port the hook handler uses when posting events to the dashboard |
 | `DASHBOARD_DB_PATH` | `data/dashboard.db` | Path to the SQLite database file |
 | `NODE_ENV` | `development` | Set to `production` to serve built client |
 | `CCAM_IMPORT_MAX_BYTES` | `1073741824` (1 GB) | Maximum size per uploaded file on `/api/import/upload` |
 | `CCAM_IMPORT_MAX_FILES` | `2000` | Maximum number of files per upload request |
 | `CCAM_IMPORT_MAX_EXTRACT_BYTES` | `4294967296` (4 GB) | Maximum uncompressed bytes any single archive is allowed to expand to (zip-bomb defense) |
-| `MCP_DASHBOARD_BASE_URL` | `http://127.0.0.1:4820` | Base URL used by the local MCP server to call dashboard APIs |
+| `MCP_DASHBOARD_BASE_URL` | `http://127.0.0.1:7770` | Base URL used by the local MCP server to call dashboard APIs |
 | `MCP_DASHBOARD_ALLOW_MUTATIONS` | `false` | Enables mutating MCP tools |
 | `MCP_DASHBOARD_ALLOW_DESTRUCTIVE` | `false` | Enables destructive MCP tools (in addition to mutations) |
 | `MCP_TRANSPORT` | `stdio` | MCP transport mode: `stdio`, `http`, `repl` |
@@ -118,7 +118,7 @@ DASHBOARD_PORT=9000 npm run dev
 ```
 
 > [!NOTE]
-> You usually do **not** need to set `DASHBOARD_PORT` manually. `npm run dev` is wrapped by `scripts/dev.js`, which probes both `127.0.0.1` and `::1` (so an SSH `LocalForward` bound to one loopback can't slip past) and picks the first free port in `4820–4859` automatically. The chosen port is propagated to the Vite dev proxy via `DASHBOARD_PORT`, and the Express server writes it to `~/.claude/.agent-dashboard.json` so the Claude Code hook handler discovers it without any env var.
+> You usually do **not** need to set `DASHBOARD_PORT` manually. `npm run dev` is wrapped by `scripts/dev.js`, which probes both `127.0.0.1` and `::1` (so an SSH `LocalForward` bound to one loopback can't slip past) and picks the first free port in `7770–4859` automatically. The chosen port is propagated to the Vite dev proxy via `DASHBOARD_PORT`, and the Express server writes it to `~/.claude/.agent-dashboard.json` so the Claude Code hook handler discovers it without any env var.
 >
 > Multiple dashboards can run side by side — for example `npm run dev` and the desktop app (macOS or Windows) at the same time. Each one appends its `{port, pid, startedAt}` entry to the discovery file, and `scripts/hook-handler.js` fan-outs every hook event to every live entry, so both UIs keep their real-time stream.
 >
@@ -142,7 +142,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| HTTP
     OP["Operator"] -->|"interactive CLI"| REPL
 
-    STDIO --> API["Dashboard API<br/>http://127.0.0.1:4820/api/*"]
+    STDIO --> API["Dashboard API<br/>http://127.0.0.1:7770/api/*"]
     HTTP --> API
     REPL --> API
 
@@ -195,7 +195,7 @@ The **Claude Code Agent Monitor** is available as an integrated VS Code extensio
 - **Activity Bar View**: Adds a custom "Radar" icon to the activity bar providing real-time agent health, token counts, and session stats.
 - **Status Bar Integration**: Displays live session and agent pulse counts in the bottom bar.
 - **Embedded Dashboard**: Renders the full web dashboard directly in a VS Code editor tab.
-- **Automated Detection**: Automatically finds your dashboard server on ports `5173` or `4820`.
+- **Automated Detection**: Automatically finds your dashboard server on ports `5173` or `7770`.
 
 <p align="center">
   <img src="vscode-extension/vscode.png" alt="VS Code Extension Screenshot" width="100%">
@@ -256,9 +256,9 @@ This section covers the parts of running the desktop app that matter for setup.
 
 **Port-adoption behavior.** When the desktop app launches, its embedded server picks a port:
 
-1. It prefers **`4820`**.
-2. If a healthy dashboard server already answers `GET /api/health` on `4820` (for example you ran `npm start` in a terminal), the app **adopts that server** instead of double-binding — no SQLite contention. An adopted server is *not* owned by the app, so quitting the app leaves it running.
-3. Otherwise it falls back to `4821`–`4829`, then to a random high port (`49152`–`49500`).
+1. It prefers **`7770`**.
+2. If a healthy dashboard server already answers `GET /api/health` on `7770` (for example you ran `npm start` in a terminal), the app **adopts that server** instead of double-binding — no SQLite contention. An adopted server is *not* owned by the app, so quitting the app leaves it running.
+3. Otherwise it falls back to `7771`–`7779`, then to a random high port (`49152`–`49500`).
 
 The chosen port is shown in the tray menu. The embedded server also honors the dashboard env vars in [Environment variables](#environment-variables) (`DASHBOARD_PORT` is set automatically by the desktop host).
 
@@ -556,7 +556,7 @@ The SQLite database uses WAL mode with a 5-second busy timeout. If you see lock 
 **Check 1 — Is the server running?**
 
 ```bash
-curl http://localhost:4820/api/health
+curl http://localhost:7770/api/health
 # Expected: {"status":"ok","timestamp":"..."}
 ```
 
@@ -602,25 +602,25 @@ This was a known timezone bug (fixed in current version). If you are still seein
 
 ---
 
-### Port 4820 already in use
+### Port 7770 already in use
 
 ```bash
-DASHBOARD_PORT=4821 npm run dev
+DASHBOARD_PORT=7771 npm run dev
 ```
 
 Then update the Vite proxy in `client/vite.config.ts`:
 
 ```ts
 proxy: {
-  "/api": "http://localhost:4821",
-  "/ws":  { target: "ws://localhost:4821", ws: true }
+  "/api": "http://localhost:7771",
+  "/ws":  { target: "ws://localhost:7771", ws: true }
 }
 ```
 
 And make sure Claude Code posts hooks to the new port:
 
 ```bash
-CLAUDE_DASHBOARD_PORT=4821 claude
+CLAUDE_DASHBOARD_PORT=7771 claude
 # or edit scripts/hook-handler.js and change the default port
 ```
 
@@ -631,7 +631,7 @@ CLAUDE_DASHBOARD_PORT=4821 claude
 **Check 1 — Is the container healthy?**
 
 ```bash
-curl http://localhost:4820/api/health
+curl http://localhost:7770/api/health
 # Expected: {"status":"ok","timestamp":"..."}
 ```
 
@@ -645,7 +645,7 @@ npm run install-hooks
 
 **Check 3 — Are hooks pointing to the right port?**
 
-Open `~/.claude/settings.json` and verify the hook commands reference `localhost:4820` (or whatever port the container is mapped to). If you changed the port mapping, update hooks accordingly.
+Open `~/.claude/settings.json` and verify the hook commands reference `localhost:7770` (or whatever port the container is mapped to). If you changed the port mapping, update hooks accordingly.
 
 ---
 
@@ -700,4 +700,4 @@ The Windows `.exe` (NSIS installer and portable build) is **unsigned** by defaul
 
 ### Desktop app — no sessions appearing
 
-The desktop app installs hooks on its **first owned-server boot**, not before. After the app is running, start a **new** Claude Code session and confirm `~/.claude/settings.json` contains entries referencing `hook-handler.js`. If the app adopted an existing server on `4820`, that server's own hook configuration applies instead. For a blank dashboard window, check the desktop log (`~/Library/Logs/Claude Code Monitor/desktop.log` on macOS, `%APPDATA%\Claude Code Monitor\logs\desktop.log` on Windows) via tray → *Show Logs* and use tray → *Restart Server*.
+The desktop app installs hooks on its **first owned-server boot**, not before. After the app is running, start a **new** Claude Code session and confirm `~/.claude/settings.json` contains entries referencing `hook-handler.js`. If the app adopted an existing server on `7770`, that server's own hook configuration applies instead. For a blank dashboard window, check the desktop log (`~/Library/Logs/Claude Code Monitor/desktop.log` on macOS, `%APPDATA%\Claude Code Monitor\logs\desktop.log` on Windows) via tray → *Show Logs* and use tray → *Restart Server*.

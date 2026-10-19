@@ -10,7 +10,7 @@ The user's scope is **$ARGUMENTS** (default `today` if empty; accepts `today` or
 Fetch the fleet-wide cost breakdown:
 
 ```
-curl -s http://localhost:4820/api/pricing/cost
+curl -s http://localhost:7770/api/pricing/cost
 ```
 
 This returns `{ total_cost, breakdown: [{ model, input_tokens, output_tokens, cache_read_tokens, cache_write_tokens, cost, matched_rule }] }`.

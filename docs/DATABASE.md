@@ -994,11 +994,11 @@ graph TB
 
 The database schema provides:
 
-- ✅ **Normalized design** - Minimal redundancy, clear relationships
-- ✅ **Performance optimized** - Indexes, prepared statements, WAL mode
-- ✅ **Data integrity** - Foreign keys, constraints, transactions
-- ✅ **Migration support** - Schema versioning with PRAGMA user_version
-- ✅ **Comprehensive indexing** - Fast queries for common access patterns
-- ✅ **Backup strategies** - Online + offline backup options
+- **Normalized design** - Minimal redundancy, clear relationships
+- **Performance optimized** - Indexes, prepared statements, WAL mode
+- **Data integrity** - Foreign keys, constraints, transactions
+- **Migration support** - Schema versioning with PRAGMA user_version
+- **Comprehensive indexing** - Fast queries for common access patterns
+- **Backup strategies** - Online + offline backup options
 
 For API usage, see [docs/API.md](./API.md).

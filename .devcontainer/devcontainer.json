@@ -4,14 +4,14 @@
   // Used only when you choose "Dev Containers: Reopen in Container" (VS Code) or
   // open the repo in a GitHub Codespace. It changes nothing for host-based dev.
   //
-  // Covers the full project: the Express server (4820), the React/Vite client
+  // Covers the full project: the Express server (7770), the React/Vite client
   // (5173), the MCP server, and the VS Code extension. The native `better-sqlite3`
   // addon builds here (build-essential + python3 are installed in the Dockerfile).
   //
   // NOTE (issue #193): Claude Code hooks are a HOST-side concern. This container
   // intentionally does NOT bind-mount ~/.claude and does NOT install hooks — the
   // installer refuses to run inside a container. Run `npm run install-hooks` on
-  // your host so hooks POST to http://localhost:4820 (forwarded from here).
+  // your host so hooks POST to http://localhost:7770 (forwarded from here).
   // ─────────────────────────────────────────────────────────────────────────
   "name": "Claude Code Agent Monitor",
   "build": {
@@ -28,9 +28,9 @@
 
   // Server (API + WebSocket) and the Vite client dev server. VS Code forwards
   // these from the container's localhost, so the secure loopback bind is fine.
-  "forwardPorts": [4820, 5173],
+  "forwardPorts": [7770, 5173],
   "portsAttributes": {
-    "4820": {
+    "7770": {
       "label": "Dashboard server (API + WebSocket)",
       "onAutoForward": "notify"
     },

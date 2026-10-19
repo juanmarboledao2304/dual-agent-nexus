@@ -20,7 +20,7 @@ This may be a session ID, "latest", or a date range like "last 24 hours".
 
 ## Data Sources
 
-All data comes from the Agent Monitor API at `http://localhost:4820`:
+All data comes from the Agent Monitor API at `http://localhost:7770`:
 
 | Endpoint | What it returns |
 |----------|----------------|

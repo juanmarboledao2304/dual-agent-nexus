@@ -62,22 +62,12 @@
  * ----------------------------------------------------------------------------- */
 
 import { useTranslation } from "react-i18next";
-import {
-  Bot,
-  GitBranch,
-  Clock,
-  Wrench,
-  Cpu,
-  Coins,
-  Flame,
-  Sparkles,
-  Layers,
-  ShieldCheck,
-  GitCommit,
-} from "lucide-react";
+import { Clock, Wrench, Cpu, Coins, Layers, ShieldCheck, GitCommit } from "lucide-react";
 import { useNavigate } from "react-router";
 import { AgentStatusBadge } from "./StatusBadge";
 import { TodoProgressIndicator } from "./TodoProgressIndicator";
+import { PixelAvatar } from "./PixelAvatar";
+import { EffortMeter, PoolPill } from "./NexusBadges";
 import { effectiveAgentStatus, isAgentAwaitingInput, agentAwaitingReason } from "../lib/types";
 import type { Agent, Session } from "../lib/types";
 import { formatDuration, timeAgo, formatModelName, pathBasename, fmtCost } from "../lib/format";
@@ -286,48 +276,17 @@ export function AgentCard({
             : ""
       }`}
     >
-      {/* Chromatic Thermal Header Strip: Provider Spectrum Pill + Tier Badge + 4-Bar Effort Meter */}
+      {/* Header strip: quota pool pill + model tier badge + 4-bar effort meter */}
       <div className="flex items-center justify-between gap-2 mb-2.5">
         <div className="flex items-center gap-1.5 min-w-0">
-          <span
-            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${theme.providerPillClass}`}
-          >
-            {theme.provider === "claude" ? (
-              <Flame className="w-2.5 h-2.5" />
-            ) : (
-              <Sparkles className="w-2.5 h-2.5" />
-            )}
-            {theme.provider === "agy-claude"
-              ? "AGY • CLAUDE POOL"
-              : theme.provider === "antigravity"
-                ? "AGY · COOL"
-                : "CLAUDE · WARM"}
-          </span>
+          <PoolPill theme={theme} bracketed={false} />
           <span
             className={`px-1.5 py-0.5 rounded text-[9px] font-semibold truncate ${theme.badgeClass}`}
           >
             {theme.label}
           </span>
         </div>
-
-        {/* 4-Bar Effort Signal Meter (LOW, MED, HIGH, MAX) */}
-        <div
-          className="flex items-center gap-1 flex-shrink-0"
-          title={`Reasoning Effort: ${theme.effortLabel}`}
-        >
-          <span className="flex items-end gap-0.5 h-2.5">
-            {[1, 2, 3, 4].map((bar) => (
-              <span
-                key={bar}
-                className={`w-0.5 rounded-sm transition-all ${
-                  bar <= theme.effortBars ? theme.barActiveClass : "bg-slate-700/50"
-                }`}
-                style={{ height: `${bar * 25}%` }}
-              />
-            ))}
-          </span>
-          <span className="text-[9px] font-mono text-gray-400">{theme.effortLabel}</span>
-        </div>
+        <EffortMeter theme={theme} />
       </div>
 
       {/* ===DIGEST=== Handoff & Git Checkpoints Badges */}
@@ -352,11 +311,7 @@ export function AgentCard({
 
       <div className="flex items-start justify-between gap-2 mb-3 min-w-0">
         <div className="flex items-start gap-2.5 min-w-0 overflow-hidden">
-          <div
-            className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${theme.badgeClass}`}
-          >
-            {isMain ? <Bot className="w-3.5 h-3.5" /> : <GitBranch className="w-3.5 h-3.5" />}
-          </div>
+          <PixelAvatar agent={agent} session={session} size={28} showBadge={false} />
           <div className="min-w-0 overflow-hidden">
             {/* Wraps to at most three lines (long unbroken tokens such as
                 paths break anywhere) so a long title never blows up the

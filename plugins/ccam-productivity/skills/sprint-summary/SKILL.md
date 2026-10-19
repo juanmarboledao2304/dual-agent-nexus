@@ -22,7 +22,7 @@ This may be:
 
 ## Procedure
 
-1. **Fetch sprint data** from `http://localhost:4820`:
+1. **Fetch sprint data** from `http://localhost:7770`:
    - `GET /api/sessions?limit=500` — all sessions in range (default sort: most recently updated first)
    - `GET /api/analytics` — aggregated metrics
    - `GET /api/pricing/cost` — total costs
@@ -30,21 +30,21 @@ This may be:
 
 2. **Compile sprint summary**:
 
-   ### 🎯 Sprint Overview
+   ### Sprint Overview
    - Sprint period: [start] to [end]
    - Total sessions: N (completed: N, errored: N, abandoned: N)
    - Total development hours with Claude Code: N
    - Total cost: $X.XX
    - Overall completion rate: N%
 
-   ### 📦 Deliverables
+   ### Deliverables
    Group sessions by working directory (project):
    - **Project A** (`/path/to/project`)
      - N sessions, N hours, key activities
    - **Project B** (`/path/to/other`)
      - N sessions, N hours, key activities
 
-   ### 📊 Velocity Metrics
+   ### Velocity Metrics
    | Metric | Sprint | Previous Sprint | Trend |
    |--------|--------|-----------------|-------|
    | Sessions/day | N | N | ↑/↓ |
@@ -53,18 +53,18 @@ This may be:
    | Tokens/session | N | N | ↑/↓ |
    | Completion rate | N% | N% | ↑/↓ |
 
-   ### 🛠 Technology Breakdown
+   ### Technology Breakdown
    - Models used with distribution percentages
    - Top 15 tools by usage with category grouping
    - Subagent utilization rate
 
-   ### ⚡ Efficiency Analysis
+   ### Efficiency Analysis
    - Token efficiency: cache hit rate, compaction frequency
    - Cost per completed task
    - Time-to-first-output (avg across sessions)
    - Error recovery rate (sessions that recovered from errors)
 
-   ### 🔄 Retrospective Data Points
+   ### Retrospective Data Points
    - **What went well**: Highest-efficiency sessions, best completion rates
    - **What could improve**: Most expensive sessions, highest error rates
    - **Action items**: Data-driven suggestions for next sprint

@@ -3,7 +3,7 @@
 # Usage: ccam-stats [--json] [--cost] [--sessions] [--all]
 set -euo pipefail
 
-DASHBOARD_URL="${CCAM_DASHBOARD_URL:-http://localhost:4820}"
+DASHBOARD_URL="${CCAM_DASHBOARD_URL:-http://localhost:7770}"
 
 usage() {
   cat <<EOF
@@ -21,7 +21,7 @@ OPTIONS:
   --help       Show this help
 
 ENVIRONMENT:
-  CCAM_DASHBOARD_URL   Dashboard URL (default: http://localhost:4820)
+  CCAM_DASHBOARD_URL   Dashboard URL (default: http://localhost:7770)
 
 EXAMPLES:
   ccam-stats                # Show all stats

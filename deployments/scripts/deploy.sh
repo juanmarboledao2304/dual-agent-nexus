@@ -15,7 +15,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 readonly DEPLOY_DIR="${PROJECT_ROOT}/deployments"
 readonly APP_NAME="agent-monitor"
-readonly APP_PORT=4820
+readonly APP_PORT=7770
 readonly DEFAULT_REGISTRY="ghcr.io"
 readonly DEFAULT_IMAGE_NAME="claude-code-agent-monitor"
 

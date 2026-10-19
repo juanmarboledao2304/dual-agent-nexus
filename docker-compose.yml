@@ -13,11 +13,11 @@ services:
     restart: unless-stopped
     stop_grace_period: 30s
     ports:
-      - "${CCAM_DASHBOARD_BIND:-127.0.0.1}:${DASHBOARD_PORT:-4820}:4820"
+      - "${CCAM_DASHBOARD_BIND:-127.0.0.1}:${DASHBOARD_PORT:-7770}:7770"
     environment:
       NODE_ENV: production
       DASHBOARD_HOST: 0.0.0.0
-      DASHBOARD_PORT: 4820
+      DASHBOARD_PORT: 7770
       DASHBOARD_DATA_DIR: /app/data
       DASHBOARD_ENV_PATH: /app/config/.env
       DASHBOARD_LIVENESS_PROBE: 0
@@ -51,7 +51,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:4820/api/health').then((response)=>process.exit(response.ok?0:1)).catch(()=>process.exit(1))",
+          "fetch('http://127.0.0.1:7770/api/health').then((response)=>process.exit(response.ok?0:1)).catch(()=>process.exit(1))",
         ]
       interval: 15s
       timeout: 5s
@@ -80,7 +80,7 @@ services:
       MCP_HTTP_HOST: 0.0.0.0
       MCP_HTTP_PORT: 8819
       MCP_HTTP_AUTH_TOKEN_FILE: /run/ccam-secrets/mcp-token
-      MCP_DASHBOARD_BASE_URL: http://agent-monitor:4820
+      MCP_DASHBOARD_BASE_URL: http://agent-monitor:7770
       MCP_DASHBOARD_API_TOKEN: ${DASHBOARD_TOKEN:-}
       MCP_DASHBOARD_API_TOKEN_FILE: /run/ccam-secrets/dashboard-token
       MCP_DASHBOARD_ALLOW_MUTATIONS: ${MCP_DASHBOARD_ALLOW_MUTATIONS:-false}

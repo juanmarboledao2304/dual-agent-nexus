@@ -3,14 +3,14 @@ description: Summarize the workflow intelligence for a session — stats, comple
 argument-hint: "[session-id]"
 ---
 
-Summarize the Agent Monitor workflow intelligence for a session from `http://localhost:4820`.
+Summarize the Agent Monitor workflow intelligence for a session from `http://localhost:7770`.
 
-The session id is **$ARGUMENTS**. If empty, fetch `curl -s 'http://localhost:4820/api/sessions?limit=1'` and use the most recent session, stating which id you picked. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
+The session id is **$ARGUMENTS**. If empty, fetch `curl -s 'http://localhost:7770/api/sessions?limit=1'` and use the most recent session, stating which id you picked. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
 
 Fetch the workflow intelligence:
 
 ```
-curl -s http://localhost:4820/api/workflows/$ARGUMENTS
+curl -s http://localhost:7770/api/workflows/$ARGUMENTS
 ```
 
 This returns 11 datasets: `stats`, `orchestration`, `toolFlow`, `effectiveness`, `patterns`, `modelDelegation`, `errorPropagation`, `concurrency`, `complexity`, `compaction`, `cooccurrence`.

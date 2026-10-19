@@ -9,7 +9,7 @@
       "skipFiles": ["<node_internals>/**"],
       "env": {
         "NODE_ENV": "development",
-        "DASHBOARD_PORT": "4820"
+        "DASHBOARD_PORT": "7770"
       }
     },
     {

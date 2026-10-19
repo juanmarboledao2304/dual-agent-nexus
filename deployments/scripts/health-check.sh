@@ -3,7 +3,7 @@
 # health-check.sh – Comprehensive health check for Claude Code Agent Monitor
 #
 # Usage:
-#   ./health-check.sh --url http://localhost:4820
+#   ./health-check.sh --url http://localhost:7770
 #   ./health-check.sh --url http://host:port --retries 30 --interval 5
 #   ./health-check.sh --url http://host:port --json
 #   ./health-check.sh --help
@@ -45,7 +45,7 @@ ${BOLD}Usage:${NC}
   $(basename "$0") --url <base-url> [options]
 
 ${BOLD}Required:${NC}
-  --url, -u          Base URL (e.g., http://localhost:4820)
+  --url, -u          Base URL (e.g., http://localhost:7770)
 
 ${BOLD}Options:${NC}
   --retries, -r      Max retry attempts (default: 30)
@@ -64,9 +64,9 @@ ${BOLD}Exit codes:${NC}
   1                  One or more checks failed
 
 ${BOLD}Examples:${NC}
-  $(basename "$0") --url http://localhost:4820
+  $(basename "$0") --url http://localhost:7770
   $(basename "$0") --url https://monitor.example.com --retries 10 --json
-  $(basename "$0") --url http://10.0.1.5:4820 --threshold 500 --no-websocket
+  $(basename "$0") --url http://10.0.1.5:7770 --threshold 500 --no-websocket
 
 HELP
   exit 0

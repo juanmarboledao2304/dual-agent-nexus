@@ -6,17 +6,22 @@ description: MANDATORY for every coding agent (Claude Code, Codex, or any other)
 # File Headers — Copyright Comment + File Overview
 
 Every applicable source file in this repository starts with a header comment
-containing a **file overview** and the **exact author line**:
+containing a **file overview** and an **author line**. DualAgent Nexus is
+authored and maintained by Juan Manuel Arboleda Orozco; it builds on the
+MIT-licensed Claude Code Agent Monitor by Son Nguyen. Two author lines are
+therefore valid:
 
-```
-@author Son Nguyen <hoangson091104@gmail.com>
-```
+| File | Author line |
+| ---- | ----------- |
+| New files, and files that exist only because of DualAgent Nexus | `@author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)` |
+| Files inherited from the upstream Agent Monitor | keep the original `@author Son Nguyen <hoangson091104@gmail.com>` |
 
-The name and email must be exactly as above — no variations, no substitutions,
-no other names. This applies to **every coding agent** working in this repo
-(Claude Code, Codex, or any other tool): when you **create** a new applicable
-file, write the header first; when you **update** an existing applicable file
-that is missing the header, add it as part of the same change.
+Never rewrite an inherited file's author line to claim it — upstream
+attribution is part of the MIT notice. This applies to **every coding agent**
+working in this repo (Claude Code, Codex, or any other tool): when you
+**create** a new applicable file, write the header first (with the Nexus author
+line); when you **update** an existing applicable file that is missing the
+header, add it as part of the same change.
 
 ## Applicable files
 
@@ -87,9 +92,11 @@ module.py — what the module does.
 2. **Touched file missing header → add it.** If you edit a file that lacks the
    header, add one in the same commit. Write a real overview — describe what
    the file actually does; never a placeholder like "TODO" or "utility file".
-3. **Exact author line.** `@author Son Nguyen <hoangson091104@gmail.com>` —
-   byte-exact, in every file type (shell and Python use it inside `#` / docstring
-   comments).
+3. **Right author line.** New files use
+   `@author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)`;
+   inherited upstream files keep their original author line. Shell and Python
+   carry it inside `#` / docstring comments. The examples below show the
+   upstream line — swap in the Nexus line for anything you create.
 4. **Don't churn existing headers.** If a file already has a compliant header,
    leave it alone unless the file's purpose changed (then update the overview).
 5. **Overviews must stay truthful.** When an edit changes what a file does,

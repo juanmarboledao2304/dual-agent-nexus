@@ -58,11 +58,15 @@ function formatSlack(alert) {
   if (alert.agent_id) ctx.push(`Agent: \`${truncate(alert.agent_id, 64)}\``);
   ctx.push(alert.triggered_at);
   return {
-    text: truncate(`🔔 ${alert.rule_name}: ${alert.message}`, 3000),
+    text: truncate(`[ALERT] ${alert.rule_name}: ${alert.message}`, 3000),
     blocks: [
       {
         type: "header",
-        text: { type: "plain_text", text: truncate(`🔔 ${alert.rule_name}`, 150), emoji: true },
+        text: {
+          type: "plain_text",
+          text: truncate(`[ALERT] ${alert.rule_name}`, 150),
+          emoji: true,
+        },
       },
       { type: "section", text: { type: "mrkdwn", text: truncate(alert.message, 2900) } },
       { type: "context", elements: [{ type: "mrkdwn", text: truncate(ctx.join("  •  "), 1900) }] },
@@ -81,7 +85,7 @@ function formatDiscord(alert) {
     username: "Claude Code Monitor",
     embeds: [
       {
-        title: truncate(`🔔 ${alert.rule_name}`, 256),
+        title: truncate(`[ALERT] ${alert.rule_name}`, 256),
         description: truncate(alert.message, 4000),
         color: ACCENT_INT,
         fields,
@@ -118,7 +122,7 @@ function formatTeams(alert) {
               size: "Large",
               weight: "Bolder",
               color: "Attention",
-              text: truncate(`🔔 ${alert.rule_name}`, 500),
+              text: truncate(`[ALERT] ${alert.rule_name}`, 500),
               wrap: true,
             },
             { type: "TextBlock", text: truncate(alert.message, 4000), wrap: true },
@@ -133,7 +137,7 @@ function formatTeams(alert) {
 // Google Chat incoming webhook — simple text message with basic markdown
 // (*bold*, `code`). Reliable across spaces without card-schema pitfalls.
 function formatGoogleChat(alert) {
-  const lines = [`🔔 *${alert.rule_name}*`, alert.message, ""];
+  const lines = [`[ALERT] *${alert.rule_name}*`, alert.message, ""];
   const meta = [`\`${alert.rule_type}\``];
   if (alert.session_id) meta.push(`session \`${truncate(alert.session_id, 64)}\``);
   if (alert.agent_id) meta.push(`agent \`${truncate(alert.agent_id, 64)}\``);
@@ -145,7 +149,7 @@ function formatGoogleChat(alert) {
 function formatMattermost(alert) {
   return {
     username: "Claude Code Monitor",
-    text: `🔔 **${alert.rule_name}**`,
+    text: `[ALERT] **${alert.rule_name}**`,
     attachments: [
       {
         fallback: truncate(`${alert.rule_name}: ${alert.message}`, 1000),
@@ -162,7 +166,7 @@ function formatMattermost(alert) {
 function formatRocketChat(alert) {
   return {
     alias: "Claude Code Monitor",
-    text: `🔔 *${alert.rule_name}*`,
+    text: `[ALERT] *${alert.rule_name}*`,
     attachments: [
       {
         title: truncate(alert.rule_name, 256),
@@ -177,7 +181,7 @@ function formatRocketChat(alert) {
 // Telegram Bot API sendMessage. chat_id comes from config; the bot token is in
 // the resolved URL. HTML parse mode, so message text is HTML-escaped.
 function formatTelegram(alert, config) {
-  const lines = [`🔔 <b>${escHtml(alert.rule_name)}</b>`, escHtml(alert.message)];
+  const lines = [`[ALERT] <b>${escHtml(alert.rule_name)}</b>`, escHtml(alert.message)];
   const meta = [`<code>${escHtml(alert.rule_type)}</code>`];
   if (alert.session_id)
     meta.push(`session <code>${escHtml(truncate(alert.session_id, 64))}</code>`);

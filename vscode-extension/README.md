@@ -6,12 +6,12 @@
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-### 📊 Integrated Dashboard
+### Integrated Dashboard
 Open the full agent monitoring dashboard in a dedicated VS Code tab. Supports real-time updates via WebSockets and local-first data storage.
 
-### 🩺 Live Agent Health
+### Live Agent Health
 Track all 5 agent states in your sidebar with color-coded status indicators:
 - **Working**: Active subagents currently processing tasks.
 - **Connected**: Agents initialized and ready.
@@ -19,12 +19,12 @@ Track all 5 agent states in your sidebar with color-coded status indicators:
 - **Completed**: Successfully finished tasks.
 - **Error/Failed**: Instantly spot where things went wrong.
 
-### 📈 Usage & Analytics
+### Usage & Analytics
 - **Token Tracking**: Real-time display of Billions (B) or Millions (M) of tokens consumed.
 - **Cost Calculation**: Live estimate of total USD cost based on current model pricing.
 - **Event Frequency**: High-signal stats on events per session and subagent spawning.
 
-### 🧭 Deep Navigation
+### Deep Navigation
 Jump directly to specific views from the sidebar:
 - **Main Dashboard**: Global overview.
 - **Analytics Hub**: Deep dives into model performance.
@@ -33,7 +33,7 @@ Jump directly to specific views from the sidebar:
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### 1. Requirements
 Ensure you have the Claude Code Agent Monitor server running locally:
@@ -48,12 +48,12 @@ npm run dev
 
 ### 3. Usage
 - Click the **Radar/Dashboard icon** in the Activity Bar.
-- The extension automatically detects your local server on ports **5173** (dev) or **4820** (prod).
+- The extension automatically detects your local server on ports **5173** (dev) or **7770** (prod).
 - Use the **Refresh** button in the sidebar to manually force an update.
 
 ---
 
-## 📦 Publishing & Development
+## Publishing & Development
 
 To generate a `.vsix` file for manual installation or marketplace upload:
 
@@ -73,7 +73,7 @@ To generate a `.vsix` file for manual installation or marketplace upload:
 
 ---
 
-## 📜 License
+## License
 This extension is licensed under the [MIT License](LICENSE).
 
-Developed with ❤️ for the AI Engineer community.
+Developed with for the AI Engineer community.

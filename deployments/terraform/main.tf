@@ -28,7 +28,7 @@ locals {
       config = {
         NODE_ENV                 = "production"
         DASHBOARD_HOST           = "0.0.0.0"
-        DASHBOARD_PORT           = "4820"
+        DASHBOARD_PORT           = "7770"
         DASHBOARD_DATA_DIR       = "/app/data"
         DASHBOARD_ENV_PATH       = "/app/data/config/.env"
         CLAUDE_HOME              = "/app/data/claude"

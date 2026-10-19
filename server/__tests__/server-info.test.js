@@ -58,48 +58,48 @@ describe("server-info hook ingest deduplication", () => {
     const mod = freshModule(DATA_DIR_A);
     writeDiscovery([
       {
-        port: 4820,
+        port: 7770,
         pid: process.pid,
         startedAt: "2026-01-01T00:00:00.000Z",
         dataDir: DATA_DIR_A,
       },
       {
-        port: 4821,
+        port: 7771,
         pid: process.pid,
         startedAt: "2026-01-02T00:00:00.000Z",
         dataDir: DATA_DIR_A,
       },
     ]);
-    assert.deepEqual(mod.resolveHookIngestPorts(), [4820]);
-    assert.deepEqual(mod.resolveAllDashboardPorts(), [4820, 4821]);
+    assert.deepEqual(mod.resolveHookIngestPorts(), [7770]);
+    assert.deepEqual(mod.resolveAllDashboardPorts(), [7770, 7771]);
   });
 
   it("fans out when live servers use different data directories", () => {
     const mod = freshModule(DATA_DIR_A);
     writeDiscovery([
       {
-        port: 4820,
+        port: 7770,
         pid: process.pid,
         startedAt: "2026-01-01T00:00:00.000Z",
         dataDir: DATA_DIR_A,
       },
       {
-        port: 4900,
+        port: 7900,
         pid: process.pid,
         startedAt: "2026-01-02T00:00:00.000Z",
         dataDir: DATA_DIR_B,
       },
     ]);
-    assert.deepEqual(mod.resolveHookIngestPorts(), [4820, 4900]);
+    assert.deepEqual(mod.resolveHookIngestPorts(), [7770, 7900]);
   });
 
   it("treats legacy entries without dataDir as unique per port", () => {
     const mod = freshModule(DATA_DIR_A);
     writeDiscovery([
-      { port: 4820, pid: process.pid, startedAt: "2026-01-01T00:00:00.000Z" },
-      { port: 4821, pid: process.pid, startedAt: "2026-01-02T00:00:00.000Z" },
+      { port: 7770, pid: process.pid, startedAt: "2026-01-01T00:00:00.000Z" },
+      { port: 7771, pid: process.pid, startedAt: "2026-01-02T00:00:00.000Z" },
     ]);
-    assert.deepEqual(mod.resolveHookIngestPorts(), [4820, 4821]);
+    assert.deepEqual(mod.resolveHookIngestPorts(), [7770, 7771]);
   });
 
   it("records dataDir when writing server info", () => {
@@ -116,7 +116,7 @@ describe("server-info hook ingest deduplication", () => {
     process.env.CLAUDE_DASHBOARD_PORT = "7777";
     writeDiscovery([
       {
-        port: 4820,
+        port: 7770,
         pid: process.pid,
         startedAt: "2026-01-01T00:00:00.000Z",
         dataDir: DATA_DIR_A,

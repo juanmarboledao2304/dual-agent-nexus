@@ -35,7 +35,7 @@ Start with the smallest set of documents for the job at hand, then use the catal
 
 ## Documentation Sections
 
-### 📘 Core Documentation
+### Core Documentation
 
 ```mermaid
 graph TB
@@ -59,7 +59,7 @@ graph TB
 
 ---
 
-### 📋 Documentation Catalog
+### Documentation Catalog
 
 | Document | Description | Audience |
 |----------|-------------|----------|
@@ -547,12 +547,12 @@ This project is licensed under the MIT License. See [LICENSE](../LICENSE) for de
 
 This documentation covers:
 
-- ✅ **Complete architecture** - Frontend, backend, database, integrations
-- ✅ **API reference** - REST endpoints, WebSocket events
-- ✅ **Deployment guides** - Docker, PM2, systemd, cloud
-- ✅ **Performance tuning** - Database, server, client optimizations
-- ✅ **Integration guides** - Hooks, MCP, custom clients
-- ✅ **Internationalization** - Language resources, switching flow, locale formatting, rollout checklist
-- ✅ **Development guides** - Setup, testing, contributing
+- **Complete architecture** - Frontend, backend, database, integrations
+- **API reference** - REST endpoints, WebSocket events
+- **Deployment guides** - Docker, PM2, systemd, cloud
+- **Performance tuning** - Database, server, client optimizations
+- **Integration guides** - Hooks, MCP, custom clients
+- **Internationalization** - Language resources, switching flow, locale formatting, rollout checklist
+- **Development guides** - Setup, testing, contributing
 
 **Start with:** [SETUP.md](../SETUP.md) for installation, then explore specific areas based on your role.

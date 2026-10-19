@@ -161,7 +161,7 @@ function saveState(win: BrowserWindow): void {
  * and defers `show()` until `ready-to-show` so the window never flashes an
  * unstyled blank frame while the page loads.
  *
- * @param targetUrl The embedded server's origin, e.g. `http://127.0.0.1:4820`.
+ * @param targetUrl The embedded server's origin, e.g. `http://127.0.0.1:7770`.
  * @returns The newly created, not-yet-visible `BrowserWindow`.
  */
 export function createDashboardWindow(targetUrl: string): BrowserWindow {

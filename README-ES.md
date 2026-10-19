@@ -1,6 +1,6 @@
 # Panel de agentes para Claude Code, Cursor y Codex
 
-### Plataforma de monitoreo en tiempo real para agentes Claude Code, Cursor y Codex 🚀
+### Plataforma de monitoreo en tiempo real para agentes Claude Code, Cursor y Codex
 
 Un panel profesional para rastrear sesiones, herramientas, historial de conversaciones, costos y subagentes de Claude Code, Cursor y Codex en tiempo real. Combina hooks nativos con detección local de transcripciones específica por proveedor.
 
@@ -154,115 +154,115 @@ La interfaz oscura y adaptable cubre todo el flujo de trabajo. Cada vista previa
 <p align="center">
   <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Vista general del panel" width="100%"></a>
   <br>
-  <em>📡 <strong>Panel</strong> · totales del conjunto, agentes activos, actividad reciente y señales de estado en vivo</em>
+  <em> <strong>Panel</strong> · totales del conjunto, agentes activos, actividad reciente y señales de estado en vivo</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="Vista general del progreso de tareas" width="100%"></a>
   <br>
-  <em>📋 <strong>Progreso de tareas</strong> · finalización compacta y vistas del trabajo por propietario</em>
+  <em> <strong>Progreso de tareas</strong> · finalización compacta y vistas del trabajo por propietario</em>
 </p>
 
 <p align="center">
   <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Vista de estado del sistema" width="100%"></a>
   <br>
-  <em>🩺 <strong>Estado del sistema</strong> · almacenamiento, caché, errores, herramientas, modelos, subagentes y compactaciones</em>
+  <em> <strong>Estado del sistema</strong> · almacenamiento, caché, errores, herramientas, modelos, subagentes y compactaciones</em>
 </p>
 
 <p align="center">
   <a href="images/board.png"><img src="images/readme/board.png" alt="Vista de agentes del Tablero Kanban" width="100%"></a>
   <br>
-  <em>📋 <strong>Tablero Kanban · Agentes</strong> · agentes trabajando, en espera, completados y con errores, con motivos de espera claros</em>
+  <em> <strong>Tablero Kanban · Agentes</strong> · agentes trabajando, en espera, completados y con errores, con motivos de espera claros</em>
 </p>
 
 <p align="center">
   <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Vista de sesiones del Tablero Kanban" width="100%"></a>
   <br>
-  <em>🗂️ <strong>Tablero Kanban · Sesiones</strong> · sesiones activas, en espera, completadas, con errores y abandonadas</em>
+  <em> <strong>Tablero Kanban · Sesiones</strong> · sesiones activas, en espera, completadas, con errores y abandonadas</em>
 </p>
 
 <p align="center">
   <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Vista general de Sesiones" width="100%"></a>
   <br>
-  <em>📂 <strong>Sesiones</strong> · historial con búsqueda, filtros y paginación del servidor, con costos y actividad</em>
+  <em> <strong>Sesiones</strong> · historial con búsqueda, filtros y paginación del servidor, con costos y actividad</em>
 </p>
 
 <p align="center">
   <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="Vista general de agentes de sesión" width="100%"></a>
   <br>
-  <em>🤖 <strong>Agentes de sesión</strong> · totales en vivo, uso de herramientas, flujo de tokens y jerarquía de agentes</em>
+  <em> <strong>Agentes de sesión</strong> · totales en vivo, uso de herramientas, flujo de tokens y jerarquía de agentes</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="Detalles del progreso de tareas de la sesión" width="100%"></a>
   <br>
-  <em>✅ <strong>Detalles de tareas</strong> · segmentos de finalización, trabajo activo, propietarios y tareas paginadas</em>
+  <em> <strong>Detalles de tareas</strong> · segmentos de finalización, trabajo activo, propietarios y tareas paginadas</em>
 </p>
 
 <p align="center">
   <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="Vista de conversación de la sesión" width="100%"></a>
   <br>
-  <em>💬 <strong>Conversación</strong> · transcripciones renderizadas, código, llamadas a herramientas, salida de comandos y marcadores de sesión</em>
+  <em> <strong>Conversación</strong> · transcripciones renderizadas, código, llamadas a herramientas, salida de comandos y marcadores de sesión</em>
 </p>
 
 <p align="center">
   <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="Cronología de eventos de la sesión" width="100%"></a>
   <br>
-  <em>🔬 <strong>Cronología</strong> · eventos cronológicos, filtros multidimensionales y actividad emparejada de herramientas</em>
+  <em> <strong>Cronología</strong> · eventos cronológicos, filtros multidimensionales y actividad emparejada de herramientas</em>
 </p>
 
 <p align="center">
   <a href="images/feed.png"><img src="images/readme/feed.png" alt="Vista general del Feed de Actividad" width="100%"></a>
   <br>
-  <em>📰 <strong>Feed de Actividad</strong> · eventos en vivo que se pueden pausar, agrupación, filtros y saltos a sesiones</em>
+  <em> <strong>Feed de Actividad</strong> · eventos en vivo que se pueden pausar, agrupación, filtros y saltos a sesiones</em>
 </p>
 
 <p align="center">
   <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Vista general de Analíticas" width="100%"></a>
   <br>
-  <em>📊 <strong>Analíticas</strong> · tokens por modelo, frecuencia de herramientas, mapas de calor de actividad y tendencias de sesiones</em>
+  <em> <strong>Analíticas</strong> · tokens por modelo, frecuencia de herramientas, mapas de calor de actividad y tendencias de sesiones</em>
 </p>
 
 <p align="center">
   <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Vista general de analíticas de flujos" width="100%"></a>
   <br>
-  <em>🔀 <strong>Flujos</strong> · gráficos de orquestación, flujo de herramientas, colaboración, delegación y patrones</em>
+  <em> <strong>Flujos</strong> · gráficos de orquestación, flujo de herramientas, colaboración, delegación y patrones</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="Ejecuciones dinámicas de flujos" width="100%"></a>
   <br>
-  <em>🧬 <strong>Ejecuciones de flujos</strong> · estado respaldado por diarios, agentes, tokens, herramientas y duración</em>
+  <em> <strong>Ejecuciones de flujos</strong> · estado respaldado por diarios, agentes, tokens, herramientas y duración</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="Ejecución dinámica de flujo ampliada" width="100%"></a>
   <br>
-  <em>🧬 <strong>Ejecución ampliada</strong> · filtros de fase, métricas por agente, prompts y resultados completos</em>
+  <em> <strong>Ejecución ampliada</strong> · filtros de fase, métricas por agente, prompts y resultados completos</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="Ejecuciones de flujos en los detalles de la sesión" width="100%"></a>
   <br>
-  <em>🧬 <strong>Flujos de sesión</strong> · ejecuciones dinámicas vinculadas y costos de tokens incorporados</em>
+  <em> <strong>Flujos de sesión</strong> · ejecuciones dinámicas vinculadas y costos de tokens incorporados</em>
 </p>
 
 <p align="center">
   <a href="images/config.png"><img src="images/readme/config.png" alt="Exploradores de configuración de Claude Code y Codex" width="100%"></a>
   <br>
-  <em>🧰 <strong>Configuración del agente</strong> · consulta y edita de forma segura la configuración compatible de Claude Code y Codex</em>
+  <em> <strong>Configuración del agente</strong> · consulta y edita de forma segura la configuración compatible de Claude Code y Codex</em>
 </p>
 
 <p align="center">
   <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Explorador de configuración de Codex" width="100%"></a>
   <br>
-  <em>🧰 <strong>Configuración de Codex</strong> · modelos, perfiles, MCP, proyectos, skills, hooks, reglas, plugins e instrucciones</em>
+  <em> <strong>Configuración de Codex</strong> · modelos, perfiles, MCP, proyectos, skills, hooks, reglas, plugins e instrucciones</em>
 </p>
 
 <p align="center">
   <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Explorador de skills de Claude Code" width="100%"></a>
   <br>
-  <em>🧩 <strong>Skills</strong> · skills de usuario, proyecto y plugins con búsqueda y edición respaldada</em>
+  <em> <strong>Skills</strong> · skills de usuario, proyecto y plugins con búsqueda y edición respaldada</em>
 </p>
 
 <p align="center">
@@ -274,25 +274,25 @@ La interfaz oscura y adaptable cubre todo el flujo de trabajo. Cada vista previa
 <p align="center">
   <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Salida en vivo de Ejecutar agente" width="100%"></a>
   <br>
-  <em>💬 <strong>Ejecución en vivo</strong> · chat en streaming, razonamiento, comandos, cambios de archivos, herramientas y reconexión</em>
+  <em> <strong>Ejecución en vivo</strong> · chat en streaming, razonamiento, comandos, cambios de archivos, herramientas y reconexión</em>
 </p>
 
 <p align="center">
   <a href="images/settings.png"><img src="images/readme/settings.png" alt="Vista general de Configuración" width="100%"></a>
   <br>
-  <em>⚙️ <strong>Configuración</strong> · precios, hooks, notificaciones, datos, fuentes remotas y estado del sistema</em>
+  <em> <strong>Configuración</strong> · precios, hooks, notificaciones, datos, fuentes remotas y estado del sistema</em>
 </p>
 
 <p align="center">
   <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="Configuración de alertas y webhooks" width="100%"></a>
   <br>
-  <em>🔔 <strong>Alertas</strong> · reglas, cooldowns, actividad y webhooks integrados o genéricos firmados</em>
+  <em> <strong>Alertas</strong> · reglas, cooldowns, actividad y webhooks integrados o genéricos firmados</em>
 </p>
 
 <p align="center">
   <a href="images/remote.png"><img src="images/readme/remote.png" alt="Configuración de Fuentes de datos remotas" width="100%"></a>
   <br>
-  <em>🛰️ <strong>Fuentes de datos remotas</strong> · sincronización SSH por proveedor y supervisión limitada por fuente</em>
+  <em> <strong>Fuentes de datos remotas</strong> · sincronización SSH por proveedor y supervisión limitada por fuente</em>
 </p>
 
 <p align="center">
@@ -412,7 +412,7 @@ npm run build && npm start
 | Modo | URL |
 | --- | --- |
 | Desarrollo | `http://localhost:5173` |
-| Producción | `http://localhost:4820` |
+| Producción | `http://localhost:7770` |
 
 ### 5. Opcional: Ejecutar el servidor MCP local
 
@@ -475,7 +475,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-Todos los puertos del host se enlazan con loopback de forma predeterminada: Panel `4820`, MCP `8819`, Nginx `8080`, Prometheus `9090` y Grafana `3000`. Los homes de Claude y Codex se montan como solo lectura. Los volúmenes con nombre conservan SQLite y la configuración propiedad del panel. Nginx actúa como proxy de la interfaz, la API REST autenticada y WebSocket. Los hooks, las métricas y MCP quedan bloqueados en el perímetro salvo que se habiliten expresamente. El objetivo Docker opcional `agent-runtime` añade las CLI fijadas de Claude Code y Codex para flujos de Ejecutar agente nativos del contenedor.
+Todos los puertos del host se enlazan con loopback de forma predeterminada: Panel `7770`, MCP `8819`, Nginx `8080`, Prometheus `9090` y Grafana `3000`. Los homes de Claude y Codex se montan como solo lectura. Los volúmenes con nombre conservan SQLite y la configuración propiedad del panel. Nginx actúa como proxy de la interfaz, la API REST autenticada y WebSocket. Los hooks, las métricas y MCP quedan bloqueados en el perímetro salvo que se habiliten expresamente. El objetivo Docker opcional `agent-runtime` añade las CLI fijadas de Claude Code y Codex para flujos de Ejecutar agente nativos del contenedor.
 
 > [!IMPORTANT]
 > Instala los hooks de Claude Code/Codex en el host después de iniciar el contenedor. Para hooks remotos en la nube, configura `CCAM_DASHBOARD_URL=https://...` y un `CCAM_HOOK_TOKEN` independiente. Las URL de hooks que no usen loopback requieren HTTPS. Consulta [DEPLOYMENT.md](DEPLOYMENT.md).
@@ -613,8 +613,8 @@ flowchart LR
 
 | Variable de entorno | Valor predeterminado | Propósito |
 | --- | --- | --- |
-| `DASHBOARD_PORT` | `4820` | Puerto del servidor Express. |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Puerto usado por el handler de hooks. |
+| `DASHBOARD_PORT` | `7770` | Puerto del servidor Express. |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Puerto usado por el handler de hooks. |
 | `NODE_ENV` | `development` | Usa `production` para servir el cliente compilado. |
 | `DASHBOARD_UPDATE_CHECK` | enabled | Configura `0`, `false` u `off` para desactivar las comprobaciones programadas del upstream. |
 | `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` | `300000` | Intervalo de actualización, mínimo 60,000 ms. **Comprobar ahora** sigue disponible. |
@@ -655,7 +655,7 @@ Los clones Git consultan periódicamente el remoto canónico y comparan su rama 
 ---
 ## CLI de `ccam`
 
-La CLI **`ccam`** (`bin/ccam.js` → `cli/`) permite usar el panel desde cualquier terminal mediante un árbol de comandos de Commander.js con opciones heredadas, validación, sugerencias, ayuda generada y autocompletado del shell. `npm run setup` la enlaza automáticamente. La resolución del servidor comprueba `--server` / `CCAM_URL`, los puertos configurados, el registro de servidores activos y, por último, `http://127.0.0.1:4820`.
+La CLI **`ccam`** (`bin/ccam.js` → `cli/`) permite usar el panel desde cualquier terminal mediante un árbol de comandos de Commander.js con opciones heredadas, validación, sugerencias, ayuda generada y autocompletado del shell. `npm run setup` la enlaza automáticamente. La resolución del servidor comprueba `--server` / `CCAM_URL`, los puertos configurados, el registro de servidores activos y, por último, `http://127.0.0.1:7770`.
 
 ```bash
 # Server
@@ -718,7 +718,7 @@ Los grupos muestran la lista de forma predeterminada (`ccam alerts` equivale a `
 
 - **Salida:** los TTY reciben tablas, iconos de estado, gráficos, sparklines, árboles de agentes, vistas de transcripción y ayuda con color. Los pipes reciben texto plano. `--json` o `CCAM_OUTPUT=json` devuelve JSON estable, con NDJSON para `tail`, `stream` y `run follow`. Los errores usan `{"error":{"code":"…","message":"…"}}` en stderr y salen con `0` o `1`.
 - **Escrituras:** usan `y/N` interactivo o `--yes`. Las escrituras no interactivas requieren `--yes` y `clear-data` siempre requiere el flag literal.
-- **Modo sin conexión:** los comandos de solo lectura recurren a `data/dashboard.db`, muestran un banner `⚠ Offline mode` y corrigen las sesiones activas muertas mediante la vista de actividad. Los comandos exclusivos del servidor explican por qué el panel no está disponible.
+- **Modo sin conexión:** los comandos de solo lectura recurren a `data/dashboard.db`, muestran un banner ` Offline mode` y corrigen las sesiones activas muertas mediante la vista de actividad. Los comandos exclusivos del servidor explican por qué el panel no está disponible.
 - **REPL y autocompletado:** `ccam repl` añade autocompletado basado en el árbol, historial persistente, un prompt en vivo y comandos integrados `help`, `json` y `watch`, con cada línea aislada en un proceso hijo. Activa el autocompletado de zsh con `source <(ccam completion zsh)`.
 
 Si `ccam` no está en `PATH`, ejecuta `npm link` una vez desde la raíz del repositorio. Consulta [docs/CLI.md](./docs/CLI.md) para ver el contrato completo.
@@ -954,13 +954,13 @@ flowchart TD
     VALIDATE --> TYPE{"Tool type?"}
     TYPE -->|Read-only| EXEC["Execute"]
     TYPE -->|Mutation| M_FLAG{"ALLOW_MUTATIONS?"}
-    M_FLAG -->|No| DENY1["❌ Reject"]
+    M_FLAG -->|No| DENY1[" Reject"]
     M_FLAG -->|Yes| DEST{"Destructive?"}
     DEST -->|No| EXEC
     DEST -->|Yes| D_FLAG{"ALLOW_DESTRUCTIVE?"}
-    D_FLAG -->|No| DENY2["❌ Reject"]
+    D_FLAG -->|No| DENY2[" Reject"]
     D_FLAG -->|Yes| TOKEN{"confirmation_token?"}
-    TOKEN -->|Invalid| DENY3["❌ Reject"]
+    TOKEN -->|Invalid| DENY3[" Reject"]
     TOKEN -->|Valid| EXEC
     EXEC --> RESULT["Return tool result"]
 
@@ -992,7 +992,7 @@ Todos los puntos finales devuelven JSON. Las respuestas de error siguen la forma
 
 ### OpenAPI / Swagger / ReDoc
 
-Hay tres maneras de explorar la API HTTP, todas impulsadas por una sola especificación OpenAPI 3.0.3 (Puerto de servidor predeterminado `4820`):
+Hay tres maneras de explorar la API HTTP, todas impulsadas por una sola especificación OpenAPI 3.0.3 (Puerto de servidor predeterminado `7770`):
 
 | Método | Camino                            | Descripción                                                                                       |
 | ------ | ------------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -1203,19 +1203,19 @@ npm run monitoring:verify
 <p align="center">
   <a href="images/grafana.png"><img src="images/readme/grafana.png" alt="Panel CCAM Overview de Grafana" width="100%"></a>
   <br>
-  <em>📊 <strong>Grafana · CCAM Overview</strong> · vista del conjunto, almacenamiento, tasas de eventos y tokens desde <code>/api/metrics</code></em>
+  <em> <strong>Grafana · CCAM Overview</strong> · vista del conjunto, almacenamiento, tasas de eventos y tokens desde <code>/api/metrics</code></em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-console.png"><img src="images/readme/prometheus-console.png" alt="Consola CCAM de Prometheus" width="100%"></a>
   <br>
-  <em>🔥 <strong>Prometheus · CCAM Console</strong> · estado del scraping, sesiones, eventos, tokens y enlaces de consulta</em>
+  <em> <strong>Prometheus · CCAM Console</strong> · estado del scraping, sesiones, eventos, tokens y enlaces de consulta</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-query.png"><img src="images/readme/prometheus-query.png" alt="Prometheus Graph con una consulta PromQL de CCAM" width="100%"></a>
   <br>
-  <em>📈 <strong>Prometheus · Graph</strong> · ejecuta PromQL sobre las métricas recopiladas de CCAM con enlaces iniciales desde la consola</em>
+  <em> <strong>Prometheus · Graph</strong> · ejecuta PromQL sobre las métricas recopiladas de CCAM con enlaces iniciales desde la consola</em>
 </p>
 
 Consulta [docs/API.md → Metrics](./docs/API.md#metrics) para conocer todas las métricas y los detalles de scraping y autenticación.
@@ -1288,7 +1288,7 @@ flowchart LR
 - **Progreso:** las fases WebSocket limitadas de `import.progress` cubren `start`, `scan`, `extract`, `parse`, `complete` y `error`. La interfaz ofrece instrucciones de arrastrar y soltar y totales de elementos importados, enriquecidos, omitidos y con errores.
 ### WebSocket
 
-Conéctese a `ws://localhost:4820/ws` para recibir mensajes push en tiempo real:
+Conéctese a `ws://localhost:7770/ws` para recibir mensajes push en tiempo real:
 
 ```json
 {
@@ -1562,14 +1562,14 @@ El **Monitor de Agentes del Código Claude** está disponible como una extensió
   <a href="vscode-extension/vscode.png"><img src="images/readme/vscode.png" alt="Captura de la extensión de VS Code" width="100%"></a>
 </p>
 
-### 🚀 Características clave
+### Características clave
 - **Barra lateral en vivo**: Vista dedicada de la barra de actividad que muestra la salud real del agente en tiempo real (trabajando, esperando, completado, etc.).
 - **Análisis de uso**: Realice un seguimiento del total de tokens, los costos en USD en vivo y el número de eventos directamente en la barra lateral.
 - **Integración de la barra de estado**: Monitor de pulsos de visión rápida en la barra inferior que muestra las sesiones y agentes activos.
 - **Navegación profunda**: Acceso con un solo clic a vistas específicas del panel de control (Kanban, Análisis, Configuración) o sesiones recientes.
 - **Tabla integrada**: Abre el panel de control de monitoreo completo como una pestaña nativa de VS Code webview.
 
-### 📦 Instalación y configuración
+### Instalación y configuración
 1. Abre el directorio [vscode-extension](./vscode-extension).
 2. Instale la extensión del Marketplace o empaquetela usted mismo usando `vsce package`.
 3. Asegúrese de que su servidor de panel local esté funcionando (`npm run dev`).
@@ -1589,16 +1589,16 @@ La aplicación de escritorio opcional de Electron 35 empaqueta el mismo panel co
 <p align="center">
   <a href="images/macos.png"><img src="images/readme/macos.png" alt="Claude Code Monitor como aplicación de escritorio nativa" width="100%"></a>
   <br>
-  <em>🍎🪟 <strong>Aplicación de escritorio</strong> · shell nativo con icono de barra de menús o área de notificaciones (tray), Abrir al iniciar sesión y bloqueo de instancia única. El mismo panel en una ventana real del sistema operativo (se muestra macOS).</em>
+  <em> <strong>Aplicación de escritorio</strong> · shell nativo con icono de barra de menús o área de notificaciones (tray), Abrir al iniciar sesión y bloqueo de instancia única. El mismo panel en una ventana real del sistema operativo (se muestra macOS).</em>
 </p>
 
 <p align="center">
   <a href="images/windows_app.png"><img src="images/readme/windows_app.png" alt="Claude Code Monitor como aplicación nativa de Windows, con Feed de Actividad, menú de ventana y panel de Tabby" width="100%"></a>
   <br>
-  <em>🪟 El mismo panel como aplicación nativa de Windows · icono del área de notificaciones (tray), menú nativo y Abrir al iniciar sesión.</em>
+  <em> El mismo panel como aplicación nativa de Windows · icono del área de notificaciones (tray), menú nativo y Abrir al iniciar sesión.</em>
 </p>
 
-Añade comportamiento nativo de ventana, tray, menú, inicio de sesión y cierre alrededor de la misma interfaz servida en `localhost:4820`.
+Añade comportamiento nativo de ventana, tray, menú, inicio de sesión y cierre alrededor de la misma interfaz servida en `localhost:7770`.
 
 ### Cómo funciona
 
@@ -1631,8 +1631,8 @@ flowchart LR
 
 Al iniciar la aplicación:
 
-1. Elige un puerto gratuito, prefiriendo **4820**, retrocediendo a **4821-4829**, y luego un puerto alto aleatorio si todos esos están ocupados.
-2. Si un servidor de panel de control saludable ya responde a `/api/health` en `4820` (por ejemplo, has ejecutado `npm start` en un terminal), **adoptará ese servidor** en lugar de vincularlo de forma doble: sin colisión de puertos, sin competencia de SQLite. Un servidor adoptado sigue funcionando después de que cierres la aplicación.
+1. Elige un puerto gratuito, prefiriendo **7770**, retrocediendo a **7771-7779**, y luego un puerto alto aleatorio si todos esos están ocupados.
+2. Si un servidor de panel de control saludable ya responde a `/api/health` en `7770` (por ejemplo, has ejecutado `npm start` en un terminal), **adoptará ese servidor** en lugar de vincularlo de forma doble: sin colisión de puertos, sin competencia de SQLite. Un servidor adoptado sigue funcionando después de que cierres la aplicación.
 3. De lo contrario, inicia el servidor incorporado y, en el **primer arranque del servidor propiedad**, instala automáticamente los ganchos del código Claude y inicia los servicios de fondo (programador de actualizaciones, `cc-watcher`, reconciliación de ejecución huérfana). Un usuario que solo tenga un DMG, por lo tanto, recibe eventos con **cero configuración manual**: sin realizar una compra, sin `npm run install-hooks`.
 4. **(macOS)** Recupera tu **PATH de la cáscara de inicio de sesión** para que la función **Ejecutar Claude** pueda encontrar y crear la CLI `claude`: una aplicación lanzada desde Finder/Dock que de otra manera heredaría solo el PATH mínimo de launchd y perdería las CLIs en `~/.local/bin`, `/opt/homebrew/bin`, los contenedores del gestor de versiones, etc. (En Windows, el proceso ya hereda el PATH del usuario).
 5. Abre la ventana del panel de control, a menos que la aplicación se haya iniciado al iniciar sesión (en macOS a través de los elementos de inicio de sesión; en Windows a través de la entrada etiquetada `HKCU\…\Run`), en cuyo caso solo se mantiene como bandeja.
@@ -1657,7 +1657,7 @@ Al iniciar la aplicación:
 | Windows (instalador) | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | instalación por usuario, sin administrador |
 | Windows (portátil) | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | ejecutar sin instalar |
 
-Las construcciones frescas por compromiso también existen como artefactos CI (se requiere inicio de sesión, retención de 14 días): `ClaudeCodeMonitor-dmg` del trabajo `🍎 macOS Desktop (DMG)` y `ClaudeCodeMonitor-win` del trabajo `🪟 Windows Desktop (EXE)`, útiles para probar `master` antes de la próxima etiqueta de lanzamiento.
+Las construcciones frescas por compromiso también existen como artefactos CI (se requiere inicio de sesión, retención de 14 días): `ClaudeCodeMonitor-dmg` del trabajo ` macOS Desktop (DMG)` y `ClaudeCodeMonitor-win` del trabajo ` Windows Desktop (EXE)`, útiles para probar `master` antes de la próxima etiqueta de lanzamiento.
 
 **Opción B: construíselo tú mismo.** Desde la raíz del repositorio:
 
@@ -1695,19 +1695,19 @@ Ejecuta `ClaudeCodeMonitor-Setup-<ver>-x64.exe` para una instalación por usuari
 <p align="center">
   <a href="images/setup_win_wizard.png"><img src="images/readme/setup_win_wizard.png" alt="Opciones del instalador de Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Opciones de instalación</strong> · elige una instalación por usuario o para todos los usuarios</em>
+  <em> <strong>Opciones de instalación</strong> · elige una instalación por usuario o para todos los usuarios</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard2.png"><img src="images/readme/setup_win_wizard2.png" alt="Destino del instalador de Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Ubicación de instalación</strong> · confirma o cambia la carpeta de destino</em>
+  <em> <strong>Ubicación de instalación</strong> · confirma o cambia la carpeta de destino</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard3.png"><img src="images/readme/setup_win_wizard3.png" alt="Pantalla de finalización del instalador de Windows" width="100%"></a>
   <br>
-  <em>🪟 <strong>Instalación de Windows completada</strong> · termina el instalador e inicia Claude Code Monitor</em>
+  <em> <strong>Instalación de Windows completada</strong> · termina el instalador e inicia Claude Code Monitor</em>
 </p>
 
 ### Comandos de construcción
@@ -1967,7 +1967,7 @@ graph LR
 flowchart TD
     START["Claude Code fires hook"] --> STDIN["Read stdin to EOF"]
     STDIN --> PARSE{"Parse JSON?"}
-    PARSE -->|Success| POST["POST to 127.0.0.1:4820<br/>/api/hooks/event"]
+    PARSE -->|Success| POST["POST to 127.0.0.1:7770<br/>/api/hooks/event"]
     PARSE -->|Failure| WRAP["Wrap raw input as JSON"]
     WRAP --> POST
     POST --> RESP{"Response?"}
@@ -1989,7 +1989,7 @@ Apoyamos tanto los modos de despliegue de desarrollo como de producción con dif
 ```mermaid
 graph LR
     subgraph dev["Development — 2 processes"]
-        D_CMD["npm run dev"] --> D_SRV["Express :4820<br/>supervisor con antirrebote"]
+        D_CMD["npm run dev"] --> D_SRV["Express :7770<br/>supervisor con antirrebote"]
         D_CMD --> D_VITE["Vite :5173<br/>HMR"]
         D_BROWSER["Browser"] --> D_VITE
         D_VITE -->|"proxy /api + /ws"| D_SRV
@@ -1997,7 +1997,7 @@ graph LR
 
     subgraph prod["Production — 1 process"]
         P_BUILD["npm run build"] --> P_DIST["client/dist/"]
-        P_START["npm start"] --> P_SRV["Express :4820<br/>serves static + API"]
+        P_START["npm start"] --> P_SRV["Express :7770<br/>serves static + API"]
         P_BROWSER["Browser"] --> P_SRV
     end
 
@@ -2021,7 +2021,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["Operator"] -->|"interactive CLI"| M_REPL
 
-    M_STDIO --> D["Dashboard Server<br/>:4820"]
+    M_STDIO --> D["Dashboard Server<br/>:7770"]
     M_HTTP --> D
     M_REPL --> D
 
@@ -2037,7 +2037,7 @@ flowchart LR
     subgraph desktop["Desktop App (macOS & Windows) — 1 Electron process"]
         E_MAIN["Electron Main Process<br/>(Node 22 / Electron 35)"]
         E_HOST["server-host.ts<br/>require() server/index.js"]
-        E_SRV["Embedded Express :4820<br/>API · SQLite · WebSocket"]
+        E_SRV["Embedded Express :7770<br/>API · SQLite · WebSocket"]
         E_WIN["BrowserWindow<br/>built React client"]
         E_TRAY["Menu-bar (tray) icon<br/>+ native app menu"]
         E_MAIN --> E_HOST
@@ -2263,8 +2263,8 @@ agent-dashboard/
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `better-sqlite3` no se puede instalar | Esto no es fatal: el servidor vuelve automáticamente a `node:sqlite` incorporado de Node.js (Node 22+). En versiones anteriores de Node, instale Python 3 y las herramientas de compilación de C++, y luego ejecute `npm rebuild better-sqlite3` |
 | Los ganchos no están disparando | Ejecute `npm run install-hooks` y reinicie Claude Code. Verifique que los ganchos existan en `~/.claude/settings.json`                                                             |
-| El panel de control no muestra ningún dato | Asegúrese de que el servidor esté funcionando (`npm run dev`) antes de iniciar una sesión de Claude Code. Verifique `http://localhost:4820/api/health`                                     |
-| WebSocket desconectado | El cliente se reconecta automáticamente cada 2 segundos. Verifique que la puerta de enlace 4820 no esté bloqueada por un cortafuegos                                                                    |
+| El panel de control no muestra ningún dato | Asegúrese de que el servidor esté funcionando (`npm run dev`) antes de iniciar una sesión de Claude Code. Verifique `http://localhost:7770/api/health`                                     |
+| WebSocket desconectado | El cliente se reconecta automáticamente cada 2 segundos. Verifique que la puerta de enlace 7770 no esté bloqueada por un cortafuegos                                                                    |
 | Datos anticuados después del reinicio | La base de datos persiste a través de los reinicios. Ejecute `npm run seed` para obtener datos de demostración frescos, o elimine `data/dashboard.db` para restablecer                                            |
 | Las herramientas MCP no pueden conectarse | Confirmar que la API del panel de control está activa en `MCP_DASHBOARD_BASE_URL` y reconstruir/iniciar MCP (`npm run mcp:build`, `npm run mcp:start`)                                         |
 
@@ -2274,7 +2274,7 @@ agent-dashboard/
 
 Las contribuciones son bienvenidas, consulte [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) para la guía completa.
 
-Todos los colaboradores deben firmar el [Acuerdo de Licencia del Colaborador](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Esto se aplica automáticamente en cada solicitud de extracción por la Acción de GitHub `🖋️ Asistente de CLA`: la primera vez que abres una PR, un bot te pide que firmes comentando `He leído el Documento de CLA y por la presente firmo el CLA`. El control de estado del **Asistente de CLA** de la PR permanece en rojo hasta que lo hagas, y firmar una vez cubre todas las contribuciones futuras.
+Todos los colaboradores deben firmar el [Acuerdo de Licencia del Colaborador](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). Esto se aplica automáticamente en cada solicitud de extracción por la Acción de GitHub ` Asistente de CLA`: la primera vez que abres una PR, un bot te pide que firmes comentando `He leído el Documento de CLA y por la presente firmo el CLA`. El control de estado del **Asistente de CLA** de la PR permanece en rojo hasta que lo hagas, y firmar una vez cubre todas las contribuciones futuras.
 
 ---
 

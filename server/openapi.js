@@ -42,18 +42,17 @@ function createOpenApiSpec() {
       : repositoryUrl
         ? `${repositoryUrl}/issues`
         : null;
-  const defaultPort = Number.parseInt(process.env.DASHBOARD_PORT || "4820", 10) || 4820;
+  const defaultPort = Number.parseInt(process.env.DASHBOARD_PORT || "7770", 10) || 7770;
 
   const spec = {
     openapi: "3.0.3",
     info: {
-      title: "Agent Dashboard for Claude Code, Cursor, and Codex API",
+      title: "DualAgent Nexus API",
       version: pkg.version || "1.0.0",
       description:
-        "HTTP API for real-time Claude Code, Cursor, and Codex session monitoring, agent lifecycle tracking, analytics, provider-specific pricing, hooks ingestion, and workflow intelligence.",
+        "HTTP API for DualAgent Nexus: real-time Claude Code and Google Antigravity session monitoring, 3-pool agy-cascade waterfall telemetry, cross-CLI subagent lifecycle tracking, analytics, hooks ingestion, and workflow intelligence.",
       contact: {
-        name: "Son Nguyen",
-        email: "hoangson091104@gmail.com",
+        name: "Juan Manuel Arboleda Orozco",
         ...(repositoryUrl ? { url: repositoryUrl } : {}),
       },
       license: {
@@ -73,7 +72,7 @@ function createOpenApiSpec() {
         description: "Local dashboard server (default)",
       },
       {
-        url: "http://127.0.0.1:4820",
+        url: "http://127.0.0.1:7770",
         description: "Local loopback endpoint used by hook-handler",
       },
     ],

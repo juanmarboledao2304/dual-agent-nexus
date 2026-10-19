@@ -1,6 +1,6 @@
 # Agent Dashboard for Claude Code, Cursor & Codex
 
-### Real-time monitoring platform for Claude Code, Cursor & Codex agent activity 🚀
+### Real-time monitoring platform for Claude Code, Cursor & Codex agent activity
 
 A professional dashboard to track and visualize Claude Code, Cursor, and Codex agent sessions, tool usage, conversation history, cost, and subagent orchestration in real time. Built with Node.js, Express, React, and SQLite, it combines native hooks with provider-aware local transcript discovery.
 
@@ -154,115 +154,115 @@ The responsive dark interface covers the full workflow. Every preview uses a mob
 <p align="center">
   <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard overview" width="100%"></a>
   <br>
-  <em>📡 <strong>Dashboard</strong> · fleet totals, active agents, recent activity, and live health signals</em>
+  <em> <strong>Dashboard</strong> · fleet totals, active agents, recent activity, and live health signals</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="Task progress overview" width="100%"></a>
   <br>
-  <em>📋 <strong>Task Progress</strong> · compact completion and owner-aware work previews</em>
+  <em> <strong>Task Progress</strong> · compact completion and owner-aware work previews</em>
 </p>
 
 <p align="center">
   <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard health view" width="100%"></a>
   <br>
-  <em>🩺 <strong>System Health</strong> · storage, cache, errors, tools, models, subagents, and compactions</em>
+  <em> <strong>System Health</strong> · storage, cache, errors, tools, models, subagents, and compactions</em>
 </p>
 
 <p align="center">
   <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban Board agent view" width="100%"></a>
   <br>
-  <em>📋 <strong>Kanban Board · Agents</strong> · working, waiting, completed, and failed agents with clear waiting reasons</em>
+  <em> <strong>Kanban Board · Agents</strong> · working, waiting, completed, and failed agents with clear waiting reasons</em>
 </p>
 
 <p align="center">
   <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban Board session view" width="100%"></a>
   <br>
-  <em>🗂️ <strong>Kanban Board · Sessions</strong> · active, waiting, completed, error, and abandoned sessions</em>
+  <em> <strong>Kanban Board · Sessions</strong> · active, waiting, completed, error, and abandoned sessions</em>
 </p>
 
 <p align="center">
   <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Sessions overview" width="100%"></a>
   <br>
-  <em>📂 <strong>Sessions</strong> · searchable, filterable, server-paginated history with costs and activity</em>
+  <em> <strong>Sessions</strong> · searchable, filterable, server-paginated history with costs and activity</em>
 </p>
 
 <p align="center">
   <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="Session agent overview" width="100%"></a>
   <br>
-  <em>🤖 <strong>Session Agents</strong> · live totals, tool usage, token flow, and agent hierarchy</em>
+  <em> <strong>Session Agents</strong> · live totals, tool usage, token flow, and agent hierarchy</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="Session task progress details" width="100%"></a>
   <br>
-  <em>✅ <strong>Task Details</strong> · completion segments, active work, owners, and paginated tasks</em>
+  <em> <strong>Task Details</strong> · completion segments, active work, owners, and paginated tasks</em>
 </p>
 
 <p align="center">
   <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="Session conversation view" width="100%"></a>
   <br>
-  <em>💬 <strong>Conversation</strong> · rendered transcripts, code, tool calls, command output, and session markers</em>
+  <em> <strong>Conversation</strong> · rendered transcripts, code, tool calls, command output, and session markers</em>
 </p>
 
 <p align="center">
   <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="Session event timeline" width="100%"></a>
   <br>
-  <em>🔬 <strong>Timeline</strong> · chronological events, multidimensional filters, and paired tool activity</em>
+  <em> <strong>Timeline</strong> · chronological events, multidimensional filters, and paired tool activity</em>
 </p>
 
 <p align="center">
   <a href="images/feed.png"><img src="images/readme/feed.png" alt="Activity Feed overview" width="100%"></a>
   <br>
-  <em>📰 <strong>Activity Feed</strong> · pausable live events, grouping, filters, and session jumps</em>
+  <em> <strong>Activity Feed</strong> · pausable live events, grouping, filters, and session jumps</em>
 </p>
 
 <p align="center">
   <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Analytics overview" width="100%"></a>
   <br>
-  <em>📊 <strong>Analytics</strong> · model tokens, tool frequency, activity heatmaps, and session trends</em>
+  <em> <strong>Analytics</strong> · model tokens, tool frequency, activity heatmaps, and session trends</em>
 </p>
 
 <p align="center">
   <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Workflow analytics overview" width="100%"></a>
   <br>
-  <em>🔀 <strong>Workflows</strong> · orchestration graphs, tool flow, collaboration, delegation, and patterns</em>
+  <em> <strong>Workflows</strong> · orchestration graphs, tool flow, collaboration, delegation, and patterns</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="Dynamic workflow runs" width="100%"></a>
   <br>
-  <em>🧬 <strong>Workflow Runs</strong> · journal-backed status, agents, tokens, tools, and duration</em>
+  <em> <strong>Workflow Runs</strong> · journal-backed status, agents, tokens, tools, and duration</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="Expanded dynamic workflow run" width="100%"></a>
   <br>
-  <em>🧬 <strong>Expanded Run</strong> · phase filters, per-agent metrics, prompts, and complete results</em>
+  <em> <strong>Expanded Run</strong> · phase filters, per-agent metrics, prompts, and complete results</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="Workflow runs in session detail" width="100%"></a>
   <br>
-  <em>🧬 <strong>Session Workflows</strong> · linked dynamic runs and folded-in token costs</em>
+  <em> <strong>Session Workflows</strong> · linked dynamic runs and folded-in token costs</em>
 </p>
 
 <p align="center">
   <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code and Codex configuration explorers" width="100%"></a>
   <br>
-  <em>🧰 <strong>Agent Config</strong> · inspect and safely edit supported Claude Code and Codex configuration</em>
+  <em> <strong>Agent Config</strong> · inspect and safely edit supported Claude Code and Codex configuration</em>
 </p>
 
 <p align="center">
   <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex configuration explorer" width="100%"></a>
   <br>
-  <em>🧰 <strong>Codex Config</strong> · models, profiles, MCP, projects, skills, hooks, rules, plugins, and instructions</em>
+  <em> <strong>Codex Config</strong> · models, profiles, MCP, projects, skills, hooks, rules, plugins, and instructions</em>
 </p>
 
 <p align="center">
   <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code skills explorer" width="100%"></a>
   <br>
-  <em>🧩 <strong>Skills</strong> · searchable user, project, and plugin skills with backed-up editing</em>
+  <em> <strong>Skills</strong> · searchable user, project, and plugin skills with backed-up editing</em>
 </p>
 
 <p align="center">
@@ -274,25 +274,25 @@ The responsive dark interface covers the full workflow. Every preview uses a mob
 <p align="center">
   <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent live output" width="100%"></a>
   <br>
-  <em>💬 <strong>Live Run</strong> · streaming chat, reasoning, commands, file changes, tools, and reattachment</em>
+  <em> <strong>Live Run</strong> · streaming chat, reasoning, commands, file changes, tools, and reattachment</em>
 </p>
 
 <p align="center">
   <a href="images/settings.png"><img src="images/readme/settings.png" alt="Settings overview" width="100%"></a>
   <br>
-  <em>⚙️ <strong>Settings</strong> · pricing, hooks, notifications, data, remote sources, and system status</em>
+  <em> <strong>Settings</strong> · pricing, hooks, notifications, data, remote sources, and system status</em>
 </p>
 
 <p align="center">
   <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="Alert and webhook settings" width="100%"></a>
   <br>
-  <em>🔔 <strong>Alerts</strong> · rules, cooldowns, activity, and built-in or signed generic webhooks</em>
+  <em> <strong>Alerts</strong> · rules, cooldowns, activity, and built-in or signed generic webhooks</em>
 </p>
 
 <p align="center">
   <a href="images/remote.png"><img src="images/readme/remote.png" alt="Remote Data Sources settings" width="100%"></a>
   <br>
-  <em>🛰️ <strong>Remote Data Sources</strong> · provider-aware SSH sync and source-scoped monitoring</em>
+  <em> <strong>Remote Data Sources</strong> · provider-aware SSH sync and source-scoped monitoring</em>
 </p>
 
 <p align="center">
@@ -413,7 +413,7 @@ npm run build && npm start
 | Mode        | URL                     |
 | ----------- | ----------------------- |
 | Development | `http://localhost:5173` |
-| Production  | `http://localhost:4820` |
+| Production  | `http://localhost:7770` |
 
 ### 5. Optional: Run the local MCP server
 
@@ -476,7 +476,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-All host ports bind to loopback by default: dashboard `4820`, MCP `8819`, Nginx `8080`, Prometheus `9090`, and Grafana `3000`. Claude and Codex homes are mounted read-only; named volumes persist SQLite and dashboard-owned configuration. Nginx proxies the UI, authenticated REST API, and WebSocket, while hooks, metrics, and MCP stay blocked at the edge unless explicitly enabled. The optional `agent-runtime` Docker target adds pinned Claude Code and Codex CLIs for container-native Run Agent workflows.
+All host ports bind to loopback by default: dashboard `7770`, MCP `8819`, Nginx `8080`, Prometheus `9090`, and Grafana `3000`. Claude and Codex homes are mounted read-only; named volumes persist SQLite and dashboard-owned configuration. Nginx proxies the UI, authenticated REST API, and WebSocket, while hooks, metrics, and MCP stay blocked at the edge unless explicitly enabled. The optional `agent-runtime` Docker target adds pinned Claude Code and Codex CLIs for container-native Run Agent workflows.
 
 > [!IMPORTANT]
 > Install Claude Code/Codex hooks on the host after the container starts. For remote cloud hooks, set `CCAM_DASHBOARD_URL=https://...` and a separate `CCAM_HOOK_TOKEN`; non-loopback hook URLs require HTTPS. See [DEPLOYMENT.md](DEPLOYMENT.md).
@@ -614,8 +614,8 @@ flowchart LR
 
 | Environment variable | Default | Purpose |
 | --- | --- | --- |
-| `DASHBOARD_PORT` | `4820` | Express server port. |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Port used by the hook handler. |
+| `DASHBOARD_PORT` | `7770` | Express server port. |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Port used by the hook handler. |
 | `NODE_ENV` | `development` | Use `production` to serve the built client. |
 | `DASHBOARD_UPDATE_CHECK` | enabled | Set `0`, `false`, or `off` to disable scheduled upstream checks. |
 | `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` | `300000` | Update interval, minimum 60,000 ms. Manual **Check now** remains available. |
@@ -657,7 +657,7 @@ Git clones periodically fetch the canonical remote and compare its default branc
 
 ## `ccam` CLI
 
-The **`ccam`** CLI (`bin/ccam.js` → `cli/`) exposes the dashboard from any terminal through a Commander.js command tree with inherited options, validation, suggestions, generated help, and shell completion. `npm run setup` links it automatically. Server resolution checks `--server` / `CCAM_URL`, configured ports, the live-server registry, then `http://127.0.0.1:4820`.
+The **`ccam`** CLI (`bin/ccam.js` → `cli/`) exposes the dashboard from any terminal through a Commander.js command tree with inherited options, validation, suggestions, generated help, and shell completion. `npm run setup` links it automatically. Server resolution checks `--server` / `CCAM_URL`, configured ports, the live-server registry, then `http://127.0.0.1:7770`.
 
 ```bash
 # Server
@@ -720,7 +720,7 @@ Groups list by default (`ccam alerts` equals `ccam alerts list`); every command 
 
 - **Output:** TTYs get tables, status icons, charts, sparklines, agent trees, transcript views, and colored help. Pipes get plain text. `--json` or `CCAM_OUTPUT=json` returns stable JSON, with NDJSON for `tail`, `stream`, and `run follow`; errors use `{"error":{"code":"…","message":"…"}}` on stderr and exit `0` or `1`.
 - **Writes:** use interactive `y/N` or `--yes`; non-interactive writes require `--yes`, and `clear-data` always requires the literal flag.
-- **Offline mode:** read-only commands fall back to `data/dashboard.db`, display an `⚠ Offline mode` banner, and correct dead active sessions through the liveness view. Server-only commands explain why the dashboard is unavailable.
+- **Offline mode:** read-only commands fall back to `data/dashboard.db`, display an ` Offline mode` banner, and correct dead active sessions through the liveness view. Server-only commands explain why the dashboard is unavailable.
 - **REPL and completion:** `ccam repl` adds tree-driven completion, persistent history, a live prompt, and `help`, `json`, and `watch` built-ins, with each line isolated in a child process. Enable zsh completion with `source <(ccam completion zsh)`.
 
 If `ccam` is not on `PATH`, run `npm link` once from the repository root. See [docs/CLI.md](./docs/CLI.md) for the full contract.
@@ -962,13 +962,13 @@ flowchart TD
     VALIDATE --> TYPE{"Tool type?"}
     TYPE -->|Read-only| EXEC["Execute"]
     TYPE -->|Mutation| M_FLAG{"ALLOW_MUTATIONS?"}
-    M_FLAG -->|No| DENY1["❌ Reject"]
+    M_FLAG -->|No| DENY1[" Reject"]
     M_FLAG -->|Yes| DEST{"Destructive?"}
     DEST -->|No| EXEC
     DEST -->|Yes| D_FLAG{"ALLOW_DESTRUCTIVE?"}
-    D_FLAG -->|No| DENY2["❌ Reject"]
+    D_FLAG -->|No| DENY2[" Reject"]
     D_FLAG -->|Yes| TOKEN{"confirmation_token?"}
-    TOKEN -->|Invalid| DENY3["❌ Reject"]
+    TOKEN -->|Invalid| DENY3[" Reject"]
     TOKEN -->|Valid| EXEC
     EXEC --> RESULT["Return tool result"]
 
@@ -1001,7 +1001,7 @@ All endpoints return JSON. Error responses follow the shape `{ error: { code, me
 
 ### OpenAPI / Swagger / ReDoc
 
-There are three ways to explore the HTTP API, all driven by a single OpenAPI 3.0.3 spec (default server port `4820`):
+There are three ways to explore the HTTP API, all driven by a single OpenAPI 3.0.3 spec (default server port `7770`):
 
 | Method | Path                            | Description                                                                                       |
 | ------ | ------------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -1215,19 +1215,19 @@ npm run monitoring:verify
 <p align="center">
   <a href="images/grafana.png"><img src="images/readme/grafana.png" alt="Grafana CCAM Overview dashboard" width="100%"></a>
   <br>
-  <em>📊 <strong>Grafana · CCAM Overview</strong> · fleet state, database totals, breakdowns, and rates from live <code>/api/metrics</code> scrapes</em>
+  <em> <strong>Grafana · CCAM Overview</strong> · fleet state, database totals, breakdowns, and rates from live <code>/api/metrics</code> scrapes</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-console.png"><img src="images/readme/prometheus-console.png" alt="Prometheus CCAM console" width="100%"></a>
   <br>
-  <em>🔥 <strong>Prometheus · CCAM console</strong> · scrape health, sessions, events, tokens, and Graph drill-down links</em>
+  <em> <strong>Prometheus · CCAM console</strong> · scrape health, sessions, events, tokens, and Graph drill-down links</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-query.png"><img src="images/readme/prometheus-query.png" alt="Prometheus Graph with a CCAM PromQL query" width="100%"></a>
   <br>
-  <em>📈 <strong>Prometheus · Graph</strong> · run PromQL against scraped CCAM metrics with starter links from the console</em>
+  <em> <strong>Prometheus · Graph</strong> · run PromQL against scraped CCAM metrics with starter links from the console</em>
 </p>
 
 See [docs/API.md → Metrics](./docs/API.md#metrics) for metric names, authentication, and scrape configuration.
@@ -1301,7 +1301,7 @@ flowchart LR
 
 ### WebSocket
 
-Connect to `ws://localhost:4820/ws` to receive real-time push messages:
+Connect to `ws://localhost:7770/ws` to receive real-time push messages:
 
 ```json
 {
@@ -1576,14 +1576,14 @@ The **Claude Code Agent Monitor** is available as a first-class VS Code extensio
   <a href="vscode-extension/vscode.png"><img src="images/readme/vscode.png" alt="VS Code Extension Screenshot" width="100%"></a>
 </p>
 
-### 🚀 Key Features
+### Key Features
 - **Live Sidebar**: Dedicated Activity Bar view showing real-time Agent Health (Working, Waiting, Completed, etc.).
 - **Usage Analytics**: Track total tokens, live USD costs, and event counts directly in the sidebar.
 - **Status Bar Integration**: Quick-glance pulse monitor in the bottom bar showing active sessions and agents.
 - **Deep Navigation**: One-click access to specific dashboard views (Kanban, Analytics, Settings) or recent sessions.
 - **Integrated Tab**: Opens the full monitoring dashboard as a native VS Code webview tab.
 
-### 📦 Installation & Setup
+### Installation & Setup
 1. Open the [vscode-extension](./vscode-extension) directory.
 2. Install the Marketplace extension or package it yourself using `vsce package`.
 3. Ensure your local dashboard server is running (`npm run dev`).
@@ -1603,16 +1603,16 @@ The optional Electron 35 desktop app packages the same dashboard as a macOS `.dm
 <p align="center">
   <a href="images/macos.png"><img src="images/readme/macos.png" alt="Claude Code Monitor running as a native desktop app" width="100%"></a>
   <br>
-  <em>🍎🪟 <strong>Desktop App</strong> — native shell with a menu-bar / notification-area (tray) icon, Open-at-Login, and a single-instance lock. The same dashboard, in a real OS window (macOS shown).</em>
+  <em> <strong>Desktop App</strong> — native shell with a menu-bar / notification-area (tray) icon, Open-at-Login, and a single-instance lock. The same dashboard, in a real OS window (macOS shown).</em>
 </p>
 
 <p align="center">
   <a href="images/windows_app.png"><img src="images/readme/windows_app.png" alt="Claude Code Monitor running as a native Windows desktop app, showing the Activity Feed with the Windows window menu bar and Tabby panel" width="100%"></a>
   <br>
-  <em>🪟 The same dashboard as a native Windows app — notification-area (tray) icon, native window menu, and Open-at-Login.</em>
+  <em> The same dashboard as a native Windows app — notification-area (tray) icon, native window menu, and Open-at-Login.</em>
 </p>
 
-It adds native window, tray, menu, login, and shutdown behavior around the same UI served at `localhost:4820`.
+It adds native window, tray, menu, login, and shutdown behavior around the same UI served at `localhost:7770`.
 
 ### How it works
 
@@ -1645,8 +1645,8 @@ flowchart LR
 
 On launch the app:
 
-1. Picks a free port — preferring **4820**, falling back to **4821–4829**, then a random high port if all of those are taken.
-2. If a healthy dashboard server already answers `/api/health` on `4820` (e.g. you ran `npm start` in a terminal), it **adopts that server** instead of double-binding — no port collision, no SQLite contention. An adopted server keeps running after you quit the app.
+1. Picks a free port — preferring **7770**, falling back to **7771–7779**, then a random high port if all of those are taken.
+2. If a healthy dashboard server already answers `/api/health` on `7770` (e.g. you ran `npm start` in a terminal), it **adopts that server** instead of double-binding — no port collision, no SQLite contention. An adopted server keeps running after you quit the app.
 3. Otherwise it boots the embedded server, and on **first owned-server boot** auto-installs the Claude Code hooks and starts the background services (update scheduler, `cc-watcher`, orphaned-run reconciliation). A DMG-only user therefore gets events flowing with **zero manual setup** — no checkout, no `npm run install-hooks`.
 4. **(macOS)** Recovers your **login-shell `PATH`** so the **Run Claude** feature can find and spawn the `claude` CLI — a Finder/Dock-launched app otherwise inherits only launchd's minimal `PATH` and would miss CLIs in `~/.local/bin`, `/opt/homebrew/bin`, version-manager bins, etc. (On Windows the process already inherits the user `PATH`.)
 5. Opens the dashboard window — unless the app was launched at login (on macOS via Login Items; on Windows via the tagged `HKCU\…\Run` entry), in which case it stays tray-only.
@@ -1671,7 +1671,7 @@ On launch the app:
 | Windows (installer) | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | per-user install, no admin |
 | Windows (portable) | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | run without installing |
 
-Per-commit fresh builds also live as CI artifacts (sign-in required, 14-day retention): `ClaudeCodeMonitor-dmg` from the `🍎 macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the `🪟 Windows Desktop (EXE)` job — useful for testing `master` before the next release tag.
+Per-commit fresh builds also live as CI artifacts (sign-in required, 14-day retention): `ClaudeCodeMonitor-dmg` from the ` macOS Desktop (DMG)` job and `ClaudeCodeMonitor-win` from the ` Windows Desktop (EXE)` job — useful for testing `master` before the next release tag.
 
 **Option B — build it yourself.** From the repo root:
 
@@ -1709,19 +1709,19 @@ Run `ClaudeCodeMonitor-Setup-<ver>-x64.exe` for a no-admin, per-user install und
 <p align="center">
   <a href="images/setup_win_wizard.png"><img src="images/readme/setup_win_wizard.png" alt="Windows installer options" width="100%"></a>
   <br>
-  <em>🪟 <strong>Install options</strong> · choose a per-user or all-users installation</em>
+  <em> <strong>Install options</strong> · choose a per-user or all-users installation</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard2.png"><img src="images/readme/setup_win_wizard2.png" alt="Windows installer destination" width="100%"></a>
   <br>
-  <em>🪟 <strong>Install location</strong> · confirm or change the destination folder</em>
+  <em> <strong>Install location</strong> · confirm or change the destination folder</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard3.png"><img src="images/readme/setup_win_wizard3.png" alt="Windows installer completion screen" width="100%"></a>
   <br>
-  <em>🪟 <strong>Windows setup complete</strong> · finish the installer and launch Claude Code Monitor</em>
+  <em> <strong>Windows setup complete</strong> · finish the installer and launch Claude Code Monitor</em>
 </p>
 
 ### Build commands
@@ -1982,7 +1982,7 @@ graph LR
 flowchart TD
     START["Claude Code fires hook"] --> STDIN["Read stdin to EOF"]
     STDIN --> PARSE{"Parse JSON?"}
-    PARSE -->|Success| POST["POST to 127.0.0.1:4820<br/>/api/hooks/event"]
+    PARSE -->|Success| POST["POST to 127.0.0.1:7770<br/>/api/hooks/event"]
     PARSE -->|Failure| WRAP["Wrap raw input as JSON"]
     WRAP --> POST
     POST --> RESP{"Response?"}
@@ -2004,7 +2004,7 @@ We support both development and production deployment modes with different proce
 ```mermaid
 graph LR
     subgraph dev["Development — 2 processes"]
-        D_CMD["npm run dev"] --> D_SRV["Express :4820<br/>debounced watcher"]
+        D_CMD["npm run dev"] --> D_SRV["Express :7770<br/>debounced watcher"]
         D_CMD --> D_VITE["Vite :5173<br/>HMR"]
         D_BROWSER["Browser"] --> D_VITE
         D_VITE -->|"proxy /api + /ws"| D_SRV
@@ -2012,7 +2012,7 @@ graph LR
 
     subgraph prod["Production — 1 process"]
         P_BUILD["npm run build"] --> P_DIST["client/dist/"]
-        P_START["npm start"] --> P_SRV["Express :4820<br/>serves static + API"]
+        P_START["npm start"] --> P_SRV["Express :7770<br/>serves static + API"]
         P_BROWSER["Browser"] --> P_SRV
     end
 
@@ -2036,7 +2036,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["Operator"] -->|"interactive CLI"| M_REPL
 
-    M_STDIO --> D["Dashboard Server<br/>:4820"]
+    M_STDIO --> D["Dashboard Server<br/>:7770"]
     M_HTTP --> D
     M_REPL --> D
 
@@ -2052,7 +2052,7 @@ flowchart LR
     subgraph desktop["Desktop App (macOS & Windows) — 1 Electron process"]
         E_MAIN["Electron Main Process<br/>(Node 22 / Electron 35)"]
         E_HOST["server-host.ts<br/>require() server/index.js"]
-        E_SRV["Embedded Express :4820<br/>API · SQLite · WebSocket"]
+        E_SRV["Embedded Express :7770<br/>API · SQLite · WebSocket"]
         E_WIN["BrowserWindow<br/>built React client"]
         E_TRAY["Menu-bar (tray) icon<br/>+ native app menu"]
         E_MAIN --> E_HOST
@@ -2282,8 +2282,8 @@ agent-dashboard/
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `better-sqlite3` fails to install | This is non-fatal — the server falls back to Node.js built-in `node:sqlite` automatically (Node 22+). On older Node versions, install Python 3 and C++ build tools, then run `npm rebuild better-sqlite3` |
 | Hooks not firing                  | Run `npm run install-hooks` and restart Claude Code. Verify hooks exist in `~/.claude/settings.json`                                                             |
-| Dashboard shows no data           | Ensure the server is running (`npm run dev`) before starting a Claude Code session. Check `http://localhost:4820/api/health`                                     |
-| WebSocket disconnected            | The client auto-reconnects every 2 seconds. Check that port 4820 is not blocked by a firewall                                                                    |
+| Dashboard shows no data           | Ensure the server is running (`npm run dev`) before starting a Claude Code session. Check `http://localhost:7770/api/health`                                     |
+| WebSocket disconnected            | The client auto-reconnects every 2 seconds. Check that port 7770 is not blocked by a firewall                                                                    |
 | Stale data after restart          | The database persists across restarts. Run `npm run seed` for fresh demo data, or delete `data/dashboard.db` to reset                                            |
 | MCP tools fail to connect         | Confirm dashboard API is up on `MCP_DASHBOARD_BASE_URL` and rebuild/start MCP (`npm run mcp:build`, `npm run mcp:start`)                                         |
 
@@ -2293,7 +2293,7 @@ agent-dashboard/
 
 Contributions are welcome — see [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) for the full guide.
 
-All contributors must sign the [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). This is enforced automatically on every pull request by the `🖋️ CLA Assistant` GitHub Action: the first time you open a PR, a bot asks you to sign by commenting `I have read the CLA Document and I hereby sign the CLA`. The PR's **CLA Assistant** status check stays red until you do, and signing once covers all future contributions.
+All contributors must sign the [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md). This is enforced automatically on every pull request by the ` CLA Assistant` GitHub Action: the first time you open a PR, a bot asks you to sign by commenting `I have read the CLA Document and I hereby sign the CLA`. The PR's **CLA Assistant** status check stays red until you do, and signing once covers all future contributions.
 
 ---
 

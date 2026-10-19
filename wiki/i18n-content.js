@@ -222,8 +222,8 @@ window.__WIKI_CONTENT_I18N = {
     "<code>monitoring/prometheus/ccam-rules.yml</code> derives convenient rates and aggregates from raw <code>ccam_*</code> series (e.g. <code>rate(ccam_tokens_total[5m])</code>) so Grafana panels and ad-hoc Graph queries stay fast without hand-rolling every expression.":
       "<code>monitoring/prometheus/ccam-rules.yml</code> 从原始 <code>ccam_*</code> 序列派生便捷速率与聚合（如 <code>rate(ccam_tokens_total[5m])</code>），使 Grafana 面板与即席 Graph 查询无需手写每条表达式。",
     "Scrape &amp; auth guard": "抓取与认证防护",
-    "Loopback scrapes (<code>127.0.0.1:4820</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
-      "回环抓取（<code>127.0.0.1:4820</code>）开箱即用。Prometheus 在 Docker 中通过 <code>host.docker.internal</code> 访问主机时，须将该主机加入 <code>DASHBOARD_ALLOWED_HOSTS</code>，否则返回 <code>403 EBADHOST</code>。若设置了 <code>DASHBOARD_TOKEN</code>，抓取器须发送相同 bearer token。",
+    "Loopback scrapes (<code>127.0.0.1:7770</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
+      "回环抓取（<code>127.0.0.1:7770</code>）开箱即用。Prometheus 在 Docker 中通过 <code>host.docker.internal</code> 访问主机时，须将该主机加入 <code>DASHBOARD_ALLOWED_HOSTS</code>，否则返回 <code>403 EBADHOST</code>。若设置了 <code>DASHBOARD_TOKEN</code>，抓取器须发送相同 bearer token。",
     "Full reference": "完整参考",
     'Commands, Docker vs npm paths, dashboard UIDs, starter PromQL, and troubleshooting (Grafana login reset, target DOWN) are documented in <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> and the <a href="#api-reference">API reference</a> entry for <code>GET /api/metrics</code>.':
       '命令、Docker 与 npm 路径、仪表盘 UID、入门 PromQL 与故障排查（Grafana 登录重置、目标 DOWN）见 <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> 与 <a href="#api-reference">API 参考</a> 中的 <code>GET /api/metrics</code> 条目。',
@@ -272,8 +272,8 @@ window.__WIKI_CONTENT_I18N = {
     "The same operations are available from the terminal via <code>ccam remote-sources</code>, with subcommands <code>list</code>, <code>add</code>, <code>test &lt;id&gt;</code>, <code>sync [id]</code> (all sources when no id is given), and <code>rm &lt;id&gt; [--purge]</code> to remove a source and optionally drop the sessions it imported.":
       "相同的操作也可以在终端通过 <code>ccam remote-sources</code> 完成,其子命令包括 <code>list</code>、<code>add</code>、<code>test &lt;id&gt;</code>、<code>sync [id]</code>(未提供 id 时同步全部来源),以及 <code>rm &lt;id&gt; [--purge]</code>——移除某个来源并可选地删除它导入的会话。",
     "Local-only by default": "默认仅限本机访问",
-    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:4820:4820</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 4820:4820</code>) and set <code>DASHBOARD_TOKEN</code>.":
-      "镜像内置了 <code>DASHBOARD_HOST=0.0.0.0</code>（服务器默认绑定回环地址，但容器的回环地址是独立命名空间，发布的端口无法访问它）和 <code>DASHBOARD_DATA_DIR=/app/data</code>（只读的 <code>~/.claude</code> 挂载无法存放 SQLite 数据目录）。信任边界是主机端口发布：示例使用 <code>-p 127.0.0.1:4820:4820</code>，因此仪表盘仅限本机访问。若要在局域网中暴露，请发布到 <code>0.0.0.0</code>（<code>-p 4820:4820</code>）并设置 <code>DASHBOARD_TOKEN</code>。",
+    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:7770:7770</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 7770:7770</code>) and set <code>DASHBOARD_TOKEN</code>.":
+      "镜像内置了 <code>DASHBOARD_HOST=0.0.0.0</code>（服务器默认绑定回环地址，但容器的回环地址是独立命名空间，发布的端口无法访问它）和 <code>DASHBOARD_DATA_DIR=/app/data</code>（只读的 <code>~/.claude</code> 挂载无法存放 SQLite 数据目录）。信任边界是主机端口发布：示例使用 <code>-p 127.0.0.1:7770:7770</code>，因此仪表盘仅限本机访问。若要在局域网中暴露，请发布到 <code>0.0.0.0</code>（<code>-p 7770:7770</code>）并设置 <code>DASHBOARD_TOKEN</code>。",
     "The CLI also manages the server itself: <code>ccam status</code> shows an up/down indicator and <code>ccam start</code> boots a detached production server. When the server is down, read-only commands fall back to reading <code>data/dashboard.db</code> directly under an explicit offline banner, while live or server-computed commands refuse with the specific reason.":
       "CLI \u4e5f\u80fd\u7ba1\u7406\u670d\u52a1\u5668\u672c\u8eab\uff1a<code>ccam status</code> \u663e\u793a\u8fd0\u884c/\u505c\u6b62\u6307\u793a\u5668\uff0c<code>ccam start</code> \u5728\u540e\u53f0\u62c9\u8d77\u5206\u79bb\u7684\u751f\u4ea7\u670d\u52a1\u5668\u3002\u670d\u52a1\u5668\u672a\u8fd0\u884c\u65f6\uff0c\u53ea\u8bfb\u547d\u4ee4\u4f1a\u5728\u660e\u786e\u7684\u79bb\u7ebf\u6a2a\u5e45\u4e0b\u56de\u9000\u4e3a\u76f4\u63a5\u8bfb\u53d6 <code>data/dashboard.db</code>\uff0c\u800c\u5b9e\u65f6\u6216\u9700\u8981\u670d\u52a1\u5668\u8ba1\u7b97\u7684\u547d\u4ee4\u4f1a\u7ed9\u51fa\u5177\u4f53\u539f\u56e0\u5e76\u62d2\u7edd\u6267\u884c\u3002",
     "For a live monitoring session, <code>ccam repl</code> (aliases <code>shell</code> / <code>i</code>) opens an interactive shell where you type commands without the <code>ccam</code> prefix — with a CCAM welcome banner, tab-completion, persisted arrow-key history, a live server-status prompt (<code>●</code> up / <code>○</code> offline), a grouped <code>help</code> / <code>help &lt;cmd&gt;</code> menu, and a <code>watch [secs] &lt;cmd&gt;</code> built-in that auto-refreshes any command. Each entered line runs as an isolated child process, so an offline refusal or a blocking <code>tail</code> never takes the shell down.":
@@ -870,8 +870,8 @@ window.__WIKI_CONTENT_I18N = {
       "带 MCP 集成的仪表板连接器以及单行指标摘要",
     "Each plugin follows the official Claude Code plugin specification. The marketplace manifest at <code>.claude-plugin/marketplace.json</code> catalogs all ten plugins. Each plugin directory contains:":
       "每个插件都遵循官方的 Claude Code 插件规范。位于 <code>.claude-plugin/marketplace.json</code> 的市场清单编录了全部十个插件。每个插件目录包含：",
-    "All plugins query the Agent Monitor API at <code>http://localhost:4820</code>. Key capabilities they leverage:":
-      "所有插件都在 <code>http://localhost:4820</code> 查询 Agent Monitor API。它们所利用的关键能力：",
+    "All plugins query the Agent Monitor API at <code>http://localhost:7770</code>. Key capabilities they leverage:":
+      "所有插件都在 <code>http://localhost:7770</code> 查询 Agent Monitor API。它们所利用的关键能力：",
     Capability: "能力",
     Details: "详情",
     "Token tracking": "令牌跟踪",
@@ -925,15 +925,15 @@ window.__WIKI_CONTENT_I18N = {
       "<b>Event Frequency</b>：总事件数、每日会话数和子代理生成速率。",
     "Renders the full React application within a native webview tab. Supports <b>Deep Linking</b>: one-click jump from the sidebar directly to specific views like the <i>Kanban Board</i>, <i>Analytics Hub</i>, or your <i>Last 10 Sessions</i>.":
       "在原生 webview 标签页中渲染完整的 React 应用。支持 <b>Deep Linking</b>：从侧边栏一键直达特定视图，例如 <i>Kanban Board</i>、<i>Analytics Hub</i> 或你的 <i>Last 10 Sessions</i>。",
-    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>4820</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
-      "无缝扫描 localhost 上的端口 <code>5173</code>（Vite Dev）和 <code>4820</code>（Production）。当你启动或停止本地服务器时，会在侧边栏中自动切换 <b>Online</b> 和 <b>Offline</b> 模式。",
+    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>7770</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
+      "无缝扫描 localhost 上的端口 <code>5173</code>（Vite Dev）和 <code>7770</code>（Production）。当你启动或停止本地服务器时，会在侧边栏中自动切换 <b>Online</b> 和 <b>Offline</b> 模式。",
     "<strong>Zero-Config Setup</strong>": "<strong>零配置安装</strong>",
     "The extension is designed to be plug-and-play. Once your server is running, the extension automatically discovers the API and begins streaming telemetry — no manual URL configuration required.":
       "该扩展设计为即插即用。一旦服务器运行，扩展会自动发现 API 并开始流式传输遥测数据 — 无需手动配置 URL。",
     '📖 Full developer guide: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>':
       '📖 完整开发者指南：<a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>',
-    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:4820</code> lives inside this window, with native OS lifecycle on top.":
-      "仪表盘还以可选的<strong>原生桌面应用</strong>形式发布 — 一个 <code>desktop/</code> 工作区，将现有的服务器和客户端封装为 macOS <code>.app</code>（以 <code>.dmg</code> 形式分发）和 Windows <code>.exe</code>（一个 NSIS 安装程序外加一个免安装的便携版构建），你只需安装一次即可。<code>desktop/</code> 是 <code>client/</code>、<code>server/</code>、<code>mcp/</code> 和 <code>vscode-extension/</code> 的同级工作区，使用 <strong>Electron 35</strong> 构建。它<strong>在进程内嵌入 Express 服务器</strong> — 它在与 Electron 主进程相同的 Node 运行时中直接 <code>require()</code> <code>server/index.js</code>（没有子进程，没有 IPC） — 并在 <code>BrowserWindow</code> 中渲染已经构建好的 React 客户端。你在浏览器中通过 <code>localhost:4820</code> 看到的一切都存在于这个窗口内，并在其之上叠加了原生的操作系统生命周期。",
+    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:7770</code> lives inside this window, with native OS lifecycle on top.":
+      "仪表盘还以可选的<strong>原生桌面应用</strong>形式发布 — 一个 <code>desktop/</code> 工作区，将现有的服务器和客户端封装为 macOS <code>.app</code>（以 <code>.dmg</code> 形式分发）和 Windows <code>.exe</code>（一个 NSIS 安装程序外加一个免安装的便携版构建），你只需安装一次即可。<code>desktop/</code> 是 <code>client/</code>、<code>server/</code>、<code>mcp/</code> 和 <code>vscode-extension/</code> 的同级工作区，使用 <strong>Electron 35</strong> 构建。它<strong>在进程内嵌入 Express 服务器</strong> — 它在与 Electron 主进程相同的 Node 运行时中直接 <code>require()</code> <code>server/index.js</code>（没有子进程，没有 IPC） — 并在 <code>BrowserWindow</code> 中渲染已经构建好的 React 客户端。你在浏览器中通过 <code>localhost:7770</code> 看到的一切都存在于这个窗口内，并在其之上叠加了原生的操作系统生命周期。",
     '<span class="caption-icon">🍎🪟</span> <span>The full dashboard, natively on macOS <strong>and</strong> Windows — same React client, same Express server, real <code>BrowserWindow</code>. Menu-bar / notification-area (tray) icon included. Shipped as a macOS DMG and a Windows EXE (macOS shown) — see <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>':
       '<span class="caption-icon">🍎🪟</span> <span>完整的仪表盘，原生运行于 macOS <strong>和</strong> Windows — 相同的 React 客户端，相同的 Express 服务器，真正的 <code>BrowserWindow</code>。包含菜单栏 / 通知区域（托盘）图标。以 macOS DMG 和 Windows EXE 形式发布（图中所示为 macOS） — 参见 <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>。</span>',
     '<span class="caption-icon">🪟</span> <span>The same dashboard as a native <strong>Windows</strong> app — real <code>BrowserWindow</code> with the native Windows window menu, live Activity Feed, and the Tabby companion. A notification-area (system tray) icon sits beside the clock for quick access.</span>':
@@ -969,18 +969,18 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>会自动找到 <code>claude</code> CLI</strong>",
     "A Finder- or Dock-launched macOS app inherits only launchd's minimal <code>PATH</code>, not your login shell's. At startup <code>shell-path.ts</code> recovers the user's login-shell <code>PATH</code> so the <strong>Run Claude</strong> feature can locate and spawn the <code>claude</code> CLI. (On Windows the process already inherits the user <code>PATH</code>, so no recovery step is needed.) If it still cannot be found, make sure <code>claude</code> is a real executable on your <code>PATH</code> — a shell alias or function cannot be spawned — and check the <code>user PATH resolved</code> line in the desktop log (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> on macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> on Windows).":
       "由 Finder 或 Dock 启动的 macOS 应用只会继承 launchd 的最小化 <code>PATH</code>，而不是你登录 shell 的 PATH。在启动时，<code>shell-path.ts</code> 会恢复用户登录 shell 的 <code>PATH</code>，以便 <strong>Run Claude</strong> 功能能够定位并启动 <code>claude</code> CLI。（在 Windows 上，进程已经继承了用户的 <code>PATH</code>，因此无需恢复步骤。）如果仍然找不到，请确保 <code>claude</code> 是你 <code>PATH</code> 上的一个真正的可执行文件 — shell 别名或函数无法被启动 — 并检查桌面日志中的 <code>user PATH resolved</code> 行（在 macOS 上为 <code>~/Library/Logs/Claude Code Monitor/desktop.log</code>，在 Windows 上为 <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code>）。",
-    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>4820</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
-      "在启动时，Electron 主进程会选择一个空闲端口。如果已经有一个健康的仪表盘服务器在端口 <code>4820</code> 上响应 <code>/api/health</code>（例如，你在终端中运行了 <code>npm start</code>），应用会<strong>采用</strong>该服务器，而不是启动第二个 — 不会重复绑定，也不会发生 SQLite 争用。被采用的服务器不归应用所有，因此退出应用后它仍会继续运行。",
+    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>7770</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
+      "在启动时，Electron 主进程会选择一个空闲端口。如果已经有一个健康的仪表盘服务器在端口 <code>7770</code> 上响应 <code>/api/health</code>（例如，你在终端中运行了 <code>npm start</code>），应用会<strong>采用</strong>该服务器，而不是启动第二个 — 不会重复绑定，也不会发生 SQLite 争用。被采用的服务器不归应用所有，因此退出应用后它仍会继续运行。",
     Step: "步骤",
     "Port choice": "端口选择",
     Adopt: "采用",
-    "A healthy server already on <code>4820</code> is adopted as-is":
-      "已经在 <code>4820</code> 上运行的健康服务器会被原样采用",
+    "A healthy server already on <code>7770</code> is adopted as-is":
+      "已经在 <code>7770</code> 上运行的健康服务器会被原样采用",
     Preferred: "首选",
-    "<code>4820</code> when free": "空闲时使用 <code>4820</code>",
+    "<code>7770</code> when free": "空闲时使用 <code>7770</code>",
     Fallback: "回退",
-    "The first free port in <code>4821</code>–<code>4829</code>":
-      "<code>4821</code>–<code>4829</code> 中的第一个空闲端口",
+    "The first free port in <code>7771</code>–<code>7779</code>":
+      "<code>7771</code>–<code>7779</code> 中的第一个空闲端口",
     "Last resort": "最后手段",
     "A random high port when all of the above are taken":
       "当上述端口都被占用时，使用一个随机的高位端口",
@@ -1214,8 +1214,8 @@ window.__WIKI_CONTENT_I18N = {
     "1 (Express only)": "1 个（仅 Express）",
     "Client URL": "客户端 URL",
     "API proxy": "API 代理",
-    "Vite proxies <code>/api</code> + <code>/ws</code> to :4820":
-      "Vite 将 <code>/api</code> + <code>/ws</code> 代理到 :4820",
+    "Vite proxies <code>/api</code> + <code>/ws</code> to :7770":
+      "Vite 将 <code>/api</code> + <code>/ws</code> 代理到 :7770",
     "Same origin, no proxy": "同源，无代理",
     "File watching": "文件监听",
     "Debounced server watcher + Vite HMR": "防抖服务端监视器 + Vite HMR",
@@ -1227,8 +1227,8 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>第三种运行方式：桌面应用（macOS &amp; Windows）</strong>",
     'Beyond development and standalone production, the dashboard also ships as a native desktop app — a macOS <code>.app</code> and a Windows <code>.exe</code> — that embeds the same production server in-process, no terminal required. See the <a href="#desktop-app">Desktop App (macOS &amp; Windows)</a> section for download, build, and install instructions.':
       '除了开发模式和独立的生产模式之外，仪表盘还以原生桌面应用的形式发布——一个 macOS 的 <code>.app</code> 和一个 Windows 的 <code>.exe</code>——它在进程内嵌入了相同的生产服务器，无需终端。有关下载、构建和安装说明，请参阅<a href="#desktop-app">桌面应用（macOS &amp; Windows）</a>章节。',
-    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>4820</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
-      "生产镜像兼容 OCI，可同时配合 Docker 和 Podman 使用。服务器监听 <code>4820</code>，从只读挂载点读取旧版 Claude 历史记录，并将 SQLite 数据持久化到 <code>/app/data</code> 下。",
+    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>7770</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
+      "生产镜像兼容 OCI，可同时配合 Docker 和 Podman 使用。服务器监听 <code>7770</code>，从只读挂载点读取旧版 Claude 历史记录，并将 SQLite 数据持久化到 <code>/app/data</code> 下。",
     "Container image build and runtime mounts": "容器镜像构建与运行时挂载",
     Mount: "挂载",
     "Read historical Claude session files for import without modifying them":
@@ -1236,8 +1236,8 @@ window.__WIKI_CONTENT_I18N = {
     "Persist the SQLite database across rebuilds and container restarts":
       "在重新构建和容器重启之间持久化 SQLite 数据库",
     "<strong>Hooks still run on the host</strong>": "<strong>Hooks 仍在主机上运行</strong>",
-    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:4820</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
-      "Claude Code 从主机上触发 hooks，而不是从容器内部触发。在容器于 <code>http://localhost:4820</code> 上运行正常后，请在主机上运行 <code>npm run install-hooks</code>，以便 hook 事件回传到容器化的服务器。",
+    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:7770</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
+      "Claude Code 从主机上触发 hooks，而不是从容器内部触发。在容器于 <code>http://localhost:7770</code> 上运行正常后，请在主机上运行 <code>npm run install-hooks</code>，以便 hook 事件回传到容器化的服务器。",
     "A multi-stage <code>Dockerfile</code> and <code>docker-compose.yml</code> are included. Both <strong>Docker</strong> and <strong>Podman</strong> are fully supported — the image is OCI-compliant.":
       "项目包含一个多阶段的 <code>Dockerfile</code> 和 <code>docker-compose.yml</code>。<strong>Docker</strong> 和 <strong>Podman</strong> 均获得完全支持——该镜像符合 OCI 规范。",
     "Read-only access to legacy session history for automatic import on startup":
@@ -1253,8 +1253,8 @@ window.__WIKI_CONTENT_I18N = {
     "Clean digest-pinned <code>node:24.19.0-alpine3.24</code> with only <code>node_modules</code>, server code, and <code>client/dist</code>":
       "干净的固定摘要 <code>node:24.19.0-alpine3.24</code>，仅包含 <code>node_modules</code>、服务器代码和 <code>client/dist</code>",
     "<strong>Hook note</strong>": "<strong>Hook 说明</strong>",
-    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:4820</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
-      "Claude Code 的 hooks 在主机上运行，而不是在容器内部运行。容器化的服务器通过 HTTP 在 <code>localhost:4820</code> 上接收 hook 事件。启动容器后，请在主机上运行 <code>npm run install-hooks</code>。",
+    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:7770</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
+      "Claude Code 的 hooks 在主机上运行，而不是在容器内部运行。容器化的服务器通过 HTTP 在 <code>localhost:7770</code> 上接收 hook 事件。启动容器后，请在主机上运行 <code>npm run install-hooks</code>。",
     Metric: "指标",
     "Server startup": "服务器启动",
     "SQLite opens instantly; schema migration is idempotent": "SQLite 立即打开；架构迁移是幂等的",
@@ -1305,9 +1305,9 @@ window.__WIKI_CONTENT_I18N = {
     "Events Today shows 0": "Events Today 显示 0",
     "Ensure you are on the latest version (timezone bug was fixed). Restart the server.":
       "请确保你使用的是最新版本（时区错误已修复）。然后重启服务器。",
-    "Port 4820 already in use": "端口 4820 已被占用",
-    "Run <code>DASHBOARD_PORT=4821 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
-      "运行 <code>DASHBOARD_PORT=4821 npm run dev</code>，更新 <code>client/vite.config.ts</code> 中的 Vite 代理，然后重新运行 <code>npm run install-hooks</code>。",
+    "Port 7770 already in use": "端口 7770 已被占用",
+    "Run <code>DASHBOARD_PORT=7771 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
+      "运行 <code>DASHBOARD_PORT=7771 npm run dev</code>，更新 <code>client/vite.config.ts</code> 中的 Vite 代理，然后重新运行 <code>npm run install-hooks</code>。",
     "Stale seed data shown": "显示了过期的种子数据",
     "Run <code>npm run clear-data</code> to wipe all rows, then restart.":
       "运行 <code>npm run clear-data</code> 清除所有行，然后重启。",
@@ -1318,8 +1318,8 @@ window.__WIKI_CONTENT_I18N = {
     "Neither <code>better-sqlite3</code> nor <code>node:sqlite</code> could load. Upgrade to Node.js 22+ (recommended), or install Python 3 + C++ build tools and run <code>npm rebuild better-sqlite3</code>.":
       "<code>better-sqlite3</code> 和 <code>node:sqlite</code> 都无法加载。请升级到 Node.js 22+（推荐），或安装 Python 3 + C++ 构建工具并运行 <code>npm rebuild better-sqlite3</code>。",
     "Docker container runs but no sessions appear": "Docker 容器在运行但没有出现会话",
-    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:4820</code>.":
-      "Hook 在宿主机上运行，而不是在容器内。容器启动后，请在宿主机上运行 <code>npm run install-hooks</code>。确认 <code>~/.claude/settings.json</code> 中的 Hook 指向 <code>localhost:4820</code>。",
+    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:7770</code>.":
+      "Hook 在宿主机上运行，而不是在容器内。容器启动后，请在宿主机上运行 <code>npm run install-hooks</code>。确认 <code>~/.claude/settings.json</code> 中的 Hook 指向 <code>localhost:7770</code>。",
     Technology: "技术",
     "Why This Over Alternatives": "为何选择它而非替代方案",
     "Zero-config, embedded, no server process. WAL mode gives concurrent reads. Synchronous API is simpler than async for this use case. <code>better-sqlite3</code> is preferred when prebuilds are available; falls back to Node.js built-in <code>node:sqlite</code> on Node 22+ when the native module cannot be compiled.":
@@ -1720,8 +1720,8 @@ window.__WIKI_CONTENT_I18N = {
     "Prometheus 3.x dropped the legacy console template libraries, so CCAM ships a <strong>static HTML console</strong> at <code>monitoring/prometheus/consoles/index.html</code> that fetches <code>/api/v1/query</code> directly — live cards, session tables, and Graph links without Go-template errors on <code>/consoles/index.html</code>.":
       "Prometheus 3.x bỏ thư viện template console cũ, nên CCAM cung cấp <strong>console HTML tĩnh</strong> tại <code>monitoring/prometheus/consoles/index.html</code> gọi <code>/api/v1/query</code> trực tiếp — thẻ trực tiếp, bảng phiên và liên kết Graph, không lỗi Go-template trên <code>/consoles/index.html</code>.",
     "Scrape &amp; auth guard": "Bảo vệ scrape &amp; xác thực",
-    "Loopback scrapes (<code>127.0.0.1:4820</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
-      "Scrape loopback (<code>127.0.0.1:4820</code>) hoạt động ngay. Khi Prometheus chạy trong Docker và truy cập host qua <code>host.docker.internal</code>, thêm host đó vào <code>DASHBOARD_ALLOWED_HOSTS</code> nếu không scrape trả <code>403 EBADHOST</code>. Nếu đặt <code>DASHBOARD_TOKEN</code>, scraper phải gửi cùng bearer token.",
+    "Loopback scrapes (<code>127.0.0.1:7770</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
+      "Scrape loopback (<code>127.0.0.1:7770</code>) hoạt động ngay. Khi Prometheus chạy trong Docker và truy cập host qua <code>host.docker.internal</code>, thêm host đó vào <code>DASHBOARD_ALLOWED_HOSTS</code> nếu không scrape trả <code>403 EBADHOST</code>. Nếu đặt <code>DASHBOARD_TOKEN</code>, scraper phải gửi cùng bearer token.",
     "Full reference": "Tham chiếu đầy đủ",
     'Commands, Docker vs npm paths, dashboard UIDs, starter PromQL, and troubleshooting (Grafana login reset, target DOWN) are documented in <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> and the <a href="#api-reference">API reference</a> entry for <code>GET /api/metrics</code>.':
       'Lệnh, đường Docker vs npm, UID dashboard, PromQL khởi đầu và xử lý sự cố (đặt lại đăng nhập Grafana, target DOWN) có trong <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> và mục <a href="#api-reference">API reference</a> cho <code>GET /api/metrics</code>.',
@@ -1774,8 +1774,8 @@ window.__WIKI_CONTENT_I18N = {
     "The same operations are available from the terminal via <code>ccam remote-sources</code>, with subcommands <code>list</code>, <code>add</code>, <code>test &lt;id&gt;</code>, <code>sync [id]</code> (all sources when no id is given), and <code>rm &lt;id&gt; [--purge]</code> to remove a source and optionally drop the sessions it imported.":
       "Các thao tác tương tự cũng có sẵn từ terminal qua <code>ccam remote-sources</code>, với các lệnh con <code>list</code>, <code>add</code>, <code>test &lt;id&gt;</code>, <code>sync [id]</code> (tất cả nguồn khi không cung cấp id), và <code>rm &lt;id&gt; [--purge]</code> để gỡ bỏ một nguồn và tùy chọn xóa các phiên mà nó đã nhập.",
     "Local-only by default": "Mặc định chỉ truy cập cục bộ",
-    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:4820:4820</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 4820:4820</code>) and set <code>DASHBOARD_TOKEN</code>.":
-      "Image đã tích hợp sẵn <code>DASHBOARD_HOST=0.0.0.0</code> (server mặc định bind loopback, nhưng loopback của container là một namespace riêng mà cổng được publish không thể truy cập) và <code>DASHBOARD_DATA_DIR=/app/data</code> (mount chỉ-đọc <code>~/.claude</code> không thể chứa thư mục dữ liệu SQLite). Ranh giới tin cậy là việc publish cổng trên host: các ví dụ dùng <code>-p 127.0.0.1:4820:4820</code>, nên bảng điều khiển chỉ truy cập được cục bộ. Để expose ra mạng LAN, hãy publish trên <code>0.0.0.0</code> (<code>-p 4820:4820</code>) và đặt <code>DASHBOARD_TOKEN</code>.",
+    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:7770:7770</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 7770:7770</code>) and set <code>DASHBOARD_TOKEN</code>.":
+      "Image đã tích hợp sẵn <code>DASHBOARD_HOST=0.0.0.0</code> (server mặc định bind loopback, nhưng loopback của container là một namespace riêng mà cổng được publish không thể truy cập) và <code>DASHBOARD_DATA_DIR=/app/data</code> (mount chỉ-đọc <code>~/.claude</code> không thể chứa thư mục dữ liệu SQLite). Ranh giới tin cậy là việc publish cổng trên host: các ví dụ dùng <code>-p 127.0.0.1:7770:7770</code>, nên bảng điều khiển chỉ truy cập được cục bộ. Để expose ra mạng LAN, hãy publish trên <code>0.0.0.0</code> (<code>-p 7770:7770</code>) và đặt <code>DASHBOARD_TOKEN</code>.",
     "The CLI also manages the server itself: <code>ccam status</code> shows an up/down indicator and <code>ccam start</code> boots a detached production server. When the server is down, read-only commands fall back to reading <code>data/dashboard.db</code> directly under an explicit offline banner, while live or server-computed commands refuse with the specific reason.":
       "CLI c\u0169ng qu\u1ea3n l\u00fd ch\u00ednh server: <code>ccam status</code> hi\u1ec3n th\u1ecb ch\u1ec9 b\u00e1o \u0111ang ch\u1ea1y/d\u1eebng v\u00e0 <code>ccam start</code> kh\u1edfi \u0111\u1ed9ng server production t\u00e1ch r\u1eddi ch\u1ea1y n\u1ec1n. Khi server kh\u00f4ng ch\u1ea1y, c\u00e1c l\u1ec7nh ch\u1ec9-\u0111\u1ecdc t\u1ef1 chuy\u1ec3n sang \u0111\u1ecdc tr\u1ef1c ti\u1ebfp <code>data/dashboard.db</code> d\u01b0\u1edbi banner ngo\u1ea1i tuy\u1ebfn r\u00f5 r\u00e0ng, c\u00f2n c\u00e1c l\u1ec7nh tr\u1ef1c ti\u1ebfp ho\u1eb7c c\u1ea7n t\u00ednh to\u00e1n ph\u00eda server s\u1ebd t\u1eeb ch\u1ed1i k\u00e8m l\u00fd do c\u1ee5 th\u1ec3.",
     "For a live monitoring session, <code>ccam repl</code> (aliases <code>shell</code> / <code>i</code>) opens an interactive shell where you type commands without the <code>ccam</code> prefix — with a CCAM welcome banner, tab-completion, persisted arrow-key history, a live server-status prompt (<code>●</code> up / <code>○</code> offline), a grouped <code>help</code> / <code>help &lt;cmd&gt;</code> menu, and a <code>watch [secs] &lt;cmd&gt;</code> built-in that auto-refreshes any command. Each entered line runs as an isolated child process, so an offline refusal or a blocking <code>tail</code> never takes the shell down.":
@@ -2379,8 +2379,8 @@ window.__WIKI_CONTENT_I18N = {
       "Bộ kết nối bảng điều khiển với tích hợp MCP và tóm tắt chỉ số một dòng",
     "Each plugin follows the official Claude Code plugin specification. The marketplace manifest at <code>.claude-plugin/marketplace.json</code> catalogs all ten plugins. Each plugin directory contains:":
       "Mỗi plugin tuân theo đặc tả plugin chính thức của Claude Code. Bản kê chợ tại <code>.claude-plugin/marketplace.json</code> liệt kê tất cả mười plugin. Mỗi thư mục plugin chứa:",
-    "All plugins query the Agent Monitor API at <code>http://localhost:4820</code>. Key capabilities they leverage:":
-      "Tất cả plugin truy vấn API Agent Monitor tại <code>http://localhost:4820</code>. Các khả năng chính mà chúng tận dụng:",
+    "All plugins query the Agent Monitor API at <code>http://localhost:7770</code>. Key capabilities they leverage:":
+      "Tất cả plugin truy vấn API Agent Monitor tại <code>http://localhost:7770</code>. Các khả năng chính mà chúng tận dụng:",
     Capability: "Khả năng",
     Details: "Chi tiết",
     "Token tracking": "Theo dõi token",
@@ -2435,15 +2435,15 @@ window.__WIKI_CONTENT_I18N = {
       "<b>Event Frequency</b>: Tổng số sự kiện, các phiên hằng ngày và tốc độ sinh ra subagent.",
     "Renders the full React application within a native webview tab. Supports <b>Deep Linking</b>: one-click jump from the sidebar directly to specific views like the <i>Kanban Board</i>, <i>Analytics Hub</i>, or your <i>Last 10 Sessions</i>.":
       "Kết xuất toàn bộ ứng dụng React trong một tab webview gốc. Hỗ trợ <b>Deep Linking</b>: nhảy một cú nhấp từ thanh bên trực tiếp đến các chế độ xem cụ thể như <i>Kanban Board</i>, <i>Analytics Hub</i>, hoặc <i>Last 10 Sessions</i> của bạn.",
-    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>4820</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
-      "Quét liền mạch các cổng <code>5173</code> (Vite Dev) và <code>4820</code> (Production) trên localhost. Tự động chuyển đổi giữa chế độ <b>Online</b> và <b>Offline</b> trong thanh bên khi bạn khởi động hoặc dừng máy chủ cục bộ của mình.",
+    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>7770</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
+      "Quét liền mạch các cổng <code>5173</code> (Vite Dev) và <code>7770</code> (Production) trên localhost. Tự động chuyển đổi giữa chế độ <b>Online</b> và <b>Offline</b> trong thanh bên khi bạn khởi động hoặc dừng máy chủ cục bộ của mình.",
     "<strong>Zero-Config Setup</strong>": "<strong>Thiết lập không cần cấu hình</strong>",
     "The extension is designed to be plug-and-play. Once your server is running, the extension automatically discovers the API and begins streaming telemetry — no manual URL configuration required.":
       "Tiện ích mở rộng được thiết kế để cắm-và-chạy. Khi máy chủ của bạn đang chạy, tiện ích sẽ tự động phát hiện API và bắt đầu truyền phát dữ liệu đo từ xa — không cần cấu hình URL thủ công.",
     '📖 Full developer guide: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>':
       '📖 Hướng dẫn đầy đủ cho nhà phát triển: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>',
-    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:4820</code> lives inside this window, with native OS lifecycle on top.":
-      "Bảng điều khiển còn được phát hành dưới dạng một <strong>ứng dụng máy tính để bàn gốc</strong> tùy chọn — một không gian làm việc <code>desktop/</code> đóng gói máy chủ và máy khách hiện có thành một <code>.app</code> của macOS (phân phối dưới dạng <code>.dmg</code>) và một <code>.exe</code> của Windows (một trình cài đặt NSIS cộng với một bản dựng di động không cần cài đặt) mà bạn chỉ cần cài đặt một lần rồi quên đi. <code>desktop/</code> là một không gian làm việc ngang hàng với <code>client/</code>, <code>server/</code>, <code>mcp/</code> và <code>vscode-extension/</code>, được xây dựng bằng <strong>Electron 35</strong>. Nó <strong>nhúng máy chủ Express trong tiến trình</strong> — nó <code>require()</code> trực tiếp <code>server/index.js</code> trong cùng một runtime Node với tiến trình chính của Electron (không có tiến trình con, không có IPC) — và kết xuất máy khách React đã được xây dựng sẵn trong một <code>BrowserWindow</code>. Mọi thứ bạn thấy trong trình duyệt tại <code>localhost:4820</code> đều nằm bên trong cửa sổ này, với vòng đời gốc của hệ điều hành ở bên trên.",
+    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:7770</code> lives inside this window, with native OS lifecycle on top.":
+      "Bảng điều khiển còn được phát hành dưới dạng một <strong>ứng dụng máy tính để bàn gốc</strong> tùy chọn — một không gian làm việc <code>desktop/</code> đóng gói máy chủ và máy khách hiện có thành một <code>.app</code> của macOS (phân phối dưới dạng <code>.dmg</code>) và một <code>.exe</code> của Windows (một trình cài đặt NSIS cộng với một bản dựng di động không cần cài đặt) mà bạn chỉ cần cài đặt một lần rồi quên đi. <code>desktop/</code> là một không gian làm việc ngang hàng với <code>client/</code>, <code>server/</code>, <code>mcp/</code> và <code>vscode-extension/</code>, được xây dựng bằng <strong>Electron 35</strong>. Nó <strong>nhúng máy chủ Express trong tiến trình</strong> — nó <code>require()</code> trực tiếp <code>server/index.js</code> trong cùng một runtime Node với tiến trình chính của Electron (không có tiến trình con, không có IPC) — và kết xuất máy khách React đã được xây dựng sẵn trong một <code>BrowserWindow</code>. Mọi thứ bạn thấy trong trình duyệt tại <code>localhost:7770</code> đều nằm bên trong cửa sổ này, với vòng đời gốc của hệ điều hành ở bên trên.",
     '<span class="caption-icon">🍎🪟</span> <span>The full dashboard, natively on macOS <strong>and</strong> Windows — same React client, same Express server, real <code>BrowserWindow</code>. Menu-bar / notification-area (tray) icon included. Shipped as a macOS DMG and a Windows EXE (macOS shown) — see <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>':
       '<span class="caption-icon">🍎🪟</span> <span>Bảng điều khiển đầy đủ, chạy gốc trên macOS <strong>và</strong> Windows — cùng một máy khách React, cùng một máy chủ Express, một <code>BrowserWindow</code> thực sự. Bao gồm biểu tượng thanh menu / khu vực thông báo (khay). Được phát hành dưới dạng DMG cho macOS và EXE cho Windows (hình minh họa là macOS) — xem <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>',
     '<span class="caption-icon">🪟</span> <span>The same dashboard as a native <strong>Windows</strong> app — real <code>BrowserWindow</code> with the native Windows window menu, live Activity Feed, and the Tabby companion. A notification-area (system tray) icon sits beside the clock for quick access.</span>':
@@ -2479,18 +2479,18 @@ window.__WIKI_CONTENT_I18N = {
       "<strong><code>claude</code> CLI được tìm thấy tự động</strong>",
     "A Finder- or Dock-launched macOS app inherits only launchd's minimal <code>PATH</code>, not your login shell's. At startup <code>shell-path.ts</code> recovers the user's login-shell <code>PATH</code> so the <strong>Run Claude</strong> feature can locate and spawn the <code>claude</code> CLI. (On Windows the process already inherits the user <code>PATH</code>, so no recovery step is needed.) If it still cannot be found, make sure <code>claude</code> is a real executable on your <code>PATH</code> — a shell alias or function cannot be spawned — and check the <code>user PATH resolved</code> line in the desktop log (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> on macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> on Windows).":
       "Một ứng dụng macOS được khởi chạy từ Finder hoặc Dock chỉ thừa hưởng <code>PATH</code> tối thiểu của launchd, chứ không phải của login shell của bạn. Khi khởi động, <code>shell-path.ts</code> khôi phục <code>PATH</code> của login shell người dùng để tính năng <strong>Run Claude</strong> có thể định vị và khởi chạy <code>claude</code> CLI. (Trên Windows, tiến trình đã thừa hưởng <code>PATH</code> của người dùng, nên không cần bước khôi phục nào.) Nếu vẫn không tìm thấy, hãy đảm bảo <code>claude</code> là một tập tin thực thi thực sự trên <code>PATH</code> của bạn — một bí danh hoặc hàm của shell không thể được khởi chạy — và kiểm tra dòng <code>user PATH resolved</code> trong nhật ký máy tính để bàn (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> trên macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> trên Windows).",
-    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>4820</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
-      "Khi khởi chạy, tiến trình chính của Electron chọn một cổng trống. Nếu đã có một máy chủ bảng điều khiển khỏe mạnh trả lời <code>/api/health</code> trên cổng <code>4820</code> (ví dụ, bạn đã chạy <code>npm start</code> trong một terminal), ứng dụng <strong>tiếp nhận</strong> máy chủ đó thay vì khởi động một máy chủ thứ hai — không ràng buộc trùng, không tranh chấp SQLite. Một máy chủ được tiếp nhận không thuộc sở hữu của ứng dụng, vì vậy việc thoát sẽ để nó tiếp tục chạy.",
+    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>7770</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
+      "Khi khởi chạy, tiến trình chính của Electron chọn một cổng trống. Nếu đã có một máy chủ bảng điều khiển khỏe mạnh trả lời <code>/api/health</code> trên cổng <code>7770</code> (ví dụ, bạn đã chạy <code>npm start</code> trong một terminal), ứng dụng <strong>tiếp nhận</strong> máy chủ đó thay vì khởi động một máy chủ thứ hai — không ràng buộc trùng, không tranh chấp SQLite. Một máy chủ được tiếp nhận không thuộc sở hữu của ứng dụng, vì vậy việc thoát sẽ để nó tiếp tục chạy.",
     Step: "Bước",
     "Port choice": "Lựa chọn cổng",
     Adopt: "Tiếp nhận",
-    "A healthy server already on <code>4820</code> is adopted as-is":
-      "Một máy chủ khỏe mạnh đã có sẵn trên <code>4820</code> được tiếp nhận nguyên trạng",
+    "A healthy server already on <code>7770</code> is adopted as-is":
+      "Một máy chủ khỏe mạnh đã có sẵn trên <code>7770</code> được tiếp nhận nguyên trạng",
     Preferred: "Ưu tiên",
-    "<code>4820</code> when free": "<code>4820</code> khi trống",
+    "<code>7770</code> when free": "<code>7770</code> khi trống",
     Fallback: "Dự phòng",
-    "The first free port in <code>4821</code>–<code>4829</code>":
-      "Cổng trống đầu tiên trong khoảng <code>4821</code>–<code>4829</code>",
+    "The first free port in <code>7771</code>–<code>7779</code>":
+      "Cổng trống đầu tiên trong khoảng <code>7771</code>–<code>7779</code>",
     "Last resort": "Phương án cuối cùng",
     "A random high port when all of the above are taken":
       "Một cổng cao ngẫu nhiên khi tất cả các cổng trên đều bị chiếm",
@@ -2728,8 +2728,8 @@ window.__WIKI_CONTENT_I18N = {
     "1 (Express only)": "1 (chỉ Express)",
     "Client URL": "URL máy khách",
     "API proxy": "Proxy API",
-    "Vite proxies <code>/api</code> + <code>/ws</code> to :4820":
-      "Vite chuyển tiếp <code>/api</code> + <code>/ws</code> tới :4820",
+    "Vite proxies <code>/api</code> + <code>/ws</code> to :7770":
+      "Vite chuyển tiếp <code>/api</code> + <code>/ws</code> tới :7770",
     "Same origin, no proxy": "Cùng nguồn gốc, không có proxy",
     "File watching": "Theo dõi tệp",
     "Debounced server watcher + Vite HMR": "Trình theo dõi máy chủ chống dội + Vite HMR",
@@ -2741,8 +2741,8 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>Một cách thứ ba để chạy: Ứng dụng máy tính để bàn (macOS &amp; Windows)</strong>",
     'Beyond development and standalone production, the dashboard also ships as a native desktop app — a macOS <code>.app</code> and a Windows <code>.exe</code> — that embeds the same production server in-process, no terminal required. See the <a href="#desktop-app">Desktop App (macOS &amp; Windows)</a> section for download, build, and install instructions.':
       'Ngoài chế độ phát triển và sản xuất độc lập, bảng điều khiển còn được phát hành dưới dạng ứng dụng máy tính để bàn gốc — một <code>.app</code> cho macOS và một <code>.exe</code> cho Windows — nhúng cùng một máy chủ sản xuất ngay trong tiến trình, không cần terminal. Xem phần <a href="#desktop-app">Ứng dụng máy tính để bàn (macOS &amp; Windows)</a> để biết hướng dẫn tải xuống, xây dựng và cài đặt.',
-    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>4820</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
-      "Image sản xuất tương thích OCI và hoạt động với cả Docker lẫn Podman. Máy chủ lắng nghe trên <code>4820</code>, đọc lịch sử Claude cũ từ một điểm gắn kết chỉ đọc, và lưu dữ liệu SQLite vào <code>/app/data</code>.",
+    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>7770</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
+      "Image sản xuất tương thích OCI và hoạt động với cả Docker lẫn Podman. Máy chủ lắng nghe trên <code>7770</code>, đọc lịch sử Claude cũ từ một điểm gắn kết chỉ đọc, và lưu dữ liệu SQLite vào <code>/app/data</code>.",
     "Container image build and runtime mounts":
       "Quá trình xây dựng image container và các điểm gắn kết khi chạy",
     Mount: "Điểm gắn kết",
@@ -2751,8 +2751,8 @@ window.__WIKI_CONTENT_I18N = {
     "Persist the SQLite database across rebuilds and container restarts":
       "Lưu giữ cơ sở dữ liệu SQLite qua các lần xây dựng lại và khởi động lại container",
     "<strong>Hooks still run on the host</strong>": "<strong>Hooks vẫn chạy trên máy chủ</strong>",
-    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:4820</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
-      "Claude Code kích hoạt các hook từ máy chủ, không phải từ bên trong container. Sau khi container hoạt động bình thường trên <code>http://localhost:4820</code>, hãy chạy <code>npm run install-hooks</code> trên máy chủ để các sự kiện hook gửi trở lại máy chủ được container hóa.",
+    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:7770</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
+      "Claude Code kích hoạt các hook từ máy chủ, không phải từ bên trong container. Sau khi container hoạt động bình thường trên <code>http://localhost:7770</code>, hãy chạy <code>npm run install-hooks</code> trên máy chủ để các sự kiện hook gửi trở lại máy chủ được container hóa.",
     "A multi-stage <code>Dockerfile</code> and <code>docker-compose.yml</code> are included. Both <strong>Docker</strong> and <strong>Podman</strong> are fully supported — the image is OCI-compliant.":
       "Dự án bao gồm một <code>Dockerfile</code> nhiều giai đoạn và <code>docker-compose.yml</code>. Cả <strong>Docker</strong> lẫn <strong>Podman</strong> đều được hỗ trợ đầy đủ — image tuân thủ OCI.",
     "Read-only access to legacy session history for automatic import on startup":
@@ -2769,8 +2769,8 @@ window.__WIKI_CONTENT_I18N = {
     "Clean digest-pinned <code>node:24.19.0-alpine3.24</code> with only <code>node_modules</code>, server code, and <code>client/dist</code>":
       "Bản <code>node:24.19.0-alpine3.24</code> sạch, được cố định digest, chỉ gồm <code>node_modules</code>, mã máy chủ và <code>client/dist</code>",
     "<strong>Hook note</strong>": "<strong>Lưu ý về hook</strong>",
-    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:4820</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
-      "Các hook của Claude Code chạy trên máy chủ, không phải bên trong container. Máy chủ được container hóa nhận các sự kiện hook qua HTTP trên <code>localhost:4820</code>. Hãy chạy <code>npm run install-hooks</code> trên máy chủ sau khi khởi động container.",
+    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:7770</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
+      "Các hook của Claude Code chạy trên máy chủ, không phải bên trong container. Máy chủ được container hóa nhận các sự kiện hook qua HTTP trên <code>localhost:7770</code>. Hãy chạy <code>npm run install-hooks</code> trên máy chủ sau khi khởi động container.",
     Metric: "Chỉ số",
     "Server startup": "Khởi động máy chủ",
     "SQLite opens instantly; schema migration is idempotent":
@@ -2825,9 +2825,9 @@ window.__WIKI_CONTENT_I18N = {
     "Events Today shows 0": "Events Today hiển thị 0",
     "Ensure you are on the latest version (timezone bug was fixed). Restart the server.":
       "Hãy đảm bảo bạn đang dùng phiên bản mới nhất (lỗi múi giờ đã được sửa). Sau đó khởi động lại máy chủ.",
-    "Port 4820 already in use": "Cổng 4820 đã bị chiếm dụng",
-    "Run <code>DASHBOARD_PORT=4821 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
-      "Chạy <code>DASHBOARD_PORT=4821 npm run dev</code>, cập nhật proxy Vite trong <code>client/vite.config.ts</code>, rồi chạy lại <code>npm run install-hooks</code>.",
+    "Port 7770 already in use": "Cổng 7770 đã bị chiếm dụng",
+    "Run <code>DASHBOARD_PORT=7771 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
+      "Chạy <code>DASHBOARD_PORT=7771 npm run dev</code>, cập nhật proxy Vite trong <code>client/vite.config.ts</code>, rồi chạy lại <code>npm run install-hooks</code>.",
     "Stale seed data shown": "Hiển thị dữ liệu mẫu (seed) cũ",
     "Run <code>npm run clear-data</code> to wipe all rows, then restart.":
       "Chạy <code>npm run clear-data</code> để xóa toàn bộ các hàng, rồi khởi động lại.",
@@ -2839,8 +2839,8 @@ window.__WIKI_CONTENT_I18N = {
       "Cả <code>better-sqlite3</code> lẫn <code>node:sqlite</code> đều không thể nạp được. Hãy nâng cấp lên Node.js 22+ (khuyến nghị), hoặc cài Python 3 + công cụ build C++ và chạy <code>npm rebuild better-sqlite3</code>.",
     "Docker container runs but no sessions appear":
       "Container Docker chạy nhưng không có phiên nào xuất hiện",
-    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:4820</code>.":
-      "Hook chạy trên host, không phải bên trong container. Hãy chạy <code>npm run install-hooks</code> trên host sau khi container khởi động. Kiểm tra để chắc chắn hook trong <code>~/.claude/settings.json</code> trỏ tới <code>localhost:4820</code>.",
+    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:7770</code>.":
+      "Hook chạy trên host, không phải bên trong container. Hãy chạy <code>npm run install-hooks</code> trên host sau khi container khởi động. Kiểm tra để chắc chắn hook trong <code>~/.claude/settings.json</code> trỏ tới <code>localhost:7770</code>.",
     Technology: "Công nghệ",
     "Why This Over Alternatives": "Vì sao chọn nó thay vì các lựa chọn khác",
     "Zero-config, embedded, no server process. WAL mode gives concurrent reads. Synchronous API is simpler than async for this use case. <code>better-sqlite3</code> is preferred when prebuilds are available; falls back to Node.js built-in <code>node:sqlite</code> on Node 22+ when the native module cannot be compiled.":
@@ -3220,8 +3220,8 @@ window.__WIKI_CONTENT_I18N = {
       "Prometheus 3.x는 레거시 콘솔 템플릿 라이브러리를 제거했으므로 CCAM은 <code>monitoring/prometheus/consoles/index.html</code>에 <code>/api/v1/query</code>를 직접 호출하는 <strong>정적 HTML 콘솔</strong>을 제공합니다 — 실시간 카드, 세션 표, Graph 링크, <code>/consoles/index.html</code> Go 템플릿 오류 없음.",
     "Recording rules": "기록 규칙",
     "Scrape &amp; auth guard": "스크레이프 및 인증 가드",
-    "Loopback scrapes (<code>127.0.0.1:4820</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
-      "루프백 스크레이프(<code>127.0.0.1:4820</code>)는 즉시 동작합니다. Docker에서 Prometheus가 <code>host.docker.internal</code>로 호스트에 접근할 때 해당 호스트를 <code>DASHBOARD_ALLOWED_HOSTS</code>에 추가하지 않으면 <code>403 EBADHOST</code>가 반환됩니다. <code>DASHBOARD_TOKEN</code>이 설정되면 스크레이퍼가 동일한 bearer 토큰을 보내야 합니다.",
+    "Loopback scrapes (<code>127.0.0.1:7770</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
+      "루프백 스크레이프(<code>127.0.0.1:7770</code>)는 즉시 동작합니다. Docker에서 Prometheus가 <code>host.docker.internal</code>로 호스트에 접근할 때 해당 호스트를 <code>DASHBOARD_ALLOWED_HOSTS</code>에 추가하지 않으면 <code>403 EBADHOST</code>가 반환됩니다. <code>DASHBOARD_TOKEN</code>이 설정되면 스크레이퍼가 동일한 bearer 토큰을 보내야 합니다.",
     "Full reference": "전체 참고",
     'Commands, Docker vs npm paths, dashboard UIDs, starter PromQL, and troubleshooting (Grafana login reset, target DOWN) are documented in <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> and the <a href="#api-reference">API reference</a> entry for <code>GET /api/metrics</code>.':
       '명령, Docker vs npm 경로, 대시보드 UID, 시작 PromQL, 문제 해결(Grafana 로그인 재설정, target DOWN)은 <a href="../monitoring/README.md"><code>monitoring/README.md</code></a>와 <code>GET /api/metrics</code>에 대한 <a href="#api-reference">API reference</a> 항목에 문서화되어 있습니다.',
@@ -3872,8 +3872,8 @@ window.__WIKI_CONTENT_I18N = {
       "MCP 통합과 한 줄 지표 요약을 갖춘 대시보드 커넥터",
     "Each plugin follows the official Claude Code plugin specification. The marketplace manifest at <code>.claude-plugin/marketplace.json</code> catalogs all ten plugins. Each plugin directory contains:":
       "각 플러그인은 공식 Claude Code 플러그인 사양을 따릅니다. <code>.claude-plugin/marketplace.json</code>의 마켓플레이스 매니페스트가 열 개 플러그인을 모두 카탈로그화합니다. 각 플러그인 디렉터리는 다음을 포함합니다.",
-    "All plugins query the Agent Monitor API at <code>http://localhost:4820</code>. Key capabilities they leverage:":
-      "모든 플러그인은 <code>http://localhost:4820</code>의 Agent Monitor API를 조회합니다. 이들이 활용하는 주요 기능은 다음과 같습니다.",
+    "All plugins query the Agent Monitor API at <code>http://localhost:7770</code>. Key capabilities they leverage:":
+      "모든 플러그인은 <code>http://localhost:7770</code>의 Agent Monitor API를 조회합니다. 이들이 활용하는 주요 기능은 다음과 같습니다.",
     Capability: "기능",
     Details: "세부 사항",
     "Token tracking": "토큰 추적",
@@ -3928,15 +3928,15 @@ window.__WIKI_CONTENT_I18N = {
       "<b>이벤트 빈도</b>: 총 이벤트 수, 일별 세션 수, 서브에이전트 생성 비율입니다.",
     "Renders the full React application within a native webview tab. Supports <b>Deep Linking</b>: one-click jump from the sidebar directly to specific views like the <i>Kanban Board</i>, <i>Analytics Hub</i>, or your <i>Last 10 Sessions</i>.":
       "전체 React 애플리케이션을 네이티브 웹뷰 탭 안에 렌더링합니다. <b>딥 링크</b>를 지원하여 사이드바에서 <i>Kanban Board</i>, <i>Analytics Hub</i>, <i>Last 10 Sessions</i>와 같은 특정 화면으로 한 번의 클릭으로 바로 이동할 수 있습니다.",
-    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>4820</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
-      "localhost의 <code>5173</code>(Vite Dev) 포트와 <code>4820</code>(Production) 포트를 매끄럽게 스캔합니다. 로컬 서버를 시작하거나 중지하면 사이드바에서 <b>Online</b> 모드와 <b>Offline</b> 모드가 자동으로 전환됩니다.",
+    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>7770</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
+      "localhost의 <code>5173</code>(Vite Dev) 포트와 <code>7770</code>(Production) 포트를 매끄럽게 스캔합니다. 로컬 서버를 시작하거나 중지하면 사이드바에서 <b>Online</b> 모드와 <b>Offline</b> 모드가 자동으로 전환됩니다.",
     "<strong>Zero-Config Setup</strong>": "<strong>제로 설정 구성</strong>",
     "The extension is designed to be plug-and-play. Once your server is running, the extension automatically discovers the API and begins streaming telemetry — no manual URL configuration required.":
       "이 확장 프로그램은 플러그 앤 플레이 방식으로 설계되었습니다. 서버가 실행되면 확장 프로그램이 API를 자동으로 감지하고 텔레메트리 스트리밍을 시작하므로, URL을 수동으로 설정할 필요가 없습니다.",
     '📖 Full developer guide: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>':
       '📖 전체 개발자 가이드: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>',
-    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:4820</code> lives inside this window, with native OS lifecycle on top.":
-      "대시보드는 선택적 <strong>네이티브 데스크톱 애플리케이션</strong>으로도 제공됩니다 — 기존 서버와 클라이언트를 macOS <code>.app</code>(<code>.dmg</code>로 배포)과 Windows <code>.exe</code>(NSIS 설치 프로그램과 설치가 필요 없는 포터블 빌드)로 감싸는 <code>desktop/</code> 워크스페이스이며, 한 번 설치하면 신경 쓸 필요가 없습니다. <code>desktop/</code>은 <code>client/</code>, <code>server/</code>, <code>mcp/</code>, <code>vscode-extension/</code>과 나란히 위치한 워크스페이스이며, <strong>Electron 35</strong>로 빌드되었습니다. 이 앱은 <strong>Express 서버를 프로세스 내부에 내장</strong>합니다 — Electron 메인 프로세스와 동일한 Node 런타임에서 <code>server/index.js</code>를 직접 <code>require()</code>하며(자식 프로세스도, IPC도 없음), 이미 빌드된 React 클라이언트를 <code>BrowserWindow</code>에 렌더링합니다. 브라우저의 <code>localhost:4820</code>에서 보이는 모든 것이 이 창 안에 그대로 존재하며, 그 위에 네이티브 OS 라이프사이클이 얹혀 있습니다.",
+    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:7770</code> lives inside this window, with native OS lifecycle on top.":
+      "대시보드는 선택적 <strong>네이티브 데스크톱 애플리케이션</strong>으로도 제공됩니다 — 기존 서버와 클라이언트를 macOS <code>.app</code>(<code>.dmg</code>로 배포)과 Windows <code>.exe</code>(NSIS 설치 프로그램과 설치가 필요 없는 포터블 빌드)로 감싸는 <code>desktop/</code> 워크스페이스이며, 한 번 설치하면 신경 쓸 필요가 없습니다. <code>desktop/</code>은 <code>client/</code>, <code>server/</code>, <code>mcp/</code>, <code>vscode-extension/</code>과 나란히 위치한 워크스페이스이며, <strong>Electron 35</strong>로 빌드되었습니다. 이 앱은 <strong>Express 서버를 프로세스 내부에 내장</strong>합니다 — Electron 메인 프로세스와 동일한 Node 런타임에서 <code>server/index.js</code>를 직접 <code>require()</code>하며(자식 프로세스도, IPC도 없음), 이미 빌드된 React 클라이언트를 <code>BrowserWindow</code>에 렌더링합니다. 브라우저의 <code>localhost:7770</code>에서 보이는 모든 것이 이 창 안에 그대로 존재하며, 그 위에 네이티브 OS 라이프사이클이 얹혀 있습니다.",
     '<span class="caption-icon">🍎🪟</span> <span>The full dashboard, natively on macOS <strong>and</strong> Windows — same React client, same Express server, real <code>BrowserWindow</code>. Menu-bar / notification-area (tray) icon included. Shipped as a macOS DMG and a Windows EXE (macOS shown) — see <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>':
       '<span class="caption-icon">🍎🪟</span> <span>macOS<strong>와</strong> Windows 양쪽에서 네이티브로 동작하는 전체 대시보드입니다 — 동일한 React 클라이언트, 동일한 Express 서버, 실제 <code>BrowserWindow</code>를 사용합니다. 메뉴 바 / 알림 영역(트레이) 아이콘이 포함되어 있습니다. macOS DMG와 Windows EXE로 제공됩니다(화면은 macOS 기준) — <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>를 참고하세요.</span>',
     '<span class="caption-icon">🪟</span> <span>The same dashboard as a native <strong>Windows</strong> app — real <code>BrowserWindow</code> with the native Windows window menu, live Activity Feed, and the Tabby companion. A notification-area (system tray) icon sits beside the clock for quick access.</span>':
@@ -3972,18 +3972,18 @@ window.__WIKI_CONTENT_I18N = {
       "<strong><code>claude</code> CLI가 자동으로 탐지됩니다</strong>",
     "A Finder- or Dock-launched macOS app inherits only launchd's minimal <code>PATH</code>, not your login shell's. At startup <code>shell-path.ts</code> recovers the user's login-shell <code>PATH</code> so the <strong>Run Claude</strong> feature can locate and spawn the <code>claude</code> CLI. (On Windows the process already inherits the user <code>PATH</code>, so no recovery step is needed.) If it still cannot be found, make sure <code>claude</code> is a real executable on your <code>PATH</code> — a shell alias or function cannot be spawned — and check the <code>user PATH resolved</code> line in the desktop log (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> on macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> on Windows).":
       "Finder나 Dock에서 실행한 macOS 앱은 로그인 셸의 PATH가 아니라 launchd의 최소한의 <code>PATH</code>만 상속받습니다. 시작 시 <code>shell-path.ts</code>가 사용자 로그인 셸의 <code>PATH</code>를 복원하여 <strong>Run Claude</strong> 기능이 <code>claude</code> CLI를 찾아 실행할 수 있도록 합니다. (Windows에서는 프로세스가 이미 사용자 <code>PATH</code>를 상속받으므로 별도의 복원 단계가 필요하지 않습니다.) 그래도 찾을 수 없다면, <code>claude</code>가 <code>PATH</code>상의 실제 실행 파일인지 확인하세요 — 셸 별칭(alias)이나 함수는 실행할 수 없습니다 — 그리고 데스크톱 로그(macOS의 <code>~/Library/Logs/Claude Code Monitor/desktop.log</code>, Windows의 <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code>)에서 <code>user PATH resolved</code> 줄을 확인하세요.",
-    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>4820</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
-      "실행 시 Electron 메인 프로세스는 사용 가능한 포트를 선택합니다. 만약 정상적으로 동작하는 대시보드 서버가 이미 <code>4820</code> 포트에서 <code>/api/health</code>에 응답하고 있다면(예: 터미널에서 <code>npm start</code>를 실행한 경우), 앱은 두 번째 서버를 시작하는 대신 해당 서버를 <strong>채택(adopt)</strong>합니다 — 이중 바인딩도, SQLite 경합도 발생하지 않습니다. 채택된 서버는 앱이 소유한 것이 아니므로, 앱을 종료해도 계속 실행됩니다.",
+    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>7770</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
+      "실행 시 Electron 메인 프로세스는 사용 가능한 포트를 선택합니다. 만약 정상적으로 동작하는 대시보드 서버가 이미 <code>7770</code> 포트에서 <code>/api/health</code>에 응답하고 있다면(예: 터미널에서 <code>npm start</code>를 실행한 경우), 앱은 두 번째 서버를 시작하는 대신 해당 서버를 <strong>채택(adopt)</strong>합니다 — 이중 바인딩도, SQLite 경합도 발생하지 않습니다. 채택된 서버는 앱이 소유한 것이 아니므로, 앱을 종료해도 계속 실행됩니다.",
     Step: "단계",
     "Port choice": "포트 선택",
     Adopt: "채택",
-    "A healthy server already on <code>4820</code> is adopted as-is":
-      "이미 <code>4820</code>에서 정상적으로 동작 중인 서버를 그대로 채택합니다",
+    "A healthy server already on <code>7770</code> is adopted as-is":
+      "이미 <code>7770</code>에서 정상적으로 동작 중인 서버를 그대로 채택합니다",
     Preferred: "우선",
-    "<code>4820</code> when free": "비어 있으면 <code>4820</code>",
+    "<code>7770</code> when free": "비어 있으면 <code>7770</code>",
     Fallback: "대체",
-    "The first free port in <code>4821</code>–<code>4829</code>":
-      "<code>4821</code>–<code>4829</code> 범위에서 처음으로 비어 있는 포트",
+    "The first free port in <code>7771</code>–<code>7779</code>":
+      "<code>7771</code>–<code>7779</code> 범위에서 처음으로 비어 있는 포트",
     "Last resort": "최후의 수단",
     "A random high port when all of the above are taken":
       "위 항목이 모두 사용 중일 때 임의의 높은 포트",
@@ -4219,8 +4219,8 @@ window.__WIKI_CONTENT_I18N = {
     "1 (Express only)": "1개(Express만)",
     "Client URL": "클라이언트 URL",
     "API proxy": "API 프록시",
-    "Vite proxies <code>/api</code> + <code>/ws</code> to :4820":
-      "Vite가 <code>/api</code> + <code>/ws</code>를 :4820으로 프록시",
+    "Vite proxies <code>/api</code> + <code>/ws</code> to :7770":
+      "Vite가 <code>/api</code> + <code>/ws</code>를 :7770으로 프록시",
     "Same origin, no proxy": "동일 출처, 프록시 없음",
     "File watching": "파일 감시",
     "Debounced server watcher + Vite HMR": "디바운스 서버 감시기 + Vite HMR",
@@ -4232,8 +4232,8 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>세 번째 실행 방법: 데스크톱 앱(macOS &amp; Windows)</strong>",
     'Beyond development and standalone production, the dashboard also ships as a native desktop app — a macOS <code>.app</code> and a Windows <code>.exe</code> — that embeds the same production server in-process, no terminal required. See the <a href="#desktop-app">Desktop App (macOS &amp; Windows)</a> section for download, build, and install instructions.':
       '개발 모드와 독립형 프로덕션 모드 외에도, 대시보드는 네이티브 데스크톱 앱 — macOS용 <code>.app</code>과 Windows용 <code>.exe</code> — 형태로도 제공되며, 동일한 프로덕션 서버를 프로세스 내에 내장하고 있어 터미널이 필요하지 않습니다. 다운로드, 빌드, 설치 방법은 <a href="#desktop-app">데스크톱 앱(macOS &amp; Windows)</a> 섹션을 참고하십시오.',
-    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>4820</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
-      "프로덕션 이미지는 OCI와 호환되며 Docker와 Podman 모두에서 동작합니다. 서버는 <code>4820</code> 포트에서 대기하고, 읽기 전용 마운트에서 레거시 Claude 기록을 읽으며, SQLite 데이터를 <code>/app/data</code> 아래에 영구 저장합니다.",
+    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>7770</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
+      "프로덕션 이미지는 OCI와 호환되며 Docker와 Podman 모두에서 동작합니다. 서버는 <code>7770</code> 포트에서 대기하고, 읽기 전용 마운트에서 레거시 Claude 기록을 읽으며, SQLite 데이터를 <code>/app/data</code> 아래에 영구 저장합니다.",
     "Container image build and runtime mounts": "컨테이너 이미지 빌드 및 런타임 마운트",
     Mount: "마운트",
     "Read historical Claude session files for import without modifying them":
@@ -4242,8 +4242,8 @@ window.__WIKI_CONTENT_I18N = {
       "재빌드 및 컨테이너 재시작 전반에 걸쳐 SQLite 데이터베이스를 영구 저장",
     "<strong>Hooks still run on the host</strong>":
       "<strong>Hook은 여전히 호스트에서 실행됩니다</strong>",
-    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:4820</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
-      "Claude Code는 컨테이너 내부가 아니라 호스트 머신에서 hook을 실행합니다. 컨테이너가 <code>http://localhost:4820</code>에서 정상적으로 동작하면, 호스트에서 <code>npm run install-hooks</code>를 실행하여 hook 이벤트가 컨테이너화된 서버로 다시 전달되도록 합니다.",
+    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:7770</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
+      "Claude Code는 컨테이너 내부가 아니라 호스트 머신에서 hook을 실행합니다. 컨테이너가 <code>http://localhost:7770</code>에서 정상적으로 동작하면, 호스트에서 <code>npm run install-hooks</code>를 실행하여 hook 이벤트가 컨테이너화된 서버로 다시 전달되도록 합니다.",
     "A multi-stage <code>Dockerfile</code> and <code>docker-compose.yml</code> are included. Both <strong>Docker</strong> and <strong>Podman</strong> are fully supported — the image is OCI-compliant.":
       "다단계 <code>Dockerfile</code>과 <code>docker-compose.yml</code>이 포함되어 있습니다. <strong>Docker</strong>와 <strong>Podman</strong> 모두 완전히 지원되며 — 이 이미지는 OCI를 준수합니다.",
     "Read-only access to legacy session history for automatic import on startup":
@@ -4260,8 +4260,8 @@ window.__WIKI_CONTENT_I18N = {
     "Clean digest-pinned <code>node:24.19.0-alpine3.24</code> with only <code>node_modules</code>, server code, and <code>client/dist</code>":
       "<code>node_modules</code>, 서버 코드, <code>client/dist</code>만 포함한 깔끔한 digest 고정 <code>node:24.19.0-alpine3.24</code>",
     "<strong>Hook note</strong>": "<strong>Hook 참고 사항</strong>",
-    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:4820</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
-      "Claude Code의 hook은 컨테이너 내부가 아니라 호스트에서 실행됩니다. 컨테이너화된 서버는 <code>localhost:4820</code>에서 HTTP를 통해 hook 이벤트를 수신합니다. 컨테이너를 시작한 후 호스트에서 <code>npm run install-hooks</code>를 실행하십시오.",
+    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:7770</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
+      "Claude Code의 hook은 컨테이너 내부가 아니라 호스트에서 실행됩니다. 컨테이너화된 서버는 <code>localhost:7770</code>에서 HTTP를 통해 hook 이벤트를 수신합니다. 컨테이너를 시작한 후 호스트에서 <code>npm run install-hooks</code>를 실행하십시오.",
     Metric: "지표",
     "Server startup": "서버 시작",
     "SQLite opens instantly; schema migration is idempotent":
@@ -4315,9 +4315,9 @@ window.__WIKI_CONTENT_I18N = {
     "Events Today shows 0": "Events Today가 0으로 표시됨",
     "Ensure you are on the latest version (timezone bug was fixed). Restart the server.":
       "최신 버전을 사용하고 있는지 확인하십시오(시간대 버그가 수정되었습니다). 서버를 재시작하십시오.",
-    "Port 4820 already in use": "포트 4820이 이미 사용 중",
-    "Run <code>DASHBOARD_PORT=4821 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
-      "<code>DASHBOARD_PORT=4821 npm run dev</code>를 실행하고, <code>client/vite.config.ts</code>의 Vite 프록시를 업데이트한 다음 <code>npm run install-hooks</code>를 다시 실행하십시오.",
+    "Port 7770 already in use": "포트 7770이 이미 사용 중",
+    "Run <code>DASHBOARD_PORT=7771 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
+      "<code>DASHBOARD_PORT=7771 npm run dev</code>를 실행하고, <code>client/vite.config.ts</code>의 Vite 프록시를 업데이트한 다음 <code>npm run install-hooks</code>를 다시 실행하십시오.",
     "Stale seed data shown": "오래된 시드 데이터가 표시됨",
     "Run <code>npm run clear-data</code> to wipe all rows, then restart.":
       "<code>npm run clear-data</code>를 실행하여 모든 행을 지운 다음 재시작하십시오.",
@@ -4329,8 +4329,8 @@ window.__WIKI_CONTENT_I18N = {
       "<code>better-sqlite3</code>와 <code>node:sqlite</code> 모두 로드할 수 없습니다. Node.js 22+로 업그레이드하거나(권장), Python 3와 C++ 빌드 도구를 설치한 후 <code>npm rebuild better-sqlite3</code>를 실행하세요.",
     "Docker container runs but no sessions appear":
       "Docker 컨테이너는 실행되지만 세션이 표시되지 않음",
-    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:4820</code>.":
-      "훅은 컨테이너 내부가 아니라 호스트에서 실행됩니다. 컨테이너가 시작된 후 호스트에서 <code>npm run install-hooks</code>를 실행하세요. <code>~/.claude/settings.json</code>의 훅이 <code>localhost:4820</code>을 가리키는지 확인하세요.",
+    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:7770</code>.":
+      "훅은 컨테이너 내부가 아니라 호스트에서 실행됩니다. 컨테이너가 시작된 후 호스트에서 <code>npm run install-hooks</code>를 실행하세요. <code>~/.claude/settings.json</code>의 훅이 <code>localhost:7770</code>을 가리키는지 확인하세요.",
     Technology: "기술",
     "Why This Over Alternatives": "대안 대신 이것을 선택한 이유",
     "Zero-config, embedded, no server process. WAL mode gives concurrent reads. Synchronous API is simpler than async for this use case. <code>better-sqlite3</code> is preferred when prebuilds are available; falls back to Node.js built-in <code>node:sqlite</code> on Node 22+ when the native module cannot be compiled.":
@@ -4708,8 +4708,8 @@ window.__WIKI_CONTENT_I18N = {
     "<code>monitoring/prometheus/ccam-rules.yml</code> derives convenient rates and aggregates from raw <code>ccam_*</code> series (e.g. <code>rate(ccam_tokens_total[5m])</code>) so Grafana panels and ad-hoc Graph queries stay fast without hand-rolling every expression.":
       "<code>monitoring/prometheus/ccam-rules.yml</code> Deriva tarifas convenientes y agrupa datos brutos <code>ccam_*</code> Serie (por ejemplo <code>rate(ccam_tokens_total[5m])</code>) por lo que los paneles de Grafana y las consultas gráficas ad hoc se mantienen rápidas sin tener que ejecutar manualmente cada expresión.",
     "Scrape &amp; auth guard": "Raspar y proteger la autenticación",
-    "Loopback scrapes (<code>127.0.0.1:4820</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
-      "Rasguños de retroceso (<code>127.0.0.1:4820</code>) funciona de inmediato. Cuando Prometheus se ejecuta en Docker y llega al host a través de <code>host.docker.internal</code>, agrega ese anfitrión a <code>DASHBOARD_ALLOWED_HOSTS</code> O el rasguño vuelve <code>403 EBADHOST</code>. si <code>DASHBOARD_TOKEN</code> Está establecido, los raspadores deben enviar el mismo token portador.",
+    "Loopback scrapes (<code>127.0.0.1:7770</code>) work out of the box. When Prometheus runs in Docker and reaches the host via <code>host.docker.internal</code>, add that host to <code>DASHBOARD_ALLOWED_HOSTS</code> or the scrape returns <code>403 EBADHOST</code>. If <code>DASHBOARD_TOKEN</code> is set, scrapers must send the same bearer token.":
+      "Rasguños de retroceso (<code>127.0.0.1:7770</code>) funciona de inmediato. Cuando Prometheus se ejecuta en Docker y llega al host a través de <code>host.docker.internal</code>, agrega ese anfitrión a <code>DASHBOARD_ALLOWED_HOSTS</code> O el rasguño vuelve <code>403 EBADHOST</code>. si <code>DASHBOARD_TOKEN</code> Está establecido, los raspadores deben enviar el mismo token portador.",
     "Full reference": "Referencia completa",
     'Commands, Docker vs npm paths, dashboard UIDs, starter PromQL, and troubleshooting (Grafana login reset, target DOWN) are documented in <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> and the <a href="#api-reference">API reference</a> entry for <code>GET /api/metrics</code>.':
       'Los comandos, rutas de Docker vs npm, UIDs del panel de control, PromQL de inicio y resolución de problemas (restablecimiento de la sesión de Grafana, objetivo DESPUESTO) están documentados en <a href="../monitoring/README.md"><code>monitoring/README.md</code></a> Y el <a href="#api-reference">Referencia de API</a> Entrada para <code>GET /api/metrics</code>.',
@@ -4761,8 +4761,8 @@ window.__WIKI_CONTENT_I18N = {
     "The same operations are available from the terminal via <code>ccam remote-sources</code>, with subcommands <code>list</code>, <code>add</code>, <code>test &lt;id&gt;</code>, <code>sync [id]</code> (all sources when no id is given), and <code>rm &lt;id&gt; [--purge]</code> to remove a source and optionally drop the sessions it imported.":
       "Las mismas operaciones están disponibles desde el terminal a través de <code>ccam remote-sources</code>, con subcomandos <code>list</code>, <code>add</code>, <code>test &lt;id&gt;</code>, <code>sync [id]</code> (todas las fuentes cuando no se da un ID), y <code>rm &lt;id&gt; [--purge]</code> Para eliminar una fuente y, opcionalmente, eliminar las sesiones que importó.",
     "Local-only by default": "Solo local por defecto",
-    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:4820:4820</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 4820:4820</code>) and set <code>DASHBOARD_TOKEN</code>.":
-      "La imagen se hornea <code>DASHBOARD_HOST=0.0.0.0</code> (el servidor vincula el bucle de vuelta por defecto, pero el bucle de vuelta de un contenedor es un namespace separado al que la puerto publicado no puede llegar) y <code>DASHBOARD_DATA_DIR=/app/data</code> (el de solo lectura <code>~/.claude</code> El montaje no puede mantener el directorio de datos SQLite). El límite de confianza es la publicación de la puerto del host: los ejemplos utilizan <code>-p 127.0.0.1:4820:4820</code>, por lo que el panel de control es solo local. Para exponerlo en una LAN, publique en <code>0.0.0.0</code> (<code>-p 4820:4820</code>) y establecer <code>DASHBOARD_TOKEN</code>.",
+    "The image bakes <code>DASHBOARD_HOST=0.0.0.0</code> (the server binds loopback by default, but a container's loopback is a separate namespace the published port cannot reach) and <code>DASHBOARD_DATA_DIR=/app/data</code> (the read-only <code>~/.claude</code> mount cannot hold the SQLite data dir). The trust boundary is the host port publish: the examples use <code>-p 127.0.0.1:7770:7770</code>, so the dashboard is local-only. To expose it on a LAN, publish on <code>0.0.0.0</code> (<code>-p 7770:7770</code>) and set <code>DASHBOARD_TOKEN</code>.":
+      "La imagen se hornea <code>DASHBOARD_HOST=0.0.0.0</code> (el servidor vincula el bucle de vuelta por defecto, pero el bucle de vuelta de un contenedor es un namespace separado al que la puerto publicado no puede llegar) y <code>DASHBOARD_DATA_DIR=/app/data</code> (el de solo lectura <code>~/.claude</code> El montaje no puede mantener el directorio de datos SQLite). El límite de confianza es la publicación de la puerto del host: los ejemplos utilizan <code>-p 127.0.0.1:7770:7770</code>, por lo que el panel de control es solo local. Para exponerlo en una LAN, publique en <code>0.0.0.0</code> (<code>-p 7770:7770</code>) y establecer <code>DASHBOARD_TOKEN</code>.",
     "The CLI also manages the server itself: <code>ccam status</code> shows an up/down indicator and <code>ccam start</code> boots a detached production server. When the server is down, read-only commands fall back to reading <code>data/dashboard.db</code> directly under an explicit offline banner, while live or server-computed commands refuse with the specific reason.":
       "El CLI también gestiona el propio servidor: <code>ccam status</code> Muestra un indicador de arriba/abajo y <code>ccam start</code> Inicia sesión en un servidor de producción independiente. Cuando el servidor está inactivo, los comandos de solo lectura se vuelven a leer <code>data/dashboard.db</code> Directamente debajo de un banner explícito de modo sin conexión, mientras que los comandos en vivo o calculados por el servidor se niegan con la razón específica.",
     "For a live monitoring session, <code>ccam repl</code> (aliases <code>shell</code> / <code>i</code>) opens an interactive shell where you type commands without the <code>ccam</code> prefix — with a CCAM welcome banner, tab-completion, persisted arrow-key history, a live server-status prompt (<code>●</code> up / <code>○</code> offline), a grouped <code>help</code> / <code>help &lt;cmd&gt;</code> menu, and a <code>watch [secs] &lt;cmd&gt;</code> built-in that auto-refreshes any command. Each entered line runs as an isolated child process, so an offline refusal or a blocking <code>tail</code> never takes the shell down.":
@@ -5373,8 +5373,8 @@ window.__WIKI_CONTENT_I18N = {
       "Conector de panel de control con integración MCP y resúmenes métricos de una línea",
     "Each plugin follows the official Claude Code plugin specification. The marketplace manifest at <code>.claude-plugin/marketplace.json</code> catalogs all ten plugins. Each plugin directory contains:":
       "Cada complemento sigue la especificación oficial del complemento Claude Code. El manifiesto del mercado en <code>.claude-plugin/marketplace.json</code> catala los diez complementos. Cada directorio de complementos contiene:",
-    "All plugins query the Agent Monitor API at <code>http://localhost:4820</code>. Key capabilities they leverage:":
-      "Todos los complementos consultan la API del Monitor de Agentes en <code>http://localhost:4820</code>. capacidades clave que utilizan:",
+    "All plugins query the Agent Monitor API at <code>http://localhost:7770</code>. Key capabilities they leverage:":
+      "Todos los complementos consultan la API del Monitor de Agentes en <code>http://localhost:7770</code>. capacidades clave que utilizan:",
     Capability: "aptitud",
     Details: "información interna",
     "Token tracking": "Seguimiento de tokens",
@@ -5430,15 +5430,15 @@ window.__WIKI_CONTENT_I18N = {
       "<b>Frecuencia de eventos</b>: Total de eventos, sesiones diarias y tasas de apareamiento de subagentes.",
     "Renders the full React application within a native webview tab. Supports <b>Deep Linking</b>: one-click jump from the sidebar directly to specific views like the <i>Kanban Board</i>, <i>Analytics Hub</i>, or your <i>Last 10 Sessions</i>.":
       "Rendiza la aplicación React completa dentro de una pestaña de webview nativa. Soporta <b>Enlace profundo</b>: salto de un solo clic desde la barra lateral directamente a vistas específicas como la <i>Tablero Kanban</i>, <i>Centro de análisis</i>, o tu <i>Últimas 10 sesiones</i>.",
-    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>4820</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
-      "Escanea puertos sin problemas <code>5173</code> (Vite Dev) y <code>4820</code> (Producción) en localhost. Cambia automáticamente entre <b>en línea</b> y <b>autónomo</b> Modos en la barra lateral a medida que inicies o detengas tu servidor local.",
+    "Seamlessly scans ports <code>5173</code> (Vite Dev) and <code>7770</code> (Production) on localhost. Automatically toggles between <b>Online</b> and <b>Offline</b> modes in the sidebar as you start or stop your local server.":
+      "Escanea puertos sin problemas <code>5173</code> (Vite Dev) y <code>7770</code> (Producción) en localhost. Cambia automáticamente entre <b>en línea</b> y <b>autónomo</b> Modos en la barra lateral a medida que inicies o detengas tu servidor local.",
     "<strong>Zero-Config Setup</strong>": "<strong>Configuración de cero configuración</strong>",
     "The extension is designed to be plug-and-play. Once your server is running, the extension automatically discovers the API and begins streaming telemetry — no manual URL configuration required.":
       "La extensión está diseñada para ser fácil de usar. Una vez que su servidor esté en funcionamiento, la extensión descubre automáticamente la API y comienza a transmitir telemetría, sin necesidad de configuración manual de la URL.",
     '📖 Full developer guide: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>':
       '📖 Guía completa para desarrolladores: <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/vscode-extension/README.md"><code>vscode-extension/README.md</code></a>',
-    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:4820</code> lives inside this window, with native OS lifecycle on top.":
-      "El panel de instrumentos se envía como opcional <strong>Aplicación nativa para escritorio</strong> — a <code>desktop/</code> Espacio de trabajo que envuelve el servidor y el cliente existentes en un macOS <code>.app</code> (distribuido como un <code>.dmg</code>) y una ventana de Windows <code>.exe</code> (un instalador NSIS más una construcción portátil sin instalación) lo instales una vez y olvidaslo. <code>desktop/</code> Es un espacio de trabajo hermano de <code>client/</code>, <code>server/</code>, <code>mcp/</code>, y <code>vscode-extension/</code>, construido con <strong>Electrón 35</strong>. lo <strong>Incorpora el servidor Express en el proceso</strong> — eso <code>require()</code>s <code>server/index.js</code> directamente en el mismo tiempo de ejecución del Nodo que el proceso principal de Electron (sin proceso hijo, sin IPC) y renderiza el cliente React ya construido en un <code>BrowserWindow</code>. Todo lo que ves en el navegador en <code>localhost:4820</code> Vive dentro de esta ventana, con el ciclo de vida del sistema operativo nativo encima.",
+    "The dashboard ships as an optional <strong>native desktop application</strong> — a <code>desktop/</code> workspace that wraps the existing server and client into a macOS <code>.app</code> (distributed as a <code>.dmg</code>) and a Windows <code>.exe</code> (an NSIS installer plus a no-install portable build) you install once and forget. <code>desktop/</code> is a sibling workspace to <code>client/</code>, <code>server/</code>, <code>mcp/</code>, and <code>vscode-extension/</code>, built with <strong>Electron 35</strong>. It <strong>embeds the Express server in-process</strong> — it <code>require()</code>s <code>server/index.js</code> directly in the same Node runtime as the Electron main process (no child process, no IPC) — and renders the already-built React client in a <code>BrowserWindow</code>. Everything you see in the browser at <code>localhost:7770</code> lives inside this window, with native OS lifecycle on top.":
+      "El panel de instrumentos se envía como opcional <strong>Aplicación nativa para escritorio</strong> — a <code>desktop/</code> Espacio de trabajo que envuelve el servidor y el cliente existentes en un macOS <code>.app</code> (distribuido como un <code>.dmg</code>) y una ventana de Windows <code>.exe</code> (un instalador NSIS más una construcción portátil sin instalación) lo instales una vez y olvidaslo. <code>desktop/</code> Es un espacio de trabajo hermano de <code>client/</code>, <code>server/</code>, <code>mcp/</code>, y <code>vscode-extension/</code>, construido con <strong>Electrón 35</strong>. lo <strong>Incorpora el servidor Express en el proceso</strong> — eso <code>require()</code>s <code>server/index.js</code> directamente en el mismo tiempo de ejecución del Nodo que el proceso principal de Electron (sin proceso hijo, sin IPC) y renderiza el cliente React ya construido en un <code>BrowserWindow</code>. Todo lo que ves en el navegador en <code>localhost:7770</code> Vive dentro de esta ventana, con el ciclo de vida del sistema operativo nativo encima.",
     '<span class="caption-icon">🍎🪟</span> <span>The full dashboard, natively on macOS <strong>and</strong> Windows — same React client, same Express server, real <code>BrowserWindow</code>. Menu-bar / notification-area (tray) icon included. Shipped as a macOS DMG and a Windows EXE (macOS shown) — see <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>':
       '<span class="caption-icon">🍎🪟</span> <span>El panel completo, nativo en macOS <strong>y</strong> Windows: mismo cliente React, mismo servidor Express, real <code>BrowserWindow</code>. - Barra de menú / icono de área de notificaciones ( bandeja) incluido. Envío como DMG de macOS y EXE de Windows (se muestra macOS) - ver <a href="https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/DESKTOP.md"><code>DESKTOP.md</code></a>.</span>',
     '<span class="caption-icon">🪟</span> <span>The same dashboard as a native <strong>Windows</strong> app — real <code>BrowserWindow</code> with the native Windows window menu, live Activity Feed, and the Tabby companion. A notification-area (system tray) icon sits beside the clock for quick access.</span>':
@@ -5474,18 +5474,18 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>el <code>claude</code> El CLI se encuentra automáticamente</strong>",
     "A Finder- or Dock-launched macOS app inherits only launchd's minimal <code>PATH</code>, not your login shell's. At startup <code>shell-path.ts</code> recovers the user's login-shell <code>PATH</code> so the <strong>Run Claude</strong> feature can locate and spawn the <code>claude</code> CLI. (On Windows the process already inherits the user <code>PATH</code>, so no recovery step is needed.) If it still cannot be found, make sure <code>claude</code> is a real executable on your <code>PATH</code> — a shell alias or function cannot be spawned — and check the <code>user PATH resolved</code> line in the desktop log (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> on macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> on Windows).":
       "Una aplicación macOS lanzada desde Finder o Dock hereda solo el mínimo de launchd <code>PATH</code>, no del shell de inicio de sesión. Al arrancar <code>shell-path.ts</code> Recupera la cáscara de inicio de sesión del usuario <code>PATH</code> Así que el <strong>Corra Claude</strong> La función puede localizar y generar el <code>claude</code> CLI. (En Windows, el proceso ya hereda al usuario <code>PATH</code>, por lo que no se necesita ningún paso de recuperación.) Si aún no se puede encontrar, asegúrese de <code>claude</code> Es un ejecutable real en tu <code>PATH</code> — no se puede crear un alias o función de shell — y compruebe el <code>user PATH resolved</code> Línea en el registro del escritorio (<code>~/Library/Logs/Claude Code Monitor/desktop.log</code> En macOS, <code>%APPDATA%\\Claude Code Monitor\\logs\\desktop.log</code> En Windows).",
-    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>4820</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
-      "Al iniciar, el proceso principal de Electron selecciona un puerto libre. Si un servidor de panel de control saludable ya responde <code>/api/health</code> En puerto <code>4820</code> (por ejemplo, corriste <code>npm start</code> En un terminal), la aplicación <strong>Adopta</strong> Ese servidor en lugar de iniciar uno segundo, sin doble vinculación, sin competencia SQLite. Un servidor adoptado no es propiedad de la aplicación, por lo que salir lo deja ejecutándose.",
+    "On launch the Electron main process picks a free port. If a healthy dashboard server already answers <code>/api/health</code> on port <code>7770</code> (for example, you ran <code>npm start</code> in a terminal), the app <strong>adopts</strong> that server instead of starting a second one — no double-binding, no SQLite contention. An adopted server is not owned by the app, so quitting leaves it running.":
+      "Al iniciar, el proceso principal de Electron selecciona un puerto libre. Si un servidor de panel de control saludable ya responde <code>/api/health</code> En puerto <code>7770</code> (por ejemplo, corriste <code>npm start</code> En un terminal), la aplicación <strong>Adopta</strong> Ese servidor en lugar de iniciar uno segundo, sin doble vinculación, sin competencia SQLite. Un servidor adoptado no es propiedad de la aplicación, por lo que salir lo deja ejecutándose.",
     Step: "paso",
     "Port choice": "Elección del puerto",
     Adopt: "adoptar",
-    "A healthy server already on <code>4820</code> is adopted as-is":
-      "Un servidor saludable ya encendido <code>4820</code> Se adopta tal cual",
+    "A healthy server already on <code>7770</code> is adopted as-is":
+      "Un servidor saludable ya encendido <code>7770</code> Se adopta tal cual",
     Preferred: "preferido",
-    "<code>4820</code> when free": "<code>4820</code> Cuando esté libre",
+    "<code>7770</code> when free": "<code>7770</code> Cuando esté libre",
     Fallback: "Alternativa de respaldo",
-    "The first free port in <code>4821</code>–<code>4829</code>":
-      "El primer puerto libre en <code>4821</code>–<code>4829</code>",
+    "The first free port in <code>7771</code>–<code>7779</code>":
+      "El primer puerto libre en <code>7771</code>–<code>7779</code>",
     "Last resort": "última instancia",
     "A random high port when all of the above are taken":
       "Una alta de puerto aleatoria cuando se toman todos los anteriores",
@@ -5724,8 +5724,8 @@ window.__WIKI_CONTENT_I18N = {
     "1 (Express only)": "1 (Solo exprés)",
     "Client URL": "URL del cliente",
     "API proxy": "Proxy de API",
-    "Vite proxies <code>/api</code> + <code>/ws</code> to :4820":
-      "Proxies Vite <code>/api</code> + <code>/ws</code> A: 4820",
+    "Vite proxies <code>/api</code> + <code>/ws</code> to :7770":
+      "Proxies Vite <code>/api</code> + <code>/ws</code> A: 7770",
     "Same origin, no proxy": "Misma origen, sin proxy",
     "File watching": "Seguimiento de archivos",
     "Debounced server watcher + Vite HMR": "Supervisor del servidor con antirrebote + Vite HMR",
@@ -5737,8 +5737,8 @@ window.__WIKI_CONTENT_I18N = {
       "<strong>Una tercera forma de ejecutar: la aplicación de escritorio (macOS y Windows)</strong>",
     'Beyond development and standalone production, the dashboard also ships as a native desktop app — a macOS <code>.app</code> and a Windows <code>.exe</code> — that embeds the same production server in-process, no terminal required. See the <a href="#desktop-app">Desktop App (macOS &amp; Windows)</a> section for download, build, and install instructions.':
       'Más allá del desarrollo y la producción independiente, el panel de control también se envía como una aplicación nativa para escritorio, una macOS. <code>.app</code> Y una ventana <code>.exe</code> — que incorpora el mismo servidor de producción en el proceso, no se requiere terminal. Consulte el <a href="#desktop-app">Aplicación para escritorio (macOS y Windows)</a> Sección para descargar, construir e instalar instrucciones.',
-    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>4820</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
-      "La imagen de producción es compatible con OCI y funciona tanto con Docker como con Podman. El servidor escucha en <code>4820</code>, lee la historia heredada de Claude desde una unidad de lectura única y persiste los datos de SQLite bajo <code>/app/data</code>.",
+    "The production image is OCI-compatible and works with both Docker and Podman. The server listens on <code>7770</code>, reads legacy Claude history from a read-only mount, and persists SQLite data under <code>/app/data</code>.":
+      "La imagen de producción es compatible con OCI y funciona tanto con Docker como con Podman. El servidor escucha en <code>7770</code>, lee la historia heredada de Claude desde una unidad de lectura única y persiste los datos de SQLite bajo <code>/app/data</code>.",
     "Container image build and runtime mounts":
       "Construcción de la imagen del contenedor y montajes de tiempo de ejecución",
     Mount: "monte",
@@ -5748,8 +5748,8 @@ window.__WIKI_CONTENT_I18N = {
       "Persiste la base de datos SQLite a través de las reconstrucciones y reinicios de contenedores",
     "<strong>Hooks still run on the host</strong>":
       "<strong>Los ganchos todavía funcionan en el host</strong>",
-    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:4820</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
-      "Claude Code dispara ganchos desde la máquina anfitriona, no desde dentro del contenedor. Después de que el contenedor esté sano en <code>http://localhost:4820</code>, correr <code>npm run install-hooks</code> en el host, así que envía los eventos de conexión de vuelta al servidor contenedorizado.",
+    "Claude Code fires hooks from the host machine, not from inside the container. After the container is healthy on <code>http://localhost:7770</code>, run <code>npm run install-hooks</code> on the host so hook events post back to the containerized server.":
+      "Claude Code dispara ganchos desde la máquina anfitriona, no desde dentro del contenedor. Después de que el contenedor esté sano en <code>http://localhost:7770</code>, correr <code>npm run install-hooks</code> en el host, así que envía los eventos de conexión de vuelta al servidor contenedorizado.",
     "A multi-stage <code>Dockerfile</code> and <code>docker-compose.yml</code> are included. Both <strong>Docker</strong> and <strong>Podman</strong> are fully supported — the image is OCI-compliant.":
       "Un multiestadio <code>Dockerfile</code> y <code>docker-compose.yml</code> Están incluidos. ambos <strong>estibador</strong> y <strong>Podman</strong> Son totalmente compatibles: la imagen cumple con la normativa OCI.",
     "Read-only access to legacy session history for automatic import on startup":
@@ -5766,8 +5766,8 @@ window.__WIKI_CONTENT_I18N = {
     "Clean digest-pinned <code>node:24.19.0-alpine3.24</code> with only <code>node_modules</code>, server code, and <code>client/dist</code>":
       "<code>node:24.19.0-alpine3.24</code> limpio y fijado por digest, solo con <code>node_modules</code>, código del servidor y <code>client/dist</code>",
     "<strong>Hook note</strong>": "<strong>Nota de gancho</strong>",
-    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:4820</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
-      "Los ganchos de Claude Code se ejecutan en el host, no dentro del contenedor. El servidor contenedorizado recibe eventos de gancho a través de HTTP en <code>localhost:4820</code>. carrera <code>npm run install-hooks</code> En el host después de iniciar el contenedor.",
+    "Claude Code hooks run on the host, not inside the container. The containerized server receives hook events via HTTP on <code>localhost:7770</code>. Run <code>npm run install-hooks</code> on the host after starting the container.":
+      "Los ganchos de Claude Code se ejecutan en el host, no dentro del contenedor. El servidor contenedorizado recibe eventos de gancho a través de HTTP en <code>localhost:7770</code>. carrera <code>npm run install-hooks</code> En el host después de iniciar el contenedor.",
     Metric: "métrico",
     "Server startup": "Inicio de sesión del servidor",
     "SQLite opens instantly; schema migration is idempotent":
@@ -5822,9 +5822,9 @@ window.__WIKI_CONTENT_I18N = {
     "Events Today shows 0": "Eventos de hoy muestran 0",
     "Ensure you are on the latest version (timezone bug was fixed). Restart the server.":
       "Asegúrese de estar en la última versión (se ha solucionado el error del huso horario). Reinicie el servidor.",
-    "Port 4820 already in use": "Puerto 4820 ya en uso",
-    "Run <code>DASHBOARD_PORT=4821 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
-      "carrera <code>DASHBOARD_PORT=4821 npm run dev</code>, actualizar el proxy Vite en <code>client/vite.config.ts</code>, y volver a ejecutar <code>npm run install-hooks</code>.",
+    "Port 7770 already in use": "Puerto 7770 ya en uso",
+    "Run <code>DASHBOARD_PORT=7771 npm run dev</code>, update Vite proxy in <code>client/vite.config.ts</code>, and re-run <code>npm run install-hooks</code>.":
+      "carrera <code>DASHBOARD_PORT=7771 npm run dev</code>, actualizar el proxy Vite en <code>client/vite.config.ts</code>, y volver a ejecutar <code>npm run install-hooks</code>.",
     "Stale seed data shown": "Se muestran datos de semillas caducas",
     "Run <code>npm run clear-data</code> to wipe all rows, then restart.":
       "carrera <code>npm run clear-data</code> Para borrar todas las filas, luego reinicia.",
@@ -5837,8 +5837,8 @@ window.__WIKI_CONTENT_I18N = {
       "ninguno <code>better-sqlite3</code> tampoco <code>node:sqlite</code> podría cargar. Actualice a Node.js 22+ (recomendado) o instale herramientas de compilación de Python 3 + C++ y ejecute <code>npm rebuild better-sqlite3</code>.",
     "Docker container runs but no sessions appear":
       "El contenedor Docker se ejecuta, pero no aparecen sesiones",
-    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:4820</code>.":
-      "Los ganchos funcionan en el host, no dentro del contenedor. carrera <code>npm run install-hooks</code> En el host después de que el contenedor comience. Verifique los ganchos en <code>~/.claude/settings.json</code> Puntar a <code>localhost:4820</code>.",
+    "Hooks run on the host, not inside the container. Run <code>npm run install-hooks</code> on the host after the container starts. Verify hooks in <code>~/.claude/settings.json</code> point to <code>localhost:7770</code>.":
+      "Los ganchos funcionan en el host, no dentro del contenedor. carrera <code>npm run install-hooks</code> En el host después de que el contenedor comience. Verifique los ganchos en <code>~/.claude/settings.json</code> Puntar a <code>localhost:7770</code>.",
     Technology: "tecnología",
     "Why This Over Alternatives": "Por qué esto sobre alternativas",
     "Zero-config, embedded, no server process. WAL mode gives concurrent reads. Synchronous API is simpler than async for this use case. <code>better-sqlite3</code> is preferred when prebuilds are available; falls back to Node.js built-in <code>node:sqlite</code> on Node 22+ when the native module cannot be compiled.":
@@ -6066,10 +6066,10 @@ window.__WIKI_CONTENT_I18N = {
     "<code>TurnDuration</code>": "<code>Duración de la vuelta</code>",
     "<code>SessionEnd</code>": "<code>SessionEnd</code>",
     "<code>DASHBOARD_PORT</code>": "<code>DASHBOARD_PORT</code>",
-    "<code>4820</code>": "<code>4820</code>",
+    "<code>7770</code>": "<code>7770</code>",
     "<code>CLAUDE_DASHBOARD_PORT</code>": "<code>CLAUDE_DASHBOARD_PORT</code>",
     "<code>MCP_DASHBOARD_BASE_URL</code>": "<code>MCP_DASHBOARD_BASE_URL</code>",
-    "<code>http://127.0.0.1:4820</code>": "<code>http://127.0.0.1:4820</code>",
+    "<code>http://127.0.0.1:7770</code>": "<code>http://127.0.0.1:7770</code>",
     "<code>MCP_TRANSPORT</code>": "<code>MCP_TRANSPORT</code>",
     "<code>stdio</code>": "<code>stdio</code>",
     "<code>MCP_HTTP_PORT</code>": "<code>MCP_HTTP_PORT</code>",
@@ -6225,7 +6225,7 @@ window.__WIKI_CONTENT_I18N = {
       "Exporta todos los datos (sesiones, agentes, eventos, tokens, flujos de trabajo, ejecuciones, reglas de alerta, precios) como una descarga JSON versificada",
     "Restore an export bundle (multipart <code>file</code> or JSON <code>{ path }</code>) — idempotent, non-destructive; consolidate machines":
       "Restaurar un paquete de exportación (archivo <code>file</code> multipart o JSON <code>{ path }</code>) - idempotente, no destructivo; consolidar máquinas",
-    "<code>ws://localhost:4820/ws</code>": "<code>ws://localhost:4820/ws</code>",
+    "<code>ws://localhost:7770/ws</code>": "<code>ws://localhost:7770/ws</code>",
     "<code>&lt;proj&gt;/&lt;sid&gt;.jsonl</code>": "<code>&lt;proj&gt;/&lt;sid&gt;.jsonl</code>",
     "<code>&lt;proj&gt;/&lt;sid&gt;/subagents/agent-*.jsonl</code>":
       "<code>&lt;proj&gt;/&lt;sid&gt;/subagents/agent-*.jsonl</code>",
@@ -6401,7 +6401,7 @@ window.__WIKI_CONTENT_I18N = {
     "<code>GET /api/updates/status</code>": "<code>GET /api/updates/status</code>",
     "<code>POST /api/updates/check</code>": "<code>POST /api/updates/check</code>",
     "<code>http://localhost:5173</code>": "<code>http://localhost:5173</code>",
-    "<code>http://localhost:4820</code>": "<code>http://localhost:4820</code>",
+    "<code>http://localhost:7770</code>": "<code>http://localhost:7770</code>",
     "<code>~/.claude:/root/.claude:ro</code>": "<code>~/.claude:/root/.claude:ro</code>",
     "<code>agent-monitor-data:/app/data</code>": "<code>agent-monitor-data:/app/data</code>",
     "<strong>server-deps</strong>": "<strong>dependencias del servidor</strong>",

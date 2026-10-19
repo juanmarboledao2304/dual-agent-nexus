@@ -34,9 +34,9 @@
 {{- else }}
 
   Port-forward to access locally:
-    kubectl port-forward -n {{ .Release.Namespace }} svc/{{ $fullName }} 4820:{{ .Values.service.port }}
+    kubectl port-forward -n {{ .Release.Namespace }} svc/{{ $fullName }} 7770:{{ .Values.service.port }}
 
-  Then open: http://localhost:4820
+  Then open: http://localhost:7770
 
 {{- end }}
 

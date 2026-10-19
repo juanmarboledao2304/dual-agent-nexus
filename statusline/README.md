@@ -113,7 +113,7 @@ macOS/Linux example:
 
 ## Troubleshooting
 
-**The statusline still shows the default (e.g. `[Model] 📁 cwd`) after restarting.**
+**The statusline still shows the default (e.g. `[Model] cwd`) after restarting.**
 
 Claude Code resolves `statusLine` from multiple settings files, in this precedence (later wins):
 

@@ -53,12 +53,12 @@ SubagentStop, Compaction, APIError, TurnDuration, Notification, SessionEnd.
 Annotate the timeline:
 - **Gaps**: any Δ > 30s between consecutive events — mark ⏳ and note the wait.
 - **Unpaired tool calls**: a PreToolUse with no matching PostToolUse (same
-  tool_name, next in stream) — mark ⚠️ "no completion recorded".
+  tool_name, next in stream) — mark "no completion recorded".
 - **Failures**: APIError events and PostToolUse whose `summary`/`data` indicates
-  an error — mark ❌ with the error text.
-- **Compaction**: mark ♻️ and note it resets the visible token baseline.
+  an error — mark with the error text.
+- **Compaction**: mark and note it resets the visible token baseline.
 - **Missing bookends**: no SessionStart at the head or no Stop/SessionEnd at the
-  tail of an ended session — mark 🚩.
+  tail of an ended session — mark.
 
 ### 5. Verdict
 One line: CLEAN, GAPS DETECTED, or FAILURES PRESENT — with the count of each
@@ -67,7 +67,7 @@ flag type and the single most likely thing to investigate next.
 ## Output
 
 - Markdown timeline table, events in strict timestamp order.
-- Status glyphs inline: ✅ ok, ❌ error, ⚠️ warning/unpaired, ⏳ gap, ♻️ compaction, 🚩 missing bookend.
+- Status glyphs inline: ok, error, warning/unpaired, ⏳ gap, compaction, missing bookend.
 - Currency in USD to 4 decimals.
 - Cite only event data returned by the API — do not invent timestamps or summaries.
 - If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.

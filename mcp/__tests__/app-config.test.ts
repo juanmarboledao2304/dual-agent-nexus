@@ -13,7 +13,7 @@ import { loadConfig, type TransportMode } from "../src/config/app-config.js";
 
 function env(overrides: Record<string, string> = {}): NodeJS.ProcessEnv {
   return {
-    MCP_DASHBOARD_BASE_URL: "http://127.0.0.1:4820",
+    MCP_DASHBOARD_BASE_URL: "http://127.0.0.1:7770",
     ...overrides,
   };
 }
@@ -23,7 +23,7 @@ describe("loadConfig", () => {
     const cfg = loadConfig(env());
     assert.equal(cfg.serverName, "agent-dashboard-mcp");
     assert.equal(cfg.serverVersion, "1.0.0");
-    assert.equal(cfg.dashboardBaseUrl.toString(), "http://127.0.0.1:4820/");
+    assert.equal(cfg.dashboardBaseUrl.toString(), "http://127.0.0.1:7770/");
     assert.equal(cfg.dashboardApiToken, undefined);
     assert.equal(cfg.requestTimeoutMs, 10_000);
     assert.equal(cfg.retryCount, 2);
@@ -159,14 +159,14 @@ describe("loadConfig", () => {
   // ── Dashboard URL validation ────────────────────────────────
   it("rejects non-local dashboard hosts", () => {
     assert.throws(
-      () => loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://evil.com:4820" })),
+      () => loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://evil.com:7770" })),
       /must target a local dashboard host/
     );
   });
 
   it("rejects non-http protocols", () => {
     assert.throws(
-      () => loadConfig(env({ MCP_DASHBOARD_BASE_URL: "ftp://127.0.0.1:4820" })),
+      () => loadConfig(env({ MCP_DASHBOARD_BASE_URL: "ftp://127.0.0.1:7770" })),
       /must use http or https/
     );
   });
@@ -179,19 +179,19 @@ describe("loadConfig", () => {
   });
 
   it("accepts localhost", () => {
-    const cfg = loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://localhost:4820" }));
+    const cfg = loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://localhost:7770" }));
     assert.equal(cfg.dashboardBaseUrl.hostname, "localhost");
   });
 
   it("accepts host.docker.internal", () => {
-    const cfg = loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://host.docker.internal:4820" }));
+    const cfg = loadConfig(env({ MCP_DASHBOARD_BASE_URL: "http://host.docker.internal:7770" }));
     assert.equal(cfg.dashboardBaseUrl.hostname, "host.docker.internal");
   });
 
   it("accepts the isolated Compose dashboard service with a bearer token", () => {
     const cfg = loadConfig(
       env({
-        MCP_DASHBOARD_BASE_URL: "http://agent-monitor:4820",
+        MCP_DASHBOARD_BASE_URL: "http://agent-monitor:7770",
         MCP_DASHBOARD_API_TOKEN: "test-token",
       })
     );
@@ -233,7 +233,7 @@ describe("loadConfig", () => {
       () =>
         loadConfig(
           env({
-            MCP_DASHBOARD_BASE_URL: "http://host.docker.internal:4820",
+            MCP_DASHBOARD_BASE_URL: "http://host.docker.internal:7770",
             MCP_DASHBOARD_API_TOKEN: "test-token",
           })
         ),
@@ -241,7 +241,7 @@ describe("loadConfig", () => {
     );
     const cfg = loadConfig(
       env({
-        MCP_DASHBOARD_BASE_URL: "https://host.docker.internal:4820",
+        MCP_DASHBOARD_BASE_URL: "https://host.docker.internal:7770",
         MCP_DASHBOARD_API_TOKEN: "test-token",
       })
     );

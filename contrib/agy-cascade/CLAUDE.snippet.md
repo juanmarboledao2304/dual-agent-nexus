@@ -3,7 +3,7 @@
   Append this block to your ~/.claude/CLAUDE.md or project CLAUDE.md.
 -->
 
-## ⚡ DualAgent Nexus & agy-cascade Protocol
+## DualAgent Nexus & agy-cascade Protocol
 
 When operating as the Conductor on this codebase:
 

@@ -32,7 +32,7 @@ routes are probed (e.g. `pricing` probes only matching routes).
 
 ## Method
 
-For each route, issue a single `GET` against `http://localhost:4820<path>` with a
+For each route, issue a single `GET` against `http://localhost:7770<path>` with a
 short timeout, capturing the HTTP status code, round-trip latency, and the
 top-level shape of the JSON body (object keys, or array length). A route counts
 as reachable when it returns a 2xx with parseable JSON.
@@ -44,7 +44,7 @@ tell the user to start it with `npm start` (or `npm run dev`) from the repo root
 
 ### 1. Probe Matrix
 A Markdown table — one row per route — with columns:
-`endpoint`, `status` (HTTP code), `latency`, `reachable` (✅/❌), `shape`
+`endpoint`, `status` (HTTP code), `latency`, `reachable` (/), `shape`
 (e.g. `object: {total_cost, breakdown[…]}` or `array[N]`).
 
 ### 2. Reachability Summary

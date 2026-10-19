@@ -104,16 +104,16 @@ All 10 Prometheus/Alertmanager rules are replicated in Coralogix:
 
 | Alert | Severity | Prometheus | Coralogix |
 |-------|----------|:----------:|:---------:|
-| Instance Down | Critical | ✓ | ✓ |
-| High Error Rate | Critical | ✓ | ✓ |
-| Pod Restart Loop | Critical | ✓ | ✓ |
-| PV Nearly Full | Critical | ✓ | ✓ |
-| High Latency | Warning | ✓ | ✓ |
-| WebSocket Spike | Warning | ✓ | ✓ |
-| High Memory | Warning | ✓ | ✓ |
-| High CPU | Warning | ✓ | ✓ |
-| Dashboard Replica Contract Violated | Warning | ✓ | ✓ |
-| Slow DB Queries | Warning | ✓ | ✓ |
+| Instance Down | Critical | | |
+| High Error Rate | Critical | | |
+| Pod Restart Loop | Critical | | |
+| PV Nearly Full | Critical | | |
+| High Latency | Warning | | |
+| WebSocket Spike | Warning | | |
+| High Memory | Warning | | |
+| High CPU | Warning | | |
+| Dashboard Replica Contract Violated | Warning | | |
+| Slow DB Queries | Warning | | |
 
 ## Dashboard Panels
 

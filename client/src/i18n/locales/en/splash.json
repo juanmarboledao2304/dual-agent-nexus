@@ -6,9 +6,9 @@
     "night": "Working late"
   },
   "tagline": "Nothing your agents do stays in the dark.",
-  "sub1": "Real-time observability for Claude Code, Cursor, and Codex sessions.",
+  "sub1": "Real-time orchestration and telemetry for Claude Code and Google Antigravity sessions.",
   "sub2": "Tokens, tools, costs, and workflows, all live.",
-  "brand": "Claude Code Monitor",
+  "brand": "DualAgent Nexus",
   "provider": {
     "title": "What would you like to monitor?",
     "description": "Choose the data source shown across the dashboard. You can change this later in Settings.",

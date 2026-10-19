@@ -2,7 +2,7 @@
  * @file server-info.js
  * @description Live discovery of every running dashboard server's TCP port.
  *
- * The conventional port is 4820, and a plain `npm start` setup almost always
+ * The conventional port is 7770, and a plain `npm start` setup almost always
  * binds it. But more than one dashboard can run on a single machine — most
  * commonly the macOS desktop app side-by-side with `npm run dev`. The hook
  * handler fans out to every live dashboard that uses a **different** SQLite
@@ -33,7 +33,7 @@ const path = require("path");
 const { getClaudeHome, getDataDir } = require("./claude-home");
 
 /** Conventional dashboard port — used when discovery yields nothing. */
-const DEFAULT_PORT = 4820;
+const DEFAULT_PORT = 7770;
 
 /** Absolute path of the discovery file. */
 function getServerInfoPath() {
@@ -200,7 +200,7 @@ function removeServerInfo() {
  *   1. `CLAUDE_DASHBOARD_PORT` — explicit operator override; returned as the
  *      sole target so a test or one-off override doesn't fan out.
  *   2. Live entries from the discovery file, pruned by PID liveness.
- *   3. `[DEFAULT_PORT]` (`[4820]`) — the conventional fallback when nothing
+ *   3. `[DEFAULT_PORT]` (`[7770]`) — the conventional fallback when nothing
  *      else resolves.
  *
  * @returns {number[]}

@@ -1,25 +1,25 @@
 {
-  "id": "claude-code-agent-dashboard",
-  "name": "Agent Dashboard - Claude Code Monitor",
-  "short_name": "Agent Dashboard",
-  "description": "Real-time monitoring platform for Claude Code agent activity.",
-  "author": "Son Nguyen",
+  "id": "dual-agent-nexus",
+  "name": "DualAgent Nexus | AI Orchestration & Telemetry",
+  "short_name": "DualAgent Nexus",
+  "description": "Real-time 3-pool agy-cascade waterfall and cross-CLI subagent mission control for Claude Code and Google Antigravity.",
+  "author": "Juan Manuel Arboleda Orozco",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "theme_color": "#6366f1",
+  "theme_color": "#0b1020",
   "background_color": "#0f1117",
   "orientation": "any",
   "categories": ["developer-tools", "productivity"],
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/nexus-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/favicon.svg",
+      "src": "/nexus-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"

@@ -174,7 +174,7 @@ graph TB
         H0 & H1 & H2 & H3 & H4 & H5 & H6 -->|stdin JSON| HH
     end
 
-    subgraph "Server Process (port 4820)"
+    subgraph "Server Process (port 7770)"
         direction TB
         EX[Express Server]
         HR[Hook Router]
@@ -1248,7 +1248,7 @@ flowchart TD
 - Resolution order is **env override → discovery file → default**:
   - `CLAUDE_DASHBOARD_PORT` forces a single target (no fan-out, no discovery).
   - Otherwise `server/lib/server-info.js` reads `~/.claude/.agent-dashboard.json`, prunes dead-PID entries, and returns one live `port` per unique `dataDir` (lowest port wins when Docker and `npm run dev` share `~/.claude/agent-dashboard`). The handler POSTs to each returned port in parallel.
-  - If neither yields anything, the handler falls back to `4820`.
+  - If neither yields anything, the handler falls back to `7770`.
 - Per-target promises never reject — a dead listener can't starve the others, and the handler can wait on `Promise.all` for clean exit timing.
 
 ### Hook Installation
@@ -2426,7 +2426,7 @@ graph TD
 
 ### Key Implementation Details
 
-1. **Auto-Detection**: The extension checks both port `5173` (Vite dev server) and `4820` (Production server) on `localhost`. It prioritizes the production port for API data but can render the UI from either.
+1. **Auto-Detection**: The extension checks both port `5173` (Vite dev server) and `7770` (Production server) on `localhost`. It prioritizes the production port for API data but can render the UI from either.
 2. **Real-time Status**: The `SidebarProvider` uses a background loop with `onDidChangeTreeData` to automatically toggle between **Online** and **Offline** states as the local server starts or stops.
 3. **Deep Linking**: Commands like `claude-code-agent-monitor.openDashboard` accept arguments (e.g., a session ID or page path like `analytics`) to route the webview to specific views within the React SPA.
 4. **Theme Awareness**: The Activity Bar icon (`icon.svg` or `apple-touch-icon.png`) and sidebar icons use VS Code's `ThemeIcon` and `ThemeColor` to ensure they adapt to Light, Dark, and High Contrast themes.
@@ -2526,7 +2526,7 @@ The `ServerHandle` returned to `main.ts`:
 
 ```ts
 interface ServerHandle {
-  url: string; // e.g. "http://127.0.0.1:4820"
+  url: string; // e.g. "http://127.0.0.1:7770"
   port: number;
   ownedByUs: boolean; // false when an existing server was adopted
   stop: () => Promise<void>;
@@ -2535,19 +2535,19 @@ interface ServerHandle {
 
 ### Port Discovery & Adoption
 
-On startup `server-host.ts` picks a port, then either adopts an already-healthy server or boots its own. **Adoption** -- `probePort()` connects to `:4820`, then checks that the listener answers `GET /api/health` with `{ status: "ok" }`. If a healthy dashboard server is already running there (e.g. the user ran `npm start` in a terminal), the desktop app **adopts** it rather than double-binding -- no SQLite contention. An adopted server is not owned by the app, so quitting the app leaves it running.
+On startup `server-host.ts` picks a port, then either adopts an already-healthy server or boots its own. **Adoption** -- `probePort()` connects to `:7770`, then checks that the listener answers `GET /api/health` with `{ status: "ok" }`. If a healthy dashboard server is already running there (e.g. the user ran `npm start` in a terminal), the desktop app **adopts** it rather than double-binding -- no SQLite contention. An adopted server is not owned by the app, so quitting the app leaves it running.
 
 ```mermaid
 flowchart TD
     start["startEmbeddedServer()"] --> forced{"CCAM_DESKTOP_BIND_PORT set?"}
     forced -->|yes| bind["bind exactly that port<br/>(no adoption, no fallback)"]
-    forced -->|no| adopt{"healthy server<br/>already on :4820?"}
+    forced -->|no| adopt{"healthy server<br/>already on :7770?"}
     adopt -->|yes| reuse["adopt it<br/>ownedByUs = false"]
     adopt -->|no| pick["pickFreePort()"]
 
-    pick --> p1{":4820 free?"}
-    p1 -->|yes| use4820["use 4820"]
-    p1 -->|no| p2{"any of<br/>:4821–:4829 free?"}
+    pick --> p1{":7770 free?"}
+    p1 -->|yes| use4820["use 7770"]
+    p1 -->|no| p2{"any of<br/>:7771–:7779 free?"}
     p2 -->|yes| usefb["use that"]
     p2 -->|no| p3{"any of<br/>:49152–:49500 free?"}
     p3 -->|yes| userand["use that"]
@@ -2566,7 +2566,7 @@ flowchart TD
     style fail fill:#da3633,stroke:#b62324,color:#fff
 ```
 
-Port preference order is **4820 → 4821–4829 → a random port in 49152–49500**. Two environment overrides exist primarily for testing: `CCAM_DESKTOP_BIND_PORT` binds an exact port (disabling adoption and fallback, used by the smoke test), and `CCAM_DESKTOP_NO_ADOPT=1` always starts a fresh server. Before `require()`ing the server module, the host sets `NODE_ENV=production`, `DASHBOARD_PORT=<port>`, and `DASHBOARD_DATA_DIR=<userData>/data` (see [Writable Data Directory](#writable-data-directory) below) so the server reads them from `process.env`.
+Port preference order is **7770 → 7771–7779 → a random port in 49152–49500**. Two environment overrides exist primarily for testing: `CCAM_DESKTOP_BIND_PORT` binds an exact port (disabling adoption and fallback, used by the smoke test), and `CCAM_DESKTOP_NO_ADOPT=1` always starts a fresh server. Before `require()`ing the server module, the host sets `NODE_ENV=production`, `DASHBOARD_PORT=<port>`, and `DASHBOARD_DATA_DIR=<userData>/data` (see [Writable Data Directory](#writable-data-directory) below) so the server reads them from `process.env`.
 
 ### Writable Data Directory
 
@@ -2669,7 +2669,7 @@ sequenceDiagram
     end
     Main->>Host: ensureUserPath() — recover login-shell PATH (macOS only)
     Main->>Host: startEmbeddedServer()
-    Host->>Host: probe :4820 — adopt if a healthy server answers
+    Host->>Host: probe :7770 — adopt if a healthy server answers
     alt no server to adopt
         Host->>Host: pickFreePort() · set DASHBOARD_DATA_DIR · patch better-sqlite3 ABI
         Host->>Srv: require() · createApp() · startServer(port)
@@ -2723,7 +2723,7 @@ flowchart TD
 
 At runtime `server-host.ts` resolves this root as `process.resourcesPath/app` when packaged, on both platforms. Everything under the packaged `app/` is **read-only** on a packaged, signed, or app-translocated macOS bundle and on a Windows install under `%ProgramFiles%` (or a portable build's mount) -- so all writable state (the SQLite database, VAPID keys) lives in the per-user data dir (`~/Library/Application Support/Claude Code Monitor/data/` on macOS, `%APPDATA%\Claude Code Monitor\data\` on Windows), **never inside the bundle / install dir** (see [Writable Data Directory](#writable-data-directory)).
 
-On macOS `electron-builder` produces **two per-architecture DMGs** — one `arm64` (Apple Silicon), one `x64` (Intel) — via `--mac --arm64 --x64` (not a merged universal binary; the release ships both), ad-hoc signed by default so anyone can build a working `.dmg` without a paid Apple Developer account; real Developer ID signing and notarization are opt-in via environment variables (`CSC_LINK`, `APPLE_ID`, etc.). On Windows it produces an **NSIS installer `.exe`** and a **no-install portable `.exe`** (both x64), using `assets/icon.ico` (generated from the source PNG by `desktop/scripts/build-win-icon.ps1`) as the application and tray icon. **`electron-builder` packages for the host OS** -- DMGs build on macOS, Windows `.exe`s build on Windows -- so the two artifacts come from two CI jobs (see below). The `desktop/scripts/prebuild.js` guard also **self-heals** a `better-sqlite3` native binary that a prior cross-arch DMG build (`electron-builder --mac --x64/--arm64`) left compiled for the wrong CPU architecture -- it detects the mismatch via `file` and re-runs `electron-builder install-app-deps`, so `desktop:dev` and `desktop:test` do not fail with `ERR_DLOPEN_FAILED`; on Windows it shells the `.cmd` shims for `npm`/`npx`. CI runs a path-filtered `🍎 macOS Desktop (DMG)` job on `macos-latest` (artifact `ClaudeCodeMonitor-dmg`) and a `🪟 Windows Desktop (EXE)` job on `windows-latest` (artifact `ClaudeCodeMonitor-win`); the release attaches both. See [`desktop/README.md`](./desktop/README.md) for the full build pipeline, build-performance notes, and signing details.
+On macOS `electron-builder` produces **two per-architecture DMGs** — one `arm64` (Apple Silicon), one `x64` (Intel) — via `--mac --arm64 --x64` (not a merged universal binary; the release ships both), ad-hoc signed by default so anyone can build a working `.dmg` without a paid Apple Developer account; real Developer ID signing and notarization are opt-in via environment variables (`CSC_LINK`, `APPLE_ID`, etc.). On Windows it produces an **NSIS installer `.exe`** and a **no-install portable `.exe`** (both x64), using `assets/icon.ico` (generated from the source PNG by `desktop/scripts/build-win-icon.ps1`) as the application and tray icon. **`electron-builder` packages for the host OS** -- DMGs build on macOS, Windows `.exe`s build on Windows -- so the two artifacts come from two CI jobs (see below). The `desktop/scripts/prebuild.js` guard also **self-heals** a `better-sqlite3` native binary that a prior cross-arch DMG build (`electron-builder --mac --x64/--arm64`) left compiled for the wrong CPU architecture -- it detects the mismatch via `file` and re-runs `electron-builder install-app-deps`, so `desktop:dev` and `desktop:test` do not fail with `ERR_DLOPEN_FAILED`; on Windows it shells the `.cmd` shims for `npm`/`npx`. CI runs a path-filtered ` macOS Desktop (DMG)` job on `macos-latest` (artifact `ClaudeCodeMonitor-dmg`) and a ` Windows Desktop (EXE)` job on `windows-latest` (artifact `ClaudeCodeMonitor-win`); the release attaches both. See [`desktop/README.md`](./desktop/README.md) for the full build pipeline, build-performance notes, and signing details.
 
 ### Relation to Standalone Deployment
 
@@ -2787,8 +2787,8 @@ graph LR
         DEV["npm run dev<br/>(concurrently)"]
     end
 
-    DEV --> SERVER["scripts/dev-server.js<br/>Port 4820<br/>Debounced graceful restart"]
-    DEV --> VITE["vite dev server<br/>Port 5173<br/>HMR, proxies /api + /ws to 4820"]
+    DEV --> SERVER["scripts/dev-server.js<br/>Port 7770<br/>Debounced graceful restart"]
+    DEV --> VITE["vite dev server<br/>Port 5173<br/>HMR, proxies /api + /ws to 7770"]
     BROWSER["Browser"] --> VITE
     VITE -->|proxy| SERVER
 
@@ -2801,7 +2801,7 @@ graph LR
 ```mermaid
 graph LR
     BUILD["npm run build<br/>(vite build in client/)"] --> DIST["client/dist/<br/>Static files"]
-    START["npm start"] --> SERVER["node server/index.js<br/>Port 4820"]
+    START["npm start"] --> SERVER["node server/index.js<br/>Port 7770"]
     SERVER -->|serves| DIST
     BROWSER["Browser"] --> SERVER
 
@@ -2813,7 +2813,7 @@ graph LR
 | ----------------- | ------------------------------------ | ------------------------------- |
 | **Processes**     | 2 (Express + Vite)                   | 1 (Express)                     |
 | **Client**        | Vite HMR on :5173                    | Static files from `client/dist` |
-| **API proxy**     | Vite proxies `/api` + `/ws` to :4820 | Same origin, no proxy needed    |
+| **API proxy**     | Vite proxies `/api` + `/ws` to :7770 | Same origin, no proxy needed    |
 | **File watching** | Debounced server watcher + Vite HMR | None                            |
 | **Source maps**   | Inline                               | External files                  |
 
@@ -2825,7 +2825,7 @@ The native desktop app (macOS `.app`/`.dmg`, Windows NSIS / portable `.exe`) is 
 graph LR
     LAUNCH["Open Claude Code Monitor<br/>(.app / .exe)"] --> MAIN["Electron main process<br/>(Node 22 / Electron 35)"]
     MAIN --> HOST["server-host.ts<br/>port discovery + adopt"]
-    HOST --> SERVER["server/index.js (in-process)<br/>Port 4820 → fallback"]
+    HOST --> SERVER["server/index.js (in-process)<br/>Port 7770 → fallback"]
     SERVER -->|serves| DIST["client/dist/<br/>(extraResources)"]
     MAIN --> WIN["BrowserWindow"]
     WIN --> SERVER
@@ -2853,7 +2853,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["Operator"] -->|"interactive CLI"| M_REPL
 
-    M_STDIO --> API["Dashboard API<br/>:4820"]
+    M_STDIO --> API["Dashboard API<br/>:7770"]
     M_HTTP --> API
     M_REPL --> API
 
@@ -2883,7 +2883,7 @@ The multi-stage OCI image uses digest-pinned Node 24 LTS on Alpine 3.24, builds 
 ```mermaid
 flowchart LR
   BUILD["server-deps + client-build"] --> RUNTIME["non-root runtime"]
-  RUNTIME --> APP["CCAM :4820"]
+  RUNTIME --> APP["CCAM :7770"]
   DATA[("/app/data")] --> APP
   CONFIG[("/app/config")] --> APP
   CLAUDE["Claude home, read-only"] --> APP

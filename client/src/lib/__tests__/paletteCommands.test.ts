@@ -77,13 +77,19 @@ function makeContext(overrides: Partial<PaletteContext> = {}): PaletteContext {
 describe("palette catalog coverage", () => {
   it("offers every route the app registers", () => {
     // `<Route path="x" …>` plus the index route, normalized to a leading slash.
+    // v2 paths kept as <LegacyRedirect> routes are not pages; their targets must be.
+    const redirected = new Set(
+      captures(appSource, /<Route\s+path="([^"*]+)"\s+element=\{\s*<LegacyRedirect/g)
+    );
+    const redirectTargets = captures(appSource, /<LegacyRedirect\s+to="([^"]+)"/g);
     const routed = captures(appSource, /<Route\s+path="([^"*]+)"/g)
-      .filter((path) => !path.includes(":"))
+      .filter((path) => !path.includes(":") && !redirected.has(path))
       .map((path) => `/${path}`);
     const covered = PAGE_COMMANDS.map((page) => page.to);
 
     expect(covered).toContain("/");
-    for (const route of routed) {
+    expect(redirected).toEqual(new Set(["kanban", "workflows", "analytics"]));
+    for (const route of [...routed, ...redirectTargets]) {
       expect(covered, `${route} is not reachable from the palette`).toContain(route);
     }
   });

@@ -3,10 +3,10 @@ description: One-screen inventory of skills, agents, commands, MCP servers, and 
 ---
 
 Print a one-screen inventory of the user's Claude Code config from the Agent
-Monitor Config Explorer at `http://localhost:4820`. Fetch the overview once:
+Monitor Config Explorer at `http://localhost:7770`. Fetch the overview once:
 
 ```bash
-curl -s http://localhost:4820/api/cc-config/overview
+curl -s http://localhost:7770/api/cc-config/overview
 ```
 
 From `counts`, surface just the five core surfaces:

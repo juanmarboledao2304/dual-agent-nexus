@@ -50,8 +50,8 @@ Upgrade the backend data layer and event normalizer to treat **Claude Code** and
 Combine push-based lifecycle hooks with pull-based local transcript watchers for zero-latency updates:
 
 1. **Unified Hook Installer (`scripts/install-hooks.js`):**
-   - **Claude Code (`~/.claude/settings.json`):** Safely merge hooks for `SessionStart`, `PreToolUse`, `PostToolUse`, `SubagentStart`, `SubagentStop`, and `Stop` that POST event payloads to `http://127.0.0.1:4820/api/events?provider=claude`.
-   - **Google Antigravity (`~/.gemini/config/hooks.json`):** Safely merge hooks for `PreToolUse`, `PostToolUse`, `SessionStart`, and `Stop` that POST event payloads to `http://127.0.0.1:4820/api/events?provider=antigravity`. Preserve all existing user hooks and MCP wrappers.
+   - **Claude Code (`~/.claude/settings.json`):** Safely merge hooks for `SessionStart`, `PreToolUse`, `PostToolUse`, `SubagentStart`, `SubagentStop`, and `Stop` that POST event payloads to `http://127.0.0.1:7770/api/events?provider=claude`.
+   - **Google Antigravity (`~/.gemini/config/hooks.json`):** Safely merge hooks for `PreToolUse`, `PostToolUse`, `SessionStart`, and `Stop` that POST event payloads to `http://127.0.0.1:7770/api/events?provider=antigravity`. Preserve all existing user hooks and MCP wrappers.
 
 2. **Real-Time Transcript & Trace Watcher (`server/watchers/liveTranscriptWatcher.js`):**
    - Watch `~/.claude/projects/**/*.jsonl` in real time:
@@ -127,7 +127,7 @@ Allow the user to write prompts, select models/effort levels, and dispatch tasks
    - **Right Wing (Antigravity Subscription - Cool Gradient):** Active session quota/flow metrics, active Antigravity subagents count (broken down by Purple/Blue/Green badges), model distribution (`3.8 Flash` vs `Pro/Argon`), and burn rate.
 
 2. **"Simulate Multi-Agent Swarm" Showcase Mode (Crucial for GitHub Demo & Testing):**
-   - Add a prominent **"⚡ Simulate Swarm"** toggle button in the top navigation bar (and an API endpoint `POST /api/simulate/swarm`).
+   - Add a prominent **" Simulate Swarm"** toggle button in the top navigation bar (and an API endpoint `POST /api/simulate/swarm`).
    - When clicked, simulate a realistic, multi-step 25-second orchestration across WebSockets:
      - Spawn a **Claude Opus (`effort: high`, Red)** orchestrator that delegates tasks to 1 **Claude Sonnet (`effort: medium`, Orange)** coder and 3 **Claude Haiku (`effort: low`, Yellow)** `Explore` subagents scanning files.
      - Simultaneously spawn an **Antigravity Argon (`effort: high`, Purple)** architect that delegates work to 1 **Standard Flow Agent (`effort: medium`, Blue)** and 3 **Gemini 3.8 Flash (`effort: low`, Emerald Green)** fast inspection subagents.

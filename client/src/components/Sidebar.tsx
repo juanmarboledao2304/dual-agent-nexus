@@ -60,11 +60,11 @@ import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
-  Columns3,
-  FolderOpen,
+  LayoutGrid,
+  Network,
+  ScrollText,
   Activity,
   BarChart3,
-  Workflow,
   Boxes,
   Play,
   Settings,
@@ -82,7 +82,6 @@ import {
   Check,
   ChevronUp,
   ChevronDown,
-  Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { api } from "../lib/api";
@@ -90,6 +89,7 @@ import { eventBus } from "../lib/eventBus";
 import type { UpdateStatusPayload, WSMessage } from "../lib/types";
 import { Select } from "./Select";
 import { UPDATE_CHECK_EVENT } from "../lib/appEvents";
+import { NexusMark } from "./NexusMark";
 
 /**
  * Type guard for an `update_status` WebSocket payload.
@@ -104,15 +104,18 @@ function isUpdatePayload(x: unknown): x is UpdateStatusPayload {
 /** Primary navigation entries in sidebar order: route, icon, and translation key. */
 const NAV_KEYS = [
   { to: "/", icon: LayoutDashboard, key: "nav:dashboard" },
-  { to: "/kanban", icon: Columns3, key: "nav:agentBoard" },
-  { to: "/sessions", icon: FolderOpen, key: "nav:sessions" },
+  { to: "/rooms", icon: LayoutGrid, key: "nav:agentBoard" },
+  { to: "/cascade-graph", icon: Network, key: "nav:workflows" },
+  { to: "/sessions", icon: ScrollText, key: "nav:sessions" },
   { to: "/activity", icon: Activity, key: "nav:activityFeed" },
-  { to: "/analytics", icon: BarChart3, key: "nav:analytics" },
-  { to: "/workflows", icon: Workflow, key: "nav:workflows" },
+  { to: "/quota-roi", icon: Gauge, key: "nav:analytics" },
   { to: "/cc-config", icon: Boxes, key: "nav:ccConfig" },
   { to: "/run", icon: Play, key: "nav:run" },
   { to: "/settings", icon: Settings, key: "nav:settings" },
 ] as const;
+
+/** Public repository of the DualAgent Nexus project. */
+const REPO_URL = "https://github.com/juanmarboledao2304/dual-agent-nexus";
 
 /** localStorage key remembering whether the sidebar is collapsed. */
 const STORAGE_KEY = "sidebar-collapsed";
@@ -662,19 +665,11 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
       {/* Brand */}
       <div className="px-3 py-4 border-b border-border flex-shrink-0">
         <div className={`flex items-center ${collapsed ? "justify-center" : "gap-3 px-2"}`}>
-          <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
-            <Activity className="w-4 h-4 text-accent" />
-          </div>
+          <NexusMark size={32} />
           {!collapsed && (
             <div className="min-w-0">
-              <h1 className="text-sm font-semibold text-gray-100 truncate">
-                DualAgent Nexus
-                <span className="sr-only">{t("nav:brand")}</span>
-              </h1>
-              <p className="text-[11px] text-gray-400 truncate">
-                Claude + Antigravity Control
-                <span className="sr-only">{t("nav:brandSub")}</span>
-              </p>
+              <h1 className="text-sm font-semibold text-gray-100 truncate">{t("nav:brand")}</h1>
+              <p className="text-[11px] text-gray-400 truncate">{t("nav:brandSub")}</p>
             </div>
           )}
         </div>
@@ -872,7 +867,7 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
         {!collapsed && (
           <div className="space-y-1.5">
             <a
-              href="https://github.com/hoangsonww/dual-agent-nexus"
+              href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2.5 rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-gray-300 hover:text-gray-200 hover:bg-surface-3 hover:border-border transition-colors"
@@ -885,21 +880,17 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
             </a>
             <div
               className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-surface-2 border border-border/80 text-[11px] font-mono text-slate-300"
-              title="DualAgent Nexus v2.4 • 3-Pool Cascade"
+              title="DualAgent Nexus • 3-Pool Cascade"
             >
-              <span className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-500/20 to-cyan-500/20 border border-slate-700/60 flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              </span>
-              <span className="truncate font-semibold text-slate-200">
-                DualAgent Nexus v2.4 • 3-Pool Cascade
-              </span>
+              <NexusMark size={20} />
+              <span className="truncate font-semibold text-slate-200">3-Pool Cascade</span>
             </div>
           </div>
         )}
         {collapsed && (
           <div className="flex flex-col items-center gap-2 pt-0.5">
             <a
-              href="https://github.com/hoangsonww/dual-agent-nexus"
+              href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-md border border-transparent flex items-center justify-center text-gray-400 hover:text-gray-300 hover:bg-surface-3 hover:border-border transition-colors"
@@ -908,12 +899,6 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
             >
               <Github className="w-3.5 h-3.5" />
             </a>
-            <div
-              className="w-8 h-8 rounded-md bg-surface-2 border border-border/80 flex items-center justify-center text-cyan-400"
-              title="DualAgent Nexus v2.4 • 3-Pool Cascade"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-            </div>
           </div>
         )}
       </div>

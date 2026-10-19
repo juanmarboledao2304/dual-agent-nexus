@@ -1,6 +1,6 @@
 # plugins/
 
-Source of the CCAM agent-extension marketplace: 14 plugins that bring Agent Monitor data into Claude Code and Codex as skills, subagents, slash commands, hooks, CLI helpers, and MCP wiring. Each plugin talks to the local dashboard (default `http://localhost:4820`).
+Source of the CCAM agent-extension marketplace: 14 plugins that bring Agent Monitor data into Claude Code and Codex as skills, subagents, slash commands, hooks, CLI helpers, and MCP wiring. Each plugin talks to the local dashboard (default `http://localhost:7770`).
 
 Installation paths (Claude Code marketplace, Codex marketplace, skills.sh), the full catalog, and the safety model are documented in [`docs/PLUGINS.md`](../docs/PLUGINS.md).
 

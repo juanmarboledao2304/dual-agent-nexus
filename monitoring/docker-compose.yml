@@ -5,7 +5,7 @@
 #
 # The "CCAM — Overview" dashboard and the Prometheus datasource are
 # pre-provisioned, so there is nothing to click after start. Prometheus scrapes
-# the dashboard running on the HOST (a plain `npm start` on :4820) via
+# the dashboard running on the HOST (a plain `npm start` on :7770) via
 # host.docker.internal — see ./prometheus/prometheus.yml to change the target
 # or add a bearer token when DASHBOARD_TOKEN is set. See ./README.md.
 services:

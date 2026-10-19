@@ -18,7 +18,7 @@ function config(overrides: Partial<AppConfig> = {}): AppConfig {
   return {
     serverName: "test",
     serverVersion: "1.0.0",
-    dashboardBaseUrl: new URL("http://127.0.0.1:4820"),
+    dashboardBaseUrl: new URL("http://127.0.0.1:7770"),
     dashboardApiToken: undefined,
     requestTimeoutMs: 5_000,
     retryCount: 0,

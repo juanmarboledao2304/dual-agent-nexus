@@ -1,6 +1,6 @@
 # Claude Code, Cursor & Codex용 에이전트 대시보드
 
-### Claude Code, Cursor & Codex 에이전트 활동을 위한 실시간 모니터링 플랫폼 🚀
+### Claude Code, Cursor & Codex 에이전트 활동을 위한 실시간 모니터링 플랫폼
 
 Claude Code, Cursor, Codex 에이전트 세션, 도구 사용, 대화 기록, 비용 및 서브에이전트 오케스트레이션을 실시간으로 추적하는 전문 대시보드입니다. 네이티브 Hook과 공급자별 로컬 transcript 검색을 결합합니다.
 
@@ -153,115 +153,115 @@ flowchart LR
 <p align="center">
   <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard 개요" width="100%"></a>
   <br>
-  <em>📡 <strong>Dashboard</strong> · 전체 합계, 활성 Agent, 최근 활동, 실시간 상태 신호</em>
+  <em> <strong>Dashboard</strong> · 전체 합계, 활성 Agent, 최근 활동, 실시간 상태 신호</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="작업 진행률 개요" width="100%"></a>
   <br>
-  <em>📋 <strong>Task Progress</strong> · 간결한 완료 현황과 소유자별 작업 미리보기</em>
+  <em> <strong>Task Progress</strong> · 간결한 완료 현황과 소유자별 작업 미리보기</em>
 </p>
 
 <p align="center">
   <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard 상태 보기" width="100%"></a>
   <br>
-  <em>🩺 <strong>System Health</strong> · 스토리지, 캐시, 오류, 도구, 모델, Subagent, 컴팩션</em>
+  <em> <strong>System Health</strong> · 스토리지, 캐시, 오류, 도구, 모델, Subagent, 컴팩션</em>
 </p>
 
 <p align="center">
   <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban Board Agent 보기" width="100%"></a>
   <br>
-  <em>📋 <strong>Kanban Board · Agents</strong> · 명확한 대기 사유와 작업 중, 대기 중, 완료, 실패 Agent</em>
+  <em> <strong>Kanban Board · Agents</strong> · 명확한 대기 사유와 작업 중, 대기 중, 완료, 실패 Agent</em>
 </p>
 
 <p align="center">
   <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban Board 세션 보기" width="100%"></a>
   <br>
-  <em>🗂️ <strong>Kanban Board · Sessions</strong> · 활성, 대기, 완료, 오류, 중단 세션</em>
+  <em> <strong>Kanban Board · Sessions</strong> · 활성, 대기, 완료, 오류, 중단 세션</em>
 </p>
 
 <p align="center">
   <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Sessions 개요" width="100%"></a>
   <br>
-  <em>📂 <strong>Sessions</strong> · 비용과 활동을 포함한 검색, 필터, 서버 페이지네이션 히스토리</em>
+  <em> <strong>Sessions</strong> · 비용과 활동을 포함한 검색, 필터, 서버 페이지네이션 히스토리</em>
 </p>
 
 <p align="center">
   <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="세션 Agent 개요" width="100%"></a>
   <br>
-  <em>🤖 <strong>Session Agents</strong> · 실시간 합계, 도구 사용량, 토큰 흐름, Agent 계층</em>
+  <em> <strong>Session Agents</strong> · 실시간 합계, 도구 사용량, 토큰 흐름, Agent 계층</em>
 </p>
 
 <p align="center">
   <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="세션 작업 진행률 상세" width="100%"></a>
   <br>
-  <em>✅ <strong>Task Details</strong> · 완료 구간, 활성 작업, 소유자, 페이지별 작업 목록</em>
+  <em> <strong>Task Details</strong> · 완료 구간, 활성 작업, 소유자, 페이지별 작업 목록</em>
 </p>
 
 <p align="center">
   <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="세션 대화 보기" width="100%"></a>
   <br>
-  <em>💬 <strong>Conversation</strong> · 렌더링된 트랜스크립트, 코드, 도구 호출, 명령 출력, 세션 마커</em>
+  <em> <strong>Conversation</strong> · 렌더링된 트랜스크립트, 코드, 도구 호출, 명령 출력, 세션 마커</em>
 </p>
 
 <p align="center">
   <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="세션 이벤트 타임라인" width="100%"></a>
   <br>
-  <em>🔬 <strong>Timeline</strong> · 시간순 이벤트, 다차원 필터, 연결된 도구 활동</em>
+  <em> <strong>Timeline</strong> · 시간순 이벤트, 다차원 필터, 연결된 도구 활동</em>
 </p>
 
 <p align="center">
   <a href="images/feed.png"><img src="images/readme/feed.png" alt="Activity Feed 개요" width="100%"></a>
   <br>
-  <em>📰 <strong>Activity Feed</strong> · 일시 정지 가능한 실시간 이벤트, 그룹화, 필터, 세션 이동</em>
+  <em> <strong>Activity Feed</strong> · 일시 정지 가능한 실시간 이벤트, 그룹화, 필터, 세션 이동</em>
 </p>
 
 <p align="center">
   <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Analytics 개요" width="100%"></a>
   <br>
-  <em>📊 <strong>Analytics</strong> · 모델 토큰, 도구 빈도, 활동 히트맵, 세션 추세</em>
+  <em> <strong>Analytics</strong> · 모델 토큰, 도구 빈도, 활동 히트맵, 세션 추세</em>
 </p>
 
 <p align="center">
   <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Workflow analytics 개요" width="100%"></a>
   <br>
-  <em>🔀 <strong>Workflows</strong> · 오케스트레이션 그래프, 도구 흐름, 협업, 위임, 패턴</em>
+  <em> <strong>Workflows</strong> · 오케스트레이션 그래프, 도구 흐름, 협업, 위임, 패턴</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="동적 workflow 실행" width="100%"></a>
   <br>
-  <em>🧬 <strong>Workflow Runs</strong> · journal 기반 상태, Agent, 토큰, 도구, 소요 시간</em>
+  <em> <strong>Workflow Runs</strong> · journal 기반 상태, Agent, 토큰, 도구, 소요 시간</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="펼쳐진 동적 workflow 실행" width="100%"></a>
   <br>
-  <em>🧬 <strong>Expanded Run</strong> · phase 필터, Agent별 지표, 프롬프트, 전체 결과</em>
+  <em> <strong>Expanded Run</strong> · phase 필터, Agent별 지표, 프롬프트, 전체 결과</em>
 </p>
 
 <p align="center">
   <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="세션 상세의 workflow 실행" width="100%"></a>
   <br>
-  <em>🧬 <strong>Session Workflows</strong> · 연결된 동적 실행과 합산된 토큰 비용</em>
+  <em> <strong>Session Workflows</strong> · 연결된 동적 실행과 합산된 토큰 비용</em>
 </p>
 
 <p align="center">
   <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code 및 Codex 구성 탐색기" width="100%"></a>
   <br>
-  <em>🧰 <strong>Agent Config</strong> · 지원되는 Claude Code 및 Codex 구성을 검사하고 안전하게 편집</em>
+  <em> <strong>Agent Config</strong> · 지원되는 Claude Code 및 Codex 구성을 검사하고 안전하게 편집</em>
 </p>
 
 <p align="center">
   <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex 구성 탐색기" width="100%"></a>
   <br>
-  <em>🧰 <strong>Codex Config</strong> · 모델, profile, MCP, 프로젝트, 스킬, Hook, 규칙, plugin, 지침</em>
+  <em> <strong>Codex Config</strong> · 모델, profile, MCP, 프로젝트, 스킬, Hook, 규칙, plugin, 지침</em>
 </p>
 
 <p align="center">
   <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code 스킬 탐색기" width="100%"></a>
   <br>
-  <em>🧩 <strong>Skills</strong> · 검색 가능한 사용자, 프로젝트, plugin 스킬과 백업 기반 편집</em>
+  <em> <strong>Skills</strong> · 검색 가능한 사용자, 프로젝트, plugin 스킬과 백업 기반 편집</em>
 </p>
 
 <p align="center">
@@ -273,25 +273,25 @@ flowchart LR
 <p align="center">
   <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent 실시간 출력" width="100%"></a>
   <br>
-  <em>💬 <strong>Live Run</strong> · 스트리밍 대화, reasoning, 명령, 파일 변경, 도구, 재연결</em>
+  <em> <strong>Live Run</strong> · 스트리밍 대화, reasoning, 명령, 파일 변경, 도구, 재연결</em>
 </p>
 
 <p align="center">
   <a href="images/settings.png"><img src="images/readme/settings.png" alt="Settings 개요" width="100%"></a>
   <br>
-  <em>⚙️ <strong>Settings</strong> · 가격, Hook, 알림, 데이터, 원격 소스, 시스템 상태</em>
+  <em> <strong>Settings</strong> · 가격, Hook, 알림, 데이터, 원격 소스, 시스템 상태</em>
 </p>
 
 <p align="center">
   <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="알림 및 Webhook 설정" width="100%"></a>
   <br>
-  <em>🔔 <strong>Alerts</strong> · 규칙, 쿨다운, 활동, 내장 Webhook 또는 서명된 범용 Webhook</em>
+  <em> <strong>Alerts</strong> · 규칙, 쿨다운, 활동, 내장 Webhook 또는 서명된 범용 Webhook</em>
 </p>
 
 <p align="center">
   <a href="images/remote.png"><img src="images/readme/remote.png" alt="Remote Data Sources 설정" width="100%"></a>
   <br>
-  <em>🛰️ <strong>Remote Data Sources</strong> · provider별 SSH 동기화와 소스 범위 모니터링</em>
+  <em> <strong>Remote Data Sources</strong> · provider별 SSH 동기화와 소스 범위 모니터링</em>
 </p>
 
 <p align="center">
@@ -412,7 +412,7 @@ npm run build && npm start
 | 모드        | URL                     |
 | ----------- | ----------------------- |
 | 개발        | `http://localhost:5173` |
-| 프로덕션    | `http://localhost:4820` |
+| 프로덕션    | `http://localhost:7770` |
 
 ### 5. 선택 사항: 로컬 MCP 서버 빌드 및 실행
 
@@ -478,7 +478,7 @@ openssl rand -base64 32 > deployments/secrets/grafana-admin-password
 npm run docker:full:up
 ```
 
-Host port는 기본적으로 loopback에만 bind됩니다: Dashboard `4820`, MCP `8819`, Nginx `8080`, Prometheus `9090`, Grafana `3000`. Claude/Codex home은 read-only mount이고 named volume이 SQLite와 dashboard-owned config를 보존합니다. Nginx는 UI, 인증된 REST, WebSocket을 proxy하지만 Hook, metrics, MCP는 기본적으로 edge에서 차단합니다.
+Host port는 기본적으로 loopback에만 bind됩니다: Dashboard `7770`, MCP `8819`, Nginx `8080`, Prometheus `9090`, Grafana `3000`. Claude/Codex home은 read-only mount이고 named volume이 SQLite와 dashboard-owned config를 보존합니다. Nginx는 UI, 인증된 REST, WebSocket을 proxy하지만 Hook, metrics, MCP는 기본적으로 edge에서 차단합니다.
 
 > [!IMPORTANT]
 > Hook은 host에서 설치하십시오. Remote Hook은 `CCAM_DASHBOARD_URL=https://...`와 `CCAM_HOOK_TOKEN`을 사용하며 non-loopback URL은 HTTPS가 필수입니다. [DEPLOYMENT.md](DEPLOYMENT.md)를 참조하십시오.
@@ -616,8 +616,8 @@ flowchart LR
 
 | 환경 변수 | 기본값 | 목적 |
 | --- | --- | --- |
-| `DASHBOARD_PORT` | `4820` | Express server port. |
-| `CLAUDE_DASHBOARD_PORT` | `4820` | Hook handler가 사용하는 port. |
+| `DASHBOARD_PORT` | `7770` | Express server port. |
+| `CLAUDE_DASHBOARD_PORT` | `7770` | Hook handler가 사용하는 port. |
 | `NODE_ENV` | `development` | 빌드된 client를 제공하려면 `production`을 사용합니다. |
 | `DASHBOARD_UPDATE_CHECK` | 활성화 | 예약 upstream 확인을 끄려면 `0`, `false`, `off`로 설정합니다. |
 | `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` | `300000` | 업데이트 간격이며 최솟값은 60,000 ms입니다. 수동 **Check now**는 계속 사용할 수 있습니다. |
@@ -659,7 +659,7 @@ Git clone은 주기적으로 canonical remote를 fetch하고 기본 branch를 �
 
 ## `ccam` CLI
 
-**`ccam`** CLI(`bin/ccam.js` → `cli/`)는 상속 옵션, 검증, 제안, 자동 생성 도움말, shell completion을 갖춘 Commander.js 명령 트리로 어떤 terminal에서든 대시보드를 제어합니다. `npm run setup`이 자동으로 링크합니다. Server 탐색은 `--server` / `CCAM_URL`, 설정된 port, live-server registry, `http://127.0.0.1:4820` 순으로 확인합니다.
+**`ccam`** CLI(`bin/ccam.js` → `cli/`)는 상속 옵션, 검증, 제안, 자동 생성 도움말, shell completion을 갖춘 Commander.js 명령 트리로 어떤 terminal에서든 대시보드를 제어합니다. `npm run setup`이 자동으로 링크합니다. Server 탐색은 `--server` / `CCAM_URL`, 설정된 port, live-server registry, `http://127.0.0.1:7770` 순으로 확인합니다.
 
 ```bash
 # 서버
@@ -722,7 +722,7 @@ ccam help [command…] | commands [--json] | completion bash|zsh|fish | version
 
 - **출력:** TTY에는 table, status icon, chart, sparkline, Agent tree, transcript view, colored help를 표시합니다. Pipe에는 plain text를 출력합니다. `--json` 또는 `CCAM_OUTPUT=json`은 안정적인 JSON을 반환하고, `tail`, `stream`, `run follow`는 NDJSON을 사용합니다. 오류는 stderr에 `{"error":{"code":"…","message":"…"}}`로 출력되며 종료 코드는 `0` 또는 `1`입니다.
 - **쓰기:** 대화형 `y/N` 또는 `--yes`를 사용합니다. 비대화형 쓰기에는 `--yes`가 필요하고, `clear-data`는 항상 문자 그대로의 flag가 필요합니다.
-- **Offline mode:** 읽기 전용 명령은 `data/dashboard.db`로 전환하고 `⚠ Offline mode` 배너를 표시하며 liveness view를 통해 종료된 active 세션을 보정합니다. Server-only 명령은 대시보드를 사용할 수 없는 이유를 설명합니다.
+- **Offline mode:** 읽기 전용 명령은 `data/dashboard.db`로 전환하고 ` Offline mode` 배너를 표시하며 liveness view를 통해 종료된 active 세션을 보정합니다. Server-only 명령은 대시보드를 사용할 수 없는 이유를 설명합니다.
 - **REPL과 completion:** `ccam repl`은 트리 기반 completion, 영구 history, live prompt, `help`, `json`, `watch` 내장 명령을 추가하고 각 줄을 격리된 child process에서 실행합니다. `source <(ccam completion zsh)`로 zsh completion을 켤니다.
 
 `ccam`이 `PATH`에 없다면 저장소 root에서 `npm link`를 한 번 실행하세요. 전체 계약은 [docs/CLI.md](./docs/CLI.md)에서 확인할 수 있습니다.
@@ -959,13 +959,13 @@ flowchart TD
     VALIDATE --> TYPE{"Tool type?"}
     TYPE -->|Read-only| EXEC["Execute"]
     TYPE -->|Mutation| M_FLAG{"ALLOW_MUTATIONS?"}
-    M_FLAG -->|No| DENY1["❌ Reject"]
+    M_FLAG -->|No| DENY1[" Reject"]
     M_FLAG -->|Yes| DEST{"Destructive?"}
     DEST -->|No| EXEC
     DEST -->|Yes| D_FLAG{"ALLOW_DESTRUCTIVE?"}
-    D_FLAG -->|No| DENY2["❌ Reject"]
+    D_FLAG -->|No| DENY2[" Reject"]
     D_FLAG -->|Yes| TOKEN{"confirmation_token?"}
-    TOKEN -->|Invalid| DENY3["❌ Reject"]
+    TOKEN -->|Invalid| DENY3[" Reject"]
     TOKEN -->|Valid| EXEC
     EXEC --> RESULT["Return tool result"]
 
@@ -997,7 +997,7 @@ flowchart TD
 
 ### OpenAPI / Swagger / ReDoc
 
-HTTP API를 탐색하는 방법은 세 가지가 있으며, 모두 하나의 OpenAPI 3.0.3 사양으로 구동됩니다(기본 서버 포트 `4820`):
+HTTP API를 탐색하는 방법은 세 가지가 있으며, 모두 하나의 OpenAPI 3.0.3 사양으로 구동됩니다(기본 서버 포트 `7770`):
 
 | 메서드 | 경로                            | 설명                                                                                              |
 | ------ | ------------------------------- | ------------------------------------------------------------------------------------------------- |
@@ -1209,19 +1209,19 @@ npm run monitoring:verify
 <p align="center">
   <a href="images/grafana.png"><img src="images/readme/grafana.png" alt="Grafana CCAM Overview dashboard" width="100%"></a>
   <br>
-  <em>📊 <strong>Grafana · CCAM Overview</strong> · 실시간 <code>/api/metrics</code> scrape에서 가져온 fleet 상태, database 합계, 분포, rate</em>
+  <em> <strong>Grafana · CCAM Overview</strong> · 실시간 <code>/api/metrics</code> scrape에서 가져온 fleet 상태, database 합계, 분포, rate</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-console.png"><img src="images/readme/prometheus-console.png" alt="Prometheus CCAM console" width="100%"></a>
   <br>
-  <em>🔥 <strong>Prometheus · CCAM console</strong> · scrape 상태, 세션, 이벤트, 토큰, Graph drill-down 링크</em>
+  <em> <strong>Prometheus · CCAM console</strong> · scrape 상태, 세션, 이벤트, 토큰, Graph drill-down 링크</em>
 </p>
 
 <p align="center">
   <a href="images/prometheus-query.png"><img src="images/readme/prometheus-query.png" alt="CCAM PromQL query가 있는 Prometheus Graph" width="100%"></a>
   <br>
-  <em>📈 <strong>Prometheus · Graph</strong> · console의 starter link로 scrape된 CCAM metric에 PromQL 실행</em>
+  <em> <strong>Prometheus · Graph</strong> · console의 starter link로 scrape된 CCAM metric에 PromQL 실행</em>
 </p>
 
 메트릭 이름, 인증, scrape 구성은 [docs/API.md → Metrics](./docs/API.md#metrics)에서 확인하세요.
@@ -1296,7 +1296,7 @@ flowchart LR
 
 ### WebSocket
 
-`ws://localhost:4820/ws`에 연결하면 실시간 푸시 메시지를 받을 수 있습니다:
+`ws://localhost:7770/ws`에 연결하면 실시간 푸시 메시지를 받을 수 있습니다:
 
 ```json
 {
@@ -1571,14 +1571,14 @@ Tabby는 키보드로 조작할 수 있고, 말풍선에 `aria-live`를 사용�
   <a href="vscode-extension/vscode.png"><img src="images/readme/vscode.png" alt="VS Code Extension Screenshot" width="100%"></a>
 </p>
 
-### 🚀 주요 기능
+### 주요 기능
 - **라이브 사이드바**: 실시간 에이전트 상태(작업 중, 대기 중, 완료됨 등)를 보여주는 전용 활동 표시줄(Activity Bar) 뷰.
 - **사용량 분석**: 총 토큰, 실시간 USD 비용, 이벤트 수를 사이드바에서 바로 추적합니다.
 - **상태 표시줄 통합**: 활성 세션과 에이전트를 보여주는 하단 바의 한눈에 보는 펄스 모니터.
 - **딥 내비게이션**: 특정 대시보드 뷰(칸반, 분석, 설정) 또는 최근 세션에 원클릭으로 접근합니다.
 - **통합 탭**: 전체 모니터링 대시보드를 네이티브 VS Code 웹뷰 탭으로 엽니다.
 
-### 📦 설치 및 설정
+### 설치 및 설정
 1. [vscode-extension](./vscode-extension) 디렉터리를 엽니다.
 2. Marketplace 확장을 설치하거나 `vsce package`로 직접 패키징합니다.
 3. 로컬 대시보드 서버가 실행 중인지 확인합니다(`npm run dev`).
@@ -1598,16 +1598,16 @@ Tabby는 키보드로 조작할 수 있고, 말풍선에 `aria-live`를 사용�
 <p align="center">
   <a href="images/macos.png"><img src="images/readme/macos.png" alt="Claude Code Monitor running as a native desktop app" width="100%"></a>
   <br>
-  <em>🍎🪟 <strong>데스크톱 앱</strong> — 메뉴 바 / 알림 영역(트레이) 아이콘, 로그인 시 열기, 단일 인스턴스 잠금을 갖춘 네이티브 셸입니다. 동일한 대시보드를 실제 OS 창에서 보여줍니다(macOS 화면).</em>
+  <em> <strong>데스크톱 앱</strong> — 메뉴 바 / 알림 영역(트레이) 아이콘, 로그인 시 열기, 단일 인스턴스 잠금을 갖춘 네이티브 셸입니다. 동일한 대시보드를 실제 OS 창에서 보여줍니다(macOS 화면).</em>
 </p>
 
 <p align="center">
   <a href="images/windows_app.png"><img src="images/readme/windows_app.png" alt="Claude Code Monitor running as a native Windows desktop app, showing the Activity Feed with the Windows window menu bar and Tabby panel" width="100%"></a>
   <br>
-  <em>🪟 네이티브 Windows 앱으로 실행되는 동일한 대시보드 — 알림 영역(트레이) 아이콘, 네이티브 창 메뉴, 로그인 시 열기.</em>
+  <em> 네이티브 Windows 앱으로 실행되는 동일한 대시보드 — 알림 영역(트레이) 아이콘, 네이티브 창 메뉴, 로그인 시 열기.</em>
 </p>
 
-`localhost:4820`에서 제공되는 동일한 UI에 native window, tray, menu, login, shutdown 동작을 추가합니다.
+`localhost:7770`에서 제공되는 동일한 UI에 native window, tray, menu, login, shutdown 동작을 추가합니다.
 
 ### 동작 방식
 
@@ -1640,8 +1640,8 @@ flowchart LR
 
 실행 시 앱은 다음을 수행합니다:
 
-1. 사용 가능한 포트를 선택합니다 — **4820**을 우선으로 하고, **4821–4829**로 폴백하며, 모두 사용 중이면 임의의 높은 포트를 사용합니다.
-2. 정상 동작 중인 대시보드 서버가 이미 `4820`에서 `/api/health`에 응답하면(예: 터미널에서 `npm start`를 실행한 경우), 이중 바인딩 대신 **해당 서버를 채택합니다** — 포트 충돌도, SQLite 경합도 없습니다. 채택된 서버는 앱을 종료한 후에도 계속 실행됩니다.
+1. 사용 가능한 포트를 선택합니다 — **7770**을 우선으로 하고, **7771–7779**로 폴백하며, 모두 사용 중이면 임의의 높은 포트를 사용합니다.
+2. 정상 동작 중인 대시보드 서버가 이미 `7770`에서 `/api/health`에 응답하면(예: 터미널에서 `npm start`를 실행한 경우), 이중 바인딩 대신 **해당 서버를 채택합니다** — 포트 충돌도, SQLite 경합도 없습니다. 채택된 서버는 앱을 종료한 후에도 계속 실행됩니다.
 3. 그렇지 않으면 내장 서버를 부팅하고, **최초의 소유 서버 부팅** 시 Claude Code Hook을 자동 설치하고 백그라운드 서비스(업데이트 스케줄러, `cc-watcher`, 고아 실행 조정)를 시작합니다. 따라서 DMG만 사용하는 사용자도 **수동 설정 없이** 이벤트가 흐르기 시작합니다 — 체크아웃도, `npm run install-hooks`도 필요 없습니다.
 4. **(macOS)** **Run Claude** 기능이 `claude` CLI를 찾아 실행할 수 있도록 **로그인 셸 `PATH`**를 복구합니다 — Finder/Dock에서 실행된 앱은 그렇지 않으면 launchd의 최소한의 `PATH`만 상속받아 `~/.local/bin`, `/opt/homebrew/bin`, 버전 관리자 bin 등에 있는 CLI를 찾지 못합니다. (Windows에서는 프로세스가 이미 사용자 `PATH`를 상속받습니다.)
 5. 대시보드 창을 엽니다 — 단, 앱이 로그인 시 실행된 경우(macOS에서는 로그인 항목을 통해, Windows에서는 태그된 `HKCU\…\Run` 항목을 통해)에는 트레이 전용으로 유지됩니다.
@@ -1666,7 +1666,7 @@ flowchart LR
 | Windows (설치 프로그램) | `ClaudeCodeMonitor-Setup-<ver>-x64.exe` | 사용자별 설치, 관리자 권한 불필요 |
 | Windows (포터블) | `ClaudeCodeMonitor-<ver>-x64-portable.exe` | 설치 없이 실행 |
 
-커밋별 최신 빌드도 CI 아티팩트로 제공됩니다(로그인 필요, 14일 보존): `🍎 macOS Desktop (DMG)` 잡의 `ClaudeCodeMonitor-dmg`와 `🪟 Windows Desktop (EXE)` 잡의 `ClaudeCodeMonitor-win`입니다 — 다음 릴리스 태그 전에 `master`를 테스트할 때 유용합니다.
+커밋별 최신 빌드도 CI 아티팩트로 제공됩니다(로그인 필요, 14일 보존): ` macOS Desktop (DMG)` 잡의 `ClaudeCodeMonitor-dmg`와 ` Windows Desktop (EXE)` 잡의 `ClaudeCodeMonitor-win`입니다 — 다음 릴리스 태그 전에 `master`를 테스트할 때 유용합니다.
 
 **옵션 B — 직접 빌드하기.** 리포지토리 루트에서:
 
@@ -1704,19 +1704,19 @@ npm run desktop:win          # Windows: NSIS 설치 프로그램 → desktop/rel
 <p align="center">
   <a href="images/setup_win_wizard.png"><img src="images/readme/setup_win_wizard.png" alt="Windows installer options" width="100%"></a>
   <br>
-  <em>🪟 <strong>Install options</strong> · 사용자별 또는 모든 사용자용 설치 선택</em>
+  <em> <strong>Install options</strong> · 사용자별 또는 모든 사용자용 설치 선택</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard2.png"><img src="images/readme/setup_win_wizard2.png" alt="Windows installer destination" width="100%"></a>
   <br>
-  <em>🪟 <strong>Install location</strong> · destination folder를 확인하거나 변경</em>
+  <em> <strong>Install location</strong> · destination folder를 확인하거나 변경</em>
 </p>
 
 <p align="center">
   <a href="images/setup_win_wizard3.png"><img src="images/readme/setup_win_wizard3.png" alt="Windows installer completion screen" width="100%"></a>
   <br>
-  <em>🪟 <strong>Windows setup complete</strong> · installer를 마치고 Claude Code Monitor 실행</em>
+  <em> <strong>Windows setup complete</strong> · installer를 마치고 Claude Code Monitor 실행</em>
 </p>
 
 ### 빌드 명령어
@@ -1977,7 +1977,7 @@ graph LR
 flowchart TD
     START["Claude Code fires hook"] --> STDIN["Read stdin to EOF"]
     STDIN --> PARSE{"Parse JSON?"}
-    PARSE -->|Success| POST["POST to 127.0.0.1:4820<br/>/api/hooks/event"]
+    PARSE -->|Success| POST["POST to 127.0.0.1:7770<br/>/api/hooks/event"]
     PARSE -->|Failure| WRAP["Wrap raw input as JSON"]
     WRAP --> POST
     POST --> RESP{"Response?"}
@@ -1999,7 +1999,7 @@ flowchart TD
 ```mermaid
 graph LR
     subgraph dev["Development — 2 processes"]
-        D_CMD["npm run dev"] --> D_SRV["Express :4820<br/>디바운스 감시기"]
+        D_CMD["npm run dev"] --> D_SRV["Express :7770<br/>디바운스 감시기"]
         D_CMD --> D_VITE["Vite :5173<br/>HMR"]
         D_BROWSER["Browser"] --> D_VITE
         D_VITE -->|"proxy /api + /ws"| D_SRV
@@ -2007,7 +2007,7 @@ graph LR
 
     subgraph prod["Production — 1 process"]
         P_BUILD["npm run build"] --> P_DIST["client/dist/"]
-        P_START["npm start"] --> P_SRV["Express :4820<br/>serves static + API"]
+        P_START["npm start"] --> P_SRV["Express :7770<br/>serves static + API"]
         P_BROWSER["Browser"] --> P_SRV
     end
 
@@ -2031,7 +2031,7 @@ graph LR
     RC["Remote Client"] -->|"POST /mcp · GET /sse"| M_HTTP
     OP["Operator"] -->|"interactive CLI"| M_REPL
 
-    M_STDIO --> D["Dashboard Server<br/>:4820"]
+    M_STDIO --> D["Dashboard Server<br/>:7770"]
     M_HTTP --> D
     M_REPL --> D
 
@@ -2047,7 +2047,7 @@ flowchart LR
     subgraph desktop["Desktop App (macOS & Windows) — 1 Electron process"]
         E_MAIN["Electron Main Process<br/>(Node 22 / Electron 35)"]
         E_HOST["server-host.ts<br/>require() server/index.js"]
-        E_SRV["Embedded Express :4820<br/>API · SQLite · WebSocket"]
+        E_SRV["Embedded Express :7770<br/>API · SQLite · WebSocket"]
         E_WIN["BrowserWindow<br/>built React client"]
         E_TRAY["Menu-bar (tray) icon<br/>+ native app menu"]
         E_MAIN --> E_HOST
@@ -2267,8 +2267,8 @@ agent-dashboard/
 | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `better-sqlite3` 설치 실패        | 치명적이지 않습니다 — 서버가 Node.js 내장 `node:sqlite`로 자동 폴백합니다(Node 22+). 이전 Node 버전에서는 Python 3와 C++ 빌드 도구를 설치한 후 `npm rebuild better-sqlite3`를 실행하십시오 |
 | Hook이 실행되지 않음              | `npm run install-hooks`를 실행하고 Claude Code를 재시작하십시오. `~/.claude/settings.json`에 Hook이 존재하는지 확인하십시오                                       |
-| 대시보드에 데이터가 표시되지 않음 | Claude Code 세션을 시작하기 전에 서버가 실행 중인지(`npm run dev`) 확인하십시오. `http://localhost:4820/api/health`를 확인하십시오                                |
-| WebSocket 연결 끊김               | 클라이언트는 2초마다 자동으로 재연결합니다. 포트 4820이 방화벽에 의해 차단되지 않았는지 확인하십시오                                                              |
+| 대시보드에 데이터가 표시되지 않음 | Claude Code 세션을 시작하기 전에 서버가 실행 중인지(`npm run dev`) 확인하십시오. `http://localhost:7770/api/health`를 확인하십시오                                |
+| WebSocket 연결 끊김               | 클라이언트는 2초마다 자동으로 재연결합니다. 포트 7770이 방화벽에 의해 차단되지 않았는지 확인하십시오                                                              |
 | 재시작 후 오래된 데이터           | 데이터베이스는 재시작 후에도 유지됩니다. 새 데모 데이터를 원하면 `npm run seed`를 실행하고, 초기화하려면 `data/dashboard.db`를 삭제하십시오                       |
 | MCP 도구 연결 실패                | `MCP_DASHBOARD_BASE_URL`에서 대시보드 API가 실행 중인지 확인하고 MCP를 다시 빌드/시작하십시오(`npm run mcp:build`, `npm run mcp:start`)                           |
 
@@ -2278,7 +2278,7 @@ agent-dashboard/
 
 기여를 환영합니다 — 전체 가이드는 [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md)를 참조하십시오.
 
-모든 기여자는 [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)에 서명해야 합니다. 이는 `🖋️ CLA Assistant` GitHub Action에 의해 모든 풀 리퀘스트에서 자동으로 적용됩니다: 처음 PR을 열면 봇이 `I have read the CLA Document and I hereby sign the CLA`라고 댓글을 달아 서명하도록 요청합니다. 서명할 때까지 PR의 **CLA Assistant** 상태 검사는 빨간색으로 유지되며, 한 번 서명하면 이후의 모든 기여에 적용됩니다.
+모든 기여자는 [Contributor License Agreement](https://github.com/hoangsonww/Claude-Code-Agent-Monitor/blob/master/CLA.md)에 서명해야 합니다. 이는 ` CLA Assistant` GitHub Action에 의해 모든 풀 리퀘스트에서 자동으로 적용됩니다: 처음 PR을 열면 봇이 `I have read the CLA Document and I hereby sign the CLA`라고 댓글을 달아 서명하도록 요청합니다. 서명할 때까지 PR의 **CLA Assistant** 상태 검사는 빨간색으로 유지되며, 한 번 서명하면 이후의 모든 기여에 적용됩니다.
 
 ---
 

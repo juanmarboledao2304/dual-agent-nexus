@@ -25,7 +25,7 @@ This may be:
 ## Procedure
 
 1. **Identify the target session**:
-   - If session ID given: `GET /api/sessions/{id}` from `http://localhost:4820`
+   - If session ID given: `GET /api/sessions/{id}` from `http://localhost:7770`
    - If "latest": `GET /api/sessions?limit=1` (default sort: most recently updated first)
    - If "errors": `GET /api/sessions?limit=10&status=error`
 
@@ -74,6 +74,6 @@ This may be:
 
 Present as a debug report with:
 - Session summary header (ID, status, model, duration, cost)
-- Color-coded timeline (✅ success, ❌ error, ⚠️ warning, ℹ️ info)
+- Color-coded timeline ( success, error, warning, ℹ️ info)
 - Agent tree diagram
 - Diagnosis section with numbered findings

@@ -7,7 +7,7 @@
  * behind a reverse proxy), then an explicit CLAUDE_DASHBOARD_PORT /
  * DASHBOARD_PORT (matching the hook handler's contract), then the live-server
  * discovery file ~/.claude/.agent-dashboard.json (PID-liveness-checked on
- * read), then the default http://127.0.0.1:4820.
+ * read), then the default http://127.0.0.1:7770.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
@@ -31,7 +31,7 @@ function baseUrl() {
   } catch {
     /* discovery unavailable — fall through to the default */
   }
-  return "http://127.0.0.1:4820";
+  return "http://127.0.0.1:7770";
 }
 
 /** The API token, when the dashboard is protected by DASHBOARD_API_TOKEN. */

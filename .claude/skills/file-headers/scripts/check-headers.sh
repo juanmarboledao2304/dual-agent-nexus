@@ -2,16 +2,18 @@
 # check-headers.sh — audit the repo for applicable source files missing the
 # mandatory copyright/authorship header (see .claude/skills/file-headers).
 # Prints each non-compliant file; exits 0 when fully compliant, 1 otherwise.
-# @author Son Nguyen <hoangson091104@gmail.com>
+# Accepted author lines: the DualAgent Nexus maintainer (new and Nexus-owned
+# files) or the original upstream author (inherited Agent Monitor files).
+# @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
-AUTHOR_MARK="@author Son Nguyen"
+AUTHOR_PATTERN="@author (Juan Manuel Arboleda Orozco|Son Nguyen)"
 
 missing=0
 while IFS= read -r f; do
-  if ! grep -q "$AUTHOR_MARK" "$f"; then
+  if ! grep -qE "$AUTHOR_PATTERN" "$f"; then
     echo "MISSING HEADER: ${f#"$ROOT"/}"
     missing=1
   fi
@@ -27,6 +29,6 @@ done < <(
 )
 
 if [ "$missing" -eq 0 ]; then
-  echo "✔ All applicable files carry the authorship header."
+  echo "OK: All applicable files carry the authorship header."
 fi
 exit "$missing"

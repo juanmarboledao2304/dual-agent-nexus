@@ -3,14 +3,14 @@ description: Print the orchestration DAG edges (parent→child subagents) for a 
 argument-hint: "[session-id]"
 ---
 
-Print the multi-agent orchestration DAG for a session from `http://localhost:4820`.
+Print the multi-agent orchestration DAG for a session from `http://localhost:7770`.
 
-The session id is **$ARGUMENTS**. If empty, fetch `curl -s 'http://localhost:4820/api/sessions?limit=1'` and use the most recent session, stating which id you picked. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
+The session id is **$ARGUMENTS**. If empty, fetch `curl -s 'http://localhost:7770/api/sessions?limit=1'` and use the most recent session, stating which id you picked. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
 
 Fetch the workflow intelligence and read its `orchestration` dataset:
 
 ```
-curl -s http://localhost:4820/api/workflows/$ARGUMENTS
+curl -s http://localhost:7770/api/workflows/$ARGUMENTS
 ```
 
 `orchestration` contains the DAG nodes (agent id, type, model, status, depth) and parent→child edges.

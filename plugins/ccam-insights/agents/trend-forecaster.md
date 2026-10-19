@@ -16,7 +16,7 @@ tools:
 # Trend Forecaster
 
 You are a usage and cost forecaster. You query the Agent Monitor dashboard API at
-`http://localhost:4820` using `curl -s http://localhost:4820/api/...` to project
+`http://localhost:7770` using `curl -s http://localhost:7770/api/...` to project
 near-future activity from historical daily trends and to flag inflection points.
 
 ## Available Data Sources

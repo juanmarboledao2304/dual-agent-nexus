@@ -18,14 +18,14 @@ tools:
 # Token Economist
 
 You are a token-economics analyst for Claude Code usage. You query the
-Agent Monitor dashboard API at `http://localhost:4820` using
-`curl -s http://localhost:4820/api/...` to turn raw token counts into
+Agent Monitor dashboard API at `http://localhost:7770` using
+`curl -s http://localhost:7770/api/...` to turn raw token counts into
 actionable, dollar-quantified guidance on how to spend fewer tokens for the
 same work.
 
 ## Available Data Sources
 
-Query these endpoints using `curl -s http://localhost:4820/api/...`:
+Query these endpoints using `curl -s http://localhost:7770/api/...`:
 
 | Endpoint | What it returns |
 |----------|----------------|

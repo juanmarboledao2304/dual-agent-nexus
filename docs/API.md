@@ -35,8 +35,8 @@ The Agent Dashboard API provides programmatic access to Claude Code session moni
 
 ```mermaid
 graph LR
-    Client[API Client] -->|HTTP/HTTPS| REST[REST API<br/>:4820/api/*]
-    Client -->|WebSocket| WS[WebSocket<br/>:4820/ws]
+    Client[API Client] -->|HTTP/HTTPS| REST[REST API<br/>:7770/api/*]
+    Client -->|WebSocket| WS[WebSocket<br/>:7770/ws]
     
     REST --> DB[(SQLite)]
     WS --> Broadcast[Real-time<br/>Broadcasts]
@@ -101,7 +101,7 @@ sequenceDiagram
 ## Base URL
 
 ```
-http://localhost:4820
+http://localhost:7770
 ```
 
 For production, use HTTPS:
@@ -162,7 +162,7 @@ returns the same optional field.
 **Example Request:**
 
 ```bash
-curl "http://localhost:4820/api/sessions?limit=10&status=active&include_task_progress=true"
+curl "http://localhost:7770/api/sessions?limit=10&status=active&include_task_progress=true"
 ```
 
 `last_activity` in every list row is the timestamp of the latest durable session event. It does **not** reuse the mutable `updated_at` bookkeeping timestamp, so a title, card-context, or watchdog repair cannot make an idle session appear newly active. Eventless historical rows fall back to their lifecycle timestamp.
@@ -289,7 +289,7 @@ for list rows, including at most five preview tasks and enriching at most 100 re
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/sessions/sess_abc123
+curl http://localhost:7770/api/sessions/sess_abc123
 ```
 
 **Example Response:**
@@ -408,7 +408,7 @@ Returns aggregated counts powering the Session Detail overview panel. All aggreg
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/sessions/sess_abc123/stats
+curl http://localhost:7770/api/sessions/sess_abc123/stats
 ```
 
 **Example Response:**
@@ -473,7 +473,7 @@ Returns all agents for a session.
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/sessions/sess_abc123/agents
+curl http://localhost:7770/api/sessions/sess_abc123/agents
 ```
 
 **Example Response:**
@@ -529,7 +529,7 @@ Returns single agent details.
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/agents/agent_xyz789
+curl http://localhost:7770/api/agents/agent_xyz789
 ```
 
 **Example Response:**
@@ -571,7 +571,7 @@ Returns tool executions for an agent.
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/agents/agent_xyz789/tools
+curl http://localhost:7770/api/agents/agent_xyz789/tools
 ```
 
 **Example Response:**
@@ -646,7 +646,7 @@ Returns all tool executions across all sessions.
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/tools?limit=50&tool_name=bash
+curl http://localhost:7770/api/tools?limit=50&tool_name=bash
 ```
 
 **Example Response:**
@@ -704,7 +704,7 @@ scrape_configs:
   - job_name: ccam
     metrics_path: /api/metrics
     static_configs:
-      - targets: ["host.docker.internal:4820"]
+      - targets: ["host.docker.internal:7770"]
     # authorization:              # only if DASHBOARD_TOKEN is set
     #   credentials: "<DASHBOARD_TOKEN>"
 ```
@@ -726,7 +726,7 @@ Returns all pricing rules (default + custom).
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/pricing
+curl http://localhost:7770/api/pricing
 ```
 
 **Example Response:**
@@ -825,7 +825,7 @@ The intro block is **optional and backward-compatible**: a request that omits ev
 **Example Request:**
 
 ```bash
-curl -X PUT http://localhost:4820/api/pricing \
+curl -X PUT http://localhost:7770/api/pricing \
   -H "Content-Type: application/json" \
   -d '{
     "model_pattern": "gpt-5.1-codex",
@@ -948,7 +948,7 @@ Delete custom pricing rule (default rules cannot be deleted).
 
 ```bash
 # Pattern must be URL-encoded
-curl -X DELETE http://localhost:4820/api/pricing/gpt-5.1-codex
+curl -X DELETE http://localhost:7770/api/pricing/gpt-5.1-codex
 ```
 
 **Example Response:**
@@ -1008,7 +1008,7 @@ Returns notifications for a session.
 **Example Request:**
 
 ```bash
-curl http://localhost:4820/api/sessions/sess_abc123/notifications
+curl http://localhost:7770/api/sessions/sess_abc123/notifications
 ```
 
 **Example Response:**
@@ -1200,7 +1200,7 @@ Pulls history from **every enabled** source sequentially (one SSH connection at 
 `GET /api/sessions`, `/api/events`, `/api/agents`, `/api/stats`, and `/api/analytics` accept an optional `sources` query parameter: a comma-separated list of source ids to include (omit for all). `GET /api/sessions/facets` correspondingly returns a `sources: string[]` array (alongside `cwds`) listing the distinct `sessions.source` values so the UI can build the filter dropdown.
 
 ```bash
-curl "http://localhost:4820/api/sessions?sources=local,4d1f0e2a-7b9c-4c33-8a21-9e0f7b6d4c11"
+curl "http://localhost:7770/api/sessions?sources=local,4d1f0e2a-7b9c-4c33-8a21-9e0f7b6d4c11"
 ```
 
 ---
@@ -1367,9 +1367,9 @@ not recreate them.
 
 ```bash
 # Preview, then apply, a 5 GB cap
-curl -s -X POST localhost:4820/api/settings/snapshots/prune \
+curl -s -X POST localhost:7770/api/settings/snapshots/prune \
   -H 'Content-Type: application/json' -d '{"max_bytes":"5GB"}'
-curl -s -X POST localhost:4820/api/settings/snapshots/prune \
+curl -s -X POST localhost:7770/api/settings/snapshots/prune \
   -H 'Content-Type: application/json' \
   -d '{"max_bytes":"5GB","dry_run":false,"confirm":"PRUNE_SNAPSHOTS"}'
 ```
@@ -1498,7 +1498,7 @@ Spawned `claude` processes fire the dashboard's hooks like any other CLI session
 ### Connection
 
 ```javascript
-const ws = new WebSocket('ws://localhost:4820/ws');
+const ws = new WebSocket('ws://localhost:7770/ws');
 
 ws.onopen = () => {
   console.log('Connected to Agent Dashboard');
@@ -1521,7 +1521,7 @@ ws.onclose = () => {
 When `DASHBOARD_TOKEN` is configured, pass the token as `?token=<token>` on the `/ws` upgrade (an `x-dashboard-token` header also works):
 
 ```javascript
-const ws = new WebSocket('ws://localhost:4820/ws?token=YOUR_DASHBOARD_TOKEN');
+const ws = new WebSocket('ws://localhost:7770/ws?token=YOUR_DASHBOARD_TOKEN');
 ```
 
 ### WebSocket Lifecycle
@@ -1874,21 +1874,21 @@ graph LR
 
 ```javascript
 // 1. List sessions
-const sessions = await fetch('http://localhost:4820/api/sessions');
+const sessions = await fetch('http://localhost:7770/api/sessions');
 const { sessions: sessionList } = await sessions.json();
 
 // 2. Get specific session
 const sessionId = sessionList[0].session_id;
-const session = await fetch(`http://localhost:4820/api/sessions/${sessionId}`);
+const session = await fetch(`http://localhost:7770/api/sessions/${sessionId}`);
 const sessionData = await session.json();
 
 // 3. Get session agents
-const agents = await fetch(`http://localhost:4820/api/sessions/${sessionId}/agents`);
+const agents = await fetch(`http://localhost:7770/api/sessions/${sessionId}/agents`);
 const { agents: agentList } = await agents.json();
 
 // 4. Get agent tools
 const agentId = agentList[0].agent_id;
-const tools = await fetch(`http://localhost:4820/api/agents/${agentId}/tools`);
+const tools = await fetch(`http://localhost:7770/api/agents/${agentId}/tools`);
 const { tools: toolList } = await tools.json();
 
 console.log('Session:', sessionData);
@@ -1900,7 +1900,7 @@ console.log('Tools:', toolList);
 
 ```javascript
 // Connect to WebSocket
-const ws = new WebSocket('ws://localhost:4820/ws');
+const ws = new WebSocket('ws://localhost:7770/ws');
 
 ws.onopen = () => {
   console.log('Connected to real-time stream');
@@ -1931,7 +1931,7 @@ ws.onmessage = (event) => {
 
 ```javascript
 // Create custom rule
-const response = await fetch('http://localhost:4820/api/pricing', {
+const response = await fetch('http://localhost:7770/api/pricing', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -1945,12 +1945,12 @@ const { rule } = await response.json();
 console.log('Created rule:', rule);
 
 // List all rules
-const rules = await fetch('http://localhost:4820/api/pricing');
+const rules = await fetch('http://localhost:7770/api/pricing');
 const { rules: ruleList } = await rules.json();
 console.log('All rules:', ruleList);
 
 // Delete rule
-await fetch('http://localhost:4820/api/pricing/my-custom-model', {
+await fetch('http://localhost:7770/api/pricing/my-custom-model', {
   method: 'DELETE'
 });
 ```
@@ -1961,11 +1961,11 @@ await fetch('http://localhost:4820/api/pricing/my-custom-model', {
 
 The Agent Dashboard API provides:
 
-- ✅ **RESTful endpoints** for querying sessions, agents, tools, pricing
-- ✅ **WebSocket streaming** for real-time updates
-- ✅ **Type-safe responses** with consistent JSON structure
-- ✅ **Error handling** with descriptive error codes
-- ✅ **Pagination** for large datasets
-- ✅ **Pricing management** with custom rule support
+- **RESTful endpoints** for querying sessions, agents, tools, pricing
+- **WebSocket streaming** for real-time updates
+- **Type-safe responses** with consistent JSON structure
+- **Error handling** with descriptive error codes
+- **Pagination** for large datasets
+- **Pricing management** with custom rule support
 
 For interactive API exploration with live request/response examples, see the built-in Swagger UI at `/api/docs` and ReDoc at `/api/redoc`. For MCP integration, see [MCP.md](./MCP.md).

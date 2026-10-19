@@ -2,7 +2,7 @@
  * @file phase2-cascade.test.js
  * @description Unit tests for Phase 7 (agy-cascade 3-Pool Waterfall, Cross-CLI Bridge,
  * ===DIGEST=== extraction, Git checkpoint tracking, and ~/.cache/agy-cascade/ cooldown monitor).
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const { describe, it } = require("node:test");
@@ -153,5 +153,88 @@ describe("Phase 7 — ~/.cache/agy-cascade/ Cooldown & Provider Filter", () => {
     const sqlClause = providerColumnClause(providers, "s.provider");
     assert.ok(sqlClause.params.includes("agy-claude"));
     assert.ok(sqlClause.params.includes("agy-gemini"));
+  });
+});
+
+describe("DualAgent Nexus v3 — port 7770, hook migration, simulator, authorship", () => {
+  const fs = require("node:fs");
+  const os = require("node:os");
+  const path = require("node:path");
+  const REPO_ROOT = path.join(__dirname, "..", "..");
+
+  it("defaults the dashboard and hook transport to port 7770", () => {
+    const { DEFAULT_PORT } = require("../lib/server-info");
+    assert.equal(DEFAULT_PORT, 7770);
+    const indexSrc = fs.readFileSync(path.join(REPO_ROOT, "server", "index.js"), "utf8");
+    assert.match(indexSrc, /process\.env\.DASHBOARD_PORT \|\| "7770"/);
+  });
+
+  it("migrates curl hooks installed for the old 4820 port instead of duplicating them", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "nexus-hooks-"));
+    const prevHome = process.env.CLAUDE_HOME;
+    const prevGemini = process.env.GEMINI_HOOKS_PATH;
+    process.env.CLAUDE_HOME = tmp;
+    process.env.GEMINI_HOOKS_PATH = path.join(tmp, "hooks.json");
+    try {
+      const legacy =
+        "curl -s -X POST http://127.0.0.1:4820/api/events?provider=antigravity -H 'Content-Type: application/json' -d @- > /dev/null 2>&1 &";
+      fs.writeFileSync(
+        process.env.GEMINI_HOOKS_PATH,
+        JSON.stringify({
+          hooks: { Stop: [{ matcher: "*", hooks: [{ type: "command", command: legacy }] }] },
+        })
+      );
+      const installer = require("../../scripts/install-hooks");
+      assert.match(installer.ANTIGRAVITY_CURL_CMD, /127\.0\.0\.1:7770\/api\/events/);
+      assert.match(installer.CLAUDE_CURL_CMD, /127\.0\.0\.1:7770\/api\/events/);
+      installer.installAntigravityHooks(true);
+      const written = JSON.parse(fs.readFileSync(process.env.GEMINI_HOOKS_PATH, "utf8"));
+      assert.equal(written.hooks.Stop.length, 1);
+      assert.match(written.hooks.Stop[0].hooks[0].command, /127\.0\.0\.1:7770\/api\/events/);
+      assert.doesNotMatch(JSON.stringify(written), /:4820/);
+    } finally {
+      if (prevHome === undefined) delete process.env.CLAUDE_HOME;
+      else process.env.CLAUDE_HOME = prevHome;
+      if (prevGemini === undefined) delete process.env.GEMINI_HOOKS_PATH;
+      else process.env.GEMINI_HOOKS_PATH = prevGemini;
+      fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  it("starts the simulated L2 bridge on Pool 1 Opus 5.5 Thinking", () => {
+    const parsed = parseAgyBridgeCommand(
+      `agy-cascade --dir "/w" --model claude-opus-5-5-thinking --yolo --digest "Execute 3-unit fan-out via invoke_subagent"`
+    );
+    assert.equal(parsed.model, "claude-opus-5-5-thinking");
+    assert.equal(parsed.isFanOut, true);
+    const bridge = classifyModelAndEffort({ model: parsed.model, provider: "agy-claude" });
+    assert.equal(bridge.pool, "agy-claude");
+    assert.equal(bridge.model_tier, "heavy");
+  });
+
+  it("drives the specified waterfall and keeps simulator output emoji-free", () => {
+    const src = fs.readFileSync(
+      path.join(REPO_ROOT, "server", "controllers", "simulateController.js"),
+      "utf8"
+    );
+    assert.match(src, /--model claude-opus-5-5-thinking/);
+    assert.match(src, /agy-cascade \(Pool 2: Argon 4 Ultra\)/);
+    assert.match(src, /meta\.cascade_exit_code = 10/);
+    assert.match(src, /notification_type: "permission_prompt"/);
+    const emoji = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;
+    for (const rel of ["simulateController.js", "dispatchController.js"]) {
+      const text = fs.readFileSync(path.join(REPO_ROOT, "server", "controllers", rel), "utf8");
+      assert.doesNotMatch(text, emoji, `${rel} contains an emoji`);
+    }
+  });
+
+  it("credits Juan Manuel Arboleda Orozco as author while keeping upstream attribution", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, "package.json"), "utf8"));
+    assert.equal(pkg.name, "dual-agent-nexus");
+    assert.match(pkg.author, /^Juan Manuel Arboleda Orozco/);
+    assert.match(pkg.repository.url, /juanmarboledao2304\/dual-agent-nexus/);
+    const license = fs.readFileSync(path.join(REPO_ROOT, "LICENSE"), "utf8");
+    assert.match(license, /Juan Manuel Arboleda Orozco/);
+    assert.match(license, /Son Nguyen/);
   });
 });

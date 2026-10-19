@@ -201,7 +201,8 @@ describe("OpenAPI / Swagger", () => {
     assert.equal(res.body.info.version, pkg.version);
     assert.equal(res.body.info.license.name, pkg.license);
     assert.equal(res.body["x-issues-url"], pkg.bugs.url);
-    assert.match(res.body.info.contact.url, /github\.com\/hoangsonww\/Claude-Code-Agent-Monitor/);
+    assert.equal(res.body.info.contact.name, "Juan Manuel Arboleda Orozco");
+    assert.match(res.body.info.contact.url, /github\.com\/juanmarboledao2304\/dual-agent-nexus/);
 
     for (const pathName of EXPECTED_API_PATHS) {
       assert.ok(res.body.paths[pathName], `Expected path ${pathName} to be documented`);

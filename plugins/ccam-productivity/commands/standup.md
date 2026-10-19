@@ -3,14 +3,14 @@ description: Quick daily standup from today's Claude Code sessions — grouped b
 argument-hint: "[today|yesterday]"
 ---
 
-Generate a fast daily standup from Agent Monitor data at `http://localhost:4820`.
+Generate a fast daily standup from Agent Monitor data at `http://localhost:7770`.
 
 Target day from **$ARGUMENTS**: "today" or empty = the last calendar day; "yesterday" = the day before. If the dashboard is unreachable, tell the user to start it with `npm start` from the repo root.
 
 1. Fetch sessions:
-   `curl -s 'http://localhost:4820/api/sessions?limit=50'`
+   `curl -s 'http://localhost:7770/api/sessions?limit=50'`
    Keep sessions whose `started_at` falls on the target day.
-2. Fetch cost: `curl -s http://localhost:4820/api/pricing/cost` for the `total_cost` and per-model `breakdown`.
+2. Fetch cost: `curl -s http://localhost:7770/api/pricing/cost` for the `total_cost` and per-model `breakdown`.
 
 Print a compact standup (aim for a 30-second read):
 

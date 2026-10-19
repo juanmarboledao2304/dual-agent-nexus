@@ -105,7 +105,7 @@ export function matchIntent(query: string, status: TabbyStatus): AskResult {
       text:
         status.errorCount > 0
           ? `${status.errorCount} session${plural(status.errorCount)} errored - open the panel to jump to them.`
-          : "no errors - all clean 🐾",
+          : "no errors - all clean",
     };
   }
 
@@ -114,18 +114,18 @@ export function matchIntent(query: string, status: TabbyStatus): AskResult {
       kind: "answer",
       text:
         status.waitingCount > 0
-          ? `${status.waitingCount} session${plural(status.waitingCount)} waiting on you 👀`
-          : "nothing's waiting on you right now 🐾",
+          ? `${status.waitingCount} session${plural(status.waitingCount)} waiting on you`
+          : "nothing's waiting on you right now",
     };
   }
 
   if (has("running", "active", "live", "going on", "happening", "in progress")) {
-    const tail = status.waitingCount > 0 ? ` (${status.waitingCount} waiting on you 👀)` : "";
+    const tail = status.waitingCount > 0 ? ` (${status.waitingCount} waiting on you)` : "";
     return {
       kind: "answer",
       text:
         status.liveCount > 0
-          ? `${status.liveCount} session${plural(status.liveCount)} live right now 🐾${tail}`
+          ? `${status.liveCount} session${plural(status.liveCount)} live right now${tail}`
           : "nothing's running right now - all quiet.",
     };
   }

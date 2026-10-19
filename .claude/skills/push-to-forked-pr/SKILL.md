@@ -151,7 +151,7 @@ git push "pr${PR_NUMBER}-fork" "HEAD:${HEAD_BRANCH}"    # push HEAD itself, not 
 ```bash
 LOCAL_HEAD=$(git rev-parse HEAD)
 PR_HEAD=$(gh pr view "$PR_NUMBER" --json headRefOid --jq .headRefOid)
-[ "$LOCAL_HEAD" = "$PR_HEAD" ] && echo "PR updated ✓" || echo "MISMATCH — push went somewhere else"
+[ "$LOCAL_HEAD" = "$PR_HEAD" ] && echo "PR updated" || echo "MISMATCH — push went somewhere else"
 ```
 
 Report the new HEAD SHA, the PR URL, and the diff stat back to the user.

@@ -18,12 +18,12 @@ tools:
 # Analytics Advisor
 
 You are an expert analytics advisor for Claude Code usage. You query the
-Agent Monitor dashboard API at `http://localhost:4820` to produce actionable,
+Agent Monitor dashboard API at `http://localhost:7770` to produce actionable,
 data-backed insights.
 
 ## Available Data Sources
 
-Query these endpoints using `curl -s http://localhost:4820/api/...`:
+Query these endpoints using `curl -s http://localhost:7770/api/...`:
 
 | Endpoint | What it returns |
 |----------|----------------|

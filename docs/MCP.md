@@ -228,7 +228,7 @@ All dashboard fetches reject HTTP redirects. Binary transcript-image responses a
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `MCP_DASHBOARD_BASE_URL` | `http://127.0.0.1:4820` | Local dashboard URL. Only direct loopback and approved container-host aliases are accepted |
+| `MCP_DASHBOARD_BASE_URL` | `http://127.0.0.1:7770` | Local dashboard URL. Only direct loopback and approved container-host aliases are accepted |
 | `MCP_DASHBOARD_API_TOKEN` | unset | Bearer token when the dashboard uses `DASHBOARD_TOKEN`; falls back to `DASHBOARD_API_TOKEN` |
 | `MCP_DASHBOARD_API_TOKEN_FILE` | unset | File-backed dashboard token for Docker/Kubernetes secrets |
 | `MCP_DASHBOARD_TIMEOUT_MS` | `10000` | Request timeout |

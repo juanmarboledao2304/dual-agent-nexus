@@ -105,13 +105,13 @@
 }
 .tabby-zzz text,
 .tabby-bang text,
-.tabby-hover-hearts text {
+.tabby-hover-hearts path {
   fill: #a5b4fc;
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 700;
 }
-.tabby-hover-hearts text {
+.tabby-hover-hearts path {
   fill: #f7a8c8;
   font-family: system-ui, sans-serif;
   font-size: 13px;
@@ -372,12 +372,12 @@
 .tabby-cat[data-hovered="1"] .tabby-hover-hearts {
   display: block;
 }
-.tabby-cat[data-hovered="1"] .tabby-hover-hearts text {
+.tabby-cat[data-hovered="1"] .tabby-hover-hearts path {
   animation: tabby-hover-heart-float 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1;
   transform-box: fill-box;
   transform-origin: center;
 }
-.tabby-cat[data-hovered="1"] .tabby-hover-hearts text:nth-child(2) {
+.tabby-cat[data-hovered="1"] .tabby-hover-hearts g:nth-child(2) path {
   animation-delay: 0.12s;
 }
 

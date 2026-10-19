@@ -12,7 +12,7 @@ description: >
 
 Inventory and audit every Model Context Protocol server the user has
 configured — both user-scope and project-scope — read through the Agent Monitor
-dashboard at `http://localhost:4820`.
+dashboard at `http://localhost:7770`.
 
 ## Input
 
@@ -62,5 +62,5 @@ source files.
 - Note: MCP servers are read-only via the Config Explorer (they are written
   concurrently by the running CLI); edit their definitions in the source file
   named by `source`.
-- If the dashboard is unreachable at `http://localhost:4820`, say so and tell
+- If the dashboard is unreachable at `http://localhost:7770`, say so and tell
   the user to start it with `npm start` from the repo root.

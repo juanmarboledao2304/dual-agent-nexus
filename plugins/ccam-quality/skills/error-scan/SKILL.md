@@ -55,4 +55,4 @@ List the single most failure-prone tool, the most error-prone model, and the ses
 - Rates as percentages to 2 decimals.
 - Cite exact `event_type`, `tool_name`, and `session_id` values — never fabricate counts.
 - End with the one failure pattern most worth investigating and a concrete next step.
-- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:4820`, tell the user to start the dashboard with `npm start` from the repo root.
+- Read-only: only report what the API returns. If `curl` cannot reach `http://localhost:7770`, tell the user to start the dashboard with `npm start` from the repo root.

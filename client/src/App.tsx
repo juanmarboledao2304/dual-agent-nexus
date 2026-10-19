@@ -1,6 +1,8 @@
 /**
  * @file App.tsx
- * @description Top-level React tree for the Claude Code Agent Monitor dashboard.
+ * @description Top-level React tree for the DualAgent Nexus dashboard (built on the
+ * Claude Code Agent Monitor). v3 routes: `/rooms`, `/cascade-graph`, and `/quota-roi`, with
+ * the v2 paths `/kanban`, `/workflows`, and `/analytics` redirecting to them.
  * Wires together routing, real-time WebSocket ingestion, browser notifications,
  * and the splash screen shown on cold load.
  *
@@ -48,12 +50,13 @@
  * - `./components/Layout`
  * - `./components/SplashScreen`
  * - `./pages/Dashboard`
- * - `./pages/KanbanBoard`
+ * - `./components/LegacyRedirect`
+ * - `./pages/AgentRooms`
  * - `./pages/Sessions`
  * - `./pages/SessionDetail`
  * - `./pages/ActivityFeed`
- * - `./pages/Analytics`
- * - `./pages/Workflows`
+ * - `./pages/QuotaRoi`
+ * - `./pages/CascadeHierarchy`
  * - `./pages/Settings`
  * - `./pages/CcConfig`
  * - `./pages/Run`
@@ -74,13 +77,14 @@ import { useCallback } from "react";
 import { Layout } from "./components/Layout";
 import { DocumentTitle } from "./components/DocumentTitle";
 import { SplashScreen } from "./components/SplashScreen";
+import { LegacyRedirect } from "./components/LegacyRedirect";
 import { Dashboard } from "./pages/Dashboard";
-import { KanbanBoard } from "./pages/KanbanBoard";
+import { AgentRooms } from "./pages/AgentRooms";
 import { Sessions } from "./pages/Sessions";
 import { SessionDetail } from "./pages/SessionDetail";
 import { ActivityFeed } from "./pages/ActivityFeed";
-import { Analytics } from "./pages/Analytics";
-import { Workflows } from "./pages/Workflows";
+import { QuotaRoi } from "./pages/QuotaRoi";
+import { CascadeHierarchy } from "./pages/CascadeHierarchy";
 import { Settings } from "./pages/Settings";
 import { CcConfig } from "./pages/CcConfig";
 import { Run } from "./pages/Run";
@@ -130,12 +134,19 @@ export default function App() {
       <Routes>
         <Route element={<Layout wsConnected={connected} />}>
           <Route index element={<Dashboard />} />
-          <Route path="kanban" element={<KanbanBoard />} />
+          <Route path="rooms" element={<AgentRooms />} />
           <Route path="sessions" element={<Sessions />} />
           <Route path="sessions/:id" element={<SessionDetail />} />
           <Route path="activity" element={<ActivityFeed />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="workflows" element={<Workflows />} />
+          <Route path="quota-roi" element={<QuotaRoi />} />
+          <Route path="cascade-graph" element={<CascadeHierarchy />} />
+          {/* v2 paths, kept as redirects so bookmarks and palette deep links still resolve */}
+          <Route
+            path="kanban"
+            element={<LegacyRedirect to="/rooms" params={{ layout: "board" }} />}
+          />
+          <Route path="workflows" element={<LegacyRedirect to="/cascade-graph" />} />
+          <Route path="analytics" element={<LegacyRedirect to="/quota-roi" />} />
           <Route path="cc-config" element={<CcConfig />} />
           <Route path="run" element={<Run />} />
           <Route path="settings" element={<Settings />} />

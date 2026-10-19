@@ -395,7 +395,7 @@ function seedFixtures() {
 
 // ── Random demo data (old behavior — opt-in with --full) ───────────────────
 function seedFullDemo() {
-  console.log("⚠️  --full mode: inserting random demo sessions on top of existing data.");
+  console.log("WARNING: --full mode: inserting random demo sessions on top of existing data.");
   console.log("   These get fresh UUIDs each run, so re-runs accumulate. Use intentionally.\n");
 
   const tx = db.transaction(() => {

@@ -236,14 +236,14 @@ function startServer(app, port) {
     server.listen(port, host, () => {
       // Publish the live port so the Claude Code hook handler can find this
       // server even when it bound a non-default port (the desktop app falls
-      // back off 4820 when that port is already taken).
+      // back off 7770 when that port is already taken).
       writeServerInfo(port);
       const sharedDbPeers = peersSharingDataDir();
       if (sharedDbPeers.length > 0) {
         const peerPorts = sharedDbPeers.map((p) => p.port).join(", ");
         const ingestPort = Math.min(port, ...sharedDbPeers.map((p) => p.port));
         console.warn(
-          `⚠️  Another dashboard is running on port(s) ${peerPorts} using the same database ` +
+          `WARNING: Another dashboard is running on port(s) ${peerPorts} using the same database ` +
             `(${getDataDir()}). Hooks ingest through port ${ingestPort} only to avoid duplicate events. ` +
             `Stop extra instances if you do not need them.`
         );
@@ -253,7 +253,7 @@ function startServer(app, port) {
       console.log(`Agent Dashboard server running on http://${shown}:${port} (${mode})`);
       if (!boundLoopback) {
         console.warn(
-          `⚠️  Dashboard bound to ${host} — reachable from the network. ` +
+          `WARNING: Dashboard bound to ${host} — reachable from the network. ` +
             (getDashboardToken()
               ? "DASHBOARD_TOKEN is set (API + WebSocket require it)."
               : "Set DASHBOARD_TOKEN to require auth, or it is OPEN to anyone who can reach this port.")
@@ -1389,7 +1389,7 @@ function probeDashboardHealth(port, timeoutMs = 1500) {
 }
 
 if (require.main === module) {
-  const PORT = parseInt(process.env.DASHBOARD_PORT || "4820", 10);
+  const PORT = parseInt(process.env.DASHBOARD_PORT || "7770", 10);
   let httpServer = null;
 
   // Single-server guard: if a healthy dashboard already owns this port, don't
@@ -1500,7 +1500,7 @@ if (require.main === module) {
       console.log(
         "Claude Code hooks NOT auto-configured: running inside a container. " +
           "Run `npm run install-hooks` on the host so hooks point at a host path and " +
-          "POST to http://localhost:4820 (this container's published port)."
+          "POST to http://localhost:7770 (this container's published port)."
       );
     }
   } catch {

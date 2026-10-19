@@ -44,7 +44,7 @@ ${c.bold("Examples:")}
 
 ${c.bold("Server discovery:")} --server / CCAM_URL, then CLAUDE_DASHBOARD_PORT / DASHBOARD_PORT,
 otherwise the live server is found via ~/.claude/.agent-dashboard.json,
-falling back to http://127.0.0.1:4820.
+falling back to http://127.0.0.1:7770.
 
 ${c.bold("Output:")} colors auto-enable on a TTY and turn off when piped.
 Disable with --no-color or NO_COLOR=1; force with FORCE_COLOR=1 / CCAM_COLOR=1.

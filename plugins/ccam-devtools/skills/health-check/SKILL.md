@@ -25,7 +25,7 @@ Run health checks in this order:
 
 ### 1. API Health
 ```bash
-curl -sf http://localhost:4820/api/health
+curl -sf http://localhost:7770/api/health
 ```
 - Verify HTTP 200 response
 - Check response time (<500ms expected, <1000ms acceptable)
@@ -33,7 +33,7 @@ curl -sf http://localhost:4820/api/health
 
 ### 2. Database Health
 ```bash
-curl -sf http://localhost:4820/api/stats
+curl -sf http://localhost:7770/api/stats
 ```
 - Verify stats endpoint returns valid data
 - Check that counts are non-negative integers
@@ -46,11 +46,11 @@ curl -sf http://localhost:4820/api/stats
 ### 4. API Endpoint Validation
 Test each major endpoint:
 ```bash
-curl -sf http://localhost:4820/api/sessions?limit=1
-curl -sf http://localhost:4820/api/events?limit=1
-curl -sf http://localhost:4820/api/analytics
-curl -sf http://localhost:4820/api/pricing
-curl -sf http://localhost:4820/api/settings/info
+curl -sf http://localhost:7770/api/sessions?limit=1
+curl -sf http://localhost:7770/api/events?limit=1
+curl -sf http://localhost:7770/api/analytics
+curl -sf http://localhost:7770/api/pricing
+curl -sf http://localhost:7770/api/settings/info
 ```
 
 ### 5. Hook Integration
@@ -79,12 +79,12 @@ Present as a system health dashboard:
 ║   Timestamp: 2025-04-11 12:00:00 UTC        ║
 ╠══════════════════════════════════════════════╣
 ║                                              ║
-║   API Server ............ ✅ OK (45ms)       ║
-║   Database .............. ✅ OK (2.4 MB)     ║
-║   WebSocket ............. ✅ OK              ║
-║   API Endpoints ......... ✅ 6/6 passing     ║
-║   Hook Integration ...... ⚠️ 5/7 hooks      ║
-║   Data Freshness ........ ✅ 3m ago          ║
+║   API Server ............ OK (45ms)       ║
+║   Database .............. OK (2.4 MB)     ║
+║   WebSocket ............. OK              ║
+║   API Endpoints ......... 6/6 passing     ║
+║   Hook Integration ...... 5/7 hooks      ║
+║   Data Freshness ........ 3m ago          ║
 ║                                              ║
 ║   Overall: HEALTHY (5/6 checks passed)       ║
 ║                                              ║

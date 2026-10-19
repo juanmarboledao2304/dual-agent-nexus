@@ -1,7 +1,7 @@
 /**
  * @file Lightweight live JSONL transcript watcher for Claude Code (~/.claude/projects) and Google Antigravity (~/.gemini).
  * Extracts real-time token usage, model tier/effort, and subagent spawns, streaming updates via WebSockets.
- * @author Son Nguyen <hoangson091104@gmail.com>
+ * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const fs = require("fs");

@@ -19,8 +19,8 @@ afterEach(() => {
 
 describe("hook transport target validation", () => {
   it("preserves the local loopback target by default", () => {
-    const targets = transport.buildTargets(() => [4820], "/api/hooks/event");
-    assert.deepEqual(targets.map(String), ["http://127.0.0.1:4820/api/hooks/event"]);
+    const targets = transport.buildTargets(() => [7770], "/api/hooks/event");
+    assert.deepEqual(targets.map(String), ["http://127.0.0.1:7770/api/hooks/event"]);
   });
 
   it("requires HTTPS for non-loopback remote dashboards", () => {
@@ -29,12 +29,12 @@ describe("hook transport target validation", () => {
     process.env.CCAM_DASHBOARD_URL = "https://dashboard.example.com";
     assert.equal(transport.remoteDashboardUrl().hostname, "dashboard.example.com");
     assert.throws(
-      () => transport.buildTargets(() => [4820], "/api/hooks/event"),
+      () => transport.buildTargets(() => [7770], "/api/hooks/event"),
       /require CCAM_HOOK_TOKEN/
     );
     process.env.CCAM_HOOK_TOKEN = "hook-secret";
     assert.equal(
-      String(transport.buildTargets(() => [4820], "/api/hooks/event")[0]),
+      String(transport.buildTargets(() => [7770], "/api/hooks/event")[0]),
       "https://dashboard.example.com/api/hooks/event"
     );
   });

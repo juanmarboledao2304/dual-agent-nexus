@@ -4,7 +4,7 @@
 # @description Reference implementation for the agy-cascade 3-pool waterfall controller.
 # Checks ~/.cache/agy-cascade/ cooldown lockfiles, resolves the active pool, delegates
 # to Antigravity CLI, and enforces ===DIGEST=== token offload discipline.
-# @author Son Nguyen <hoangson091104@gmail.com>
+# @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
 #
 
 set -euo pipefail
@@ -104,7 +104,7 @@ else
 - Status: SUCCESS
 - Files Touched: server/routes/hooks.js, client/src/components/SubagentGraph.tsx
 - Key Findings: Verified 3-pool waterfall and context isolation.
-- Follow-Ups: Launch mission control at http://localhost:4820 to inspect live graph.
+- Follow-Ups: Launch mission control at http://localhost:7770 to inspect live graph.
 EOF
   exit 0
 fi

@@ -49,7 +49,7 @@ graph TB
     end
 
     subgraph "Dashboard Server"
-        API[Express Server<br/>:4820]
+        API[Express Server<br/>:7770]
     end
 
     Agent --> Hooks
@@ -242,7 +242,7 @@ implementation notes.
 > inside Docker/Podman, the installer **refuses** and exits non-zero (issue
 > #193): a container-internal path written into a bind-mounted `~/.claude` would
 > break every host hook with `MODULE_NOT_FOUND`. The host handler POSTs to
-> `http://localhost:4820`, which a containerized dashboard already publishes.
+> `http://localhost:7770`, which a containerized dashboard already publishes.
 > (Escape hatch for running Claude Code *inside* the same container:
 > `CCAM_ALLOW_CONTAINER_HOOKS=1 npm run install-hooks`.)
 
@@ -324,7 +324,7 @@ ls -la .githooks/
 
 Before relying on hooks for production monitoring:
 
-- Confirm the target dashboard answers `curl http://127.0.0.1:4820/api/health` from the machine that runs Claude Code or Codex.
+- Confirm the target dashboard answers `curl http://127.0.0.1:7770/api/health` from the machine that runs Claude Code or Codex.
 - Run `npm run install-hooks` on that host, then review the provider's hook configuration to confirm the dashboard entries point at a real host-side `hook-handler.js` path.
 - Start one short test session and verify that it creates activity in the dashboard before assuming historical import or remote sync is covering live events.
 - For a remote dashboard, configure `CCAM_DASHBOARD_URL` and a file-backed `CCAM_HOOK_TOKEN_FILE`; do not put the hook token directly in a shared shell history or checked-in configuration.
@@ -587,7 +587,7 @@ fail silently with exit code 0.
 >    entry whose PID is no longer alive** and POSTs the hook payload to one
 >    port per **unique SQLite data directory** (lowest port wins when Docker
 >    and `npm run dev` share `~/.claude/agent-dashboard`).
-> 3. If neither yields a target, the handler falls back to `4820`.
+> 3. If neither yields a target, the handler falls back to `7770`.
 >
 > Dashboards with **different** databases (e.g. the packaged desktop app using
 > its own Application Support data dir alongside `npm run dev`) still each
@@ -840,7 +840,7 @@ test('session-start hook creates session', async () => {
     agentType: 'general-purpose'
   };
   
-  const response = await fetch('http://localhost:4820/hooks/session-start', {
+  const response = await fetch('http://localhost:7770/hooks/session-start', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -850,7 +850,7 @@ test('session-start hook creates session', async () => {
   assert.strictEqual(data.success, true);
   
   // Verify session exists
-  const session = await fetch('http://localhost:4820/api/sessions/test_session');
+  const session = await fetch('http://localhost:7770/api/sessions/test_session');
   assert.strictEqual(session.status, 200);
 });
 ```
@@ -883,7 +883,7 @@ python3 -u .githooks/session-start.py < test-payload.json
 
 ```bash
 # Check server is running
-curl http://localhost:4820/api/sessions
+curl http://localhost:7770/api/sessions
 
 # Expected: {"sessions": [...]}
 ```
@@ -894,11 +894,11 @@ curl http://localhost:4820/api/sessions
 
 The hook system provides:
 
-- ✅ **Real-time event capture** - Lifecycle, tools, notifications
-- ✅ **Non-blocking execution** - Never delays Claude Code
-- ✅ **Fail-safe design** - Errors don't stop execution
-- ✅ **Fast processing** - < 100ms per hook
-- ✅ **Complete coverage** - All agent lifecycle events
-- ✅ **Easy installation** - One-command setup
+- **Real-time event capture** - Lifecycle, tools, notifications
+- **Non-blocking execution** - Never delays Claude Code
+- **Fail-safe design** - Errors don't stop execution
+- **Fast processing** - < 100ms per hook
+- **Complete coverage** - All agent lifecycle events
+- **Easy installation** - One-command setup
 
 For server-side processing, see [server/README.md](../server/README.md).
