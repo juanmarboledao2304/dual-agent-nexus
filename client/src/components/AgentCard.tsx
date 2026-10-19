@@ -81,7 +81,7 @@ import { TodoProgressIndicator } from "./TodoProgressIndicator";
 import { effectiveAgentStatus, isAgentAwaitingInput, agentAwaitingReason } from "../lib/types";
 import type { Agent, Session } from "../lib/types";
 import { formatDuration, timeAgo, formatModelName, pathBasename, fmtCost } from "../lib/format";
-import { getAgentThermalTheme, parseAgentMetadata } from "../utils/agentTheme";
+import { getAgentThermalTheme, parseAgentMetadata, sanitizeAgentText } from "../utils/agentTheme";
 
 /** Keep a compact card's history legible: at most two distinct human turns,
  * one visual row each. This intentionally preserves a title-matching first
@@ -210,7 +210,8 @@ export function AgentCard({
         : isClaudeMain
           ? "Claude Code"
           : null;
-  const displayName = providerLabel ? realSessionName || t("session.anonymous") : agent.name;
+  const rawDisplayName = providerLabel ? realSessionName || t("session.anonymous") : agent.name;
+  const displayName = sanitizeAgentText(rawDisplayName);
   // Session titles and requests are intentionally independent: Claude,
   // Cursor, and Codex persist two recent real human turns on the session, while a
   // main-agent task remains the truthful fallback for pre-preview history.
@@ -218,7 +219,7 @@ export function AgentCard({
   const taskPreview = isMain
     ? session?.prompt_preview?.trim() || agent.task?.trim() || null
     : agent.task?.trim() || null;
-  const taskPreviewLines = promptPreviewLines(taskPreview);
+  const taskPreviewLines = promptPreviewLines(sanitizeAgentText(taskPreview));
   const isTransient = isTransientProcessCard(agent.metadata);
   // A subagent's own model lives in `agent.model` or its metadata (resolved from its transcript,
   // not the parent session's — see issue #185).

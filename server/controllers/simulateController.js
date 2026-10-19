@@ -525,13 +525,15 @@ router.post("/swarm", (req, res) => {
       },
     });
 
+    const line1 = "[Level-2 agy-cascade | Pool 1: AGY-Claude Opus 5.5 High] Starting cross-CLI bridge (--yolo --digest --timeout 10m)...";
     broadcast("dispatch_stream", {
       dispatch_id: simRunId,
       session_id: claudeSessionId,
       agent_id: bridgeAgentId,
       provider: "agy-claude",
       stream: "stdout",
-      line: "[Level-2 agy-cascade | Pool 1: AGY-Claude Opus 5.5 High] Starting cross-CLI bridge (--yolo --digest --timeout 10m)...",
+      line: line1,
+      chunk: line1 + "\n",
       timestamp: new Date().toISOString(),
     });
   });
@@ -588,13 +590,15 @@ router.post("/swarm", (req, res) => {
       broadcast("agent_updated", stmts.getAgent.get(bridgeAgentId));
     }
 
+    const line2 = "⚠️ [agy-cascade] Pool 1 (AGY-Claude Opus 5.5 High) returned Exit Code 10 -> ~/.cache/agy-cascade/claude.exhausted locked (30:00 cooldown). Cascading automatically to Pool 2: AGY-Gemini (Gemini 3.8 Flash High)!";
     broadcast("dispatch_stream", {
       dispatch_id: simRunId,
       session_id: claudeSessionId,
       agent_id: bridgeAgentId,
       provider: "antigravity",
       stream: "stderr",
-      line: "⚠️ [agy-cascade] Pool 1 (AGY-Claude Opus 5.5 High) returned Exit Code 10 -> ~/.cache/agy-cascade/claude.exhausted locked (30:00 cooldown). Cascading automatically to Pool 2: AGY-Gemini (Gemini 3.8 Flash High)!",
+      line: line2,
+      chunk: line2 + "\n",
       timestamp: new Date().toISOString(),
     });
   });
@@ -669,13 +673,15 @@ router.post("/swarm", (req, res) => {
       broadcast("agent_created", stmts.getAgent.get(u.id));
     });
 
+    const l3Msg = `🪭 [Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 3.8 Flash High!`;
     broadcast("dispatch_stream", {
       dispatch_id: simRunId,
       session_id: claudeSessionId,
       agent_id: bridgeAgentId,
       provider: "antigravity",
       stream: "stdout",
-      line: `🪭 [Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 3.8 Flash High!`,
+      line: l3Msg,
+      chunk: l3Msg + "\n",
       timestamp: new Date().toISOString(),
     });
   });
@@ -742,13 +748,15 @@ router.post("/swarm", (req, res) => {
       }
     });
 
+    const checkLine = `✓ [Level-3 Checkpoints] All 3 fan-out units committed git checkpoints ([main 7c2e91a], [main 8d4f02b], [main 9e1a33c]).`;
     broadcast("dispatch_stream", {
       dispatch_id: simRunId,
       session_id: claudeSessionId,
       agent_id: fanOutUnitIds[0],
       provider: "antigravity",
       stream: "stdout",
-      line: `✓ [Level-3 Checkpoints] All 3 fan-out units committed git checkpoints ([main 7c2e91a], [main 8d4f02b], [main 9e1a33c]).`,
+      line: checkLine,
+      chunk: checkLine + "\n",
       timestamp: new Date().toISOString(),
     });
   });
@@ -892,13 +900,15 @@ router.post("/swarm", (req, res) => {
       },
     });
 
+    const digestNotice = "📦 [===DIGEST=== Received] Offloaded 45,200 verbose tokens from Claude Conductor! Running git diff --stat && npm test...";
     broadcast("dispatch_stream", {
       dispatch_id: simRunId,
       session_id: claudeSessionId,
       agent_id: `${claudeSessionId}-main`,
       provider: "claude",
       stream: "stdout",
-      line: "📦 [===DIGEST=== Received] Offloaded 45,200 verbose tokens from Claude Conductor! Running git diff --stat && npm test...",
+      line: digestNotice,
+      chunk: digestNotice + "\n",
       timestamp: new Date().toISOString(),
     });
   });

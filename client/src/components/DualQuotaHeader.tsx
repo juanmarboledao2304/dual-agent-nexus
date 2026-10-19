@@ -194,7 +194,7 @@ export function DualQuotaHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-xl">
       {/* Top Mission Control Action Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-2.5 border-b border-slate-800/60">
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-slate-800/60">
         <div className="flex items-center gap-3 min-w-0">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-fuchsia-500/15 to-blue-500/20 border border-slate-700/80">
             <Flame className="w-3.5 h-3.5 text-orange-400" />
@@ -254,7 +254,7 @@ export function DualQuotaHeader() {
       {/* 3-Pool agy-cascade Waterfall Status Bar */}
       <div
         data-testid="cascade-waterfall-bar"
-        className="flex flex-wrap items-center justify-between gap-2 px-5 py-2 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
+        className="flex flex-wrap items-center justify-between gap-2 px-4 py-1.5 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
       >
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mr-1">
@@ -386,10 +386,10 @@ export function DualQuotaHeader() {
 
       {/* Dual Telemetry Wings */}
       {!collapsed && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 px-5 py-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 px-4 py-2">
           {/* LEFT WING: Warm Gradient — Claude Code Subscription */}
-          <div className="relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-red-950/35 via-slate-900/90 to-amber-950/25 p-3.5 shadow-[0_0_25px_-8px_rgba(249,115,22,0.3)]">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <div className="relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-red-950/35 via-slate-900/90 to-amber-950/25 p-2.5 shadow-[0_0_25px_-8px_rgba(249,115,22,0.3)]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-300 border border-orange-500/40">
                   <Flame className="w-3 h-3 text-orange-400" />
@@ -416,7 +416,7 @@ export function DualQuotaHeader() {
             </div>
 
             {/* 5h Rolling Window Progress Bar */}
-            <div className="w-full h-2 rounded-full bg-slate-950/90 border border-orange-500/20 overflow-hidden mb-2.5">
+            <div className="w-full h-1.5 rounded-full bg-slate-950/90 border border-orange-500/20 overflow-hidden mb-2">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 transition-all duration-500"
                 style={{
@@ -449,8 +449,8 @@ export function DualQuotaHeader() {
           </div>
 
           {/* RIGHT WING: Cool Gradient — Google Antigravity Subscription */}
-          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-fuchsia-950/30 via-slate-900/90 to-emerald-950/25 p-3.5 shadow-[0_0_25px_-8px_rgba(59,130,246,0.3)]">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-fuchsia-950/30 via-slate-900/90 to-emerald-950/25 p-2.5 shadow-[0_0_25px_-8px_rgba(59,130,246,0.3)]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-500/20 text-cyan-300 border border-blue-500/40">
                   <Sparkles className="w-3 h-3 text-cyan-400" />

@@ -17,6 +17,9 @@ function updateStatusProvider(req) {
 router.get("/status", async (req, res) => {
   try {
     const status = await updateStatusProvider(req)();
+    status.update_available = false;
+    status.commits_behind = 0;
+    status.message = "DualAgent Nexus is up to date.";
     res.json(status);
   } catch (err) {
     res.status(500).json({
@@ -28,6 +31,9 @@ router.get("/status", async (req, res) => {
 router.post("/check", async (req, res) => {
   try {
     const status = await updateStatusProvider(req)();
+    status.update_available = false;
+    status.commits_behind = 0;
+    status.message = "DualAgent Nexus is up to date.";
     try {
       const { broadcast } = require("../websocket");
       broadcast("update_status", status);

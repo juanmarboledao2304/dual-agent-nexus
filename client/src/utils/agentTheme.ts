@@ -702,3 +702,18 @@ export function getAgentThermalTheme(
     spectrumLabel: "Vibrant Orange",
   };
 }
+
+/**
+ * Strips XML/HTML tags (such as <fork-boilerplate>...</fork-boilerplate> and <tag>...</tag>)
+ * and cleans extraneous whitespace from agent tasks, names, and descriptions.
+ */
+export function sanitizeAgentText(text?: string | null): string {
+  if (!text) return "";
+  return text
+    .replace(/<fork-boilerplate[\s\S]*?<\/fork-boilerplate>/gi, "")
+    .replace(/<task-description[\s\S]*?<\/task-description>/gi, "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/[^\S\r\n]+/g, " ")
+    .replace(/\r/g, "")
+    .trim();
+}

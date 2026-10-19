@@ -24,11 +24,14 @@ import {
   Minimize2,
   ShieldCheck,
   GitCommit,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import {
   getAgentThermalTheme,
   formatAgentModelBadge,
   parseAgentMetadata,
+  sanitizeAgentText,
 } from "../utils/agentTheme";
 import { api } from "../lib/api";
 import type { Agent, Session } from "../lib/types";
@@ -39,6 +42,7 @@ interface SubagentGraphProps {
   sessionsById: Map<string, Session>;
   onSelectAgent: (agent: Agent) => void;
   onRefresh?: () => void;
+  defaultCollapsed?: boolean;
 }
 
 interface Level2Branch {
@@ -60,7 +64,9 @@ export function SubagentGraph({
   sessionsById,
   onSelectAgent,
   onRefresh,
+  defaultCollapsed = false,
 }: SubagentGraphProps) {
+  const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [expandedView, setExpandedView] = useState(false);
   const [killingId, setKillingId] = useState<string | null>(null);
 
@@ -153,35 +159,43 @@ export function SubagentGraph({
   }
 
   return (
-    <section className="rounded-2xl border border-slate-800/90 bg-slate-950/90 p-5 shadow-xl">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <section className="rounded-2xl border border-slate-800/90 bg-slate-950/90 p-4 shadow-xl">
+      <div
+        onClick={() => setCollapsed((c) => !c)}
+        className="flex flex-wrap items-center justify-between gap-3 cursor-pointer select-none"
+      >
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500/20 via-fuchsia-500/20 to-purple-500/20 border border-slate-700 flex items-center justify-center">
-            <GitBranch className="w-4 h-4 text-amber-400" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-orange-500/20 via-fuchsia-500/20 to-purple-500/20 border border-slate-700 flex items-center justify-center">
+            <GitBranch className="w-3.5 h-3.5 text-amber-400" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-slate-100 tracking-wide">
-                Live 3-Level Waterfall Hierarchy &amp; Thermal Topology
+              <h2 className="text-xs font-bold text-slate-100 tracking-wide flex items-center gap-1.5">
+                <span>⚡ Live 3-Level Subagent Hierarchy Graph</span>
+                <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">
+                  (Click to {collapsed ? "expand" : "collapse"})
+                </span>
               </h2>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 border border-slate-800">
+              <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-300 border border-slate-800">
                 {trees.length} orchestrator{trees.length === 1 ? "" : "s"} ·{" "}
                 {trees.reduce((acc, t) => acc + t.totalDescendants, 0)} subagents
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Level 1 Conductor ➔ Level 2 `agy-cascade` Bridge ➔ Level 3 Internal `agy` Fan-Out
-              Specialists (`===DIGEST===` &amp; Git Checkpoints).
-            </p>
+            {!collapsed && (
+              <p className="text-[10px] text-slate-400">
+                Level 1 Conductor ➔ Level 2 `agy-cascade` Bridge ➔ Level 3 Internal `agy` Fan-Out
+                Specialists (`===DIGEST===` &amp; Git Checkpoints).
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {trees.length > 2 && (
+        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          {trees.length > 2 && !collapsed && (
             <button
               type="button"
               onClick={() => setExpandedView((v) => !v)}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-colors"
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-colors"
             >
               {expandedView ? (
                 <>
@@ -194,10 +208,29 @@ export function SubagentGraph({
               )}
             </button>
           )}
+          <button
+            type="button"
+            onClick={() => setCollapsed((c) => !c)}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors"
+            title={collapsed ? "Expand Subagent Graph" : "Collapse Subagent Graph"}
+          >
+            {collapsed ? (
+              <>
+                <ChevronDown className="w-3.5 h-3.5 text-amber-400" />
+                <span>Expand ↗</span>
+              </>
+            ) : (
+              <>
+                <ChevronUp className="w-3.5 h-3.5 text-slate-400" />
+                <span>Collapse ↘</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      {!collapsed && (
+        <div className="mt-3 grid grid-cols-1 xl:grid-cols-2 gap-4">
         {trees.map(({ root, session, level2Branches }) => {
           const rootTheme = getAgentThermalTheme(root, session?.provider, session?.model);
           const rootModel = formatAgentModelBadge(root.model || session?.model, rootTheme.provider);
@@ -253,8 +286,11 @@ export function SubagentGraph({
                     </span>
                   </div>
 
-                  <p className="text-xs font-bold text-slate-100 truncate" title={root.name}>
-                    {session?.name || root.name}
+                  <p
+                    className="text-xs font-bold text-slate-100 truncate max-w-[210px]"
+                    title={sanitizeAgentText(session?.name || root.name)}
+                  >
+                    {sanitizeAgentText(session?.name || root.name)}
                   </p>
                   <div className="flex flex-wrap items-center gap-1.5 mt-1">
                     <span
@@ -361,7 +397,9 @@ export function SubagentGraph({
                       session?.model
                     );
                     const childModel = formatAgentModelBadge(child.model, childTheme.provider);
-                    const childRole = child.subagent_role || child.subagent_type || "Subagent";
+                    const childRole = sanitizeAgentText(child.subagent_role || child.subagent_type || "Subagent");
+                    const cleanChildName = sanitizeAgentText(child.name);
+                    const cleanChildTask = sanitizeAgentText(child.task);
                     const childMeta = parseAgentMetadata(child.metadata);
                     const isChildWorking = child.status === "working" || child.status === "waiting";
 
@@ -427,17 +465,17 @@ export function SubagentGraph({
                         </div>
 
                         <p
-                          className="text-[11px] font-medium text-slate-200 truncate mt-1"
-                          title={child.name}
+                          className="text-[11px] font-medium text-slate-200 truncate max-w-[210px] mt-1"
+                          title={cleanChildName}
                         >
-                          {child.name}
+                          {cleanChildName}
                         </p>
-                        {child.task && child.task !== child.name && (
+                        {cleanChildTask && cleanChildTask !== cleanChildName && (
                           <p
-                            className="text-[10px] text-slate-400 truncate mt-0.5"
-                            title={child.task}
+                            className="text-[10px] text-slate-400 truncate max-w-[210px] mt-0.5 line-clamp-1"
+                            title={cleanChildTask}
                           >
-                            {child.task}
+                            {cleanChildTask}
                           </p>
                         )}
 
@@ -498,7 +536,7 @@ export function SubagentGraph({
                     return (
                       <div
                         key={child.id}
-                        className="grid grid-cols-[minmax(220px,265px)_52px_minmax(220px,1fr)] items-center"
+                        className="grid grid-cols-[minmax(210px,250px)_48px_minmax(210px,1fr)] items-center min-w-0"
                       >
                         {level2Card}
 
@@ -545,7 +583,7 @@ export function SubagentGraph({
                         </svg>
 
                         {/* Level 3 Specialist Fan-Out Subagents */}
-                        <div className="flex flex-col justify-around gap-2 py-0.5">
+                        <div className="flex flex-col justify-around gap-2 py-0.5 min-w-0">
                           {level3Children.map((l3) => {
                             const l3Theme = getAgentThermalTheme(
                               l3,
@@ -553,6 +591,8 @@ export function SubagentGraph({
                               session?.model
                             );
                             const l3Model = formatAgentModelBadge(l3.model, l3Theme.provider);
+                            const cleanL3Name = sanitizeAgentText(l3.name);
+                            const cleanL3Task = sanitizeAgentText(l3.task);
                             const l3Meta = parseAgentMetadata(l3.metadata);
                             const isL3Working = l3.status === "working" || l3.status === "waiting";
 
@@ -560,22 +600,25 @@ export function SubagentGraph({
                               <div
                                 key={l3.id}
                                 onClick={() => onSelectAgent(l3)}
-                                className={`cursor-pointer rounded-xl border p-2 transition-all hover:scale-[1.01] ${l3Theme.borderClass} ${l3Theme.bgGradientClass} ${l3Theme.glowClass}`}
+                                className={`cursor-pointer rounded-xl border p-2 transition-all hover:scale-[1.01] min-w-0 overflow-hidden ${l3Theme.borderClass} ${l3Theme.bgGradientClass} ${l3Theme.glowClass}`}
                               >
                                 <div className="flex items-center justify-between gap-1">
-                                  <div className="flex items-center gap-1 min-w-0">
+                                  <div className="flex items-center gap-1 min-w-0 overflow-hidden">
                                     <span
                                       className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${l3Theme.dotClass} ${
                                         isL3Working ? "animate-ping" : ""
                                       }`}
                                     />
                                     <span
-                                      className={`px-1.5 py-0.2 rounded text-[9px] font-bold uppercase ${l3Theme.badgeClass}`}
+                                      className={`px-1.5 py-0.2 rounded text-[9px] font-bold uppercase flex-shrink-0 ${l3Theme.badgeClass}`}
                                     >
                                       L3 Fan-Out
                                     </span>
-                                    <span className="text-[10px] font-semibold text-slate-100 truncate">
-                                      {l3.name}
+                                    <span
+                                      className="text-[10px] font-semibold text-slate-100 truncate max-w-[210px]"
+                                      title={cleanL3Name}
+                                    >
+                                      {cleanL3Name}
                                     </span>
                                   </div>
                                   <span className="text-[9px] font-mono text-slate-300 flex-shrink-0">
@@ -583,8 +626,17 @@ export function SubagentGraph({
                                   </span>
                                 </div>
 
+                                {cleanL3Task && cleanL3Task !== cleanL3Name && (
+                                  <p
+                                    className="text-[9px] text-slate-400 truncate max-w-[210px] mt-0.5 line-clamp-1"
+                                    title={cleanL3Task}
+                                  >
+                                    {cleanL3Task}
+                                  </p>
+                                )}
+
                                 <div className="flex flex-wrap items-center justify-between gap-1 mt-1 text-[9px] font-mono text-slate-400">
-                                  <span className="truncate">
+                                  <span className="truncate max-w-[150px]">
                                     {l3Meta.conversation_id
                                       ? `conv:${l3Meta.conversation_id.slice(0, 12)}`
                                       : l3.current_tool || l3.status}
@@ -609,6 +661,7 @@ export function SubagentGraph({
           );
         })}
       </div>
+      )}
     </section>
   );
 }

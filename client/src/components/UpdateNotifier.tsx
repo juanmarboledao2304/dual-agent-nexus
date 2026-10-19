@@ -147,9 +147,8 @@ export function UpdateNotifier() {
     return () => window.removeEventListener("dashboard:reset-update-dismissal", handler);
   }, []);
 
-  const show = Boolean(
-    status?.update_available && status.remote_sha && dismissedSha !== status.remote_sha
-  );
+  // Upstream update popup permanently disabled in DualAgent Nexus fork
+  const show = false && Boolean(dismissedSha);
 
   /**
    * Hide the notice for the current remote version by remembering its commit; a newer version shows

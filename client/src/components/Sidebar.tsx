@@ -82,6 +82,7 @@ import {
   Check,
   ChevronUp,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { api } from "../lib/api";
@@ -416,7 +417,6 @@ function CollapsedLanguagePicker({
  */
 export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
   const { t, i18n } = useTranslation();
-  const websiteLabel = "sonnguyenhoang.com";
   // Track whether nav items are clipped by overflow so we can render
   // chevron affordances pointing toward the hidden items. Recomputed on
   // scroll, resize, and any structural change (e.g. collapse toggle).
@@ -624,7 +624,8 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
     return () => window.removeEventListener(UPDATE_CHECK_EVENT, onRequest);
   }, []);
 
-  const updateAvailable = Boolean(updateStatus?.update_available);
+  // Permanently disabled in DualAgent Nexus
+  const updateAvailable = false;
   const checkTitle = checking
     ? t("nav:checkingForUpdates")
     : checkError
@@ -666,8 +667,14 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <h1 className="text-sm font-semibold text-gray-100 truncate">{t("nav:brand")}</h1>
-              <p className="text-[11px] text-gray-500">{t("nav:brandSub")}</p>
+              <h1 className="text-sm font-semibold text-gray-100 truncate">
+                DualAgent Nexus
+                <span className="sr-only">{t("nav:brand")}</span>
+              </h1>
+              <p className="text-[11px] text-gray-400 truncate">
+                Claude + Antigravity Control
+                <span className="sr-only">{t("nav:brandSub")}</span>
+              </p>
             </div>
           )}
         </div>
@@ -865,10 +872,10 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
         {!collapsed && (
           <div className="space-y-1.5">
             <a
-              href="https://github.com/hoangsonww"
+              href="https://github.com/hoangsonww/dual-agent-nexus"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2.5 rounded-lg border border-transparent px-2.5 py-2 text-xs text-gray-300 hover:text-gray-200 hover:bg-surface-3 hover:border-border transition-colors"
+              className="group flex items-center gap-2.5 rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-gray-300 hover:text-gray-200 hover:bg-surface-3 hover:border-border transition-colors"
               title={t("nav:github")}
             >
               <span className="w-6 h-6 rounded-md bg-surface-3 flex items-center justify-center">
@@ -876,24 +883,23 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
               </span>
               <span className="font-medium">{t("nav:github")}</span>
             </a>
-            <a
-              href="https://sonnguyenhoang.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2.5 rounded-lg border border-transparent px-2.5 py-2 text-xs text-gray-300 hover:text-gray-200 hover:bg-surface-3 hover:border-border transition-colors"
-              title={websiteLabel}
+            <div
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-surface-2 border border-border/80 text-[11px] font-mono text-slate-300"
+              title="DualAgent Nexus v2.4 • 3-Pool Cascade"
             >
-              <span className="w-6 h-6 rounded-md bg-surface-3 flex items-center justify-center">
-                <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-500/20 to-cyan-500/20 border border-slate-700/60 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               </span>
-              <span className="font-medium text-gray-300 truncate">{websiteLabel}</span>
-            </a>
+              <span className="truncate font-semibold text-slate-200">
+                DualAgent Nexus v2.4 • 3-Pool Cascade
+              </span>
+            </div>
           </div>
         )}
         {collapsed && (
           <div className="flex flex-col items-center gap-2 pt-0.5">
             <a
-              href="https://github.com/hoangsonww"
+              href="https://github.com/hoangsonww/dual-agent-nexus"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-md border border-transparent flex items-center justify-center text-gray-400 hover:text-gray-300 hover:bg-surface-3 hover:border-border transition-colors"
@@ -902,16 +908,12 @@ export function Sidebar({ wsConnected, collapsed, onToggle }: SidebarProps) {
             >
               <Github className="w-3.5 h-3.5" />
             </a>
-            <a
-              href="https://sonnguyenhoang.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 rounded-md border border-transparent flex items-center justify-center text-gray-400 hover:text-gray-300 hover:bg-surface-3 hover:border-border transition-colors"
-              title={websiteLabel}
-              aria-label={websiteLabel}
+            <div
+              className="w-8 h-8 rounded-md bg-surface-2 border border-border/80 flex items-center justify-center text-cyan-400"
+              title="DualAgent Nexus v2.4 • 3-Pool Cascade"
             >
-              <Globe className="w-3.5 h-3.5" />
-            </a>
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
           </div>
         )}
       </div>
