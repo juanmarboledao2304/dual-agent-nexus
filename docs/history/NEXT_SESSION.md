@@ -1,46 +1,43 @@
 # DualAgent Nexus v3 — handoff for the next session
 
-State at hand-off (2026-10-19): branch `worktree-v3-pixel-rooms` in
-`C:\Users\juanm\Claude\dual-agent-nexus\.claude\worktrees\v3-pixel-rooms`, version **3.0.0**,
-all gates green on Windows (server 1456 pass / 0 fail / 10 skipped — symlink tests skip
-without Developer Mode; client 550/550; `tsc` 0 errors; build OK; header + i18n audits clean).
+**Published:** https://github.com/juanmarboledao2304/dual-agent-nexus (public, default branch
+`main`, milestone `v3.0.0` open). Version **3.0.0**. All local gates green on Windows: server
+1456 pass / 0 fail / 10 skipped (symlink tests skip without Developer Mode), client 550/550,
+`tsc` 0 errors, build OK, header + i18n audits clean.
 
-## Done
+The v3 work was done in a temporary worktree
+(`C:\Users\juanm\Claude\dual-agent-nexus\.claude\worktrees\v3-pixel-rooms`, branch
+`worktree-v3-pixel-rooms`, remote `nexus`). The user's main checkout
+`C:\Users\juanm\Claude\dual-agent-nexus` is still on the old `master` (v2, port 4820), and the
+installed hooks point at it.
 
-- 8-bit PixelAvatar engine, Agent Rooms (`/rooms`), Cascade Hierarchy (`/cascade-graph`),
-  Quota & Digest ROI (`/quota-roi`), legacy redirects, dock presets, port 7770, 3.0.0 bump.
-- Emoji removed from app, server, scripts, CLI, MCP, desktop tray, wiki, docs.
-- Rebrand: repo URLs -> `juanmarboledao2304/dual-agent-nexus`, CODEOWNERS/triage, CITATION,
-  upstream CLA + FUNDING removed (contributions are MIT), product names in CLI/MCP/desktop/VS Code.
-- Live-verified fixes: swarm L2 bridge / L3 inserts (insertAgent arity), explicit `claude`
-  provider stays Pool 3 (server + client), single-count DIGEST, 15-min burn-rate floor,
-  active pool id -> number, compact sticky header.
+## Open items, in order
 
-## Open items
-
-1. Desktop app TypeScript typechecks clean (`cd desktop && npx tsc -p tsconfig.json --noEmit`),
-   but the packaged app and its smoke test were not run: they need Electron's binary and a
-   better-sqlite3 native build (Node 22 LTS or a C++ toolchain). Then `npm run desktop:build`.
-2. After merging/publishing, re-wire hooks from the final checkout:
-   `node scripts/install-hooks.js --claude --antigravity` (rewrites :4820 curl hooks to :7770).
-3. Optional: GitHub milestone `v3.0.0` (version-release skill) once the GitHub repo exists.
-4. (Done) `vscode-extension/README.md` now documents `.vsix` install instead of the upstream listing.
-
-## Publish
-
-New repo (recommended):
-
-```bash
-cd C:/Users/juanm/Claude/dual-agent-nexus/.claude/worktrees/v3-pixel-rooms
-gh repo create juanmarboledao2304/dual-agent-nexus --public --source . --remote nexus
-git push nexus worktree-v3-pixel-rooms:main
-```
-
-Or as a branch of the existing local repo: `git branch -m worktree-v3-pixel-rooms v3`.
+1. **Move the main checkout to v3** (run from `C:\Users\juanm\Claude\dual-agent-nexus`):
+   `git remote add nexus https://github.com/juanmarboledao2304/dual-agent-nexus.git` (skip if it
+   exists), `git fetch nexus`, `git checkout -B main nexus/main`, then `npm ci`,
+   `npm --prefix client ci`, `npm run build`. Keep `master` as-is (it is the v2 history).
+2. **Re-wire hooks to port 7770** from that checkout:
+   `node scripts/install-hooks.js --claude --antigravity`. Verify `~/.gemini/config/hooks.json`
+   curl hooks now say `127.0.0.1:7770` (4 entries, no duplicates) and `~/.claude/settings.json`
+   hook-handler paths point at the main checkout.
+3. **Smoke test**: `npm start` (background, port 7770), open `http://127.0.0.1:7770/rooms`, click
+   Run Swarm Simulation, confirm L1/L2/L3 pods, the Exit 10 failover, and the DIGEST vault.
+4. **CI**: check the first GitHub Actions run on `main` (`gh run list -R
+   juanmarboledao2304/dual-agent-nexus`) and fix anything Linux-specific.
+5. **Desktop app** (optional): TypeScript typechecks clean, but packaging and the smoke test need
+   Electron's binary and a better-sqlite3 native build (Node 22 LTS or a C++ toolchain):
+   `cd desktop && npm install && npm run build`.
+6. **Cleanup**: once the main checkout is on v3, the worktree can be removed with
+   `git worktree remove .claude/worktrees/v3-pixel-rooms` (from the main checkout).
 
 ## Prompt to paste in the next conversation
 
-> Continue DualAgent Nexus v3 in
-> `C:\Users\juanm\Claude\dual-agent-nexus\.claude\worktrees\v3-pixel-rooms` (branch
-> `worktree-v3-pixel-rooms`). Read `docs/history/NEXT_SESSION.md` first, then work through its
-> "Open items". Keep the UI emoji-free, keep `npm run verify` green, and commit when done.
+Open Claude Code in `C:\Users\juanm\Claude\dual-agent-nexus` and paste:
+
+> DualAgent Nexus v3 is published at https://github.com/juanmarboledao2304/dual-agent-nexus
+> (branch `main`). Read
+> `C:\Users\juanm\Claude\dual-agent-nexus\.claude\worktrees\v3-pixel-rooms\docs\history\NEXT_SESSION.md`
+> and do its "Open items" in order: move this checkout to `nexus/main`, re-wire the hooks to port
+> 7770, smoke-test the swarm, and check the first CI run. Keep the UI emoji-free and
+> `npm run verify` green; commit and push any fixes to `main`.
