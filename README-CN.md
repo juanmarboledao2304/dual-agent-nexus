@@ -151,165 +151,49 @@ flowchart LR
 
 ### 用户界面
 
-响应式暗色界面覆盖完整工作流。每张预览图都使用适合移动端的缩略图，并链接到清晰的原图。
+Nexus Console 是你运行的所有 Agent 的指挥中心，分为五个带标签的区域；每个页面顶部都有同一条顶栏，包含搜索框（`Ctrl K` / `Cmd K`）、**Claude Direct 燃料表**、**需要你处理**铃铛、实时连接状态、语言选择器和 **运行 Agent**。
 
 <p align="center">
-  <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard 概览" width="100%"></a>
+  <img src="docs/screenshots/command.png" alt="指挥台" width="100%">
   <br>
-  <em> <strong>Dashboard</strong> · Agent 总量、活跃 Agent、最近活动和实时健康信号</em>
+  <em><strong>指挥台</strong>（<code>/</code>）：需要你处理的事项、按当前节奏 Claude Direct 配额还能用多久、今日总量、实时 Agent 树和最新事件</em>
 </p>
 
-<p align="center">
-  <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="任务进度概览" width="100%"></a>
-  <br>
-  <em> <strong>任务进度</strong> · 紧凑显示完成度和带归属信息的工作预览</em>
-</p>
+- **指挥台**（`/`）按顺序回答三个问题。**需要你处理**只列出阻塞工作的事项，以纸条形式打印：等待批准、所在 pool 配额用尽（退出码 `10`）、最近 30 分钟内出现错误、同一工具重复 4 次以上，或工作中超过 10 分钟没有任何事件（安静的 Agent 会折叠成一张纸条）。**Claude Direct 配额**卡片显示按当前消耗速度填满 5 小时窗口所需的时间、已用 Token 与上限、8 位像素风燃料条、agy-cascade 瀑布（使用中、待命，或配额用尽及其冷却时间），以及被 digest 挡在 Claude Direct 之外的 Token。**今日**、**实时 Agent**（每个 Agent 一行，已完成的 Subagent 折叠）和**最新事件**构成屏幕的其余部分。
+- **Agent**（`/agents`）是一个页面，用四种视图呈现同一批 Agent，因此级联层级只绘制一次：**树形**（`?mode=tree`，大纲，带 **图** 切换）、**时间线**（`?mode=timeline`，每个 Agent 一根从开始到结束的条，窗口为 30 分钟 / 2 小时 / 12 小时，按 pool 着色）、**看板**（`?mode=board`，列为 需要你处理 / 工作中 / 等待中 / 已完成）和**世界**（`?mode=world`，下文的 8 位像素办公室）。所有视图共用 Agent 检查器；**模拟 swarm** 会启动 25 秒的演示。
+- **会话**（`/sessions`）列出每个会话，支持搜索以及项目和状态筛选；**事件**（`?show=events`）是实时事件流。会话详情仍保留 Agent、对话和时间线标签页。
+- **用量**（`/usage`）显示完整的配额明细（瀑布、Claude Direct 5 小时窗口、Antigravity 会话 Token、flow 额度、带宽、消耗速度以及 Flash : Pro 比例）、digest 回报（被挡在 Claude Direct 之外的 Token 及其占窗口的比例）和分析（热力图、成本、Token、生产力、工作流洞察）。同样的明细也可从燃料表打开。
+- **设置**（`/settings`）有三个分区：**仪表盘**（`?section=dashboard`：外观、数据源、定价、Hook、数据位置、导入、远程数据源、Tabby、声音、通知、警报、数据、关于；通过侧边菜单一次显示一个分区）、**你的 Claude 配置**（`?section=claude`：skills、subagents、命令、记忆、插件、marketplace、MCP 服务器、Hook、快捷键、输出样式）和**系统健康**（`?section=health`）。
+- **运行 Agent** 打开 Launch 面板：与 Claude Code 或 Codex 的**交互式对话**（`/run`），或向 `agy-cascade`、带 digest 的 AGY 扇出、Claude Code、Antigravity 或双 swarm **派发任务**，带预设、实时控制台和停止按钮。面板关闭后，正在运行的派发任务仍会继续流式输出。
 
-<p align="center">
-  <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard 健康视图" width="100%"></a>
-  <br>
-  <em> <strong>系统健康</strong> · 存储、缓存、错误、工具、模型、Subagent 和压缩指标</em>
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/agents-tree.png" alt="Agent，树形"><br><em><strong>Agent，树形</strong>：谁委派给了谁</em></td>
+    <td width="50%"><img src="docs/screenshots/agents-timeline.png" alt="Agent，时间线"><br><em><strong>Agent，时间线</strong>：何时运行了什么，运行了多久</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/agents-board.png" alt="Agent，看板"><br><em><strong>Agent，看板</strong>：按状态查看 Agent</em></td>
+    <td><img src="docs/screenshots/agents-world.png" alt="Agent，世界"><br><em><strong>Agent，世界</strong>：8 位像素办公室</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/usage.png" alt="用量"><br><em><strong>用量</strong>：配额、digest 回报和分析</em></td>
+    <td><img src="docs/screenshots/quota-popover.png" alt="配额弹出层"><br><em><strong>燃料表弹出层</strong>：顶栏中的全部配额数据</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/sessions.png" alt="会话"><br><em><strong>会话</strong>，一键切换到事件流</em></td>
+    <td><img src="docs/screenshots/launch.png" alt="运行 Agent"><br><em><strong>运行 Agent</strong>：对话或一次性派发</em></td>
+  </tr>
+</table>
 
-<p align="center">
-  <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban 看板 Agent 视图" width="100%"></a>
-  <br>
-  <em> <strong>Kanban 看板 · Agent</strong> · 清晰展示工作中、等待中、已完成和失败的 Agent 及等待原因</em>
-</p>
+**颜色承载含义。** 每个 pool 只有一种墨色（Claude Direct 朱红、Antigravity Claude 紫色、Antigravity Gemini 青色），仅用于圆点、仪表填充、细左边缘和时间线条。状态始终是一个圆点加一个词（工作中、等待中、错误、已完成），而 *需要你处理* 是唯一反色的“纸张”表面。两种主题共用这些含义：**Duet**（默认，梅子碳色，数字使用 Departure Mono 像素字体）和 **Console**（暖石墨色，带余烬色强调），可在 **设置 > 仪表盘 > 外观** 中选择，并以 `nexus-theme` 为键保存在 `localStorage` 中。
 
-<p align="center">
-  <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban 看板会话视图" width="100%"></a>
-  <br>
-  <em> <strong>Kanban 看板 · 会话</strong> · 展示活跃、等待中、已完成、错误和已废弃会话</em>
-</p>
-
-<p align="center">
-  <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="会话概览" width="100%"></a>
-  <br>
-  <em> <strong>会话</strong> · 可搜索、可筛选、服务端分页的历史记录，包含成本和活动</em>
-</p>
-
-<p align="center">
-  <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="会话 Agent 概览" width="100%"></a>
-  <br>
-  <em> <strong>会话 Agent</strong> · 实时总量、工具用量、Token 流和 Agent 层级</em>
-</p>
-
-<p align="center">
-  <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="会话任务进度详情" width="100%"></a>
-  <br>
-  <em> <strong>任务详情</strong> · 完成度分段、当前工作、归属信息和分页任务</em>
-</p>
-
-<p align="center">
-  <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="会话对话视图" width="100%"></a>
-  <br>
-  <em> <strong>对话</strong> · 渲染 Transcript、代码、工具调用、命令输出和会话标记</em>
-</p>
-
-<p align="center">
-  <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="会话事件时间线" width="100%"></a>
-  <br>
-  <em> <strong>时间线</strong> · 按时间排列的事件、多维筛选和配对工具活动</em>
-</p>
-
-<p align="center">
-  <a href="images/feed.png"><img src="images/readme/feed.png" alt="活动流概览" width="100%"></a>
-  <br>
-  <em> <strong>活动流</strong> · 可暂停的实时事件、分组、筛选和会话跳转</em>
-</p>
-
-<p align="center">
-  <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="分析概览" width="100%"></a>
-  <br>
-  <em> <strong>分析</strong> · 模型 Token、工具频率、活动热力图和会话趋势</em>
-</p>
-
-<p align="center">
-  <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="工作流分析概览" width="100%"></a>
-  <br>
-  <em> <strong>工作流</strong> · 编排图、工具流、协作、委派和模式</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="动态工作流运行" width="100%"></a>
-  <br>
-  <em> <strong>工作流运行</strong> · 基于日志的状态、Agent、Token、工具和时长</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="展开的动态工作流运行" width="100%"></a>
-  <br>
-  <em> <strong>展开的运行</strong> · 阶段筛选、逐 Agent 指标、提示和完整结果</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="会话详情中的工作流运行" width="100%"></a>
-  <br>
-  <em> <strong>会话工作流</strong> · 关联动态运行和合并计算的 Token 成本</em>
-</p>
-
-<p align="center">
-  <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code 和 Codex 配置浏览器" width="100%"></a>
-  <br>
-  <em> <strong>Agent 配置</strong> · 检查并安全编辑支持的 Claude Code 和 Codex 配置</em>
-</p>
-
-<p align="center">
-  <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex 配置浏览器" width="100%"></a>
-  <br>
-  <em> <strong>Codex 配置</strong> · 模型、Profile、MCP、项目、技能、Hook、规则、插件和指令</em>
-</p>
-
-<p align="center">
-  <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code 技能浏览器" width="100%"></a>
-  <br>
-  <em> <strong>技能</strong> · 可搜索的用户、项目和插件技能，支持带备份编辑</em>
-</p>
-
-<p align="center">
-  <a href="images/run.png"><img src="images/readme/run.png" alt="Run Agent Provider 选择" width="100%"></a>
-  <br>
-  <em>▶️ <strong>Run Agent</strong> · 使用 Provider 原生控制启动 Claude Code 或 Codex</em>
-</p>
-
-<p align="center">
-  <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent 实时输出" width="100%"></a>
-  <br>
-  <em> <strong>实时运行</strong> · 流式聊天、推理、命令、文件变更、工具和重新连接</em>
-</p>
-
-<p align="center">
-  <a href="images/settings.png"><img src="images/readme/settings.png" alt="设置概览" width="100%"></a>
-  <br>
-  <em> <strong>设置</strong> · 定价、Hook、通知、数据、远程数据源和系统状态</em>
-</p>
-
-<p align="center">
-  <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="告警与 Webhook 设置" width="100%"></a>
-  <br>
-  <em> <strong>告警</strong> · 规则、冷却时间、活动，以及内置或签名通用 Webhook</em>
-</p>
-
-<p align="center">
-  <a href="images/remote.png"><img src="images/readme/remote.png" alt="远程数据源设置" width="100%"></a>
-  <br>
-  <em> <strong>远程数据源</strong> · Provider 感知的 SSH 同步和按来源监控</em>
-</p>
-
-<p align="center">
-  <a href="images/palette.png"><img src="images/readme/palette.png" alt="命令面板" width="100%"></a>
-  <br>
-  <em>⌘ <strong>命令面板</strong> · 用一个键盘启动器访问页面、会话、项目、筛选器和操作</em>
-</p>
-
-顶部固定导航链接概览、世界、工作室、会话、活动、级联和配额，Agent 配置与设置以图标按钮呈现，唯一的主要操作是 **运行 Agent**。以下章节说明这些视图背后的完整行为。
+**旧地址会重定向** 并保留其查询字符串：`/world`、`/rooms`、`/kanban`、`/cascade-graph` 跳转到 `/agents`（`?mode=world|board|tree`）；`/activity` 跳转到 `/sessions?show=events`；`/quota-roi`、`/analytics`、`/workflows` 跳转到 `/usage`；`/cc-config` 跳转到 `/settings?section=claude`。常驻的配额条变成了燃料表，浮动的 Command Center 面板变成了 Launch 面板，Tabby 伙伴默认关闭。
 
 ### Agent 世界
 
-`/world` 将每个 Agent 呈现为在 3/4 透视办公室中工作的 8 位像素角色，四个房间与 Agent 工作室一一对应：指挥舰桥、级联引擎、扇出舱和摘要金库。
+**Agent > 世界**（`/agents?mode=world`）将每个 Agent 呈现为在 3/4 透视办公室中工作的 8 位像素角色，办公室有四个房间：指挥舰桥、级联引擎、扇出舱和摘要金库。
 
-- **实时 Agent**：与 Agent 工作室使用同一 API 和 WebSocket 数据流。每个 Agent 会走到所在房间里的固定工位（按 Agent id 的哈希分配），并在头顶显示状态：思考圆点、工作火花、批准提示、完成对勾或错误标记。实时 Agent 在这里只读，侧边面板只提供 **打开检查器**。
+- **实时 Agent**：与其他 Agent 视图使用同一 API 和 WebSocket 数据流。每个 Agent 会走到所在房间里的固定工位（按 Agent id 的哈希分配），并在头顶显示状态：思考圆点、工作火花、批准提示、完成对勾或错误标记。实时 Agent 在这里只读，侧边面板只提供 **打开检查器**。
 - **沙盒 Agent**：每个浏览器独立的试验场。**新建沙盒 Agent** 可选择名称、八个角色之一、房间和任务。沙盒 Agent 会在工位工作、在房间内走动后返回。可在侧边面板中暂停、继续、重命名、移动到其他房间、在地图上拖动或删除；**全部暂停**、**全部继续** 和 **清空沙盒** 作用于全部沙盒 Agent。最多 24 个沙盒 Agent 保存在 `localStorage` 的 `nexus-world-sandbox-v1` 中，绝不会影响真实会话。
 - **操作**：拖动平移，滚轮或 `+`/`-` 缩放，`WASD` 或方向键移动镜头，`0` 或 **居中** 复位，`Escape` 取消选择。侧边面板列出所有 Agent，因此整个世界都可以用键盘操作。`prefers-reduced-motion` 会关闭行走和跳动动画。
 ---
@@ -321,11 +205,11 @@ Dashboard 覆盖完整的本地 Agent 生命周期。详细运行契约仍见相
 | 功能 | 摘要 |
 | --- | --- |
 | **任务进度** | 汇总 Claude 任务工具、旧版 `TodoWrite` 与 Codex `update_plan` 的按归属进度。卡片和表格行显示紧凑预览；会话详情增加状态分段、当前工作、归属信息和每页 10 行的分页。新的顶层工作会清除陈旧的未完成状态，已完成历史仍保留。 |
-| **Dashboard** | 持久化的 **Monitor** 和 **Health** 标签页汇总 Agent 总量、活跃层级、最近活动、加权的成功率/缓存/错误/堆内存健康度，以及存储、工具、模型、Subagent 效能和压缩指标。Health 每 5 秒从 `/api/settings/info` 和 `/api/workflows` 刷新。 |
-| **Kanban 看板** | Agent 列覆盖 Working、Waiting、Completed 和 Error，会话列另含 Active 和 Abandoned。卡片每次显示 10 张，仅订阅当前 WebSocket 视图，保留完整标题，并说明权限输入、回合完成、提示符空闲或中断等等待原因。 |
+| **指挥台** | 主屏幕按顺序回答三个问题：**需要你处理**纸条（批准、配额退出码 `10`、最近错误、工具循环、10 分钟停滞）、Claude Direct 燃料卡片（耗尽时间、消耗速度、8 位像素风条、agy-cascade 瀑布、被 digest 挡在外面的 Token），以及 Agent 当前正在做什么（今日总量、实时 Agent 树、最新事件）。系统健康已移至 **设置 > 系统健康**。 |
+| **Agent** | 一个页面，用四种视图呈现同一批 Agent：**树形**（大纲或图）、**时间线**（30 分钟 / 2 小时 / 12 小时窗口内每个 Agent 一根条）、**看板**（需要你处理 / 工作中 / 等待中 / 已完成列）和**世界**（带沙盒的 8 位像素办公室）。所有视图共用 Agent 检查器和 **模拟 swarm** 演示。 |
 | **会话** | 可搜索、可筛选、服务端分页的历史记录，费用仅按可见页计算，并包含临时的内存 Codex 启动行。搜索以 300 ms 防抖匹配 `id`、`name` 和 `cwd`。名称依次取显式标题、AI 标题和首条有意义的用户提示。 |
 | **会话详情** | 实时统计、当前工作、工具用量、Subagent、Token、层级、筛选后的事件时间线、`tool_use_id` 分组和工具专用渲染器。对话视图渲染排队回合、系统通知、Markdown、高亮代码和样式化工具；等待横幅显示原因和已等待时长。 |
-| **活动流** | 可暂停的实时事件流，带共享筛选器、服务端分页、分组、项目/会话/Subagent 来源、会话链接，以及一致的 Claude/Codex 状态徽标。 |
+| **事件** | `会话 > 事件`（`/sessions?show=events`）：可暂停的实时事件流，带共享筛选器、服务端分页、分组、项目/会话/Subagent 来源、会话链接，以及一致的 Claude/Codex 状态徽标。 |
 | **分析** | 模型 Token、工具频率、从周日开始的活动热力图、会话趋势、连接状态、与布局匹配的加载骨架和分页长图例。 |
 | **命令面板** | `Cmd/Ctrl+K` 搜索最近命令、所有路由、实时服务端会话、页面操作、项目目录、子视图、筛选器、Settings、Agent Config、偏好、范围和语言。支持子序列排序、`>`/`@`/`#` 范围、完整键盘控制、已翻译标签、静默处理搜索失败，并且对破坏性操作只导航不执行。 |
 | **唯一快捷键** | `Cmd/Ctrl+K` 是 Dashboard 唯一的全局组合键，在输入框中也有效。移除多键导航可避免隐藏模式；Tabby 保留 `Cmd/Ctrl+B`。 |
@@ -1587,7 +1471,7 @@ Dashboard 为实时会话活动提供**轻柔的音频反馈**，即使放在副
 - **实时侧边栏**：专用的 Activity Bar 视图，实时显示 Agent 状态（工作中、等待中、已完成、错误）。
 - **使用分析**：直接在侧边栏追踪总 Token 消耗、实时美元成本和事件计数。
 - **状态栏集成**：底部状态栏显示活跃会话和 Agent 的实时脉搏。
-- **深度导航**：一键访问特定的 Dashboard 页面（看板、分析、设置）或近期会话。
+- **深度导航**：一键访问特定的 Dashboard 页面（Agent、用量、设置）或近期会话。
 - **集成标签页**：作为原生 VS Code Webview 标签页打开完整的监控面板。
 
 ### 安装与设置
@@ -1958,14 +1842,14 @@ graph TD
 
 ```mermaid
 graph LR
-    ROOT["/ (首页)"] --> DASH["Dashboard<br/>统计 + Agent + 事件"]
-    K["/kanban"] --> KANBAN["KanbanBoard<br/>Agent / 会话 切换"]
-    S["/sessions"] --> SESS["Sessions<br/>可筛选表格"]
-    D["/sessions/:id"] --> DETAIL["SessionDetail<br/>Agent + 时间线 + 成本"]
-    A["/activity"] --> ACT["ActivityFeed<br/>流式事件日志"]
-    AN["/analytics"] --> ANALYTICS["Analytics<br/>Token + 热力图 + 趋势"]
-    WF["/workflows"] --> WORKFLOWS["Workflows<br/>D3 可视化 + 下钻"]
-    ST["/settings"] --> SETTINGS["Settings<br/>定价 + 通知 + Hook + 导出"]
+    ROOT["/ (index)"] --> HOME["Home (Command)<br/>needs you + fuel card + live tree"]
+    AG["/agents"] --> AGENTS["AgentsHub<br/>tree / timeline / board / world"]
+    S["/sessions"] --> SESS["SessionsHub<br/>sessions table + events stream"]
+    D["/sessions/:id"] --> DETAIL["SessionDetail<br/>agents + timeline + cost"]
+    U["/usage"] --> USAGE["Usage<br/>quota breakdown + analytics"]
+    RUN["/run"] --> RUNPAGE["Run<br/>spawn / resume / stream Claude subprocess"]
+    ST["/settings"] --> SETTINGS["SettingsHub<br/>dashboard settings + Claude setup + health"]
+    OLD["/world /rooms /kanban /cascade-graph<br/>/activity /quota-roi /analytics<br/>/workflows /cc-config"] --> REDIRECT["LegacyRedirect<br/>to the new section"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 兜底页"]
 
     ALL["所有路由"] --> LAYOUT["Layout 包装器<br/>(TopNav + Outlet)"]
@@ -2167,14 +2051,21 @@ agent-dashboard/
 |       |       |-- WorkflowStats.tsx               # 聚合工作流统计
 |       |       +-- SessionDrillIn.tsx              # 按会话的 Agent 树、工具时间线、事件
 |       +-- pages/
-|           |-- Dashboard.tsx      # 概览页
-|           |-- KanbanBoard.tsx    # Agent / 会话切换的状态列
-|           |-- Sessions.tsx       # 会话表格
-|           |-- SessionDetail.tsx  # 单会话深入查看
-|           |-- ActivityFeed.tsx   # 实时事件流
-|           |-- Analytics.tsx      # Token 使用、热力图、趋势
-|           |-- Workflows.tsx      # D3.js 工作流可视化和会话下钻
-|           |-- Settings.tsx       # 模型定价、通知、Hook、导出、清理
+|           |-- Home.tsx           # Command: needs you, fuel card, live tree, latest events
+|           |-- AgentsHub.tsx      # Agents: tree / timeline / board / world views
+|           |-- AgentWorld.tsx     # 8-bit world (Agents > World)
+|           |-- SessionsHub.tsx    # Sessions table + events stream switch
+|           |-- Sessions.tsx       # Server-paginated sessions table
+|           |-- SessionDetail.tsx  # Single session deep dive
+|           |-- ActivityFeed.tsx   # Real-time event stream (Sessions > Events)
+|           |-- Usage.tsx          # Quota breakdown, digest return, analytics
+|           |-- Analytics.tsx      # Token usage, heatmap, trends
+|           |-- Workflows.tsx      # D3.js workflow visualizations and session drill-in
+|           |-- SettingsHub.tsx    # Settings sections: dashboard, Claude setup, health
+|           |-- Settings.tsx       # Model pricing, notifications, hooks, export, cleanup
+|           |-- CcConfig.tsx       # Claude Code config explorer (Your Claude setup)
+|           |-- SystemHealth.tsx   # Database, server, hook, and cache health
+|           |-- Run.tsx            # Interactive Claude Code / Codex runs
 |           +-- NotFound.tsx       # 404 兜底页
 |-- scripts/
 |   |-- hook-handler.js          # 轻量级 stdin-to-HTTP 转发器

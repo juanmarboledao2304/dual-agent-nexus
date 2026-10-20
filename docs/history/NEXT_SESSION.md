@@ -1,5 +1,17 @@
 # DualAgent Nexus — handoff for the next session
 
+**State (2026-10-20):** branch `worktree-redesign-clarity` carries the **Nexus Console redesign**
+(five sections: Command, Agents, Sessions, Usage, Settings; Duet and Console themes; fuel gauge;
+Needs-you rule; Launch panel). Decisions and tokens: `docs/plans/2026-10-20-nexus-console-redesign.md`.
+README screenshots come from an isolated demo server (fake `USERPROFILE`/`HOME`, `npm run seed`,
+Simulate swarm); never capture README images from the real database. The promo video source lives
+outside the repo in `C:\Users\juanm\Claude\Video Nexus` (Remotion: `npm run voz`, then
+`python herramientas/musica_minimal.py`, then `npm run render`).
+
+---
+
+## Previous state (2026-10-19)
+
 **State (2026-10-19):** version **3.1.0** on local branch `redesign/nexus-signal` (based on
 `main`, which tracks `nexus/main` at v3.0.0). The main checkout
 `C:\Users\juanm\Claude\dual-agent-nexus` is on v3; hooks point at port 7770 (Claude Code

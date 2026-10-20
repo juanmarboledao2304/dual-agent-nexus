@@ -149,165 +149,49 @@ For full architecture and operational guidance, see [docs/I18N.md](./docs/I18N.m
 
 ### User Interface
 
-The responsive dark interface covers the full workflow. Every preview uses a mobile-friendly thumbnail and links to the crisp original.
+The Nexus Console is a command center for every agent you run. It has five labelled sections; the same top bar sits on every page with a search field (`Ctrl K` / `Cmd K`), the **Claude Direct fuel gauge**, the **Needs you** bell, the live connection status, the language picker, and **Run agent**.
 
 <p align="center">
-  <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard overview" width="100%"></a>
+  <img src="docs/screenshots/command.png" alt="Command" width="100%">
   <br>
-  <em> <strong>Dashboard</strong> · fleet totals, active agents, recent activity, and live health signals</em>
+  <em><strong>Command</strong> (<code>/</code>): what needs you, how long Claude Direct quota lasts at this pace, today's totals, the live agent tree, and the latest events</em>
 </p>
 
-<p align="center">
-  <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="Task progress overview" width="100%"></a>
-  <br>
-  <em> <strong>Task Progress</strong> · compact completion and owner-aware work previews</em>
-</p>
+- **Command** (`/`) answers three questions in order. **Needs you** lists only what blocks work, printed as paper slips: waiting for approval, its pool ran out of quota (exit code `10`), an error in the last 30 minutes, the same tool repeated 4+ times, or no event for 10+ minutes while working (quiet agents fold into one slip). The **Claude Direct quota** card shows the time until the 5-hour window fills at the current burn, tokens used of the cap, an 8-bit fuel bar, the agy-cascade waterfall (pool in use, standby, or out of quota with its cooldown), and tokens kept off Claude Direct by digests. **Today**, **Live agents** (one line per agent, finished subagents folded) and **Latest events** complete the screen.
+- **Agents** (`/agents`) is one page with four views of the same agents, so the cascade hierarchy is drawn once: **Tree** (`?mode=tree`, an outline with a **Graph** toggle), **Timeline** (`?mode=timeline`, one bar per agent from start to end in a 30 min / 2 h / 12 h window, coloured by pool), **Board** (`?mode=board`, columns Needs you / Working / Waiting / Done), and **World** (`?mode=world`, the 8-bit office below). All views share the agent inspector; **Simulate swarm** starts the 25-second demo.
+- **Sessions** (`/sessions`) lists every session with search, project, and status filters; **Events** (`?show=events`) is the live event stream. Session detail keeps its Agents, Conversation, and Timeline tabs.
+- **Usage** (`/usage`) shows the full quota breakdown (waterfall, Claude Direct 5-hour window, Antigravity session tokens, flow credits, bandwidth, burn, and Flash : Pro mix), the digest return (tokens kept off Claude Direct and their share of the window), and the analytics (heatmap, cost, tokens, productivity, workflow intelligence). The same breakdown opens from the fuel gauge.
+- **Settings** (`/settings`) has three sections: **Dashboard** (`?section=dashboard`: appearance, data source, pricing, hooks, data locations, imports, remote sources, Tabby, sound, notifications, alerts, data, about; one section at a time from a side menu), **Your Claude setup** (`?section=claude`: skills, subagents, commands, memory, plugins, marketplaces, MCP servers, hooks, keybindings, output styles), and **System health** (`?section=health`).
+- **Run agent** opens the Launch panel: an **interactive conversation** with Claude Code or Codex (`/run`), or **dispatch a task** to `agy-cascade`, an AGY fan-out with a digest, Claude Code, Antigravity, or a dual swarm, with presets, a live console, and a stop button. Running dispatches keep streaming while the panel is closed.
 
-<p align="center">
-  <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard health view" width="100%"></a>
-  <br>
-  <em> <strong>System Health</strong> · storage, cache, errors, tools, models, subagents, and compactions</em>
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/agents-tree.png" alt="Agents, Tree"><br><em><strong>Agents, Tree</strong>: who delegated to whom</em></td>
+    <td width="50%"><img src="docs/screenshots/agents-timeline.png" alt="Agents, Timeline"><br><em><strong>Agents, Timeline</strong>: what ran when, and for how long</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/agents-board.png" alt="Agents, Board"><br><em><strong>Agents, Board</strong>: agents by status</em></td>
+    <td><img src="docs/screenshots/agents-world.png" alt="Agents, World"><br><em><strong>Agents, World</strong>: the 8-bit office</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/usage.png" alt="Usage"><br><em><strong>Usage</strong>: quota, digest return, and analytics</em></td>
+    <td><img src="docs/screenshots/quota-popover.png" alt="Quota popover"><br><em><strong>Fuel gauge popover</strong>: every quota figure from the top bar</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/sessions.png" alt="Sessions"><br><em><strong>Sessions</strong>, with the Events stream one click away</em></td>
+    <td><img src="docs/screenshots/launch.png" alt="Run agent"><br><em><strong>Run agent</strong>: conversation or one-shot dispatch</em></td>
+  </tr>
+</table>
 
-<p align="center">
-  <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban Board agent view" width="100%"></a>
-  <br>
-  <em> <strong>Kanban Board · Agents</strong> · working, waiting, completed, and failed agents with clear waiting reasons</em>
-</p>
+**Colour carries meaning.** Pools have one ink each (Claude Direct vermilion, Antigravity Claude violet, Antigravity Gemini cyan), used only as dots, meter fills, thin left edges, and timeline bars. Status is always a dot plus a word (Working, Waiting, Error, Done), and *Needs you* is the one inverted "paper" surface. Two themes share these meanings: **Duet** (default, plum carbon with pixel numerals in Departure Mono) and **Console** (warm graphite with an ember accent), chosen in **Settings > Dashboard > Appearance** and stored in `localStorage` under `nexus-theme`.
 
-<p align="center">
-  <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban Board session view" width="100%"></a>
-  <br>
-  <em> <strong>Kanban Board · Sessions</strong> · active, waiting, completed, error, and abandoned sessions</em>
-</p>
-
-<p align="center">
-  <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Sessions overview" width="100%"></a>
-  <br>
-  <em> <strong>Sessions</strong> · searchable, filterable, server-paginated history with costs and activity</em>
-</p>
-
-<p align="center">
-  <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="Session agent overview" width="100%"></a>
-  <br>
-  <em> <strong>Session Agents</strong> · live totals, tool usage, token flow, and agent hierarchy</em>
-</p>
-
-<p align="center">
-  <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="Session task progress details" width="100%"></a>
-  <br>
-  <em> <strong>Task Details</strong> · completion segments, active work, owners, and paginated tasks</em>
-</p>
-
-<p align="center">
-  <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="Session conversation view" width="100%"></a>
-  <br>
-  <em> <strong>Conversation</strong> · rendered transcripts, code, tool calls, command output, and session markers</em>
-</p>
-
-<p align="center">
-  <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="Session event timeline" width="100%"></a>
-  <br>
-  <em> <strong>Timeline</strong> · chronological events, multidimensional filters, and paired tool activity</em>
-</p>
-
-<p align="center">
-  <a href="images/feed.png"><img src="images/readme/feed.png" alt="Activity Feed overview" width="100%"></a>
-  <br>
-  <em> <strong>Activity Feed</strong> · pausable live events, grouping, filters, and session jumps</em>
-</p>
-
-<p align="center">
-  <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Analytics overview" width="100%"></a>
-  <br>
-  <em> <strong>Analytics</strong> · model tokens, tool frequency, activity heatmaps, and session trends</em>
-</p>
-
-<p align="center">
-  <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Workflow analytics overview" width="100%"></a>
-  <br>
-  <em> <strong>Workflows</strong> · orchestration graphs, tool flow, collaboration, delegation, and patterns</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="Dynamic workflow runs" width="100%"></a>
-  <br>
-  <em> <strong>Workflow Runs</strong> · journal-backed status, agents, tokens, tools, and duration</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="Expanded dynamic workflow run" width="100%"></a>
-  <br>
-  <em> <strong>Expanded Run</strong> · phase filters, per-agent metrics, prompts, and complete results</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="Workflow runs in session detail" width="100%"></a>
-  <br>
-  <em> <strong>Session Workflows</strong> · linked dynamic runs and folded-in token costs</em>
-</p>
-
-<p align="center">
-  <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code and Codex configuration explorers" width="100%"></a>
-  <br>
-  <em> <strong>Agent Config</strong> · inspect and safely edit supported Claude Code and Codex configuration</em>
-</p>
-
-<p align="center">
-  <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex configuration explorer" width="100%"></a>
-  <br>
-  <em> <strong>Codex Config</strong> · models, profiles, MCP, projects, skills, hooks, rules, plugins, and instructions</em>
-</p>
-
-<p align="center">
-  <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code skills explorer" width="100%"></a>
-  <br>
-  <em> <strong>Skills</strong> · searchable user, project, and plugin skills with backed-up editing</em>
-</p>
-
-<p align="center">
-  <a href="images/run.png"><img src="images/readme/run.png" alt="Run Agent provider selection" width="100%"></a>
-  <br>
-  <em>▶️ <strong>Run Agent</strong> · launch Claude Code or Codex with provider-native controls</em>
-</p>
-
-<p align="center">
-  <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent live output" width="100%"></a>
-  <br>
-  <em> <strong>Live Run</strong> · streaming chat, reasoning, commands, file changes, tools, and reattachment</em>
-</p>
-
-<p align="center">
-  <a href="images/settings.png"><img src="images/readme/settings.png" alt="Settings overview" width="100%"></a>
-  <br>
-  <em> <strong>Settings</strong> · pricing, hooks, notifications, data, remote sources, and system status</em>
-</p>
-
-<p align="center">
-  <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="Alert and webhook settings" width="100%"></a>
-  <br>
-  <em> <strong>Alerts</strong> · rules, cooldowns, activity, and built-in or signed generic webhooks</em>
-</p>
-
-<p align="center">
-  <a href="images/remote.png"><img src="images/readme/remote.png" alt="Remote Data Sources settings" width="100%"></a>
-  <br>
-  <em> <strong>Remote Data Sources</strong> · provider-aware SSH sync and source-scoped monitoring</em>
-</p>
-
-<p align="center">
-  <a href="images/palette.png"><img src="images/readme/palette.png" alt="Command Palette" width="100%"></a>
-  <br>
-  <em>⌘ <strong>Command Palette</strong> · one keyboard launcher for pages, sessions, projects, filters, and actions</em>
-</p>
-
-The sticky top navigation links Overview, World, Rooms, Sessions, Activity, Cascade, and Quota, with icon buttons for Agent Config and Settings and a single primary **Run agent** action. The sections below describe the complete behavior behind these views.
+**Old addresses redirect** and keep their query strings: `/world`, `/rooms`, `/kanban`, `/cascade-graph` go to `/agents` (`?mode=world|board|tree`); `/activity` to `/sessions?show=events`; `/quota-roi`, `/analytics`, `/workflows` to `/usage`; `/cc-config` to `/settings?section=claude`. The always-on quota strip became the fuel gauge, the floating Command Center dock became the Launch panel, and the Tabby companion is off by default.
 
 ### Agent World
 
-`/world` shows every agent as an 8-bit character working in a 3/4-perspective office with four rooms that mirror Agent Rooms: Conductor Bridge, Cascade Engine, Fan-Out Pods, and Digest Vault.
+**Agents > World** (`/agents?mode=world`) shows every agent as an 8-bit character working in a 3/4-perspective office with four rooms: Conductor Bridge, Cascade Engine, Fan-Out Pods, and Digest Vault.
 
-- **Live agents** come from the same API and WebSocket feed as Agent Rooms. Each one walks to a stable desk in its room (assigned by a hash of the agent id) and shows its state above its head: thinking dots, a working spark, an approval prompt, a check when done, or an error mark. Live agents are read-only here; the side panel offers **Open inspector** only.
+- **Live agents** come from the same API and WebSocket feed as the other Agents views. Each one walks to a stable desk in its room (assigned by a hash of the agent id) and shows its state above its head: thinking dots, a working spark, an approval prompt, a check when done, or an error mark. Live agents are read-only here; the side panel offers **Open inspector** only.
 - **Sandbox agents** are a per-browser playground. **New sandbox agent** picks a name, one of the eight characters, a room, and a task. A sandbox agent works at home, wanders its room, and returns. Pause, resume, rename, move to another room, drag it on the map, or delete it from the side panel; **Pause all**, **Resume all**, and **Clear sandbox** act on all of them. Up to 24 sandbox agents persist in `localStorage` under `nexus-world-sandbox-v1`; they never touch real sessions.
 - **Controls:** drag to pan, scroll or `+`/`-` to zoom, `WASD` or arrow keys to move the camera, `0` or **Recenter** to reset, `Escape` to clear the selection. The side panel lists every agent so the world is fully usable from the keyboard. `prefers-reduced-motion` turns off walking and bobbing.
 
@@ -320,11 +204,11 @@ The dashboard covers the complete local agent lifecycle. Detailed operational co
 | Feature | Summary |
 | --- | --- |
 | **Task Progress** | Owner-aware progress from Claude task tools, legacy `TodoWrite`, and Codex `update_plan`. Compact previews appear on cards and rows; Session Detail adds status segments, active work, owners, and 10-row paging. New top-level work clears stale unfinished state, while completed history remains. |
-| **Dashboard** | Persistent **Monitor** and **Health** tabs combine fleet totals, active hierarchies, recent activity, weighted success/cache/error/heap health, storage, tools, models, subagent effectiveness, and compaction metrics. Health refreshes every 5 seconds from `/api/settings/info` and `/api/workflows`. |
-| **Kanban Board** | Agent columns cover Working, Waiting, Completed, and Error; session columns add Active and Abandoned. Cards page 10 at a time, subscribe only to the active WebSocket view, preserve full titles, and explain waiting reasons such as permission input, turn completion, prompt idle, or interruption. |
+| **Command** | The home screen answers three questions in order: the **Needs you** slips (approval, quota exit `10`, recent error, tool loop, 10-minute stall), the Claude Direct fuel card (time to empty, burn, 8-bit meter, agy-cascade waterfall, tokens kept off by digests), and what agents are doing now (today's totals, live agent tree, latest events). System health moved to **Settings > System health**. |
+| **Agents** | One page with four views of the same agents: **Tree** (outline or graph), **Timeline** (bars per agent in a 30 min / 2 h / 12 h window), **Board** (Needs you / Working / Waiting / Done columns), and **World** (8-bit office with a sandbox). All views share the agent inspector and the **Simulate swarm** demo. |
 | **Sessions** | Searchable, filterable, server-paginated history with visible-page cost calculation and a temporary in-memory Codex startup row. Search covers `id`, `name`, and `cwd` with a 300 ms debounce. Names resolve from explicit title, AI title, then the first meaningful user prompt. |
 | **Session Detail** | Live stats, active work, tool usage, subagents, tokens, hierarchy, filtered event timelines, `tool_use_id` grouping, and tool-specific renderers. Conversation view renders queued turns, system notices, Markdown, highlighted code, and styled tools; waiting banners show the reason and elapsed time. |
-| **Activity Feed** | Pausable real-time events with shared filters, server pagination, grouping, project/session/subagent origin, session links, and consistent Claude/Codex status badges. |
+| **Events** | `Sessions > Events` (`/sessions?show=events`): pausable real-time events with shared filters, server pagination, grouping, project/session/subagent origin, session links, and consistent Claude/Codex status badges. |
 | **Analytics** | Model tokens, tool frequency, Sunday-aligned activity heatmaps, session trends, connection state, layout-matched loading skeletons, and paged long legends. |
 | **Command Palette** | `Cmd/Ctrl+K` searches recent commands, all routes, live server-side sessions, page actions, project directories, subviews, filters, Settings, Agent Config, preferences, scope, and language. It supports subsequence ranking, `>`/`@`/`#` scopes, full keyboard control, translated labels, quiet search failure, and navigation-only handling for destructive actions. |
 | **One Shortcut** | `Cmd/Ctrl+K` is the sole global dashboard chord, including inside fields. Removed multi-key navigation avoids hidden modes; Tabby retains `Cmd/Ctrl+B`. |
@@ -1588,7 +1472,7 @@ The **Claude Code Agent Monitor** is available as a first-class VS Code extensio
 - **Live Sidebar**: Dedicated Activity Bar view showing real-time Agent Health (Working, Waiting, Completed, etc.).
 - **Usage Analytics**: Track total tokens, live USD costs, and event counts directly in the sidebar.
 - **Status Bar Integration**: Quick-glance pulse monitor in the bottom bar showing active sessions and agents.
-- **Deep Navigation**: One-click access to specific dashboard views (Kanban, Analytics, Settings) or recent sessions.
+- **Deep Navigation**: One-click access to specific dashboard views (Agents, Usage, Settings) or recent sessions.
 - **Integrated Tab**: Opens the full monitoring dashboard as a native VS Code webview tab.
 
 ### Installation & Setup
@@ -1964,16 +1848,14 @@ graph TD
 
 ```mermaid
 graph LR
-    ROOT["/ (index)"] --> DASH["Dashboard<br/>stats + agents + events"]
-    K["/kanban"] --> KANBAN["KanbanBoard<br/>agents/sessions toggle"]
-    S["/sessions"] --> SESS["Sessions<br/>server-paginated table"]
+    ROOT["/ (index)"] --> HOME["Home (Command)<br/>needs you + fuel card + live tree"]
+    AG["/agents"] --> AGENTS["AgentsHub<br/>tree / timeline / board / world"]
+    S["/sessions"] --> SESS["SessionsHub<br/>sessions table + events stream"]
     D["/sessions/:id"] --> DETAIL["SessionDetail<br/>agents + timeline + cost"]
-    A["/activity"] --> ACT["ActivityFeed<br/>streaming event log"]
-    AN["/analytics"] --> ANALYTICS["Analytics<br/>tokens + heatmap + trends"]
-    WF["/workflows"] --> WORKFLOWS["Workflows<br/>D3 visualizations + drill-in"]
-    CC["/cc-config"] --> CCCONFIG["CcConfig<br/>12-tab Claude Code config inspector + editor"]
+    U["/usage"] --> USAGE["Usage<br/>quota breakdown + analytics"]
     RUN["/run"] --> RUNPAGE["Run<br/>spawn / resume / stream Claude subprocess"]
-    ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
+    ST["/settings"] --> SETTINGS["SettingsHub<br/>dashboard settings + Claude setup + health"]
+    OLD["/world /rooms /kanban /cascade-graph<br/>/activity /quota-roi /analytics<br/>/workflows /cc-config"] --> REDIRECT["LegacyRedirect<br/>to the new section"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
     ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
@@ -2205,14 +2087,21 @@ agent-dashboard/
 |       |       |-- WorkflowStats.tsx               # Aggregate workflow statistics
 |       |       +-- SessionDrillIn.tsx              # Per-session agent tree, tool timeline, events
 |       +-- pages/
-|           |-- Dashboard.tsx      # Overview page
-|           |-- KanbanBoard.tsx    # Agents/Sessions toggle, status columns
+|           |-- Home.tsx           # Command: needs you, fuel card, live tree, latest events
+|           |-- AgentsHub.tsx      # Agents: tree / timeline / board / world views
+|           |-- AgentWorld.tsx     # 8-bit world (Agents > World)
+|           |-- SessionsHub.tsx    # Sessions table + events stream switch
 |           |-- Sessions.tsx       # Server-paginated sessions table
 |           |-- SessionDetail.tsx  # Single session deep dive
-|           |-- ActivityFeed.tsx   # Real-time event stream
+|           |-- ActivityFeed.tsx   # Real-time event stream (Sessions > Events)
+|           |-- Usage.tsx          # Quota breakdown, digest return, analytics
 |           |-- Analytics.tsx      # Token usage, heatmap, trends
 |           |-- Workflows.tsx      # D3.js workflow visualizations and session drill-in
+|           |-- SettingsHub.tsx    # Settings sections: dashboard, Claude setup, health
 |           |-- Settings.tsx       # Model pricing, notifications, hooks, export, cleanup
+|           |-- CcConfig.tsx       # Claude Code config explorer (Your Claude setup)
+|           |-- SystemHealth.tsx   # Database, server, hook, and cache health
+|           |-- Run.tsx            # Interactive Claude Code / Codex runs
 |           +-- NotFound.tsx       # 404 catch-all page
 |-- scripts/
 |   |-- hook-handler.js          # Lightweight stdin-to-HTTP forwarder
