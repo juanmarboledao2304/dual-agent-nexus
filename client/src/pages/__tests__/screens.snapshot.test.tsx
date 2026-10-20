@@ -432,8 +432,8 @@ vi.mock("../../lib/push", () => ({
 }));
 
 // Page components (imported after the mocks above; vi.mock is hoisted).
-import { Dashboard } from "../Dashboard";
-import { KanbanBoard } from "../KanbanBoard";
+import { Home } from "../Home";
+import { AgentsHub } from "../AgentsHub";
 import { Sessions } from "../Sessions";
 import { SessionDetail } from "../SessionDetail";
 import { ActivityFeed } from "../ActivityFeed";
@@ -517,26 +517,11 @@ afterEach(() => {
 });
 
 describe("screen snapshots", () => {
-  it("Dashboard", async () => {
-    await snapshot(<Dashboard />, "/");
+  it("Home", async () => {
+    await snapshot(<Home />, "/");
   });
-  it("Dashboard requests task progress for active agent cards", async () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Dashboard />
-      </MemoryRouter>
-    );
-    await settle();
-
-    expect(vi.mocked(api.sessions.list)).toHaveBeenCalledWith({
-      status: "active",
-      limit: 100,
-      include_transient: true,
-      include_task_progress: true,
-    });
-  });
-  it("Kanban board", async () => {
-    await snapshot(<KanbanBoard />, "/kanban");
+  it("Agents board", async () => {
+    await snapshot(<AgentsHub />, "/agents?mode=board");
   });
   it("Sessions", async () => {
     await snapshot(<Sessions />, "/sessions");
@@ -654,32 +639,31 @@ describe("screen snapshots", () => {
   });
   it("aligns GPT pricing controls with Claude and keeps rate caveats in the tooltip", async () => {
     render(
-      <MemoryRouter initialEntries={["/settings"]}>
+      <MemoryRouter initialEntries={["/settings#gpt-pricing"]}>
         <Settings />
       </MemoryRouter>
     );
     await settle();
 
+    // Settings shows one section at a time; the other pricing section is rendered but hidden.
     const claudeSection = document.getElementById("claude-pricing");
     const gptSection = document.getElementById("gpt-pricing");
     expect(claudeSection).not.toBeNull();
     expect(gptSection).not.toBeNull();
     const claude = within(claudeSection as HTMLElement);
     const gpt = within(gptSection as HTMLElement);
-    const claudeReset = claude.getByRole("button", { name: "Reset Defaults" });
-    const claudeAdd = claude.getByRole("button", { name: "Add Model" });
-    const gptReset = gpt.getByRole("button", { name: "Reset Defaults" });
-    const gptAdd = gpt.getByRole("button", { name: "Add Model" });
+    const claudeReset = claude.getByRole("button", { name: "Reset Defaults", hidden: true });
+    const claudeAdd = claude.getByRole("button", { name: "Add Model", hidden: true });
+    const gptReset = gpt.getByRole("button", { name: "Reset Defaults", hidden: true });
+    const gptAdd = gpt.getByRole("button", { name: "Add Model", hidden: true });
     const subtitle = gpt.getByText(/Published OpenAI API rates.*USD per 1M tokens\./);
 
-    expect(gpt.getByRole("columnheader", { name: "Fast · Short ≤272K" })).toHaveAttribute(
-      "colspan",
-      "4"
-    );
-    expect(gpt.getByRole("columnheader", { name: "Fast · Long >272K" })).toHaveAttribute(
-      "colspan",
-      "4"
-    );
+    expect(
+      gpt.getByRole("columnheader", { name: "Fast · Short ≤272K", hidden: true })
+    ).toHaveAttribute("colspan", "4");
+    expect(
+      gpt.getByRole("columnheader", { name: "Fast · Long >272K", hidden: true })
+    ).toHaveAttribute("colspan", "4");
     expect(gptReset.className).toBe(claudeReset.className);
     expect(gptAdd.className).toBe(claudeAdd.className);
     expect(
@@ -692,7 +676,7 @@ describe("screen snapshots", () => {
       gpt.queryByText(/An em dash means OpenAI does not publish that context or Fast-mode rate/)
     ).not.toBeInTheDocument();
 
-    const infoButton = gpt.getByRole("button", { name: "How GPT pricing works" });
+    const infoButton = gpt.getByRole("button", { name: "How GPT pricing works", hidden: true });
     fireEvent.focus(infoButton);
     expect(gpt.getByRole("tooltip")).toBeInTheDocument();
     expect(gpt.getByText("Unpublished rates stay unpriced")).toBeInTheDocument();
@@ -703,8 +687,8 @@ describe("screen snapshots", () => {
     expect(gpt.queryByRole("tooltip")).not.toBeInTheDocument();
 
     fireEvent.click(gptReset);
-    expect(gpt.getByRole("button", { name: "Confirm Reset" })).toBeInTheDocument();
-    fireEvent.click(gpt.getByRole("button", { name: "Confirm Reset" }));
+    expect(gpt.getByRole("button", { name: "Confirm Reset", hidden: true })).toBeInTheDocument();
+    fireEvent.click(gpt.getByRole("button", { name: "Confirm Reset", hidden: true }));
     await settle();
     expect(vi.mocked(api.settings.resetPricing)).toHaveBeenCalledWith("codex");
     expect(screen.queryByText(/Every amount is USD per 1M tokens/)).not.toBeInTheDocument();

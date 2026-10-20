@@ -1,33 +1,23 @@
 /**
  * @file TopNav.tsx
- * @description Sticky top navigation for the DualAgent Nexus shell: brand, primary
- * route tabs (icon + short label, or icon-only in compact mode), command-palette
- * trigger, live-connection pill with its diagnostics modal, update check, language
- * picker, GitHub link, and the single primary "Run agent" action.
+ * @description Sticky top bar of the Nexus Console: brand with a live-connection dot, the five
+ * labelled sections (Home, Agents, Sessions, Usage, Settings; icon-only in compact mode), a visible
+ * search field that opens the command palette, the Claude Direct quota meter, the Needs-you bell, the
+ * connection pill with its diagnostics modal, the language picker, and the single primary "Run agent"
+ * action that opens the Launch panel. A two-ink "duet rule" runs under the bar. The update check stays
+ * wired to the command palette's "check for updates" event.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
-import {
-  Activity,
-  Boxes,
-  Gamepad2,
-  Gauge,
-  Github,
-  LayoutDashboard,
-  LayoutGrid,
-  Network,
-  Play,
-  RefreshCw,
-  ScrollText,
-  Search,
-  Settings,
-} from "lucide-react";
+import { Bot, Gauge, House, Play, ScrollText, Search, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { NexusMark } from "../NexusMark";
-import { openCommandPalette } from "../../lib/appEvents";
+import { openCommandPalette, openLaunchPanel } from "../../lib/appEvents";
+import { NeedsYouBell } from "../console/NeedsYou";
+import { QuotaMeter } from "../console/QuotaMeter";
 import { ConnectionStatusModal } from "./ConnectionStatusModal";
 import { LanguagePicker, SUPPORTED_LANGUAGES, normalizeLanguage } from "./LanguagePicker";
 import type { SupportedLanguage } from "./LanguagePicker";
@@ -48,21 +38,15 @@ interface NavTab {
   icon: LucideIcon;
   /** Short label key under `nav:tabs`. */
   key: string;
-  /** Utility destinations render icon-only to keep the bar on one line. */
-  iconOnly?: boolean;
 }
 
-/** Primary tabs in display order. "Run agent" is the separate primary action, not a tab. */
+/** The five sections, in display order. "Run agent" is the separate primary action, not a tab. */
 export const NAV_TABS: readonly NavTab[] = [
-  { to: "/", icon: LayoutDashboard, key: "overview" },
-  { to: "/world", icon: Gamepad2, key: "world" },
-  { to: "/rooms", icon: LayoutGrid, key: "rooms" },
+  { to: "/", icon: House, key: "home" },
+  { to: "/agents", icon: Bot, key: "agents" },
   { to: "/sessions", icon: ScrollText, key: "sessions" },
-  { to: "/activity", icon: Activity, key: "activity" },
-  { to: "/cascade-graph", icon: Network, key: "cascade" },
-  { to: "/quota-roi", icon: Gauge, key: "quota" },
-  { to: "/cc-config", icon: Boxes, key: "config", iconOnly: true },
-  { to: "/settings", icon: Settings, key: "settings", iconOnly: true },
+  { to: "/usage", icon: Gauge, key: "usage" },
+  { to: "/settings", icon: Settings, key: "settings" },
 ];
 
 /**
@@ -121,103 +105,92 @@ export function TopNav({ wsConnected, compact }: TopNavProps) {
   const versionLabel = `v${__APP_VERSION__}`;
 
   return (
-    <header className="sticky top-0 z-30 h-14 border-b border-border bg-surface-0/85 backdrop-blur supports-[backdrop-filter]:bg-surface-0/70">
-      <div className="mx-auto flex h-full max-w-[1440px] items-center gap-3 px-4 sm:px-6">
+    <header className="sticky top-0 z-30 border-b border-border bg-surface-0/85 backdrop-blur supports-[backdrop-filter]:bg-surface-0/75">
+      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-3 px-4 sm:px-6">
         <Link
           to="/"
-          className="flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
+          className="relative flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
           aria-label={t("nav:brand")}
         >
-          <NexusMark size={28} />
-          <span className="hidden text-sm font-semibold tracking-[-0.01em] text-gray-50 md:inline">
-            {t("nav:brand")}
+          <NexusMark size={26} />
+          <span
+            className={`absolute left-[19px] top-[19px] h-2 w-2 rounded-full ring-2 ring-surface-0 ${
+              wsConnected ? "bg-mint-400" : "bg-coral-400"
+            }`}
+            aria-hidden
+          />
+          <span className="hidden font-pixel text-[15px] tracking-tight text-gray-50 md:inline">
+            Nexus
           </span>
         </Link>
 
-        <span className="hidden h-5 w-px bg-border md:block" aria-hidden />
-
         <nav
           aria-label={t("nav:primary")}
-          className="no-scrollbar flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto"
+          className="no-scrollbar ml-2 flex min-w-0 items-center gap-0.5 overflow-x-auto"
         >
-          {NAV_TABS.map(({ to, icon: Icon, key, iconOnly }) => {
+          {NAV_TABS.map(({ to, icon: Icon, key }) => {
             const label = t(`nav:tabs.${key}`);
-            const showLabel = !compact && !iconOnly;
             return (
               <NavLink
                 key={to}
                 to={to}
                 end={to === "/"}
-                title={showLabel ? undefined : label}
-                aria-label={showLabel ? undefined : label}
+                title={compact ? label : undefined}
+                aria-label={compact ? label : undefined}
                 className={({ isActive }) =>
-                  `relative inline-flex h-8 shrink-0 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium transition-colors duration-150 ${
+                  `inline-flex h-8 shrink-0 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium transition-colors duration-150 ${
                     isActive
                       ? "bg-surface-3 text-gray-50"
-                      : "text-gray-400 hover:bg-surface-3 hover:text-gray-100"
+                      : "text-gray-400 hover:bg-surface-2 hover:text-gray-100"
                   }`
                 }
               >
-                {({ isActive }) => (
-                  <>
-                    <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                    {showLabel && <span>{label}</span>}
-                    {isActive && (
-                      <span
-                        className="absolute inset-x-2 -bottom-[13px] h-0.5 rounded-full bg-accent"
-                        aria-hidden
-                      />
-                    )}
-                  </>
-                )}
+                <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                {!compact && <span>{label}</span>}
               </NavLink>
             );
           })}
         </nav>
 
+        <button
+          type="button"
+          onClick={openCommandPalette}
+          aria-label={t("nav:search")}
+          className="ml-auto hidden h-8 min-w-0 max-w-[260px] flex-1 items-center gap-2 rounded-lg border border-border bg-surface-1 px-2.5 text-[13px] text-gray-500 transition-colors hover:border-border-light hover:text-gray-300 md:flex"
+        >
+          <Search className="h-3.5 w-3.5 shrink-0" aria-hidden />
+          <span className="truncate">{t("nav:searchPlaceholder")}</span>
+          <kbd className="ml-auto shrink-0 rounded border border-border-light px-1.5 font-sans text-[11px] text-gray-400">
+            {usesCommandKey() ? "Cmd K" : "Ctrl K"}
+          </kbd>
+        </button>
+        <button
+          type="button"
+          onClick={openCommandPalette}
+          aria-label={t("nav:search")}
+          className="ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-surface-3 hover:text-gray-200 md:hidden"
+        >
+          <Search className="h-4 w-4" aria-hidden />
+        </button>
+
         <div className="flex shrink-0 items-center gap-1">
-          <button
-            type="button"
-            onClick={openCommandPalette}
-            aria-label={t("nav:search")}
-            title={`${t("nav:search")} (${usesCommandKey() ? "Cmd" : "Ctrl"}+K)`}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-surface-3 hover:text-gray-200"
-          >
-            <Search className="h-4 w-4" aria-hidden />
-          </button>
+          <QuotaMeter />
+          <NeedsYouBell />
 
           <button
             type="button"
             onClick={() => setStatusOpen(true)}
             aria-label={t("nav:connectionDetails")}
-            title={`${t("nav:connectionDetails")} · ${versionLabel}`}
-            className="inline-flex h-8 items-center gap-2 rounded-lg px-2.5 text-[12px] font-medium text-gray-300 transition-colors hover:bg-surface-3"
+            title={`${wsConnected ? t("nav:live") : t("nav:disconnected")} ${versionLabel} (${checkTitle})`}
+            className="hidden h-8 items-center gap-2 rounded-lg px-2 text-[12px] font-medium text-gray-400 transition-colors hover:bg-surface-3 hover:text-gray-200 lg:inline-flex"
           >
             <span
               className={`h-1.5 w-1.5 rounded-full ${
-                wsConnected ? "bg-emerald-400 animate-pulse-dot" : "bg-red-400"
+                wsConnected ? "bg-mint-400 animate-pulse-dot" : "bg-coral-400"
               }`}
               aria-hidden
             />
-            <span className="hidden sm:inline">
-              {wsConnected ? t("nav:live") : t("nav:disconnected")}
-            </span>
-            <span className="hidden font-mono text-[11px] text-gray-500 xl:inline">
-              {versionLabel}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => void update.check()}
-            disabled={update.checking}
-            title={checkTitle}
-            aria-label={checkTitle}
-            className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-surface-3 disabled:opacity-60 ${
-              update.checkError ? "text-amber-300" : "text-gray-400 hover:text-gray-100"
-            }`}
-          >
-            <RefreshCw className={`h-4 w-4 ${update.checking ? "animate-spin" : ""}`} aria-hidden />
+            {wsConnected ? t("nav:live") : t("nav:disconnected")}
           </button>
 
           <LanguagePicker
@@ -227,23 +200,18 @@ export function TopNav({ wsConnected, compact }: TopNavProps) {
             onChange={changeLanguage}
           />
 
-          <a
-            href={REPO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={t("nav:github")}
-            aria-label={t("nav:github")}
-            className="hidden h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-surface-3 hover:text-gray-100 sm:inline-flex"
+          <button
+            type="button"
+            onClick={openLaunchPanel}
+            className="btn-primary ml-1 h-8 py-0"
+            aria-label={t("nav:runAgent")}
           >
-            <Github className="h-4 w-4" aria-hidden />
-          </a>
-
-          <Link to="/run" className="btn-primary ml-1 h-8 py-0" aria-label={t("nav:runAgent")}>
             <Play className="h-3.5 w-3.5" aria-hidden />
             <span className="hidden md:inline">{t("nav:runAgent")}</span>
-          </Link>
+          </button>
         </div>
       </div>
+      <div className="duet-rule opacity-70" aria-hidden />
 
       <ConnectionStatusModal
         open={statusOpen}

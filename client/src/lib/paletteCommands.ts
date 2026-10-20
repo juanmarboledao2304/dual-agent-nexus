@@ -397,26 +397,51 @@ export const PAGE_ACTION_COMMANDS: {
   },
 ];
 
-/** The ten navigation destinations. `keywords` keep v2 page names searchable after the v3 rename. */
+/** Navigation destinations: the five sections plus deep views. `keywords` keep v2 and v3.1 page names searchable. */
 export const PAGE_COMMANDS: {
   to: string;
   icon: LucideIcon;
   navKey: string;
   keywords?: string[];
 }[] = [
-  { to: "/", icon: LayoutDashboard, navKey: "nav:dashboard", keywords: ["dashboard"] },
-  { to: "/world", icon: Gamepad2, navKey: "nav:world", keywords: ["world", "map", "sandbox"] },
-  { to: "/rooms", icon: Columns3, navKey: "nav:agentBoard", keywords: ["kanban", "board"] },
   {
-    to: "/cascade-graph",
+    to: "/",
+    icon: LayoutDashboard,
+    navKey: "nav:tabs.home",
+    keywords: ["dashboard", "home", "overview", "command center"],
+  },
+  {
+    to: "/agents?mode=world",
+    icon: Gamepad2,
+    navKey: "nav:world",
+    keywords: ["world", "map", "sandbox"],
+  },
+  {
+    to: "/agents?mode=board",
+    icon: Columns3,
+    navKey: "nav:agentBoard",
+    keywords: ["kanban", "board", "rooms"],
+  },
+  {
+    to: "/agents",
     icon: Workflow,
-    navKey: "nav:workflows",
-    keywords: ["workflows", "graph"],
+    navKey: "nav:tabs.agents",
+    keywords: ["agents", "tree", "cascade", "graph", "workflows"],
   },
   { to: "/sessions", icon: FolderOpen, navKey: "nav:sessions", keywords: ["sessions"] },
-  { to: "/activity", icon: Activity, navKey: "nav:activityFeed", keywords: ["feed"] },
-  { to: "/quota-roi", icon: BarChart3, navKey: "nav:analytics", keywords: ["analytics"] },
-  { to: "/cc-config", icon: Boxes, navKey: "nav:ccConfig" },
+  {
+    to: "/sessions?show=events",
+    icon: Activity,
+    navKey: "nav:activityFeed",
+    keywords: ["feed", "events", "activity"],
+  },
+  {
+    to: "/usage",
+    icon: BarChart3,
+    navKey: "nav:tabs.usage",
+    keywords: ["analytics", "quota", "usage", "cost"],
+  },
+  { to: "/settings?section=claude", icon: Boxes, navKey: "nav:ccConfig", keywords: ["config"] },
   { to: "/run", icon: Play, navKey: "nav:run" },
   { to: "/settings", icon: SettingsIcon, navKey: "nav:settings", keywords: ["settings"] },
 ];
@@ -470,56 +495,56 @@ const VIEW_COMMANDS: {
 }[] = [
   {
     id: "view:dashboard:monitor",
-    to: "/?tab=monitor",
+    to: "/",
     labelKey: "dashboard:tabs.monitor",
     ownerKey: "nav:dashboard",
     icon: MonitorPlay,
   },
   {
     id: "view:dashboard:health",
-    to: "/?tab=health",
+    to: "/settings?section=health",
     labelKey: "dashboard:tabs.health",
     ownerKey: "nav:dashboard",
     icon: Heart,
   },
   {
     id: "view:kanban:agents",
-    to: "/rooms?layout=board&view=agents",
+    to: "/agents?mode=board",
     labelKey: "kanban:viewToggle.agents",
     ownerKey: "nav:agentBoard",
     icon: UserRound,
   },
   {
     id: "view:kanban:sessions",
-    to: "/rooms?layout=board&view=sessions",
+    to: "/sessions",
     labelKey: "kanban:viewToggle.sessions",
     ownerKey: "nav:agentBoard",
     icon: FolderOpen,
   },
   {
     id: "view:analytics:cost",
-    to: "/quota-roi?tab=cost",
+    to: "/usage?tab=cost",
     labelKey: "analytics:tabs.costAnalytics",
     ownerKey: "nav:analytics",
     icon: DollarSign,
   },
   {
     id: "view:analytics:tokens",
-    to: "/quota-roi?tab=tokens",
+    to: "/usage?tab=tokens",
     labelKey: "analytics:tabs.tokenAnalytics",
     ownerKey: "nav:analytics",
     icon: BarChart3,
   },
   {
     id: "view:analytics:productivity",
-    to: "/quota-roi?tab=productivity",
+    to: "/usage?tab=productivity",
     labelKey: "analytics:tabs.productivityAnalytics",
     ownerKey: "nav:analytics",
     icon: Clock,
   },
   {
     id: "view:analytics:workflow",
-    to: "/quota-roi?tab=workflow",
+    to: "/usage?tab=workflow",
     labelKey: "analytics:tabs.workflowIntelligence",
     ownerKey: "nav:analytics",
     icon: Workflow,
@@ -604,10 +629,10 @@ export function buildPaletteCommands(ctx: PaletteContext): PaletteCommand[] {
     id: `cc-config:${tab.key}`,
     label: t(`ccConfig:tabs.${tab.key}`),
     detail: t("nav:ccConfig"),
-    keywords: [`/cc-config?tab=${tab.key}`, tab.key],
+    keywords: [`/settings?section=claude&tab=${tab.key}`, tab.key],
     group: "config",
     icon: tab.icon,
-    run: go(`/cc-config?tab=${tab.key}`),
+    run: go(`/settings?section=claude&tab=${tab.key}`),
   }));
 
   const actions: PaletteCommand[] = [

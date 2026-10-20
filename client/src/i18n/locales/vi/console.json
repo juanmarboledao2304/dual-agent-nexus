@@ -1,0 +1,214 @@
+{
+  "pools": {
+    "agyClaude": "Antigravity Claude",
+    "agyGemini": "Antigravity Gemini",
+    "claudeDirect": "Claude Direct",
+    "models": {
+      "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
+      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "claudeDirect": "Conductor và khám phá với Haiku"
+    }
+  },
+  "poolState": {
+    "active": "Đang dùng",
+    "standby": "Chờ",
+    "exhausted": "Hết hạn mức, quay lại sau {{time}}",
+    "short": {
+      "active": "đang dùng",
+      "standby": "chờ",
+      "exhausted": "hết hạn mức"
+    }
+  },
+  "status": {
+    "approval": "Cần phê duyệt",
+    "working": "Đang làm việc",
+    "waiting": "Đang chờ",
+    "error": "Lỗi",
+    "completed": "Xong"
+  },
+  "quota": {
+    "loading": "Đang tải hạn mức",
+    "meterLabel": "Hạn mức còn lại của Claude Direct",
+    "agyMeterLabel": "Hạn mức phiên Antigravity còn lại",
+    "poolNumber": "Nhóm {{n}}",
+    "free": "còn trống {{pct}}%",
+    "window": "Cửa sổ 5 giờ",
+    "usedOf": "Đã dùng {{used}} / {{cap}}",
+    "timeToEmpty": "Hết sau",
+    "idle": "Không tiêu hao",
+    "burn": "Tốc độ tiêu hao",
+    "perHour": "{{n}}/giờ",
+    "requestsPerHour": "{{n}} yêu cầu/giờ",
+    "cache": "Hiệu quả bộ nhớ đệm",
+    "tokensIO": "Đầu vào / đầu ra / bộ nhớ đệm",
+    "effort": "Subagent theo mức nỗ lực",
+    "effortValue": "{{heavy}} nặng, {{standard}} tiêu chuẩn, {{light}} nhẹ",
+    "agyTitle": "Antigravity",
+    "sessionTokens": "Token phiên",
+    "flowCredits": "Tín dụng Flow",
+    "bandwidth": "Băng thông ngữ cảnh",
+    "modelMix": "Tỉ lệ Flash : Pro",
+    "waterfall": "Thác nước",
+    "waterfallHint": "Công việc đổ từ nhóm 1 sang nhóm 3. Cần bảo vệ Claude Direct.",
+    "digest": "Đã giữ lại khỏi Claude Direct:",
+    "digestValue": "{{tokens}} token trong {{count}} digest",
+    "openUsage": "Xem đầy đủ mức dùng"
+  },
+  "needsYou": {
+    "title_one": "Cần bạn ({{count}})",
+    "title_other": "Cần bạn ({{count}})",
+    "allClear": "Hiện không có gì cần bạn.",
+    "bellLabel_one": "{{count}} mục cần bạn",
+    "bellLabel_other": "{{count}} mục cần bạn",
+    "open": "Mở",
+    "viewUsage": "Xem mức dùng",
+    "quotaLow": "Claude Direct còn {{pct}}%",
+    "quotaLowDetail": "Hết sau {{time}} với tốc độ hiện tại",
+    "kind": {
+      "approval": "Đang chờ bạn phê duyệt",
+      "quota": "Nhóm đã hết hạn mức",
+      "error": "Dừng do lỗi",
+      "loop": "Đang lặp {{tool}} ({{count}} lần)",
+      "stalled": "Không hoạt động trong {{minutes}} phút"
+    },
+    "stalledGroup_one": "{{count}} Agent không hoạt động {{minutes}} phút",
+    "stalledGroup_other": "{{count}} Agent không hoạt động, tới {{minutes}} phút",
+    "review": "Xem lại"
+  },
+  "launch": {
+    "title": "Chạy một agent",
+    "subtitle": "Bắt đầu cuộc trò chuyện, hoặc gửi một tác vụ tới thác nước, fan-out hoặc swarm.",
+    "close": "Đóng",
+    "conversation": "Trò chuyện tương tác",
+    "conversationHint": "Trò chuyện với Claude Code hoặc Codex trong thư mục làm việc, từng lượt.",
+    "dispatch": "Gửi một tác vụ",
+    "dispatchHint": "Một prompt, gửi tới động cơ bạn chọn. Kết quả hiển thị bên dưới và bạn có thể dừng bất cứ lúc nào."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Chào buổi sáng",
+      "afternoon": "Chào buổi chiều",
+      "evening": "Chào buổi tối"
+    },
+    "statusLine_one": "{{working}} agent đang làm việc. {{count}} mục cần bạn.",
+    "statusLine_other": "{{working}} agent đang làm việc. {{count}} mục cần bạn.",
+    "fuelTitle": "Hạn mức Claude Direct",
+    "details": "Chi tiết",
+    "untilEmpty": "cho đến khi cửa sổ 5 giờ đầy với tốc độ này",
+    "freeIdle": "của cửa sổ 5 giờ còn trống",
+    "fuelLine": "Đã dùng {{used}} / {{cap}}, tiêu hao {{burn}}/giờ, còn trống {{pct}}%",
+    "keptOff": "{{tokens}} token được digest giữ lại khỏi Claude Direct",
+    "todayTitle": "Hôm nay",
+    "sessions": "Phiên",
+    "today": {
+      "activeAgents": "Agent đang chạy",
+      "sessions": "Phiên",
+      "sessionsValue": "{{active}} đang hoạt động / {{total}}",
+      "events": "Sự kiện hôm nay",
+      "allEvents": "Tổng sự kiện",
+      "cost": "Tổng chi phí"
+    },
+    "liveTitle": "Agent đang chạy",
+    "openAgents": "Mở Agent",
+    "eventsTitle": "Sự kiện mới nhất",
+    "allEvents": "Tất cả sự kiện",
+    "noEvents": "Chưa có sự kiện nào. Khi bạn chạy agent, các lệnh gọi công cụ sẽ hiện ở đây."
+  },
+  "agents": {
+    "title": "Agent",
+    "summary": "{{total}} agent, {{live}} đang chạy, {{attention}} cần bạn",
+    "views": "Chế độ xem agent",
+    "modes": {
+      "tree": "Cây",
+      "timeline": "Dòng thời gian",
+      "board": "Bảng",
+      "world": "Thế giới"
+    },
+    "modeHint": {
+      "tree": "Ai đã giao việc cho ai.",
+      "timeline": "Cái gì chạy khi nào và trong bao lâu.",
+      "board": "Agent theo phòng và theo trạng thái.",
+      "world": "Agent của bạn dưới dạng nhân vật 8-bit đang làm việc."
+    },
+    "treeStyle": "Kiểu cây",
+    "treeStyles": {
+      "outline": "Dạng danh sách",
+      "graph": "Dạng đồ thị"
+    },
+    "legend": "Màu nhóm",
+    "treeLabel": "Cây agent",
+    "empty": "Chưa có agent nào. Hãy bắt đầu phiên hoặc chạy mô phỏng swarm để xem cây.",
+    "foldedDone_one": "{{count}} đã xong",
+    "foldedDone_other": "{{count}} đã xong",
+    "moreTrees_one": "{{count}} phiên khác trong Agents",
+    "moreTrees_other": "{{count}} phiên khác trong Agents",
+    "ctx": "ctx {{pct}}%",
+    "simulate": "Mô phỏng swarm",
+    "simulating": "Đang mô phỏng",
+    "simulateHint": "Chạy một swarm agy-cascade demo 3 cấp để xem mọi chế độ hoạt động.",
+    "simulateFailed": "Không thể bắt đầu mô phỏng"
+  },
+  "timeline": {
+    "hint": "Mỗi thanh chạy từ lúc agent bắt đầu đến khi kết thúc, hoặc đến hiện tại.",
+    "window": "Khoảng thời gian",
+    "windows": {
+      "30": "30 phút",
+      "120": "2 giờ",
+      "720": "12 giờ"
+    },
+    "now": "bây giờ",
+    "empty": "Không có agent nào chạy trong khoảng này."
+  },
+  "sessions": {
+    "views": "Chế độ xem phiên",
+    "sessions": "Phiên",
+    "events": "Sự kiện"
+  },
+  "usage": {
+    "title": "Mức dùng",
+    "subtitle": "Còn bao nhiêu hạn mức trong mỗi nhóm, thác nước đã tiết kiệm được gì, và token cùng chi phí đã đi đâu.",
+    "quotaTitle": "Hạn mức",
+    "roi": {
+      "offloaded": "Token được giữ lại khỏi Claude Direct",
+      "offloadedHint": "{{count}} digest, trung bình {{avg}}",
+      "windowShare": "Phần cửa sổ 5 giờ đã tiết kiệm",
+      "windowShareHint": "trên cửa sổ {{cap}}"
+    }
+  },
+  "settings": {
+    "sections": "Các mục cài đặt",
+    "section": {
+      "dashboard": "Bảng điều khiển",
+      "claude": "Cấu hình Claude của bạn",
+      "health": "Tình trạng hệ thống"
+    },
+    "appearance": "Giao diện",
+    "appearanceHint": "Chọn cách hiển thị bảng điều khiển. Cả hai chủ đề giữ nguyên ý nghĩa của mọi màu.",
+    "theme": "Chủ đề",
+    "themes": {
+      "duet": {
+        "name": "Duet",
+        "hint": "Nền than mận với mực Claude và Antigravity. Mục cần bạn được in trên giấy."
+      },
+      "console": {
+        "name": "Console",
+        "hint": "Nền than chì ấm với điểm nhấn màu than hồng. Trung tính và êm dịu hơn."
+      }
+    }
+  },
+  "board": {
+    "columns": {
+      "needs": "Cần bạn",
+      "working": "Đang làm",
+      "waiting": "Đang chờ",
+      "done": "Xong"
+    },
+    "empty": {
+      "needs": "Không có gì cần bạn.",
+      "working": "Không có Agent nào đang làm.",
+      "waiting": "Không có Agent nào đang chờ.",
+      "done": "Chưa có gì hoàn thành."
+    },
+    "quiet": "không hoạt động {{minutes}} phút"
+  }
+}

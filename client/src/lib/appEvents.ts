@@ -125,3 +125,13 @@ export function requestUpdateCheck(): void {
 export function announceAction(message: string): void {
   window.dispatchEvent(new CustomEvent(ACTION_TOAST_EVENT, { detail: message }));
 }
+
+/** Event name that opens the Launch panel (agent dispatcher plus interactive run). */
+export const LAUNCH_PANEL_EVENT = "ccam:launch-panel";
+
+/**
+ * Open the Launch panel. The top bar's "Run agent" button and the command palette both use it.
+ */
+export function openLaunchPanel(): void {
+  window.dispatchEvent(new CustomEvent(LAUNCH_PANEL_EVENT));
+}

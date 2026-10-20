@@ -1,12 +1,15 @@
 /**
  * @file tailwind.config.js
- * @description Tailwind CSS configuration — content globs and the "Nexus Console" design tokens: a warm
- * graphite neutral ramp, surfaces, a CSS-variable accent, and six meaning-bound colour families
- * (clay, lilac, glacier for the three quota pools; mint, amber, coral for status) generated in OKLCH.
- * Every legacy Tailwind hue the pages use (violet, fuchsia, cyan, emerald, ...) is remapped onto one of
- * those families so the whole app shares one calm palette without per-file class churn.
+ * @description Tailwind CSS configuration — content globs and the themeable "Nexus Console" design tokens.
+ * Every colour (neutrals, surfaces, borders, accent, paper, and six meaning-bound families: clay, lilac,
+ * glacier for the three quota pools; mint, amber, coral for status) is a CSS variable generated in OKLCH
+ * for two themes: "console" (warm graphite, ember accent) and "duet" (plum carbon, vermilion and
+ * violet/cyan inks, paper accent). Legacy Tailwind hues the pages still use (violet, fuchsia, cyan,
+ * emerald, ...) are remapped onto those families so the whole app shares one calm palette.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
+
+import plugin from "tailwindcss/plugin";
 
 /** Ramp stops in Tailwind order. */
 const STOPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
@@ -16,14 +19,14 @@ const LIGHTNESS = [0.97, 0.93, 0.87, 0.8, 0.72, 0.64, 0.55, 0.46, 0.37, 0.28, 0.
 const CHROMA_WEIGHT = [0.18, 0.35, 0.6, 0.85, 1, 1, 0.92, 0.8, 0.62, 0.45, 0.32];
 
 /**
- * Convert an OKLCH colour to a gamut-mapped sRGB hex string (chroma is reduced until it fits).
+ * Convert an OKLCH colour to gamut-mapped sRGB channels (chroma is reduced until it fits).
  *
  * @param {number} l - Lightness 0..1.
  * @param {number} c - Chroma.
  * @param {number} h - Hue in degrees.
- * @returns {string} Hex colour.
+ * @returns {string} Space-separated "R G B" for `rgb(var(--x) / alpha)`.
  */
-function oklchToHex(l, c, h) {
+function oklchToRgb(l, c, h) {
   for (let chroma = c; chroma >= 0; chroma -= 0.002) {
     const a = chroma * Math.cos((h * Math.PI) / 180);
     const b = chroma * Math.sin((h * Math.PI) / 180);
@@ -36,59 +39,120 @@ function oklchToHex(l, c, h) {
       -0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_,
     ];
     if (lin.every((v) => v >= -0.0001 && v <= 1.0001)) {
-      return (
-        "#" +
-        lin
-          .map((v) => {
-            const x = Math.min(1, Math.max(0, v));
-            const srgb = x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055;
-            return Math.round(srgb * 255)
-              .toString(16)
-              .padStart(2, "0");
-          })
-          .join("")
-      );
+      return lin
+        .map((v) => {
+          const x = Math.min(1, Math.max(0, v));
+          const srgb = x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055;
+          return Math.round(srgb * 255);
+        })
+        .join(" ");
     }
   }
-  return "#000000";
+  return "0 0 0";
 }
 
 /**
- * Build a 50..950 ramp for one hue.
+ * Build CSS variables for a 50..950 ramp.
  *
- * @param {number} hue - OKLCH hue in degrees.
- * @param {number} chroma - Peak chroma.
- * @returns {Record<number, string>} Tailwind colour scale.
+ * @param {string} name - Variable prefix.
+ * @param {(i: number) => [number, number]} hueChroma - Hue and peak chroma for stop index i.
+ * @returns {Record<string, string>} `--name-stop` variables.
  */
-function ramp(hue, chroma) {
+function rampVars(name, hueChroma) {
   return Object.fromEntries(
-    STOPS.map((stop, i) => [stop, oklchToHex(LIGHTNESS[i], chroma * CHROMA_WEIGHT[i], hue)])
+    STOPS.map((stop, i) => {
+      const [h, c] = hueChroma(i);
+      return [`--${name}-${stop}`, oklchToRgb(LIGHTNESS[i], c * CHROMA_WEIGHT[i], h)];
+    })
   );
 }
 
-/** Warm graphite neutrals shared by the `gray`, `slate`, `zinc`, `neutral`, and `stone` keys. */
-const GRAPHITE = {
-  50: "#f4f4f5",
-  100: "#e7e7e9",
-  200: "#d2d2d6",
-  300: "#b2b2b8",
-  400: "#8d8d95",
-  500: "#6c6c74",
-  600: "#505057",
-  700: "#3a3a40",
-  800: "#26262b",
-  900: "#18181b",
-  950: "#0f0f11",
+/**
+ * Neutral ramp: low, near-constant chroma (no chroma weighting) so text stays neutral.
+ *
+ * @param {(i: number) => [number, number]} hueChroma - Hue and chroma for stop index i.
+ * @returns {Record<string, string>} `--gray-stop` variables.
+ */
+function neutralVars(hueChroma) {
+  return Object.fromEntries(
+    STOPS.map((stop, i) => {
+      const [h, c] = hueChroma(i);
+      return [`--gray-${stop}`, oklchToRgb(LIGHTNESS[i], c, h)];
+    })
+  );
+}
+
+/** Theme definitions: meaning-bound families keep their names; only hue and chroma change. */
+const THEMES = {
+  console: {
+    gray: () => [70, 0.005],
+    surfaces: { l: [0.17, 0.195, 0.22, 0.25, 0.28, 0.315], h: 70, c: 0.004 },
+    borders: { l: [0.285, 0.33], h: 70, c: 0.005 },
+    families: {
+      clay: [48, 0.13],
+      lilac: [292, 0.11],
+      glacier: [238, 0.1],
+      mint: [162, 0.12],
+      amber: [82, 0.13],
+      coral: [24, 0.15],
+    },
+    accent: ["255 138 61", "255 164 102", "20 10 3"],
+    paper: ["236 236 239", "15 15 17"],
+  },
+  duet: {
+    // Warm paper-white text, plum carbon shadows: hue slides from 75 (light) to 300 (dark).
+    gray: (i) => (i <= 4 ? [75, 0.016] : i <= 6 ? [320, 0.018] : [300, 0.022]),
+    surfaces: { l: [0.2, 0.225, 0.255, 0.285, 0.315, 0.35], h: 300, c: 0.02 },
+    borders: { l: [0.32, 0.38], h: 300, c: 0.026 },
+    families: {
+      clay: [36, 0.19],
+      lilac: [292, 0.17],
+      glacier: [215, 0.12],
+      mint: [152, 0.1],
+      amber: [78, 0.12],
+      coral: [20, 0.17],
+    },
+    accent: ["243 235 221", "255 248 236", "28 24 35"],
+    paper: ["243 235 221", "28 24 35"],
+  },
 };
 
-// Meaning-bound families. Pools: clay = Claude Direct (Anthropic), lilac = AGY-Claude,
-// glacier = AGY-Gemini. Status: mint = working/success, amber = waiting/needs you, coral = error.
-const CLAY = ramp(48, 0.13);
-const LILAC = ramp(292, 0.11);
-const GLACIER = ramp(238, 0.1);
-const MINT = ramp(162, 0.12);
-const AMBER = ramp(82, 0.13);
-const CORAL = ramp(24, 0.15);
+/**
+ * Every CSS variable for one theme.
+ *
+ * @param {typeof THEMES.console} theme - Theme definition.
+ * @returns {Record<string, string>} Variables.
+ */
+function themeVars(theme) {
+  const vars = { ...neutralVars(theme.gray) };
+  for (const [name, [h, c]] of Object.entries(theme.families)) {
+    Object.assign(
+      vars,
+      rampVars(name, () => [h, c])
+    );
+  }
+  theme.surfaces.l.forEach((l, i) => {
+    vars[`--surface-${i}`] = oklchToRgb(l, theme.surfaces.c, theme.surfaces.h);
+  });
+  vars["--border"] = oklchToRgb(theme.borders.l[0], theme.borders.c, theme.borders.h);
+  vars["--border-light"] = oklchToRgb(theme.borders.l[1], theme.borders.c, theme.borders.h);
+  [vars["--accent"], vars["--accent-hover"], vars["--accent-ink"]] = theme.accent;
+  [vars["--paper"], vars["--paper-ink"]] = theme.paper;
+  return vars;
+}
+
+/** Tailwind colour value bound to a CSS variable (opacity modifiers keep working). */
+const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+/** A full 50..950 scale bound to `--name-*` variables. */
+const scale = (name) => Object.fromEntries(STOPS.map((s) => [s, v(`${name}-${s}`)]));
+
+const GRAY = scale("gray");
+const CLAY = scale("clay");
+const LILAC = scale("lilac");
+const GLACIER = scale("glacier");
+const MINT = scale("mint");
+const AMBER = scale("amber");
+const CORAL = scale("coral");
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -96,11 +160,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        gray: GRAPHITE,
-        slate: GRAPHITE,
-        zinc: GRAPHITE,
-        neutral: GRAPHITE,
-        stone: GRAPHITE,
+        gray: GRAY,
+        slate: GRAY,
+        zinc: GRAY,
+        neutral: GRAY,
+        stone: GRAY,
+        // Pools: clay = Claude Direct (Anthropic), lilac = AGY-Claude, glacier = AGY-Gemini.
         clay: CLAY,
         orange: CLAY,
         lilac: LILAC,
@@ -112,6 +177,7 @@ export default {
         cyan: GLACIER,
         sky: GLACIER,
         blue: GLACIER,
+        // Status: mint = working/success, amber = waiting/needs you, coral = error.
         mint: MINT,
         emerald: MINT,
         green: MINT,
@@ -123,30 +189,25 @@ export default {
         red: CORAL,
         rose: CORAL,
         pink: CORAL,
-        surface: {
-          0: "#0f0f11",
-          1: "#141416",
-          2: "#19191c",
-          3: "#1f1f23",
-          4: "#26262b",
-          5: "#2e2e34",
-        },
+        surface: Object.fromEntries([0, 1, 2, 3, 4, 5].map((i) => [i, v(`surface-${i}`)])),
         border: {
-          DEFAULT: "#26262b",
-          light: "#33333a",
+          DEFAULT: v("border"),
+          light: v("border-light"),
         },
-        // The interactive accent lives in CSS variables (index.css) so the brand colour can be
-        // tuned in one place; `<alpha-value>` keeps opacity modifiers such as `bg-accent/15` working.
         accent: {
-          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
-          hover: "rgb(var(--accent-hover) / <alpha-value>)",
+          DEFAULT: v("accent"),
+          hover: v("accent-hover"),
           muted: "rgb(var(--accent) / 0.14)",
-          ink: "rgb(var(--accent-ink) / <alpha-value>)",
+          ink: v("accent-ink"),
+        },
+        paper: {
+          DEFAULT: v("paper"),
+          ink: v("paper-ink"),
         },
         pool: {
-          claude: CLAY[400],
-          agyclaude: LILAC[400],
-          gemini: GLACIER[400],
+          claude: v("clay-400"),
+          agyclaude: v("lilac-400"),
+          gemini: v("glacier-400"),
         },
       },
       boxShadow: {
@@ -156,6 +217,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Code", "Consolas", "monospace"],
+        pixel: ["Departure Mono", "JetBrains Mono", "monospace"],
       },
       transitionTimingFunction: {
         "out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -192,5 +254,12 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addBase }) => {
+      addBase({
+        ":root": themeVars(THEMES.console),
+        ':root[data-theme="duet"]': themeVars(THEMES.duet),
+      });
+    }),
+  ],
 };

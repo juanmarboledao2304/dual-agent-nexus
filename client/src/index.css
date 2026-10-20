@@ -1,26 +1,29 @@
 /**
  * @file index.css
- * @description Global styles and Tailwind CSS configuration for the application.
+ * @description Global styles: the pixel display font, base element styles driven by the theme
+ * variables, shared component classes (cards, buttons, segmented controls, status dots, the 8-bit
+ * pixel meter, paper slips, the duet rule), and the pixel sprite animations.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
+
+@font-face {
+  font-family: "Departure Mono";
+  src: url("./assets/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /* Accent tokens (space-separated RGB so Tailwind opacity modifiers work). "ember" is the
-     default; data-accent="light" swaps to a neutral high-contrast accent. */
+  /* Colour tokens (surfaces, neutrals, families, accent, paper) are CSS variables injected by the
+     Tailwind theme plugin (client/tailwind.config.js) for :root ("console") and
+     :root[data-theme="duet"]. */
   :root {
-    --accent: 255 138 61;
-    --accent-hover: 255 164 102;
-    --accent-ink: 20 10 3;
     color-scheme: dark;
-  }
-  :root[data-accent="light"] {
-    --accent: 236 236 239;
-    --accent-hover: 255 255 255;
-    --accent-ink: 15 15 17;
   }
 
   body {
@@ -38,7 +41,7 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #33333a #141416;
+    scrollbar-color: rgb(var(--border-light)) rgb(var(--surface-1));
   }
 
   *::-webkit-scrollbar {
@@ -47,21 +50,21 @@
   }
 
   *::-webkit-scrollbar-track {
-    background: #141416;
+    background: rgb(var(--surface-1));
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #33333a;
+    background: rgb(var(--border-light));
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #45454d;
+    background: rgb(var(--gray-600));
   }
 
   ::selection {
     background: rgb(var(--accent) / 0.28);
-    color: #f4f4f5;
+    color: rgb(var(--gray-50));
   }
 
   ::-webkit-calendar-picker-indicator {
@@ -146,7 +149,40 @@
     @apply flex items-stretch gap-[2px];
   }
   .pixel-meter > span {
-    @apply flex-1 rounded-[1px] bg-surface-4 transition-colors duration-300;
+    @apply flex-1 rounded-[1px] transition-colors duration-300;
+  }
+
+  /* "Needs you" slip: the one inverted surface, so the eye lands on it first. Its corners are
+     notched by one pixel step, the only place the 8-bit language touches the chrome. */
+  .paper-slip {
+    @apply bg-paper text-paper-ink;
+    clip-path: polygon(
+      3px 0,
+      calc(100% - 3px) 0,
+      calc(100% - 3px) 3px,
+      100% 3px,
+      100% calc(100% - 3px),
+      calc(100% - 3px) calc(100% - 3px),
+      calc(100% - 3px) 100%,
+      3px 100%,
+      3px calc(100% - 3px),
+      0 calc(100% - 3px),
+      0 3px,
+      3px 3px
+    );
+  }
+
+  /* The duet rule under the top bar: Claude Direct ink on the left, the Antigravity
+     violet-to-cyan pair on the right, echoing the split logo. */
+  .duet-rule {
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--clay-400)) 0%,
+      rgb(var(--clay-400)) 50%,
+      rgb(var(--lilac-400)) 50%,
+      rgb(var(--glacier-400)) 100%
+    );
   }
 }
 
@@ -168,9 +204,9 @@
     z-index: 100;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid #33333a;
-    background: #19191c;
-    color: #e7e7e9;
+    border: 1px solid rgb(var(--border-light));
+    background: rgb(var(--surface-2));
+    color: rgb(var(--gray-100));
     font-size: 0.8125rem;
     font-weight: 500;
     text-decoration: none;
@@ -251,13 +287,13 @@
   0%,
   100% {
     box-shadow:
-      0 0 0 2px #f59e0b,
+      0 0 0 2px rgb(var(--amber-500)),
       0 0 0 0 transparent;
   }
   50% {
     box-shadow:
-      0 0 0 2px #fbbf24,
-      0 0 14px 2px rgba(245, 158, 11, 0.55);
+      0 0 0 2px rgb(var(--amber-300)),
+      0 0 14px 2px rgb(var(--amber-400) / 0.55);
   }
 }
 
@@ -286,11 +322,11 @@
 }
 
 .pixel-frame-completed {
-  box-shadow: 0 0 0 1px #10b981;
+  box-shadow: 0 0 0 1px rgb(var(--mint-400));
 }
 
 .pixel-frame-error {
-  box-shadow: 0 0 0 1px #ef4444;
+  box-shadow: 0 0 0 1px rgb(var(--coral-400));
 }
 
 @media (prefers-reduced-motion: reduce) {

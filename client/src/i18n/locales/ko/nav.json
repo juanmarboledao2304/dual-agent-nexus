@@ -139,6 +139,10 @@
     "cascade": "캐스케이드",
     "quota": "할당량",
     "config": "구성",
-    "settings": "설정"
-  }
+    "settings": "설정",
+    "home": "지휘",
+    "agents": "Agent",
+    "usage": "사용량"
+  },
+  "searchPlaceholder": "검색, 이동 또는 실행"
 }

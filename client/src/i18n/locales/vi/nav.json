@@ -139,6 +139,10 @@
     "cascade": "Cascade",
     "quota": "Hạn mức",
     "config": "Cấu hình",
-    "settings": "Cài đặt"
-  }
+    "settings": "Cài đặt",
+    "home": "Điều phối",
+    "agents": "Agent",
+    "usage": "Mức dùng"
+  },
+  "searchPlaceholder": "Tìm, chuyển hoặc chạy"
 }

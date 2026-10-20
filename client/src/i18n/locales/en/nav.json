@@ -139,6 +139,10 @@
     "cascade": "Cascade",
     "quota": "Quota",
     "config": "Config",
-    "settings": "Settings"
-  }
+    "settings": "Settings",
+    "home": "Command",
+    "agents": "Agents",
+    "usage": "Usage"
+  },
+  "searchPlaceholder": "Search, jump, or run"
 }

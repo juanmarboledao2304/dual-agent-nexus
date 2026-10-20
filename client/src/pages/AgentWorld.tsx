@@ -67,7 +67,7 @@ function summarize(map: Map<string, WorldEntity>): WorldAgentSummary[] {
 }
 
 /** Agent World page. */
-export function AgentWorld() {
+export function AgentWorld({ embedded = false }: { embedded?: boolean } = {}) {
   const { t } = useTranslation("world");
   const [dataScope] = useDataScope();
   const reducedMotion = useReducedMotion();
@@ -207,10 +207,14 @@ export function AgentWorld() {
   return (
     <div className="space-y-4">
       <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="max-w-2xl">
-          <h1 className="page-title">{t("title")}</h1>
-          <p className="mt-1 text-sm leading-relaxed text-gray-400">{t("subtitle")}</p>
-        </div>
+        {embedded ? (
+          <p className="max-w-2xl text-[13px] leading-relaxed text-gray-400">{t("subtitle")}</p>
+        ) : (
+          <div className="max-w-2xl">
+            <h1 className="page-title">{t("title")}</h1>
+            <p className="mt-1 text-sm leading-relaxed text-gray-400">{t("subtitle")}</p>
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-2">
           <span className="mr-1 font-mono text-[12px] text-gray-500">
             {t("counts", { live: liveCount, sandbox: sandbox.length })}

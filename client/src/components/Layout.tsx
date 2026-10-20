@@ -2,7 +2,7 @@
  * @file Layout.tsx
  * @description Application shell that frames every authenticated route: the sticky
  * top navigation, a centered max-width content column, update notifier, the
- * Cmd/Ctrl+K command palette, and the Tabby assistant overlay.
+ * Cmd/Ctrl+K command palette, the Launch panel, and the optional Tabby companion (off by default).
  * The layout is the single parent route in {@link App} — child pages render inside
  * React Router's `<Outlet />` so navigation never remounts chrome.
  *
@@ -80,8 +80,7 @@ import { CommandPalette } from "./CommandPalette";
 import { Tabby } from "./Tabby/Tabby";
 import { ActionToast } from "./ActionToast";
 import { PaletteActionProvider, usePaletteAction } from "./PaletteActionProvider";
-import { DualQuotaHeader } from "./DualQuotaHeader";
-import { CommandCenterDock } from "./CommandCenterDock";
+import { LaunchPanel } from "./console/LaunchPanel";
 
 /** Props for {@link Layout}. */
 interface LayoutProps {
@@ -106,8 +105,8 @@ function LayoutActions({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 }
 
 /**
- * Root layout wrapping all dashboard routes: top navigation, global overlays, DualQuotaHeader,
- * CommandCenterDock, and the routed page outlet.
+ * Root layout wrapping all dashboard routes: top navigation, global overlays, the Launch panel,
+ * and the routed page outlet.
  * @param props See {@link LayoutProps}.
  */
 export function Layout({ wsConnected }: LayoutProps) {
@@ -141,12 +140,11 @@ export function Layout({ wsConnected }: LayoutProps) {
           {/* overflow-x-clip (not -hidden) clips horizontal overflow without
             creating a scroll container, so descendant `position: sticky`
             elements (e.g. the Settings page TOC) still pin to the window. */}
-          <div className="mx-auto w-full max-w-[1440px] overflow-x-clip px-4 pb-28 pt-5 sm:px-6">
-            <DualQuotaHeader />
+          <div className="mx-auto w-full max-w-[1440px] overflow-x-clip px-4 pb-16 pt-6 sm:px-6">
             <Outlet />
           </div>
         </main>
-        <CommandCenterDock />
+        <LaunchPanel />
       </div>
     </PaletteActionProvider>
   );

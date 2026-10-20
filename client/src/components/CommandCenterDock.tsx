@@ -9,6 +9,7 @@
  * engine, model, effort, and a prompt template for review before dispatch, plus a
  * model override, 4-level reasoning effort selector, workspace path picker, live
  * stdout/stderr console, per-dispatch 8-bit sprites, and a SIGTERM kill switch.
+ * Also renders inline (`variant="panel"`) inside the Launch panel, which replaced the floating dock.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
@@ -233,9 +234,11 @@ function dispatchSprite(d: ActiveDispatchItem): {
   return { variant: resolveSpriteVariant(theme.provider, theme.tier), state };
 }
 
-export function CommandCenterDock() {
+export function CommandCenterDock({ variant = "dock" }: { variant?: "dock" | "panel" } = {}) {
   const location = useLocation();
-  const [expanded, setExpanded] = useState(false);
+  // "panel" renders the expanded dispatcher inline (inside the Launch panel) with no collapse handle.
+  const isPanel = variant === "panel";
+  const [expanded, setExpanded] = useState(isPanel);
   const [activePoolLabel, setActivePoolLabel] = useState("Pool 1: AGY-Claude");
   const [prompt, setPrompt] = useState("");
   const [cwd, setCwd] = useState("");
@@ -252,8 +255,8 @@ export function CommandCenterDock() {
 
   // Auto-collapse when navigating between pages
   useEffect(() => {
-    setExpanded(false);
-  }, [location.pathname]);
+    if (!isPanel) setExpanded(false);
+  }, [location.pathname, isPanel]);
 
   // Focus the prompt once a preset has expanded the dock.
   useEffect(() => {
@@ -489,47 +492,63 @@ export function CommandCenterDock() {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 left-0 z-40 pointer-events-none flex justify-center px-4 pb-3">
-      <div className="pointer-events-auto w-full max-w-5xl rounded-2xl border border-slate-700/90 bg-slate-950/95 backdrop-blur-xl shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all">
-        {/* Top Collapsible Handle Bar */}
-        <div
-          onClick={() => setExpanded(false)}
-          className="cursor-pointer flex items-center justify-between gap-3 px-4 py-2 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900 border-b border-slate-800/80"
-        >
-          <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-orange-500/20 via-fuchsia-500/20 to-cyan-500/20 text-slate-100 border border-slate-700">
-              <Terminal className="w-3 h-3 text-amber-400" />
-              Command Center Dock
-            </span>
-            <span className="text-[11px] text-slate-400 hidden sm:inline">
-              Unified Dispatcher: agy-cascade Waterfall · AGY Fan-Out · Claude Code · Dual Swarm
-            </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-fuchsia-500/10 text-fuchsia-300 border border-fuchsia-500/30">
-              <Layers className="w-2.5 h-2.5 text-fuchsia-400" />
-              {activePoolLabel}
-            </span>
-            {runningCount > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 animate-pulse">
-                {runningCount} running
+    <div
+      className={
+        isPanel
+          ? ""
+          : "fixed bottom-0 right-0 left-0 z-40 pointer-events-none flex justify-center px-4 pb-3"
+      }
+    >
+      <div
+        className={
+          isPanel
+            ? ""
+            : "pointer-events-auto w-full max-w-5xl rounded-2xl border border-slate-700/90 bg-slate-950/95 backdrop-blur-xl shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.8)] overflow-hidden transition-all"
+        }
+      >
+        {/* Top Collapsible Handle Bar (dock only) */}
+        {!isPanel && (
+          <div
+            onClick={() => setExpanded(false)}
+            className="cursor-pointer flex items-center justify-between gap-3 px-4 py-2 bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900 border-b border-slate-800/80"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-orange-500/20 via-fuchsia-500/20 to-cyan-500/20 text-slate-100 border border-slate-700">
+                <Terminal className="w-3 h-3 text-amber-400" />
+                Command Center Dock
               </span>
-            )}
-          </div>
+              <span className="text-[11px] text-slate-400 hidden sm:inline">
+                Unified Dispatcher: agy-cascade Waterfall · AGY Fan-Out · Claude Code · Dual Swarm
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-fuchsia-500/10 text-fuchsia-300 border border-fuchsia-500/30">
+                <Layers className="w-2.5 h-2.5 text-fuchsia-400" />
+                {activePoolLabel}
+              </span>
+              {runningCount > 0 && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 animate-pulse">
+                  {runningCount} running
+                </span>
+              )}
+            </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="text-[10px] font-mono hidden md:inline">Ctrl/Cmd + Enter to run</span>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpanded(false);
-              }}
-              className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors"
-            >
-              <span>Collapse</span>
-              <ChevronDown className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex items-center gap-2 text-xs text-slate-400">
+              <span className="text-[10px] font-mono hidden md:inline">
+                Ctrl/Cmd + Enter to run
+              </span>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setExpanded(false);
+                }}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors"
+              >
+                <span>Collapse</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Expanded Dispatcher Controls + Live Stream Console */}
         <div className="p-4 space-y-3 border-b border-slate-800/80 animate-fade-in">

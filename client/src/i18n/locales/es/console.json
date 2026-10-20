@@ -1,0 +1,214 @@
+{
+  "pools": {
+    "agyClaude": "Antigravity Claude",
+    "agyGemini": "Antigravity Gemini",
+    "claudeDirect": "Claude Direct",
+    "models": {
+      "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
+      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "claudeDirect": "Conductor y exploración con Haiku"
+    }
+  },
+  "poolState": {
+    "active": "En uso",
+    "standby": "En espera",
+    "exhausted": "Sin cuota, vuelve en {{time}}",
+    "short": {
+      "active": "en uso",
+      "standby": "en espera",
+      "exhausted": "sin cuota"
+    }
+  },
+  "status": {
+    "approval": "Pide aprobación",
+    "working": "Trabajando",
+    "waiting": "Esperando",
+    "error": "Error",
+    "completed": "Terminado"
+  },
+  "quota": {
+    "loading": "Cargando cuota",
+    "meterLabel": "Cuota restante de Claude Direct",
+    "agyMeterLabel": "Cuota restante de la sesión de Antigravity",
+    "poolNumber": "Bolsa {{n}}",
+    "free": "{{pct}}% libre",
+    "window": "Ventana de 5 horas",
+    "usedOf": "{{used}} de {{cap}} usados",
+    "timeToEmpty": "Se agota en",
+    "idle": "Sin consumo",
+    "burn": "Ritmo de consumo",
+    "perHour": "{{n}}/h",
+    "requestsPerHour": "{{n}} pet./h",
+    "cache": "Eficiencia de caché",
+    "tokensIO": "Entrada / salida / caché",
+    "effort": "Subagentes por esfuerzo",
+    "effortValue": "{{heavy}} pesados, {{standard}} estándar, {{light}} ligeros",
+    "agyTitle": "Antigravity",
+    "sessionTokens": "Tokens de la sesión",
+    "flowCredits": "Créditos de Flow",
+    "bandwidth": "Ancho de banda de contexto",
+    "modelMix": "Mezcla Flash : Pro",
+    "waterfall": "Cascada",
+    "waterfallHint": "El trabajo cae de la bolsa 1 a la 3. Claude Direct es la que hay que proteger.",
+    "digest": "Ahorrado a Claude Direct:",
+    "digestValue": "{{tokens}} tokens en {{count}} digests",
+    "openUsage": "Ver uso completo"
+  },
+  "needsYou": {
+    "title_one": "Te necesita ({{count}})",
+    "title_other": "Te necesitan ({{count}})",
+    "allClear": "Nada te necesita ahora mismo.",
+    "bellLabel_one": "{{count}} cosa te necesita",
+    "bellLabel_other": "{{count}} cosas te necesitan",
+    "open": "Abrir",
+    "viewUsage": "Ver uso",
+    "quotaLow": "Claude Direct está al {{pct}}%",
+    "quotaLowDetail": "Se agota en {{time}} a este ritmo",
+    "kind": {
+      "approval": "Espera tu aprobación",
+      "quota": "Su bolsa se quedó sin cuota",
+      "error": "Se detuvo con un error",
+      "loop": "Repite {{tool}} ({{count}} veces)",
+      "stalled": "Sin actividad hace {{minutes}} min"
+    },
+    "stalledGroup_one": "{{count}} agente sin actividad hace {{minutes}} min",
+    "stalledGroup_other": "{{count}} agentes sin actividad, hasta {{minutes}} min",
+    "review": "Revisar"
+  },
+  "launch": {
+    "title": "Ejecutar un agente",
+    "subtitle": "Abre una conversación, o envía una tarea a la cascada, a un fan-out o a un swarm.",
+    "close": "Cerrar",
+    "conversation": "Conversación interactiva",
+    "conversationHint": "Habla con Claude Code o Codex en una carpeta de trabajo, turno a turno.",
+    "dispatch": "Despachar una tarea",
+    "dispatchHint": "Un prompt, enviado al motor que elijas. La salida aparece abajo y puedes detenerla cuando quieras."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "statusLine_one": "{{working}} agentes trabajando. {{count}} cosa te necesita.",
+    "statusLine_other": "{{working}} agentes trabajando. {{count}} cosas te necesitan.",
+    "fuelTitle": "Cuota de Claude Direct",
+    "details": "Detalles",
+    "untilEmpty": "hasta llenar la ventana de 5 horas a este ritmo",
+    "freeIdle": "de la ventana de 5 horas está libre",
+    "fuelLine": "{{used}} de {{cap}} usados, consumiendo {{burn}}/h, {{pct}}% libre",
+    "keptOff": "{{tokens}} tokens ahorrados a Claude Direct con digests",
+    "todayTitle": "Hoy",
+    "sessions": "Sesiones",
+    "today": {
+      "activeAgents": "Agentes en vivo",
+      "sessions": "Sesiones",
+      "sessionsValue": "{{active}} activas de {{total}}",
+      "events": "Eventos de hoy",
+      "allEvents": "Eventos en total",
+      "cost": "Costo total"
+    },
+    "liveTitle": "Agentes en vivo",
+    "openAgents": "Abrir Agentes",
+    "eventsTitle": "Últimos eventos",
+    "allEvents": "Todos los eventos",
+    "noEvents": "Aún no hay eventos. Inicia un agente y sus llamadas a herramientas aparecen aquí."
+  },
+  "agents": {
+    "title": "Agentes",
+    "summary": "{{total}} agentes, {{live}} en vivo, {{attention}} te necesitan",
+    "views": "Vistas de agentes",
+    "modes": {
+      "tree": "Árbol",
+      "timeline": "Línea de tiempo",
+      "board": "Tablero",
+      "world": "Mundo"
+    },
+    "modeHint": {
+      "tree": "Quién delegó a quién.",
+      "timeline": "Qué corrió, cuándo y cuánto duró.",
+      "board": "Agentes por sala y por estado.",
+      "world": "Tus agentes como personajes 8-bit trabajando."
+    },
+    "treeStyle": "Estilo del árbol",
+    "treeStyles": {
+      "outline": "Lista",
+      "graph": "Grafo"
+    },
+    "legend": "Colores de las bolsas",
+    "treeLabel": "Árbol de agentes",
+    "empty": "Aún no hay agentes. Inicia una sesión o simula un swarm para ver el árbol.",
+    "foldedDone_one": "{{count}} terminado",
+    "foldedDone_other": "{{count}} terminados",
+    "moreTrees_one": "{{count}} sesión más en Agentes",
+    "moreTrees_other": "{{count}} sesiones más en Agentes",
+    "ctx": "ctx {{pct}}%",
+    "simulate": "Simular swarm",
+    "simulating": "Simulando",
+    "simulateHint": "Lanza un swarm de demostración de agy-cascade en 3 niveles para ver todas las vistas en acción.",
+    "simulateFailed": "No se pudo iniciar la simulación"
+  },
+  "timeline": {
+    "hint": "Cada barra va desde que el agente empezó hasta que terminó, o hasta ahora.",
+    "window": "Ventana de tiempo",
+    "windows": {
+      "30": "30 min",
+      "120": "2 h",
+      "720": "12 h"
+    },
+    "now": "ahora",
+    "empty": "Ningún agente corrió en esta ventana."
+  },
+  "sessions": {
+    "views": "Vistas de sesiones",
+    "sessions": "Sesiones",
+    "events": "Eventos"
+  },
+  "usage": {
+    "title": "Uso",
+    "subtitle": "Cuánta cuota queda en cada bolsa, cuánto ahorró la cascada y en qué se fueron los tokens y el dinero.",
+    "quotaTitle": "Cuota",
+    "roi": {
+      "offloaded": "Tokens ahorrados a Claude Direct",
+      "offloadedHint": "{{count}} digests, {{avg}} en promedio",
+      "windowShare": "Parte de la ventana de 5 horas ahorrada",
+      "windowShareHint": "de una ventana de {{cap}}"
+    }
+  },
+  "settings": {
+    "sections": "Secciones de ajustes",
+    "section": {
+      "dashboard": "Panel",
+      "claude": "Tu configuración de Claude",
+      "health": "Estado del sistema"
+    },
+    "appearance": "Apariencia",
+    "appearanceHint": "Elige cómo se ve la consola. Ambos temas mantienen el mismo significado para cada color.",
+    "theme": "Tema",
+    "themes": {
+      "duet": {
+        "name": "Duet",
+        "hint": "Carbón ciruela con las tintas de Claude y Antigravity. Lo que te necesita se imprime en papel."
+      },
+      "console": {
+        "name": "Console",
+        "hint": "Grafito cálido con acento ámbar. Más sobrio y neutro."
+      }
+    }
+  },
+  "board": {
+    "columns": {
+      "needs": "Te necesita",
+      "working": "Trabajando",
+      "waiting": "Esperando",
+      "done": "Terminado"
+    },
+    "empty": {
+      "needs": "Nada te necesita.",
+      "working": "Ningún agente está trabajando.",
+      "waiting": "Ningún agente está esperando.",
+      "done": "Nada terminado todavía."
+    },
+    "quiet": "sin actividad hace {{minutes}} min"
+  }
+}

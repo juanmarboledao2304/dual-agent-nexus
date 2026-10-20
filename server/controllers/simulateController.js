@@ -1,6 +1,6 @@
 /**
  * @file Dual-Subscription Quota Telemetry & One-Click 25-Second Swarm Simulator for Claude Code and Google Antigravity.
- * Powers the DualQuotaHeader and POST /api/simulate/swarm. The swarm drives every Agent Rooms zone
+ * Powers the quota meter and Usage page and POST /api/simulate/swarm. The swarm drives every Agent Rooms zone
  * and the 3-level Cascade Hierarchy: L1 Opus Conductor -> L2 agy-cascade bridge on Pool 1 Opus 5.5
  * Thinking -> Exit Code 10 -> Pool 2 Argon 4 Ultra -> 3x L3 Gemini 3.8 Flash specialists -> git
  * checkpoints and a ===DIGEST=== token-offload summary. Along the way it raises each Attention Radar
