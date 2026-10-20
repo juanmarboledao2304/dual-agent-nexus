@@ -1,14 +1,14 @@
 /**
  * @file Layout.tsx
- * @description Application shell that frames every authenticated route: persistent
- * sidebar, main content column, update notifier, the Cmd/Ctrl+K command palette,
- * and the Tabby assistant overlay.
+ * @description Application shell that frames every authenticated route: the sticky
+ * top navigation, a centered max-width content column, update notifier, the
+ * Cmd/Ctrl+K command palette, and the Tabby assistant overlay.
  * The layout is the single parent route in {@link App} — child pages render inside
  * React Router's `<Outlet />` so navigation never remounts chrome.
  *
- * ## Sidebar persistence
- * Collapsed state is read once from `localStorage` via {@link loadCollapsed} and
- * written back on every toggle. Failures to access storage are swallowed so a
+ * ## Navigation persistence
+ * Compact (icon-only) navigation is read once from `localStorage` via
+ * {@link loadNavCompact} and written back on every toggle. Failures to access storage are swallowed so a
  * private-browsing quota error never breaks the UI.
  *
  * ## Sticky descendants
@@ -43,7 +43,7 @@
  * Docker Compose profiles are documented in `monitoring/README.md`.
  *
  * ## Internal dependencies
- * - `./Sidebar`
+ * - `./shell/TopNav`
  * - `./UpdateNotifier`
  * - `./CommandPalette`
  * - `./Tabby/Tabby`
@@ -74,7 +74,7 @@
 import { useCallback, useState } from "react";
 import { Outlet } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Sidebar, SIDEBAR_STORAGE_KEY, loadCollapsed } from "./Sidebar";
+import { TopNav, NAV_COMPACT_STORAGE_KEY, loadNavCompact } from "./shell/TopNav";
 import { UpdateNotifier } from "./UpdateNotifier";
 import { CommandPalette } from "./CommandPalette";
 import { Tabby } from "./Tabby/Tabby";
@@ -85,13 +85,13 @@ import { CommandCenterDock } from "./CommandCenterDock";
 
 /** Props for {@link Layout}. */
 interface LayoutProps {
-  /** Live WebSocket status forwarded to the sidebar connection indicator. */
+  /** Live WebSocket status forwarded to the navigation's connection pill. */
   wsConnected: boolean;
 }
 
 /**
  * Registers the shell-level commands the palette offers on every page: the
- * sidebar toggle and the two scroll jumps. They are palette actions rather than
+ * compact-navigation toggle and the two scroll jumps. They are palette actions rather than
  * chords — ⌘/Ctrl+K is the dashboard's only navigation shortcut.
  */
 function LayoutActions({ onToggleSidebar }: { onToggleSidebar: () => void }) {
@@ -106,20 +106,20 @@ function LayoutActions({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 }
 
 /**
- * Root layout wrapping all dashboard routes: sidebar, global overlays, DualQuotaHeader,
+ * Root layout wrapping all dashboard routes: top navigation, global overlays, DualQuotaHeader,
  * CommandCenterDock, and the routed page outlet.
  * @param props See {@link LayoutProps}.
  */
 export function Layout({ wsConnected }: LayoutProps) {
   const { t } = useTranslation("nav");
-  const [collapsed, setCollapsed] = useState(loadCollapsed);
+  const [compact, setCompact] = useState(loadNavCompact);
 
-  /** Collapse or expand the sidebar and remember the choice in localStorage. */
+  /** Toggle icon-only navigation and remember the choice in localStorage. */
   const toggle = useCallback(() => {
-    setCollapsed((prev) => {
+    setCompact((prev) => {
       const next = !prev;
       try {
-        localStorage.setItem(SIDEBAR_STORAGE_KEY, String(next));
+        localStorage.setItem(NAV_COMPACT_STORAGE_KEY, String(next));
       } catch {}
       return next;
     });
@@ -127,7 +127,7 @@ export function Layout({ wsConnected }: LayoutProps) {
 
   return (
     <PaletteActionProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="min-h-screen bg-surface-0 text-gray-200">
         <a href="#main-content" className="skip-to-content">
           {t("skipToContent")}
         </a>
@@ -136,21 +136,13 @@ export function Layout({ wsConnected }: LayoutProps) {
         <CommandPalette />
         <ActionToast />
         <Tabby />
-        <Sidebar wsConnected={wsConnected} collapsed={collapsed} onToggle={toggle} />
-        <main
-          id="main-content"
-          tabIndex={-1}
-          className="min-h-screen min-w-0 transition-[margin-left,width] duration-200 outline-none"
-          style={{
-            marginLeft: collapsed ? "4.25rem" : "15rem",
-            width: collapsed ? "calc(100% - 4.25rem)" : "calc(100% - 15rem)",
-          }}
-        >
+        <TopNav wsConnected={wsConnected} compact={compact} />
+        <main id="main-content" tabIndex={-1} className="min-w-0 outline-none">
           <DualQuotaHeader />
           {/* overflow-x-clip (not -hidden) clips horizontal overflow without
             creating a scroll container, so descendant `position: sticky`
             elements (e.g. the Settings page TOC) still pin to the window. */}
-          <div className="p-5 lg:p-6 pb-28 max-w-full overflow-x-clip">
+          <div className="mx-auto w-full max-w-[1440px] overflow-x-clip px-4 pb-28 pt-5 sm:px-6">
             <Outlet />
           </div>
         </main>

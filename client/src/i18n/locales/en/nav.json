@@ -90,8 +90,8 @@
     "noResultsHint": "Try fewer letters, or press ? for the shortcut list",
     "sessionsFiltered": "Sessions: {{filter}}",
     "actionRefresh": "Reload data",
-    "actionCollapseSidebar": "Collapse sidebar",
-    "actionExpandSidebar": "Expand sidebar",
+    "actionCollapseSidebar": "Compact navigation",
+    "actionExpandSidebar": "Show navigation labels",
     "actionScrollTop": "Scroll to top",
     "actionCopyLink": "Copy link to this page",
     "actionToggleSound": "Sound cues",
@@ -125,5 +125,20 @@
     "actionMuteTabby": "Mute Tabby",
     "actionReportIssue": "Report an issue on GitHub",
     "actionReleases": "View release notes"
+  },
+  "world": "Agent World",
+  "primary": "Primary",
+  "search": "Search",
+  "runAgent": "Run agent",
+  "tabs": {
+    "overview": "Overview",
+    "world": "World",
+    "rooms": "Rooms",
+    "sessions": "Sessions",
+    "activity": "Activity",
+    "cascade": "Cascade",
+    "quota": "Quota",
+    "config": "Config",
+    "settings": "Settings"
   }
 }

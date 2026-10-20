@@ -90,8 +90,8 @@
     "noResultsHint": "Prueba con menos letras o pulsa ? para ver los atajos",
     "sessionsFiltered": "Sesiones: {{filter}}",
     "actionRefresh": "Recargar datos",
-    "actionCollapseSidebar": "Contraer la barra lateral",
-    "actionExpandSidebar": "Expandir la barra lateral",
+    "actionCollapseSidebar": "Navegación compacta",
+    "actionExpandSidebar": "Mostrar etiquetas de navegación",
     "actionScrollTop": "Ir al principio",
     "actionCopyLink": "Copiar el enlace de esta página",
     "actionToggleSound": "Señales de sonido",
@@ -125,5 +125,20 @@
     "actionMuteTabby": "Silenciar a Tabby",
     "actionReportIssue": "Informar de un problema en GitHub",
     "actionReleases": "Ver las notas de la versión"
+  },
+  "world": "Mundo de agentes",
+  "primary": "Principal",
+  "search": "Buscar",
+  "runAgent": "Ejecutar agente",
+  "tabs": {
+    "overview": "Resumen",
+    "world": "Mundo",
+    "rooms": "Salas",
+    "sessions": "Sesiones",
+    "activity": "Actividad",
+    "cascade": "Cascada",
+    "quota": "Cuota",
+    "config": "Config.",
+    "settings": "Ajustes"
   }
 }

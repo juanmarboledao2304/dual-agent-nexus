@@ -90,8 +90,8 @@
     "noResultsHint": "Thử ít ký tự hơn, hoặc nhấn ? để xem danh sách phím tắt",
     "sessionsFiltered": "Phiên: {{filter}}",
     "actionRefresh": "Tải lại dữ liệu",
-    "actionCollapseSidebar": "Thu gọn thanh bên",
-    "actionExpandSidebar": "Mở rộng thanh bên",
+    "actionCollapseSidebar": "Thu gọn điều hướng",
+    "actionExpandSidebar": "Hiện nhãn điều hướng",
     "actionScrollTop": "Lên đầu trang",
     "actionCopyLink": "Sao chép liên kết trang này",
     "actionToggleSound": "Âm báo",
@@ -125,5 +125,20 @@
     "actionMuteTabby": "Tắt tiếng Tabby",
     "actionReportIssue": "Báo lỗi trên GitHub",
     "actionReleases": "Xem ghi chú phát hành"
+  },
+  "world": "Thế giới Agent",
+  "primary": "Điều hướng chính",
+  "search": "Tìm kiếm",
+  "runAgent": "Chạy Agent",
+  "tabs": {
+    "overview": "Tổng quan",
+    "world": "Thế giới",
+    "rooms": "Phòng",
+    "sessions": "Phiên",
+    "activity": "Hoạt động",
+    "cascade": "Cascade",
+    "quota": "Hạn mức",
+    "config": "Cấu hình",
+    "settings": "Cài đặt"
   }
 }

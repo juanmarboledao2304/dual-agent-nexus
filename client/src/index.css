@@ -9,9 +9,22 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-surface-0 text-gray-200;
+    font-feature-settings:
+      "cv01" on,
+      "cv11" on,
+      "ss03" on;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ff8a3d;
+    outline-offset: 2px;
+  }
+
   * {
     scrollbar-width: thin;
-    scrollbar-color: #2a2a3d #0c0c14;
+    scrollbar-color: #2f343c #0e0f12;
   }
 
   *::-webkit-scrollbar {
@@ -20,21 +33,21 @@
   }
 
   *::-webkit-scrollbar-track {
-    background: #0c0c14;
+    background: #0e0f12;
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #2a2a3d;
+    background: #2f343c;
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #363650;
+    background: #3d434c;
   }
 
   ::selection {
-    background: rgba(99, 102, 241, 0.3);
-    color: #e4e4ed;
+    background: rgba(255, 138, 61, 0.28);
+    color: #f5f6f8;
   }
 
   ::-webkit-calendar-picker-indicator {
@@ -56,19 +69,19 @@
 
 @layer components {
   .card {
-    @apply bg-surface-3 border border-border rounded-xl;
+    @apply bg-surface-1 border border-border rounded-xl shadow-hairline;
   }
 
   .card-hover {
-    @apply card transition-all duration-200 hover:border-border-light hover:bg-surface-4;
+    @apply card transition-colors duration-150 hover:border-border-light hover:bg-surface-2;
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors duration-150;
+    @apply inline-flex items-center gap-2 px-3.5 py-2 bg-accent hover:bg-accent-hover text-accent-ink text-sm font-medium rounded-lg transition-colors duration-150;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200 hover:bg-surface-4 rounded-lg transition-colors duration-150;
+    @apply inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-300 hover:text-gray-100 hover:bg-surface-3 rounded-lg transition-colors duration-150;
   }
 
   .badge {
@@ -77,6 +90,18 @@
 
   .input {
     @apply bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-colors;
+  }
+
+  .page-title {
+    @apply text-[22px] font-semibold leading-tight tracking-[-0.02em] text-gray-50;
+  }
+
+  .section-title {
+    @apply text-[15px] font-semibold tracking-[-0.01em] text-gray-100;
+  }
+
+  .micro-label {
+    @apply text-[11px] font-medium uppercase tracking-[0.06em] text-gray-500;
   }
 }
 
@@ -90,7 +115,7 @@
     display: none;
   }
 
-  /* Visually hidden until focused — first Tab lands here before the sidebar. */
+  /* Visually hidden until focused — first Tab lands here before the top navigation. */
   .skip-to-content {
     position: absolute;
     left: 0.75rem;
@@ -98,9 +123,9 @@
     z-index: 100;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid #363650;
-    background: #15151f;
-    color: #e4e4ed;
+    border: 1px solid #2f343c;
+    background: #131519;
+    color: #e8eaee;
     font-size: 0.8125rem;
     font-weight: 500;
     text-decoration: none;
@@ -109,7 +134,7 @@
   }
   .skip-to-content:focus {
     transform: translateY(0);
-    outline: 2px solid #6366f1;
+    outline: 2px solid #ff8a3d;
     outline-offset: 2px;
   }
 }

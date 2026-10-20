@@ -174,6 +174,7 @@ import {
   Webhook,
   Workflow,
   type LucideIcon,
+  Gamepad2,
 } from "lucide-react";
 import type { DataScope, ProviderScope } from "./dataScope";
 
@@ -374,7 +375,7 @@ export const PAGE_ACTION_COMMANDS: {
     id: "layout.toggleSidebar",
     labelKey: "nav:palette.actionCollapseSidebar",
     icon: PanelLeftClose,
-    keywords: ["sidebar", "collapse", "expand"],
+    keywords: ["sidebar", "navigation", "compact", "collapse", "expand"],
   },
   {
     id: "layout.scrollTop",
@@ -396,7 +397,7 @@ export const PAGE_ACTION_COMMANDS: {
   },
 ];
 
-/** The nine sidebar destinations. `keywords` keep v2 page names searchable after the v3 rename. */
+/** The ten navigation destinations. `keywords` keep v2 page names searchable after the v3 rename. */
 export const PAGE_COMMANDS: {
   to: string;
   icon: LucideIcon;
@@ -404,6 +405,7 @@ export const PAGE_COMMANDS: {
   keywords?: string[];
 }[] = [
   { to: "/", icon: LayoutDashboard, navKey: "nav:dashboard", keywords: ["dashboard"] },
+  { to: "/world", icon: Gamepad2, navKey: "nav:world", keywords: ["world", "map", "sandbox"] },
   { to: "/rooms", icon: Columns3, navKey: "nav:agentBoard", keywords: ["kanban", "board"] },
   {
     to: "/cascade-graph",

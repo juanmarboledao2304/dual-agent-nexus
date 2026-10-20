@@ -90,8 +90,8 @@
     "noResultsHint": "글자를 줄여 보거나 ? 를 눌러 단축키 목록을 확인하세요",
     "sessionsFiltered": "세션: {{filter}}",
     "actionRefresh": "데이터 새로고침",
-    "actionCollapseSidebar": "사이드바 접기",
-    "actionExpandSidebar": "사이드바 펼치기",
+    "actionCollapseSidebar": "간결한 탐색",
+    "actionExpandSidebar": "탐색 레이블 표시",
     "actionScrollTop": "맨 위로 이동",
     "actionCopyLink": "이 페이지 링크 복사",
     "actionToggleSound": "소리 알림",
@@ -125,5 +125,20 @@
     "actionMuteTabby": "Tabby 음소거",
     "actionReportIssue": "GitHub에 문제 보고",
     "actionReleases": "릴리스 노트 보기"
+  },
+  "world": "Agent 월드",
+  "primary": "기본 탐색",
+  "search": "검색",
+  "runAgent": "Agent 실행",
+  "tabs": {
+    "overview": "개요",
+    "world": "월드",
+    "rooms": "룸",
+    "sessions": "세션",
+    "activity": "활동",
+    "cascade": "캐스케이드",
+    "quota": "할당량",
+    "config": "구성",
+    "settings": "설정"
   }
 }

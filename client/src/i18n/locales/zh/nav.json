@@ -90,8 +90,8 @@
     "noResultsHint": "试试更少的字母，或按 ? 查看快捷键列表",
     "sessionsFiltered": "会话：{{filter}}",
     "actionRefresh": "重新加载数据",
-    "actionCollapseSidebar": "折叠侧边栏",
-    "actionExpandSidebar": "展开侧边栏",
+    "actionCollapseSidebar": "紧凑导航",
+    "actionExpandSidebar": "显示导航标签",
     "actionScrollTop": "回到顶部",
     "actionCopyLink": "复制本页链接",
     "actionToggleSound": "声音提示",
@@ -125,5 +125,20 @@
     "actionMuteTabby": "静音 Tabby",
     "actionReportIssue": "在 GitHub 上报告问题",
     "actionReleases": "查看发布说明"
+  },
+  "world": "Agent 世界",
+  "primary": "主导航",
+  "search": "搜索",
+  "runAgent": "运行 Agent",
+  "tabs": {
+    "overview": "概览",
+    "world": "世界",
+    "rooms": "工作室",
+    "sessions": "会话",
+    "activity": "活动",
+    "cascade": "级联",
+    "quota": "配额",
+    "config": "配置",
+    "settings": "设置"
   }
 }
