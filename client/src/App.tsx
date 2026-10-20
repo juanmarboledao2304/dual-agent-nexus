@@ -80,6 +80,7 @@ import { SplashScreen } from "./components/SplashScreen";
 import { LegacyRedirect } from "./components/LegacyRedirect";
 import { Dashboard } from "./pages/Dashboard";
 import { AgentRooms } from "./pages/AgentRooms";
+import { AgentWorld } from "./pages/AgentWorld";
 import { Sessions } from "./pages/Sessions";
 import { SessionDetail } from "./pages/SessionDetail";
 import { ActivityFeed } from "./pages/ActivityFeed";
@@ -134,6 +135,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout wsConnected={connected} />}>
           <Route index element={<Dashboard />} />
+          <Route path="world" element={<AgentWorld />} />
           <Route path="rooms" element={<AgentRooms />} />
           <Route path="sessions" element={<Sessions />} />
           <Route path="sessions/:id" element={<SessionDetail />} />

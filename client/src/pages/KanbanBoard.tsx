@@ -301,7 +301,7 @@ export function KanbanBoard() {
   const Header = (
     <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+        <div className="page-icon">
           <Columns3 className="w-4.5 h-4.5 text-accent" />
         </div>
         <div className="min-w-0">

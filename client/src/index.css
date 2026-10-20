@@ -100,6 +100,12 @@
     @apply text-[15px] font-semibold tracking-[-0.01em] text-gray-100;
   }
 
+  /* Page headers are type-led: the legacy icon tile beside each page title is
+     kept in the markup for structure but not shown. */
+  .page-icon {
+    @apply hidden;
+  }
+
   .micro-label {
     @apply text-[11px] font-medium uppercase tracking-[0.06em] text-gray-500;
   }

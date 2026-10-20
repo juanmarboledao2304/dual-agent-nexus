@@ -171,8 +171,8 @@ for xx in $LOCALES; do
   else
     ok
   fi
-  has "client/src/components/Sidebar.tsx" "\"$xx\"" "Sidebar.tsx: '$xx' not in SUPPORTED_LANGUAGES"
-  has "client/src/components/Sidebar.tsx" "base === \"$xx\"" "Sidebar.tsx: normalizeLanguage() does not accept '$xx' (regional tags fall back to en)"
+  has "client/src/components/shell/LanguagePicker.tsx" "\"$xx\"" "LanguagePicker.tsx: '$xx' not in SUPPORTED_LANGUAGES"
+  has "client/src/components/shell/LanguagePicker.tsx" "base === \"$xx\"" "LanguagePicker.tsx: normalizeLanguage() does not accept '$xx' (regional tags fall back to en)"
   has "client/src/lib/paletteCommands.ts" "\"$xx\"" "paletteCommands.ts: '$xx' not in LANGUAGES (palette cannot switch to it)"
   has "client/src/lib/format.ts" "\"$xx\"" "format.ts: '$xx' not in the SupportedLanguage union"
   has "client/src/lib/format.ts" "language === \"$xx\"" "format.ts: getCurrentLanguage() does not whitelist '$xx'"

@@ -12,7 +12,7 @@ exports[`screen snapshots > Activity feed 1`] = `
         class="flex items-center gap-3"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-activity w-4.5 h-4.5 text-accent"
@@ -36,7 +36,7 @@ exports[`screen snapshots > Activity feed 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Activity Feed
             </h1>
@@ -50,7 +50,7 @@ exports[`screen snapshots > Activity feed 1`] = `
             </span>
           </div>
           <p
-            class="text-xs text-gray-500"
+            class="mt-1 text-sm text-gray-400"
           >
             Real-time stream of all agent events
           </p>
@@ -694,7 +694,7 @@ exports[`screen snapshots > Analytics 1`] = `
           class="flex items-center gap-3 mb-1"
         >
           <div
-            class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0"
+            class="page-icon"
           >
             <svg
               class="lucide lucide-chart-column w-4.5 h-4.5 text-accent"
@@ -727,7 +727,7 @@ exports[`screen snapshots > Analytics 1`] = `
               class="flex items-center gap-2"
             >
               <h1
-                class="text-lg font-semibold text-gray-100"
+                class="page-title"
               >
                 Analytics
               </h1>
@@ -2943,7 +2943,7 @@ exports[`screen snapshots > Claude Config 1`] = `
         class="flex items-start gap-3 min-w-0 flex-1"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-boxes w-4.5 h-4.5 text-accent"
@@ -3002,7 +3002,7 @@ exports[`screen snapshots > Claude Config 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Agent Config
             </h1>
@@ -4765,7 +4765,7 @@ exports[`screen snapshots > Dashboard 1`] = `
         class="flex items-center gap-3"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-layout-dashboard w-4.5 h-4.5 text-accent"
@@ -4814,7 +4814,7 @@ exports[`screen snapshots > Dashboard 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Dashboard
             </h1>
@@ -4828,7 +4828,7 @@ exports[`screen snapshots > Dashboard 1`] = `
             </span>
           </div>
           <p
-            class="text-xs text-gray-500"
+            class="mt-1 text-sm text-gray-400"
           >
             Real-time overview of agent activity
           </p>
@@ -4950,18 +4950,14 @@ exports[`screen snapshots > Dashboard 1`] = `
         class="grid grid-cols-2 md:grid-cols-3 gap-4"
       >
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Total Sessions
-            </span>
             <svg
-              class="lucide lucide-folder-open w-5 h-5 flex-shrink-0 text-accent"
+              aria-hidden="true"
+              class="lucide lucide-folder-open h-3.5 w-3.5 flex-shrink-0 text-accent"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -4976,39 +4972,40 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Total Sessions
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
               class="relative inline-block cursor-default"
             >
               <span
-                class="text-2xl font-semibold text-gray-100 truncate"
+                class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
               >
                 0
               </span>
             </span>
-            <span
-              class="text-xs text-gray-500 mb-1 flex-shrink-0"
-            >
-              0 active
-            </span>
           </div>
+          <p
+            class="mt-2 truncate text-xs text-gray-500"
+          >
+            0 active
+          </p>
         </div>
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Active Agents
-            </span>
             <svg
-              class="lucide lucide-bot w-5 h-5 flex-shrink-0 text-emerald-400"
+              aria-hidden="true"
+              class="lucide lucide-bot h-3.5 w-3.5 flex-shrink-0 text-emerald-400"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -5042,30 +5039,31 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="M9 13v2"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Active Agents
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
-              class="text-2xl font-semibold text-gray-100 truncate"
+              class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
             >
               0
             </span>
           </div>
         </div>
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Active Subagents
-            </span>
             <svg
-              class="lucide lucide-git-branch w-5 h-5 flex-shrink-0 text-violet-400"
+              aria-hidden="true"
+              class="lucide lucide-git-branch h-3.5 w-3.5 flex-shrink-0 text-violet-400"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -5096,35 +5094,36 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="M18 9a9 9 0 0 1-9 9"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Active Subagents
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
-              class="text-2xl font-semibold text-gray-100 truncate"
+              class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
             >
               0
             </span>
-            <span
-              class="text-xs text-gray-500 mb-1 flex-shrink-0"
-            >
-              0 in active sessions
-            </span>
           </div>
+          <p
+            class="mt-2 truncate text-xs text-gray-500"
+          >
+            0 in active sessions
+          </p>
         </div>
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Events Today
-            </span>
             <svg
-              class="lucide lucide-zap w-5 h-5 flex-shrink-0 text-yellow-400"
+              aria-hidden="true"
+              class="lucide lucide-zap h-3.5 w-3.5 flex-shrink-0 text-yellow-400"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -5139,15 +5138,20 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Events Today
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
               class="relative inline-block cursor-default"
             >
               <span
-                class="text-2xl font-semibold text-gray-100 truncate"
+                class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
               >
                 0
               </span>
@@ -5155,18 +5159,14 @@ exports[`screen snapshots > Dashboard 1`] = `
           </div>
         </div>
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Total Events
-            </span>
             <svg
-              class="lucide lucide-activity w-5 h-5 flex-shrink-0 text-violet-400"
+              aria-hidden="true"
+              class="lucide lucide-activity h-3.5 w-3.5 flex-shrink-0 text-violet-400"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -5181,15 +5181,20 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Total Events
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
               class="relative inline-block cursor-default"
             >
               <span
-                class="text-2xl font-semibold text-gray-100 truncate"
+                class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
               >
                 0
               </span>
@@ -5197,18 +5202,14 @@ exports[`screen snapshots > Dashboard 1`] = `
           </div>
         </div>
         <div
-          class="card p-5"
+          class="card px-5 py-4"
         >
           <div
-            class="flex items-center justify-between gap-3 mb-3"
+            class="flex min-w-0 items-center gap-2"
           >
-            <span
-              class="text-xs font-medium text-gray-500 uppercase tracking-wider truncate"
-            >
-              Total Cost
-            </span>
             <svg
-              class="lucide lucide-dollar-sign w-5 h-5 flex-shrink-0 text-emerald-400"
+              aria-hidden="true"
+              class="lucide lucide-dollar-sign h-3.5 w-3.5 flex-shrink-0 text-emerald-400"
               fill="none"
               height="24"
               stroke="currentColor"
@@ -5229,15 +5230,20 @@ exports[`screen snapshots > Dashboard 1`] = `
                 d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
               />
             </svg>
+            <span
+              class="micro-label truncate"
+            >
+              Total Cost
+            </span>
           </div>
           <div
-            class="flex items-end gap-2 min-w-0"
+            class="mt-3 min-w-0"
           >
             <span
               class="relative inline-block cursor-default"
             >
               <span
-                class="text-2xl font-semibold text-gray-100 truncate"
+                class="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums"
               >
                 $0.00
               </span>
@@ -5432,7 +5438,7 @@ exports[`screen snapshots > Kanban board 1`] = `
         class="flex items-center gap-3 min-w-0"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-columns3 w-4.5 h-4.5 text-accent"
@@ -5744,7 +5750,7 @@ exports[`screen snapshots > Run 1`] = `
       class="flex items-start gap-3"
     >
       <div
-        class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0"
+        class="page-icon"
       >
         <svg
           class="lucide lucide-play w-4.5 h-4.5 text-accent"
@@ -5770,7 +5776,7 @@ exports[`screen snapshots > Run 1`] = `
           class="flex items-center gap-2"
         >
           <h1
-            class="text-lg font-semibold text-gray-100"
+            class="page-title"
           >
             Run Agent
           </h1>
@@ -6832,7 +6838,7 @@ exports[`screen snapshots > Sessions 1`] = `
         class="flex items-center gap-3"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-folder-open w-4.5 h-4.5 text-accent"
@@ -6856,7 +6862,7 @@ exports[`screen snapshots > Sessions 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Sessions
             </h1>
@@ -7167,7 +7173,7 @@ exports[`screen snapshots > Settings 1`] = `
         class="flex items-center gap-3"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-settings w-4.5 h-4.5 text-accent"
@@ -7196,7 +7202,7 @@ exports[`screen snapshots > Settings 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Settings
             </h1>
@@ -7210,7 +7216,7 @@ exports[`screen snapshots > Settings 1`] = `
             </span>
           </div>
           <p
-            class="text-xs text-gray-500"
+            class="mt-1 text-sm text-gray-400"
           >
             Manage pricing, notifications, data, and hooks
           </p>
@@ -11890,7 +11896,7 @@ exports[`screen snapshots > Workflows 1`] = `
         class="flex items-center gap-3"
       >
         <div
-          class="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center"
+          class="page-icon"
         >
           <svg
             class="lucide lucide-workflow w-4.5 h-4.5 text-accent"
@@ -11928,7 +11934,7 @@ exports[`screen snapshots > Workflows 1`] = `
             class="flex items-center gap-2"
           >
             <h1
-              class="text-lg font-semibold text-gray-100"
+              class="page-title"
             >
               Workflows
             </h1>
@@ -11942,7 +11948,7 @@ exports[`screen snapshots > Workflows 1`] = `
             </span>
           </div>
           <p
-            class="text-xs text-gray-500"
+            class="mt-1 text-sm text-gray-400"
           >
             Agent orchestration intelligence
           </p>

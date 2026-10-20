@@ -1,7 +1,7 @@
 ---
 paths:
   - "client/src/i18n/**"
-  - "client/src/components/Sidebar.tsx"
+  - "client/src/components/shell/LanguagePicker.tsx"
   - "client/src/lib/format.ts"
   - "client/src/lib/paletteCommands.ts"
   - "README.md"

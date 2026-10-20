@@ -992,12 +992,12 @@ export function Analytics() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-3 mb-1">
-            <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+            <div className="page-icon">
               <BarChart3 className="w-4.5 h-4.5 text-accent" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-semibold text-gray-100">{t("title")}</h1>
+                <h1 className="page-title">{t("title")}</h1>
                 {wsConnected ? (
                   <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />

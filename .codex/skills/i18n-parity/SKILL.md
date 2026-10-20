@@ -31,7 +31,7 @@ audit script reads it rather than hard-coding.
 | 1 | **Dashboard UI** | `client/src/i18n/locales/en/*.json` | `client/src/i18n/locales/<xx>/*.json` (same 15 namespaces) | `client/src/i18n/__tests__/i18n.test.ts` — key, type, and interpolation-token parity |
 | 2 | **Wiki page** | English text in the `wiki/index.html` DOM | `wiki/script.js` (`T`, `ATTRIBUTE_TRANSLATIONS`, `META`, `languageLabels`, the two language ladders) + `wiki/i18n-content.js` (`window.__WIKI_CONTENT_I18N`, both the body bundles and `plain`) | `client/tests/wiki-i18n.test.ts` — live-DOM prose coverage, inline-tag preservation, block-length budgets, asset-version sync |
 | 3 | **Full mirrored guides** | `README-EN.md` | `README-CN.md` (zh), `README-VN.md` (vi), `README-KO.md` (ko), `README-ES.md` (es) | partial — `scripts/i18n-audit.sh` (existence, heading count, cross-links) and `server/__tests__/plugins-marketplace.test.js` (documented counts); prose parity is review-only |
-| 4 | **Language switchers** | — | `client/src/components/Sidebar.tsx`, `client/src/lib/paletteCommands.ts`, the two `.lang-select-menu` blocks in `wiki/index.html`, `nav.json` `languageNames` / `languageShort` | `scripts/i18n-audit.sh` |
+| 4 | **Language switchers** | — | `client/src/components/shell/LanguagePicker.tsx`, `client/src/lib/paletteCommands.ts`, the two `.lang-select-menu` blocks in `wiki/index.html`, `nav.json` `languageNames` / `languageShort` | `scripts/i18n-audit.sh` |
 | 5 | **Locale-aware formatting** | — | `client/src/lib/format.ts` (`SupportedLanguage` union, `getCurrentLanguage()` whitelist, `getCurrentLocale()` BCP-47 map) | `client/src/lib/__tests__/format.test.ts` |
 
 ### What is deliberately NOT localized

@@ -196,90 +196,13 @@ export function DualQuotaHeader() {
     agy.session_cap > 0 ? Math.min(100, (agy.session_tokens / agy.session_cap) * 100) : 0;
 
   return (
-    <>
-      {/* Only the action bar, waterfall status, and legend stay pinned; the telemetry wings below
-        scroll with the page so they never cover content. */}
-      <header className="sticky top-0 z-30 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-xl">
-        {/* Top Mission Control Action Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 border-b border-slate-800/60">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gradient-to-r from-red-500/20 via-fuchsia-500/15 to-blue-500/20 border border-slate-700/80">
-              <PixelAvatar
-                variant="claude-opus"
-                state="idle"
-                size={16}
-                framed={false}
-                indicator={false}
-                showBadge={false}
-              />
-              <span className="text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-orange-300 via-fuchsia-200 to-cyan-300 bg-clip-text text-transparent">
-                DualAgent Nexus
-              </span>
-              <PixelAvatar
-                variant="gemini-argon"
-                state="idle"
-                size={16}
-                framed={false}
-                indicator={false}
-                showBadge={false}
-              />
-            </div>
-            <span className="hidden md:inline-block text-[11px] text-slate-400 truncate">
-              Unified Claude Code &amp; Google Antigravity (agy-cascade) Mission Control
-            </span>
-            {simMessage && (
-              <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded animate-pulse truncate max-w-xs">
-                {simMessage}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowLegend((v) => !v)}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 transition-colors"
-              title="Toggle Chromatic Thermal Spectrum Legend"
-            >
-              <Palette className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Thermal Spectrum</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleSimulateSwarm}
-              disabled={simulating}
-              data-testid="simulate-swarm-btn"
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all border ${
-                simulating
-                  ? "bg-gradient-to-r from-red-600/30 via-amber-500/30 to-emerald-500/30 text-amber-200 border-amber-400/50 shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)] cursor-wait"
-                  : "bg-gradient-to-r from-orange-600 via-fuchsia-600 to-purple-600 hover:from-orange-500 hover:via-fuchsia-500 hover:to-purple-500 text-white border-orange-400/40 shadow-[0_0_18px_-4px_rgba(249,115,22,0.55)]"
-              }`}
-            >
-              {simulating ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
-              ) : (
-                <Play className="w-3.5 h-3.5" />
-              )}
-              <span>{simulating ? "Simulation Running (25s)" : "Run Swarm Simulation"}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setCollapsed((c) => !c)}
-              className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-colors"
-              title={collapsed ? "Expand Dual Quota Telemetry" : "Collapse Dual Quota Telemetry"}
-              aria-label="Toggle Quota Telemetry Wings"
-            >
-              {collapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
-            </button>
-          </div>
-        </div>
-
+    <div className="mb-5 overflow-hidden rounded-xl border border-border bg-surface-1/60 shadow-hairline">
+      {/* Waterfall status, simulation controls, and the legend; the telemetry wings follow. */}
+      <header className="relative z-10 border-b border-border">
         {/* 3-Pool agy-cascade Waterfall Status Bar */}
         <div
           data-testid="cascade-waterfall-bar"
-          className="flex flex-wrap items-center justify-between gap-2 px-4 py-1.5 bg-slate-900/80 border-b border-slate-800/80 text-[11px]"
+          className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 text-[11px]"
         >
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mr-1">
@@ -292,7 +215,7 @@ export function DualQuotaHeader() {
                 pool1Exhausted
                   ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
                   : activePool === 1
-                    ? "bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/60 shadow-[0_0_12px_-3px_rgba(217,70,239,0.5)]"
+                    ? "bg-fuchsia-500/20 text-fuchsia-200 border-fuchsia-400/60"
                     : "bg-slate-950/80 text-slate-400 border-slate-800"
               }`}
             >
@@ -301,7 +224,7 @@ export function DualQuotaHeader() {
                   pool1Exhausted
                     ? "bg-red-500"
                     : activePool === 1
-                      ? "bg-fuchsia-400 shadow-[0_0_8px_#d946ef]"
+                      ? "bg-fuchsia-400"
                       : "bg-slate-600"
                 }`}
               />
@@ -321,7 +244,7 @@ export function DualQuotaHeader() {
                 pool2Exhausted
                   ? "bg-red-500/15 text-red-300 border-red-500/50 animate-pulse"
                   : activePool === 2
-                    ? "bg-purple-500/25 text-purple-200 border-purple-400/70 shadow-[0_0_14px_-3px_rgba(168,85,247,0.6)]"
+                    ? "bg-purple-500/25 text-purple-200 border-purple-400/70"
                     : "bg-slate-950/80 text-slate-400 border-slate-800"
               }`}
             >
@@ -330,7 +253,7 @@ export function DualQuotaHeader() {
                   pool2Exhausted
                     ? "bg-red-500"
                     : activePool === 2
-                      ? "bg-purple-400 shadow-[0_0_8px_#a855f7]"
+                      ? "bg-purple-400"
                       : "bg-slate-600"
                 }`}
               />
@@ -348,13 +271,13 @@ export function DualQuotaHeader() {
             <div
               className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md font-mono border transition-all ${
                 activePool === 3
-                  ? "bg-orange-500/25 text-orange-200 border-orange-400/70 shadow-[0_0_14px_-3px_rgba(249,115,22,0.5)]"
+                  ? "bg-orange-500/25 text-orange-200 border-orange-400/70"
                   : "bg-slate-950/80 text-slate-400 border-slate-800"
               }`}
             >
               <span
                 className={`w-2 h-2 rounded-full ${
-                  activePool === 3 ? "bg-orange-400 shadow-[0_0_8px_#f97316]" : "bg-slate-600"
+                  activePool === 3 ? "bg-orange-400" : "bg-slate-600"
                 }`}
               />
               <span>Pool 3: Claude Direct (Conductor / Haiku Explore)</span>
@@ -378,6 +301,49 @@ export function DualQuotaHeader() {
               <strong>{fmtCompact(tokensOffloaded)} saved</strong>
               {digestCount > 0 ? ` (${digestCount})` : ""}
             </span>
+            {simMessage && (
+              <span className="text-[11px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded animate-pulse truncate max-w-xs">
+                {simMessage}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setShowLegend((v) => !v)}
+              className="btn-ghost h-7 border border-border px-2.5 py-0 text-[12px]"
+              title="Toggle Chromatic Thermal Spectrum Legend"
+            >
+              <Palette className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Thermal Spectrum</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSimulateSwarm}
+              disabled={simulating}
+              data-testid="simulate-swarm-btn"
+              className={`btn-ghost h-7 border px-2.5 py-0 text-[12px] ${
+                simulating
+                  ? "cursor-wait border-amber-400/40 text-amber-200"
+                  : "border-border text-gray-200"
+              }`}
+            >
+              {simulating ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+              ) : (
+                <Play className="w-3.5 h-3.5 text-accent" />
+              )}
+              <span>{simulating ? "Simulation Running (25s)" : "Run Swarm Simulation"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCollapsed((c) => !c)}
+              className="p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-colors"
+              title={collapsed ? "Expand Dual Quota Telemetry" : "Collapse Dual Quota Telemetry"}
+              aria-label="Toggle Quota Telemetry Wings"
+            >
+              {collapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
@@ -416,10 +382,10 @@ export function DualQuotaHeader() {
       {!collapsed && (
         <section
           aria-label="Dual subscription telemetry"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-3 px-4 py-2 border-b border-slate-800/90 bg-slate-950/90"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3"
         >
           {/* LEFT WING: Warm Gradient — Claude Code Subscription */}
-          <div className="relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-red-950/35 via-slate-900/90 to-amber-950/25 p-2.5 shadow-[0_0_25px_-8px_rgba(249,115,22,0.3)]">
+          <div className="relative overflow-hidden rounded-xl border border-orange-500/30 bg-gradient-to-br from-red-950/35 via-slate-900/90 to-amber-950/25 p-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-300 border border-orange-500/40">
@@ -467,15 +433,15 @@ export function DualQuotaHeader() {
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-red-500/15 text-red-300 border border-red-500/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
+                  <span className="w-2 h-2 rounded-full bg-red-500" />
                   Heavy/Opus: <strong>{claude.active_subagents.heavy}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-orange-500/15 text-orange-300 border border-orange-500/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316]" />
+                  <span className="w-2 h-2 rounded-full bg-orange-500" />
                   Standard/Sonnet: <strong>{claude.active_subagents.standard}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-400/15 text-amber-200 border border-amber-400/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   Light/Haiku: <strong>{claude.active_subagents.light}</strong>
                 </span>
               </div>
@@ -487,7 +453,7 @@ export function DualQuotaHeader() {
           </div>
 
           {/* RIGHT WING: Cool Gradient — Google Antigravity Subscription */}
-          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-fuchsia-950/30 via-slate-900/90 to-emerald-950/25 p-2.5 shadow-[0_0_25px_-8px_rgba(59,130,246,0.3)]">
+          <div className="relative overflow-hidden rounded-xl border border-blue-500/30 bg-gradient-to-br from-fuchsia-950/30 via-slate-900/90 to-emerald-950/25 p-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-500/20 text-cyan-300 border border-blue-500/40">
@@ -533,15 +499,15 @@ export function DualQuotaHeader() {
             <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />
+                  <span className="w-2 h-2 rounded-full bg-purple-500" />
                   Deep/Opus-Argon: <strong>{agy.active_subagents.heavy}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-300 border border-blue-500/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                  <span className="w-2 h-2 rounded-full bg-blue-500" />
                   Standard/Sonnet-Flow: <strong>{agy.active_subagents.standard}</strong>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 border border-emerald-400/35 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
                   Fast/3.8-Flash: <strong>{agy.active_subagents.light}</strong>
                 </span>
               </div>
@@ -553,6 +519,6 @@ export function DualQuotaHeader() {
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 }

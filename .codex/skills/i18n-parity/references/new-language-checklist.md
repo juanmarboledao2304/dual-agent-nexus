@@ -30,7 +30,7 @@ bash .claude/skills/i18n-parity/scripts/i18n-audit.sh
   - [ ] Add `| "<xx>"` to the `SupportedLanguage` union.
   - [ ] Add the `language === "<xx>"` branch in `getCurrentLanguage()`.
   - [ ] Add `if (language === "<xx>") return "<xx-YY>";` to the locale map.
-- [ ] `client/src/components/Sidebar.tsx`
+- [ ] `client/src/components/shell/LanguagePicker.tsx`
   - [ ] Add `"<xx>"` to `SUPPORTED_LANGUAGES`.
   - [ ] Add the `base === "<xx>"` case to `normalizeLanguage()` so regional tags
         (`<xx>-YY`) resolve instead of falling back to `en`.
@@ -164,7 +164,7 @@ grep -rn 'en/zh/vi/ko/es\|five languages\|"en", "zh", "vi", "ko", "es"' \
       mirroring the existing per-language cases.
 - [ ] `client/src/lib/__tests__/format.test.ts` — add the `<xx>` → `<xx-YY>`
       formatting case.
-- [ ] `client/src/components/__tests__/Sidebar.test.tsx` — update the
+- [ ] `client/src/components/shell/__tests__/TopNav.test.tsx` — update the
       "all five languages" expectation to the new count.
 - [ ] `client/tests/wiki-i18n.test.ts` — add `"<xx>"` to `LANGUAGES` so the wiki
       coverage assertions run against the new bundle.

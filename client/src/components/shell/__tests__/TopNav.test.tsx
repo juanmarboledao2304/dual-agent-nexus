@@ -32,7 +32,7 @@ describe("TopNav", () => {
     expect(screen.getAllByRole("img", { name: "DualAgent Nexus" }).length).toBeGreaterThan(0);
   });
 
-  it("renders every primary tab with its short label", () => {
+  it("renders every primary tab with its short label and utility tabs as icons", () => {
     renderNav(true);
     for (const label of [
       "Overview",
@@ -42,11 +42,11 @@ describe("TopNav", () => {
       "Activity",
       "Cascade",
       "Quota",
-      "Config",
-      "Settings",
     ]) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
+    expect(screen.getByRole("link", { name: "Config" })).toHaveAttribute("href", "/cc-config");
+    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/settings");
   });
 
   it("links tabs, GitHub, and the Run agent action to the right destinations", () => {

@@ -138,11 +138,11 @@ export function Layout({ wsConnected }: LayoutProps) {
         <Tabby />
         <TopNav wsConnected={wsConnected} compact={compact} />
         <main id="main-content" tabIndex={-1} className="min-w-0 outline-none">
-          <DualQuotaHeader />
           {/* overflow-x-clip (not -hidden) clips horizontal overflow without
             creating a scroll container, so descendant `position: sticky`
             elements (e.g. the Settings page TOC) still pin to the window. */}
           <div className="mx-auto w-full max-w-[1440px] overflow-x-clip px-4 pb-28 pt-5 sm:px-6">
+            <DualQuotaHeader />
             <Outlet />
           </div>
         </main>

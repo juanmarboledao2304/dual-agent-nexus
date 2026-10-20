@@ -97,25 +97,23 @@ export function StatCard({
   loading = false,
 }: StatCardProps) {
   return (
-    <div className="card p-5">
-      <div className="flex items-center justify-between gap-3 mb-3">
-        <span className="text-xs font-medium text-gray-500 uppercase tracking-wider truncate">
-          {label}
-        </span>
-        <Icon className={`w-5 h-5 flex-shrink-0 ${accentColor}`} />
+    <div className="card px-5 py-4">
+      <div className="flex min-w-0 items-center gap-2">
+        <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${accentColor}`} aria-hidden />
+        <span className="micro-label truncate">{label}</span>
       </div>
-      <div className="flex items-end gap-2 min-w-0">
+      <div className="mt-3 min-w-0">
         {loading ? (
           <StatValueSkeleton />
         ) : (
           <Tip raw={raw}>
-            <span className="text-2xl font-semibold text-gray-100 truncate">{value}</span>
+            <span className="block truncate text-[28px] font-semibold leading-none tracking-[-0.02em] text-gray-50 tabular-nums">
+              {value}
+            </span>
           </Tip>
         )}
-        {!loading && trend && (
-          <span className="text-xs text-gray-500 mb-1 flex-shrink-0">{trend}</span>
-        )}
       </div>
+      {!loading && trend && <p className="mt-2 truncate text-xs text-gray-500">{trend}</p>}
     </div>
   );
 }

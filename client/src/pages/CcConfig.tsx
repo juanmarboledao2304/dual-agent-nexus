@@ -766,12 +766,12 @@ function Header({
   return (
     <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
       <div className="flex items-start gap-3 min-w-0 flex-1">
-        <div className="w-9 h-9 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+        <div className="page-icon">
           <Boxes className="w-4.5 h-4.5 text-accent" />
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold text-gray-100">{t("title")}</h1>
+            <h1 className="page-title">{t("title")}</h1>
             {wsConnected ? (
               <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />

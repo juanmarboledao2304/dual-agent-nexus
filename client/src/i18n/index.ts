@@ -114,8 +114,11 @@ import alerts_en from "./locales/en/alerts.json";
 import alerts_zh from "./locales/zh/alerts.json";
 import alerts_vi from "./locales/vi/alerts.json";
 import splash_en from "./locales/en/splash.json";
+import world_en from "./locales/en/world.json";
 import splash_zh from "./locales/zh/splash.json";
+import world_zh from "./locales/zh/world.json";
 import splash_vi from "./locales/vi/splash.json";
+import world_vi from "./locales/vi/world.json";
 
 import common_ko from "./locales/ko/common.json";
 import nav_ko from "./locales/ko/nav.json";
@@ -132,6 +135,7 @@ import ccConfig_ko from "./locales/ko/ccConfig.json";
 import run_ko from "./locales/ko/run.json";
 import alerts_ko from "./locales/ko/alerts.json";
 import splash_ko from "./locales/ko/splash.json";
+import world_ko from "./locales/ko/world.json";
 
 import common_es from "./locales/es/common.json";
 import nav_es from "./locales/es/nav.json";
@@ -148,6 +152,7 @@ import ccConfig_es from "./locales/es/ccConfig.json";
 import run_es from "./locales/es/run.json";
 import alerts_es from "./locales/es/alerts.json";
 import splash_es from "./locales/es/splash.json";
+import world_es from "./locales/es/world.json";
 
 i18n
   .use(LanguageDetector)
@@ -170,6 +175,7 @@ i18n
         run: run_en,
         alerts: alerts_en,
         splash: splash_en,
+        world: world_en,
       },
       zh: {
         common: common_zh,
@@ -187,6 +193,7 @@ i18n
         run: run_zh,
         alerts: alerts_zh,
         splash: splash_zh,
+        world: world_zh,
       },
       vi: {
         common: common_vi,
@@ -204,6 +211,7 @@ i18n
         run: run_vi,
         alerts: alerts_vi,
         splash: splash_vi,
+        world: world_vi,
       },
       ko: {
         common: common_ko,
@@ -221,6 +229,7 @@ i18n
         run: run_ko,
         alerts: alerts_ko,
         splash: splash_ko,
+        world: world_ko,
       },
       es: {
         common: common_es,
@@ -238,6 +247,7 @@ i18n
         run: run_es,
         alerts: alerts_es,
         splash: splash_es,
+        world: world_es,
       },
     },
     supportedLngs: ["en", "zh", "vi", "ko", "es"],

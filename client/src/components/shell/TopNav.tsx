@@ -48,6 +48,8 @@ interface NavTab {
   icon: LucideIcon;
   /** Short label key under `nav:tabs`. */
   key: string;
+  /** Utility destinations render icon-only to keep the bar on one line. */
+  iconOnly?: boolean;
 }
 
 /** Primary tabs in display order. "Run agent" is the separate primary action, not a tab. */
@@ -59,8 +61,8 @@ export const NAV_TABS: readonly NavTab[] = [
   { to: "/activity", icon: Activity, key: "activity" },
   { to: "/cascade-graph", icon: Network, key: "cascade" },
   { to: "/quota-roi", icon: Gauge, key: "quota" },
-  { to: "/cc-config", icon: Boxes, key: "config" },
-  { to: "/settings", icon: Settings, key: "settings" },
+  { to: "/cc-config", icon: Boxes, key: "config", iconOnly: true },
+  { to: "/settings", icon: Settings, key: "settings", iconOnly: true },
 ];
 
 /**
@@ -138,15 +140,16 @@ export function TopNav({ wsConnected, compact }: TopNavProps) {
           aria-label={t("nav:primary")}
           className="no-scrollbar flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto"
         >
-          {NAV_TABS.map(({ to, icon: Icon, key }) => {
+          {NAV_TABS.map(({ to, icon: Icon, key, iconOnly }) => {
             const label = t(`nav:tabs.${key}`);
+            const showLabel = !compact && !iconOnly;
             return (
               <NavLink
                 key={to}
                 to={to}
                 end={to === "/"}
-                title={compact ? label : undefined}
-                aria-label={compact ? label : undefined}
+                title={showLabel ? undefined : label}
+                aria-label={showLabel ? undefined : label}
                 className={({ isActive }) =>
                   `relative inline-flex h-8 shrink-0 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium transition-colors duration-150 ${
                     isActive
@@ -158,7 +161,7 @@ export function TopNav({ wsConnected, compact }: TopNavProps) {
                 {({ isActive }) => (
                   <>
                     <Icon className="h-4 w-4 shrink-0" aria-hidden />
-                    {!compact && <span>{label}</span>}
+                    {showLabel && <span>{label}</span>}
                     {isActive && (
                       <span
                         className="absolute inset-x-2 -bottom-[13px] h-0.5 rounded-full bg-accent"
@@ -176,13 +179,11 @@ export function TopNav({ wsConnected, compact }: TopNavProps) {
           <button
             type="button"
             onClick={openCommandPalette}
-            className="hidden h-8 items-center gap-2 rounded-lg border border-border bg-surface-1 pl-2.5 pr-1.5 text-[13px] text-gray-400 transition-colors hover:border-border-light hover:text-gray-200 lg:inline-flex"
+            aria-label={t("nav:search")}
+            title={`${t("nav:search")} (${usesCommandKey() ? "Cmd" : "Ctrl"}+K)`}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-surface-3 hover:text-gray-200"
           >
-            <Search className="h-3.5 w-3.5" aria-hidden />
-            <span>{t("nav:search")}</span>
-            <kbd className="rounded border border-border bg-surface-3 px-1.5 py-0.5 font-mono text-[10px] text-gray-400">
-              {usesCommandKey() ? "Cmd K" : "Ctrl K"}
-            </kbd>
+            <Search className="h-4 w-4" aria-hidden />
           </button>
 
           <button
