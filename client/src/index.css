@@ -9,6 +9,20 @@
 @tailwind utilities;
 
 @layer base {
+  /* Accent tokens (space-separated RGB so Tailwind opacity modifiers work). "ember" is the
+     default; data-accent="light" swaps to a neutral high-contrast accent. */
+  :root {
+    --accent: 255 138 61;
+    --accent-hover: 255 164 102;
+    --accent-ink: 20 10 3;
+    color-scheme: dark;
+  }
+  :root[data-accent="light"] {
+    --accent: 236 236 239;
+    --accent-hover: 255 255 255;
+    --accent-ink: 15 15 17;
+  }
+
   body {
     @apply bg-surface-0 text-gray-200;
     font-feature-settings:
@@ -18,13 +32,13 @@
   }
 
   :focus-visible {
-    outline: 2px solid #ff8a3d;
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #2f343c #0e0f12;
+    scrollbar-color: #33333a #141416;
   }
 
   *::-webkit-scrollbar {
@@ -33,21 +47,21 @@
   }
 
   *::-webkit-scrollbar-track {
-    background: #0e0f12;
+    background: #141416;
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #2f343c;
+    background: #33333a;
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #3d434c;
+    background: #45454d;
   }
 
   ::selection {
-    background: rgba(255, 138, 61, 0.28);
-    color: #f5f6f8;
+    background: rgb(var(--accent) / 0.28);
+    color: #f4f4f5;
   }
 
   ::-webkit-calendar-picker-indicator {
@@ -107,7 +121,32 @@
   }
 
   .micro-label {
-    @apply text-[11px] font-medium uppercase tracking-[0.06em] text-gray-500;
+    @apply text-xs font-medium text-gray-500;
+  }
+
+  /* Segmented control (view switchers, tabs inside a page). */
+  .segmented {
+    @apply inline-flex items-center gap-0.5 rounded-lg border border-border bg-surface-1 p-0.5;
+  }
+  .segmented-item {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[13px] font-medium text-gray-400 transition-colors duration-150 hover:text-gray-100;
+  }
+  .segmented-item[aria-selected="true"],
+  .segmented-item[aria-current="page"] {
+    @apply bg-surface-4 text-gray-50 shadow-hairline;
+  }
+
+  /* Status dot: colour plus shape so status never relies on hue alone. */
+  .status-dot {
+    @apply inline-block h-2 w-2 shrink-0 rounded-full;
+  }
+
+  /* 8-bit segmented meter (quota fuel gauge): N equal blocks with 2px gaps. */
+  .pixel-meter {
+    @apply flex items-stretch gap-[2px];
+  }
+  .pixel-meter > span {
+    @apply flex-1 rounded-[1px] bg-surface-4 transition-colors duration-300;
   }
 }
 
@@ -129,9 +168,9 @@
     z-index: 100;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid #2f343c;
-    background: #131519;
-    color: #e8eaee;
+    border: 1px solid #33333a;
+    background: #19191c;
+    color: #e7e7e9;
     font-size: 0.8125rem;
     font-weight: 500;
     text-decoration: none;
@@ -140,7 +179,7 @@
   }
   .skip-to-content:focus {
     transform: translateY(0);
-    outline: 2px solid #ff8a3d;
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
   }
 }
