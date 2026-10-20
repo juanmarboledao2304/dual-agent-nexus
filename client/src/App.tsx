@@ -49,16 +49,13 @@
  * - `./hooks/useSoundCues`
  * - `./components/Layout`
  * - `./components/SplashScreen`
- * - `./pages/Dashboard`
  * - `./components/LegacyRedirect`
- * - `./pages/AgentRooms`
- * - `./pages/Sessions`
+ * - `./pages/Home`
+ * - `./pages/AgentsHub`
+ * - `./pages/SessionsHub`
  * - `./pages/SessionDetail`
- * - `./pages/ActivityFeed`
- * - `./pages/QuotaRoi`
- * - `./pages/CascadeHierarchy`
- * - `./pages/Settings`
- * - `./pages/CcConfig`
+ * - `./pages/Usage`
+ * - `./pages/SettingsHub`
  * - `./pages/Run`
  *
  * ## Testing pointers
@@ -78,16 +75,12 @@ import { Layout } from "./components/Layout";
 import { DocumentTitle } from "./components/DocumentTitle";
 import { SplashScreen } from "./components/SplashScreen";
 import { LegacyRedirect } from "./components/LegacyRedirect";
-import { Dashboard } from "./pages/Dashboard";
-import { AgentRooms } from "./pages/AgentRooms";
-import { AgentWorld } from "./pages/AgentWorld";
-import { Sessions } from "./pages/Sessions";
+import { Home } from "./pages/Home";
+import { AgentsHub } from "./pages/AgentsHub";
+import { SessionsHub } from "./pages/SessionsHub";
 import { SessionDetail } from "./pages/SessionDetail";
-import { ActivityFeed } from "./pages/ActivityFeed";
-import { QuotaRoi } from "./pages/QuotaRoi";
-import { CascadeHierarchy } from "./pages/CascadeHierarchy";
-import { Settings } from "./pages/Settings";
-import { CcConfig } from "./pages/CcConfig";
+import { Usage } from "./pages/Usage";
+import { SettingsHub } from "./pages/SettingsHub";
 import { Run } from "./pages/Run";
 import { NotFound } from "./pages/NotFound";
 import { useWebSocket } from "./hooks/useWebSocket";
@@ -134,24 +127,44 @@ export default function App() {
       <DocumentTitle />
       <Routes>
         <Route element={<Layout wsConnected={connected} />}>
-          <Route index element={<Dashboard />} />
-          <Route path="world" element={<AgentWorld />} />
-          <Route path="rooms" element={<AgentRooms />} />
-          <Route path="sessions" element={<Sessions />} />
+          <Route index element={<Home />} />
+          <Route path="agents" element={<AgentsHub />} />
+          <Route path="sessions" element={<SessionsHub />} />
           <Route path="sessions/:id" element={<SessionDetail />} />
-          <Route path="activity" element={<ActivityFeed />} />
-          <Route path="quota-roi" element={<QuotaRoi />} />
-          <Route path="cascade-graph" element={<CascadeHierarchy />} />
-          {/* v2 paths, kept as redirects so bookmarks and palette deep links still resolve */}
+          <Route path="usage" element={<Usage />} />
+          <Route path="settings" element={<SettingsHub />} />
+          <Route path="run" element={<Run />} />
+          {/* v2 and v3.1 paths, kept as redirects so bookmarks and palette deep links still resolve */}
+          <Route
+            path="world"
+            element={<LegacyRedirect to="/agents" params={{ mode: "world" }} />}
+          />
+          <Route
+            path="rooms"
+            element={<LegacyRedirect to="/agents" params={{ mode: "board" }} />}
+          />
+          <Route
+            path="cascade-graph"
+            element={<LegacyRedirect to="/agents" params={{ mode: "tree" }} />}
+          />
           <Route
             path="kanban"
-            element={<LegacyRedirect to="/rooms" params={{ layout: "board" }} />}
+            element={<LegacyRedirect to="/agents" params={{ mode: "board", layout: "board" }} />}
           />
-          <Route path="workflows" element={<LegacyRedirect to="/cascade-graph" />} />
-          <Route path="analytics" element={<LegacyRedirect to="/quota-roi" />} />
-          <Route path="cc-config" element={<CcConfig />} />
-          <Route path="run" element={<Run />} />
-          <Route path="settings" element={<Settings />} />
+          <Route
+            path="activity"
+            element={<LegacyRedirect to="/sessions" params={{ show: "events" }} />}
+          />
+          <Route path="quota-roi" element={<LegacyRedirect to="/usage" />} />
+          <Route path="analytics" element={<LegacyRedirect to="/usage" />} />
+          <Route
+            path="workflows"
+            element={<LegacyRedirect to="/usage" params={{ tab: "workflow" }} />}
+          />
+          <Route
+            path="cc-config"
+            element={<LegacyRedirect to="/settings" params={{ section: "claude" }} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

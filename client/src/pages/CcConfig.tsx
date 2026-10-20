@@ -1346,9 +1346,7 @@ function OverviewPanel({
   return (
     <div className="space-y-5">
       <section>
-        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          {t("overview.rootsTitle")}
-        </h2>
+        <h2 className="text-[11px] font-medium text-gray-500 mb-2">{t("overview.rootsTitle")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <RootRow
             icon={FolderTree}
@@ -1378,9 +1376,7 @@ function OverviewPanel({
       </section>
 
       <section>
-        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
-          {t("overview.summary")}
-        </h2>
+        <h2 className="text-[11px] font-medium text-gray-500 mb-2">{t("overview.summary")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <SummaryStat
             tone="fuchsia"
@@ -1521,9 +1517,7 @@ function SummaryStat({ tone, icon: Icon, label, onClick, value, user, project }:
           >
             <Icon className={`w-3.5 h-3.5 ${T.iconText}`} />
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 truncate">
-            {label}
-          </span>
+          <span className="text-[11px] font-medium text-gray-400 truncate">{label}</span>
         </div>
         <div className="mt-1.5 flex items-baseline gap-2">
           <span className="text-xl font-semibold text-gray-100 tabular-nums">{total}</span>
@@ -1564,9 +1558,7 @@ function RootRow({
         <Icon className={`w-3.5 h-3.5 ${T.iconText}`} />
       </span>
       <div className="min-w-0 flex-1">
-        <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-          {label}
-        </div>
+        <div className="text-[11px] font-medium text-gray-400">{label}</div>
         <div className="font-mono text-[11px] text-gray-200 truncate">{value}</div>
       </div>
       <CopyButton value={value} />
@@ -1856,7 +1848,7 @@ function PluginCard({ plugin: p }: { plugin: CcPlugin }) {
           )}
           {contribCounts.length > 0 && (
             <div className="mt-2.5">
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1">
+              <div className="text-[11px] font-medium text-gray-500 mb-1">
                 {t("plugins.contributes")}
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -1970,9 +1962,7 @@ function McpPanel({ data, search }: { data: CcMcpResponse | null; search: string
       )}
       {data.user.length > 0 && (
         <div>
-          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
-            {t("mcp.userScope")}
-          </h3>
+          <h3 className="text-[11px] font-medium text-gray-500 mb-2">{t("mcp.userScope")}</h3>
           <div className="space-y-2">
             {filter(data.user).map((s) => (
               <McpCard key={`u:${s.name}:${s.source}`} server={s} />
@@ -1982,9 +1972,7 @@ function McpPanel({ data, search }: { data: CcMcpResponse | null; search: string
       )}
       {data.projectScoped.length > 0 && (
         <div>
-          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
-            {t("mcp.projectScope")}
-          </h3>
+          <h3 className="text-[11px] font-medium text-gray-500 mb-2">{t("mcp.projectScope")}</h3>
           <div className="space-y-2">
             {filter(data.projectScoped).map((s) => (
               <McpCard key={`p:${s.name}:${s.source}`} server={s} />
@@ -2275,9 +2263,7 @@ function CurrentConfigPanel({ sources }: { sources: CcSettingsSource[] }) {
       <div className="p-3 space-y-3">
         {CONFIG_OPTION_GROUPS.map((group) => (
           <div key={group.title}>
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
-              {group.title}
-            </div>
+            <div className="text-[11px] font-medium text-gray-500 mb-1.5">{group.title}</div>
             <div className="rounded-md border border-border bg-surface-1 divide-y divide-border">
               {group.keys.map(({ key, label }) => {
                 const hit = effective.get(key);
@@ -2369,7 +2355,7 @@ function StatuslineBlock({ data, onOpen }: { data: CcStatusline; onOpen: (p: str
       <div className="p-3 space-y-3">
         {data.config ? (
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
+            <div className="text-[11px] font-medium text-gray-500 mb-1.5">
               {t("statusline.configured")}
             </div>
             <div className="rounded-md border border-border bg-surface-1 px-3 py-2 text-[11px] font-mono text-gray-200">
@@ -2387,7 +2373,7 @@ function StatuslineBlock({ data, onOpen }: { data: CcStatusline; onOpen: (p: str
         )}
         {data.scripts.length > 0 && (
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
+            <div className="text-[11px] font-medium text-gray-500 mb-1.5">
               {t("statusline.scripts")}
             </div>
             <div className="space-y-1.5">
@@ -2824,9 +2810,7 @@ function MemoryPanel({
         <section className="pt-1">
           <div className="flex items-center gap-2 mb-1">
             <BookOpen className="w-3.5 h-3.5 text-teal-300" />
-            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-              {t("memory.autoTitle")}
-            </h3>
+            <h3 className="text-[11px] font-medium text-gray-400">{t("memory.autoTitle")}</h3>
             <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold bg-surface-3 text-gray-400">
               {q ? `${autoFiltered.length}/${totalAuto}` : totalAuto}
             </span>
@@ -2974,7 +2958,7 @@ function MemoryProjectGroup({
         <div className="border-t border-border p-2.5 space-y-2.5">
           {indexFiles.length > 0 && (
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5 px-1">
+              <div className="text-[11px] font-medium text-gray-500 mb-1.5 px-1">
                 {t("memory.indexFiles")}
               </div>
               <div className="space-y-1.5">
@@ -2993,7 +2977,7 @@ function MemoryProjectGroup({
           )}
           {factFiles.length > 0 && (
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5 px-1">
+              <div className="text-[11px] font-medium text-gray-500 mb-1.5 px-1">
                 {t("memory.factFiles", { count: factFiles.length })}
               </div>
               <div className="space-y-1">
@@ -3867,7 +3851,7 @@ function EditorModal({ state, onClose, onSave }: EditorModalProps) {
           {isCreate && state.type !== "memory" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                <label className="block text-[11px] font-medium text-gray-500 mb-1">
                   {t("edit.nameLabel")}
                 </label>
                 <input
@@ -3885,7 +3869,7 @@ function EditorModal({ state, onClose, onSave }: EditorModalProps) {
               </div>
               {isAutoMemory ? (
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">
                     {t("memory.projectLabel")}
                   </label>
                   <div className="rounded-md border border-border bg-surface-2 px-3 py-1.5 font-mono text-[11px] text-gray-300 truncate">
@@ -3895,7 +3879,7 @@ function EditorModal({ state, onClose, onSave }: EditorModalProps) {
                 </div>
               ) : (
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">
                     {t("edit.scopePicker")}
                   </label>
                   <div className="inline-flex rounded-md border border-border bg-surface-2 p-0.5">
@@ -3919,7 +3903,7 @@ function EditorModal({ state, onClose, onSave }: EditorModalProps) {
           )}
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1">
+            <label className="block text-[11px] font-medium text-gray-500 mb-1">
               {t("edit.contentLabel")}
             </label>
             {loading ? (
@@ -4104,9 +4088,7 @@ function ExplainerBanner({ title, body, howTo, commands }: ExplainerBannerProps)
           <p className="text-xs text-gray-400 leading-relaxed">{body}</p>
           {commands.length > 0 && (
             <div className="pt-1">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
-                {howTo}
-              </div>
+              <div className="text-[11px] font-medium text-gray-500 mb-1.5">{howTo}</div>
               <div className="space-y-1.5">
                 {commands.map((c, i) => (
                   <CommandSnippet key={i} command={c.cmd} label={c.note} />

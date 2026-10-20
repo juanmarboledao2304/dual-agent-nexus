@@ -1,0 +1,214 @@
+{
+  "pools": {
+    "agyClaude": "Antigravity Claude",
+    "agyGemini": "Antigravity Gemini",
+    "claudeDirect": "Claude Direct",
+    "models": {
+      "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
+      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "claudeDirect": "Conductor and Haiku explore"
+    }
+  },
+  "poolState": {
+    "active": "In use",
+    "standby": "Standby",
+    "exhausted": "Out of quota, back in {{time}}",
+    "short": {
+      "active": "in use",
+      "standby": "standby",
+      "exhausted": "out of quota"
+    }
+  },
+  "status": {
+    "approval": "Needs approval",
+    "working": "Working",
+    "waiting": "Waiting",
+    "error": "Error",
+    "completed": "Done"
+  },
+  "quota": {
+    "loading": "Loading quota",
+    "meterLabel": "Claude Direct quota remaining",
+    "agyMeterLabel": "Antigravity session quota remaining",
+    "poolNumber": "Pool {{n}}",
+    "free": "{{pct}}% free",
+    "window": "5-hour window",
+    "usedOf": "{{used}} of {{cap}} used",
+    "timeToEmpty": "Runs out in",
+    "idle": "Not burning",
+    "burn": "Burn rate",
+    "perHour": "{{n}}/h",
+    "requestsPerHour": "{{n}} req/h",
+    "cache": "Cache efficiency",
+    "tokensIO": "Input / output / cache",
+    "effort": "Subagents by effort",
+    "effortValue": "{{heavy}} heavy, {{standard}} standard, {{light}} light",
+    "agyTitle": "Antigravity",
+    "sessionTokens": "Session tokens",
+    "flowCredits": "Flow credits",
+    "bandwidth": "Context bandwidth",
+    "modelMix": "Flash : Pro mix",
+    "waterfall": "Waterfall",
+    "waterfallHint": "Work pours from pool 1 to pool 3. Claude Direct is the one to protect.",
+    "digest": "Kept off Claude Direct:",
+    "digestValue": "{{tokens}} tokens in {{count}} digests",
+    "openUsage": "Open full usage"
+  },
+  "needsYou": {
+    "title_one": "Needs you ({{count}})",
+    "title_other": "Needs you ({{count}})",
+    "allClear": "Nothing needs you right now.",
+    "bellLabel_one": "{{count}} thing needs you",
+    "bellLabel_other": "{{count}} things need you",
+    "open": "Open",
+    "viewUsage": "View usage",
+    "quotaLow": "Claude Direct is at {{pct}}%",
+    "quotaLowDetail": "Runs out in {{time}} at the current pace",
+    "kind": {
+      "approval": "Waiting for your approval",
+      "quota": "Its pool ran out of quota",
+      "error": "Stopped with an error",
+      "loop": "Repeating {{tool}} ({{count}} times)",
+      "stalled": "No activity for {{minutes}} min"
+    },
+    "stalledGroup_one": "{{count}} agent quiet for {{minutes}} min",
+    "stalledGroup_other": "{{count}} agents quiet for up to {{minutes}} min",
+    "review": "Review"
+  },
+  "launch": {
+    "title": "Run an agent",
+    "subtitle": "Start a conversation, or send one task to the waterfall, a fan-out, or a swarm.",
+    "close": "Close",
+    "conversation": "Interactive conversation",
+    "conversationHint": "Chat with Claude Code or Codex in a working directory, turn by turn.",
+    "dispatch": "Dispatch a task",
+    "dispatchHint": "One prompt, sent to the engine you choose. Output streams below and you can stop it at any time."
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "statusLine_one": "{{working}} agents working. {{count}} thing needs you.",
+    "statusLine_other": "{{working}} agents working. {{count}} things need you.",
+    "fuelTitle": "Claude Direct quota",
+    "details": "Details",
+    "untilEmpty": "until the 5-hour window is full at this pace",
+    "freeIdle": "of the 5-hour window is free",
+    "fuelLine": "{{used}} of {{cap}} used, burning {{burn}}/h, {{pct}}% free",
+    "keptOff": "{{tokens}} tokens kept off Claude Direct by digests",
+    "todayTitle": "Today",
+    "sessions": "Sessions",
+    "today": {
+      "activeAgents": "Agents live",
+      "sessions": "Sessions",
+      "sessionsValue": "{{active}} active of {{total}}",
+      "events": "Events today",
+      "allEvents": "Events all time",
+      "cost": "Total cost"
+    },
+    "liveTitle": "Live agents",
+    "openAgents": "Open Agents",
+    "eventsTitle": "Latest events",
+    "allEvents": "All events",
+    "noEvents": "No events yet. Start an agent and its tool calls appear here."
+  },
+  "agents": {
+    "title": "Agents",
+    "summary": "{{total}} agents, {{live}} live, {{attention}} need you",
+    "views": "Agent views",
+    "modes": {
+      "tree": "Tree",
+      "timeline": "Timeline",
+      "board": "Board",
+      "world": "World"
+    },
+    "modeHint": {
+      "tree": "Who delegated to whom.",
+      "timeline": "What ran when, and for how long.",
+      "board": "Agents by room and by status.",
+      "world": "Your agents as 8-bit characters at work."
+    },
+    "treeStyle": "Tree style",
+    "treeStyles": {
+      "outline": "Outline",
+      "graph": "Graph"
+    },
+    "legend": "Pool colours",
+    "treeLabel": "Agent tree",
+    "empty": "No agents yet. Start a session or run a swarm simulation to see the tree.",
+    "foldedDone_one": "{{count}} finished",
+    "foldedDone_other": "{{count}} finished",
+    "moreTrees_one": "{{count}} more session in Agents",
+    "moreTrees_other": "{{count}} more sessions in Agents",
+    "ctx": "ctx {{pct}}%",
+    "simulate": "Simulate swarm",
+    "simulating": "Simulating",
+    "simulateHint": "Launch a demo 3-level agy-cascade swarm so you can see every view in action.",
+    "simulateFailed": "Could not start the simulation"
+  },
+  "timeline": {
+    "hint": "Each bar runs from when the agent started to when it finished, or to now.",
+    "window": "Time window",
+    "windows": {
+      "30": "30 min",
+      "120": "2 h",
+      "720": "12 h"
+    },
+    "now": "now",
+    "empty": "No agents ran in this window."
+  },
+  "sessions": {
+    "views": "Sessions views",
+    "sessions": "Sessions",
+    "events": "Events"
+  },
+  "usage": {
+    "title": "Usage",
+    "subtitle": "How much quota is left in each pool, what the waterfall saved, and where tokens and money went.",
+    "quotaTitle": "Quota",
+    "roi": {
+      "offloaded": "Tokens kept off Claude Direct",
+      "offloadedHint": "{{count}} digests, {{avg}} on average",
+      "windowShare": "Share of the 5-hour window saved",
+      "windowShareHint": "of a {{cap}} window"
+    }
+  },
+  "settings": {
+    "sections": "Settings sections",
+    "section": {
+      "dashboard": "Dashboard",
+      "claude": "Your Claude setup",
+      "health": "System health"
+    },
+    "appearance": "Appearance",
+    "appearanceHint": "Pick how the console looks. Both themes keep the same meaning for every colour.",
+    "theme": "Theme",
+    "themes": {
+      "duet": {
+        "name": "Duet",
+        "hint": "Plum carbon with Claude and Antigravity inks. Needs-you items print on paper."
+      },
+      "console": {
+        "name": "Console",
+        "hint": "Warm graphite with an ember accent. Quieter and more neutral."
+      }
+    }
+  },
+  "board": {
+    "columns": {
+      "needs": "Needs you",
+      "working": "Working",
+      "waiting": "Waiting",
+      "done": "Done"
+    },
+    "empty": {
+      "needs": "Nothing needs you.",
+      "working": "No agent is working.",
+      "waiting": "No agent is waiting.",
+      "done": "Nothing finished yet."
+    },
+    "quiet": "quiet for {{minutes}} min"
+  }
+}

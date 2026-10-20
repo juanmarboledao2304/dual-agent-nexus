@@ -88,7 +88,19 @@ describe("palette catalog coverage", () => {
     const covered = PAGE_COMMANDS.map((page) => page.to);
 
     expect(covered).toContain("/");
-    expect(redirected).toEqual(new Set(["kanban", "workflows", "analytics"]));
+    expect(redirected).toEqual(
+      new Set([
+        "world",
+        "rooms",
+        "cascade-graph",
+        "kanban",
+        "activity",
+        "quota-roi",
+        "analytics",
+        "workflows",
+        "cc-config",
+      ])
+    );
     for (const route of [...routed, ...redirectTargets]) {
       expect(covered, `${route} is not reachable from the palette`).toContain(route);
     }
@@ -128,7 +140,7 @@ describe("palette catalog coverage", () => {
     expect(navigate).toHaveBeenCalledWith("/settings#alerts");
 
     commands.find((command) => command.id === "cc-config:hooks")!.run();
-    expect(navigate).toHaveBeenCalledWith("/cc-config?tab=hooks");
+    expect(navigate).toHaveBeenCalledWith("/settings?section=claude&tab=hooks");
 
     commands.find((command) => command.id === "view:sessions:active")!.run();
     expect(navigate).toHaveBeenCalledWith("/sessions?status=active");

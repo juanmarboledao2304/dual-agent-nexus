@@ -27,6 +27,8 @@ const sessionMsg = (id: string, status: Session["status"]): WSMessage => ({
 
 beforeEach(() => {
   localStorage.clear();
+  // Tabby is off by default since the Nexus Console redesign; these tests exercise it enabled.
+  localStorage.setItem("agent-dashboard-tabby-enabled", "true");
   eventBus.setConnected(true);
   // Freeze timers so the brain's 1s heartbeat tick can't fire a state update
   // outside act() mid-assertion. We never advance them in these tests.
@@ -102,6 +104,12 @@ describe("Tabby widget", () => {
     // The "live" stat chip shows value 2 next to its label.
     const liveChip = within(panel).getByText("live").closest("div")!;
     expect(within(liveChip).getByText("2")).toBeInTheDocument();
+  });
+
+  it("stays hidden when no preference is stored (off by default)", () => {
+    localStorage.removeItem("agent-dashboard-tabby-enabled");
+    renderTabby();
+    expect(screen.queryByRole("button", { name: /open tabby companion/i })).not.toBeInTheDocument();
   });
 
   it("respects the enabled preference", () => {

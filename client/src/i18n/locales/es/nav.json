@@ -139,6 +139,10 @@
     "cascade": "Cascada",
     "quota": "Cuota",
     "config": "Config.",
-    "settings": "Ajustes"
-  }
+    "settings": "Ajustes",
+    "home": "Mando",
+    "agents": "Agentes",
+    "usage": "Uso"
+  },
+  "searchPlaceholder": "Buscar o ejecutar"
 }

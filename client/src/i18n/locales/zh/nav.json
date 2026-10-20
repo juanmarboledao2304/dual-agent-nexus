@@ -139,6 +139,10 @@
     "cascade": "级联",
     "quota": "配额",
     "config": "配置",
-    "settings": "设置"
-  }
+    "settings": "设置",
+    "home": "指挥台",
+    "agents": "Agent",
+    "usage": "用量"
+  },
+  "searchPlaceholder": "搜索、跳转或运行"
 }

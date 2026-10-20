@@ -148,165 +148,49 @@ flowchart LR
 
 ### 사용자 인터페이스
 
-반응형 다크 인터페이스에서 전체 작업 흐름을 확인할 수 있습니다. 모든 미리보기는 모바일에 적합한 thumbnail을 사용하며 선명한 원본으로 연결됩니다.
+Nexus Console은 실행하는 모든 에이전트를 위한 지휘 센터입니다. 레이블이 붙은 다섯 개 섹션이 있으며, 모든 페이지에 같은 상단 바가 있어 검색 필드(`Ctrl K` / `Cmd K`), **Claude Direct 연료 게이지**, **나를 기다리는 항목** 알림 종, 실시간 연결 상태, 언어 선택기, **Agent 실행**이 표시됩니다.
 
 <p align="center">
-  <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Dashboard 개요" width="100%"></a>
+  <img src="docs/screenshots/command.png" alt="지휘" width="100%">
   <br>
-  <em> <strong>Dashboard</strong> · 전체 합계, 활성 Agent, 최근 활동, 실시간 상태 신호</em>
+  <em><strong>지휘</strong> (<code>/</code>): 나를 기다리는 항목, 현재 속도로 Claude Direct 할당량이 얼마나 가는지, 오늘의 합계, 실시간 에이전트 트리, 최신 이벤트</em>
 </p>
 
-<p align="center">
-  <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="작업 진행률 개요" width="100%"></a>
-  <br>
-  <em> <strong>Task Progress</strong> · 간결한 완료 현황과 소유자별 작업 미리보기</em>
-</p>
+- **지휘** (`/`)는 세 가지 질문에 순서대로 답합니다. **나를 기다리는 항목**은 작업을 막는 것만 종이 전표처럼 인쇄해 보여 줍니다: 승인 대기, 해당 풀의 할당량 소진(종료 코드 `10`), 최근 30분 내 오류, 같은 도구가 4회 이상 반복, 또는 작업 중인데 10분 이상 이벤트 없음(조용한 에이전트는 전표 한 장으로 접힙니다). **Claude Direct 할당량** 카드는 현재 소모 속도로 5시간 윈도가 가득 차기까지의 시간, 한도 대비 사용 토큰, 8비트 연료 막대, agy-cascade 워터폴(사용 중인 풀, 대기, 또는 쿨다운과 함께 할당량 소진), digest 덕분에 Claude Direct에서 아낀 토큰을 보여 줍니다. **오늘**, **라이브 에이전트**(에이전트당 한 줄, 끝난 서브에이전트는 접힘), **최신 이벤트**가 화면을 완성합니다.
+- **Agent** (`/agents`)는 같은 에이전트를 네 가지 보기로 보여 주는 하나의 페이지이므로 캐스케이드 계층이 한 번만 그려집니다: **트리** (`?mode=tree`, 개요 목록과 **그래프** 전환), **타임라인** (`?mode=timeline`, 30분 / 2시간 / 12시간 윈도에서 시작부터 끝까지 에이전트당 막대 하나, 풀별 색상), **보드** (`?mode=board`, 나를 기다리는 항목 / 작업 중 / 대기 중 / 완료 열), **월드** (`?mode=world`, 아래의 8비트 사무실). 모든 보기가 에이전트 인스펙터를 공유하며, **swarm 시뮬레이션**은 25초 데모를 시작합니다.
+- **세션** (`/sessions`)은 검색, 프로젝트 및 상태 필터와 함께 모든 세션을 나열하고, **이벤트** (`?show=events`)는 실시간 이벤트 스트림입니다. 세션 상세는 Agents, Conversation, Timeline 탭을 그대로 유지합니다.
+- **사용량** (`/usage`)은 전체 할당량 내역(워터폴, Claude Direct 5시간 윈도, Antigravity 세션 토큰, 플로우 크레딧, 대역폭, 소모율, Flash : Pro 비율), digest 환원(Claude Direct에서 아낀 토큰과 윈도 대비 비율), 분석(히트맵, 비용, 토큰, 생산성, 워크플로 인텔리전스)을 보여 줍니다. 같은 내역은 연료 게이지에서도 열 수 있습니다.
+- **설정** (`/settings`)에는 세 개의 섹션이 있습니다: **대시보드** (`?section=dashboard`: 모양, 데이터 소스, 가격, Hook, 데이터 위치, 가져오기, 원격 소스, Tabby, 소리, 알림, 경고, 데이터, 정보; 사이드 메뉴에서 한 번에 한 섹션씩), **Claude 설정** (`?section=claude`: skills, subagents, 명령, 메모리, 플러그인, 마켓플레이스, MCP 서버, Hook, 키 바인딩, 출력 스타일), **시스템 상태** (`?section=health`).
+- **Agent 실행**은 Launch 패널을 엽니다: Claude Code 또는 Codex와의 **대화형 대화** (`/run`), 또는 `agy-cascade`, digest가 있는 AGY 팬아웃, Claude Code, Antigravity, 듀얼 swarm으로의 **작업 디스패치**이며, 프리셋, 실시간 콘솔, 중지 버튼이 있습니다. 실행 중인 디스패치는 패널을 닫아도 계속 스트리밍됩니다.
 
-<p align="center">
-  <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Dashboard 상태 보기" width="100%"></a>
-  <br>
-  <em> <strong>System Health</strong> · 스토리지, 캐시, 오류, 도구, 모델, Subagent, 컴팩션</em>
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/agents-tree.png" alt="Agent, 트리"><br><em><strong>Agent, 트리</strong>: 누가 누구에게 위임했는가</em></td>
+    <td width="50%"><img src="docs/screenshots/agents-timeline.png" alt="Agent, 타임라인"><br><em><strong>Agent, 타임라인</strong>: 무엇이 언제, 얼마나 오래 실행되었는가</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/agents-board.png" alt="Agent, 보드"><br><em><strong>Agent, 보드</strong>: 상태별 에이전트</em></td>
+    <td><img src="docs/screenshots/agents-world.png" alt="Agent, 월드"><br><em><strong>Agent, 월드</strong>: 8비트 사무실</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/usage.png" alt="사용량"><br><em><strong>사용량</strong>: 할당량, digest 환원, 분석</em></td>
+    <td><img src="docs/screenshots/quota-popover.png" alt="할당량 팝오버"><br><em><strong>연료 게이지 팝오버</strong>: 상단 바의 모든 할당량 수치</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/sessions.png" alt="세션"><br><em><strong>세션</strong>, 이벤트 스트림은 클릭 한 번 거리</em></td>
+    <td><img src="docs/screenshots/launch.png" alt="Agent 실행"><br><em><strong>Agent 실행</strong>: 대화 또는 일회성 디스패치</em></td>
+  </tr>
+</table>
 
-<p align="center">
-  <a href="images/board.png"><img src="images/readme/board.png" alt="Kanban Board Agent 보기" width="100%"></a>
-  <br>
-  <em> <strong>Kanban Board · Agents</strong> · 명확한 대기 사유와 작업 중, 대기 중, 완료, 실패 Agent</em>
-</p>
+**색상에는 의미가 있습니다.** 풀마다 잉크 색이 하나씩 있으며(Claude Direct 주홍, Antigravity Claude 보라, Antigravity Gemini 청록), 점, 미터 채움, 가는 왼쪽 가장자리, 타임라인 막대에만 사용됩니다. 상태는 항상 점과 단어(작업 중, 대기 중, 오류, 완료)로 표시되며, *나를 기다리는 항목*은 유일하게 반전된 "종이" 표면입니다. 두 테마가 이 의미를 공유합니다: **Duet** (기본값, Departure Mono 픽셀 숫자를 쓰는 자두색 카본)와 **Console** (엠버 강조색의 따뜻한 흑연)이며, **설정 > 대시보드 > 모양**에서 고르고 `localStorage`의 `nexus-theme` 키에 저장됩니다.
 
-<p align="center">
-  <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Kanban Board 세션 보기" width="100%"></a>
-  <br>
-  <em> <strong>Kanban Board · Sessions</strong> · 활성, 대기, 완료, 오류, 중단 세션</em>
-</p>
-
-<p align="center">
-  <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Sessions 개요" width="100%"></a>
-  <br>
-  <em> <strong>Sessions</strong> · 비용과 활동을 포함한 검색, 필터, 서버 페이지네이션 히스토리</em>
-</p>
-
-<p align="center">
-  <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="세션 Agent 개요" width="100%"></a>
-  <br>
-  <em> <strong>Session Agents</strong> · 실시간 합계, 도구 사용량, 토큰 흐름, Agent 계층</em>
-</p>
-
-<p align="center">
-  <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="세션 작업 진행률 상세" width="100%"></a>
-  <br>
-  <em> <strong>Task Details</strong> · 완료 구간, 활성 작업, 소유자, 페이지별 작업 목록</em>
-</p>
-
-<p align="center">
-  <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="세션 대화 보기" width="100%"></a>
-  <br>
-  <em> <strong>Conversation</strong> · 렌더링된 트랜스크립트, 코드, 도구 호출, 명령 출력, 세션 마커</em>
-</p>
-
-<p align="center">
-  <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="세션 이벤트 타임라인" width="100%"></a>
-  <br>
-  <em> <strong>Timeline</strong> · 시간순 이벤트, 다차원 필터, 연결된 도구 활동</em>
-</p>
-
-<p align="center">
-  <a href="images/feed.png"><img src="images/readme/feed.png" alt="Activity Feed 개요" width="100%"></a>
-  <br>
-  <em> <strong>Activity Feed</strong> · 일시 정지 가능한 실시간 이벤트, 그룹화, 필터, 세션 이동</em>
-</p>
-
-<p align="center">
-  <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Analytics 개요" width="100%"></a>
-  <br>
-  <em> <strong>Analytics</strong> · 모델 토큰, 도구 빈도, 활동 히트맵, 세션 추세</em>
-</p>
-
-<p align="center">
-  <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Workflow analytics 개요" width="100%"></a>
-  <br>
-  <em> <strong>Workflows</strong> · 오케스트레이션 그래프, 도구 흐름, 협업, 위임, 패턴</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="동적 workflow 실행" width="100%"></a>
-  <br>
-  <em> <strong>Workflow Runs</strong> · journal 기반 상태, Agent, 토큰, 도구, 소요 시간</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="펼쳐진 동적 workflow 실행" width="100%"></a>
-  <br>
-  <em> <strong>Expanded Run</strong> · phase 필터, Agent별 지표, 프롬프트, 전체 결과</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="세션 상세의 workflow 실행" width="100%"></a>
-  <br>
-  <em> <strong>Session Workflows</strong> · 연결된 동적 실행과 합산된 토큰 비용</em>
-</p>
-
-<p align="center">
-  <a href="images/config.png"><img src="images/readme/config.png" alt="Claude Code 및 Codex 구성 탐색기" width="100%"></a>
-  <br>
-  <em> <strong>Agent Config</strong> · 지원되는 Claude Code 및 Codex 구성을 검사하고 안전하게 편집</em>
-</p>
-
-<p align="center">
-  <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Codex 구성 탐색기" width="100%"></a>
-  <br>
-  <em> <strong>Codex Config</strong> · 모델, profile, MCP, 프로젝트, 스킬, Hook, 규칙, plugin, 지침</em>
-</p>
-
-<p align="center">
-  <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Claude Code 스킬 탐색기" width="100%"></a>
-  <br>
-  <em> <strong>Skills</strong> · 검색 가능한 사용자, 프로젝트, plugin 스킬과 백업 기반 편집</em>
-</p>
-
-<p align="center">
-  <a href="images/run.png"><img src="images/readme/run.png" alt="Run Agent provider 선택" width="100%"></a>
-  <br>
-  <em>▶️ <strong>Run Agent</strong> · provider native 제어로 Claude Code 또는 Codex 실행</em>
-</p>
-
-<p align="center">
-  <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Run Agent 실시간 출력" width="100%"></a>
-  <br>
-  <em> <strong>Live Run</strong> · 스트리밍 대화, reasoning, 명령, 파일 변경, 도구, 재연결</em>
-</p>
-
-<p align="center">
-  <a href="images/settings.png"><img src="images/readme/settings.png" alt="Settings 개요" width="100%"></a>
-  <br>
-  <em> <strong>Settings</strong> · 가격, Hook, 알림, 데이터, 원격 소스, 시스템 상태</em>
-</p>
-
-<p align="center">
-  <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="알림 및 Webhook 설정" width="100%"></a>
-  <br>
-  <em> <strong>Alerts</strong> · 규칙, 쿨다운, 활동, 내장 Webhook 또는 서명된 범용 Webhook</em>
-</p>
-
-<p align="center">
-  <a href="images/remote.png"><img src="images/readme/remote.png" alt="Remote Data Sources 설정" width="100%"></a>
-  <br>
-  <em> <strong>Remote Data Sources</strong> · provider별 SSH 동기화와 소스 범위 모니터링</em>
-</p>
-
-<p align="center">
-  <a href="images/palette.png"><img src="images/readme/palette.png" alt="Command Palette" width="100%"></a>
-  <br>
-  <em>⌘ <strong>Command Palette</strong> · 페이지, 세션, 프로젝트, 필터, 작업을 위한 단일 키보드 실행기</em>
-</p>
-
-상단 고정 탐색은 개요, 월드, 룸, 세션, 활동, 캐스케이드, 할당량으로 이동하며, Agent 구성과 설정은 아이콘 버튼으로, 유일한 기본 동작은 **Agent 실행**으로 제공합니다. 아래 섹션에서 이 보기의 전체 동작을 설명합니다.
+**이전 주소는 리디렉션**되며 쿼리 문자열을 유지합니다: `/world`, `/rooms`, `/kanban`, `/cascade-graph`는 `/agents` (`?mode=world|board|tree`)로, `/activity`는 `/sessions?show=events`로, `/quota-roi`, `/analytics`, `/workflows`는 `/usage`로, `/cc-config`는 `/settings?section=claude`로 이동합니다. 항상 표시되던 할당량 스트립은 연료 게이지가 되었고, 떠 있던 Command Center 도크는 Launch 패널이 되었으며, Tabby 컴패니언은 기본적으로 꺼져 있습니다.
 
 ### Agent 월드
 
-`/world`는 모든 에이전트를 3/4 원근 사무실에서 일하는 8비트 캐릭터로 보여 줍니다. 네 개의 룸은 Agent 룸과 대응합니다: 지휘 브리지, 캐스케이드 엔진, 팬아웃 포드, 다이제스트 금고.
+**Agent > 월드** (`/agents?mode=world`)는 모든 에이전트를 3/4 원근 사무실에서 일하는 8비트 캐릭터로 보여 줍니다. 네 개의 룸이 있습니다: 지휘 브리지, 캐스케이드 엔진, 팬아웃 포드, 다이제스트 금고.
 
-- **라이브 에이전트**는 Agent 룸과 같은 API와 WebSocket 피드에서 옵니다. 각 에이전트는 자기 룸의 고정 책상(에이전트 id 해시로 배정)으로 걸어가고 머리 위에 상태를 표시합니다: 생각 점, 작업 불꽃, 승인 요청, 완료 체크, 오류 표시. 여기서 라이브 에이전트는 읽기 전용이며 사이드 패널은 **인스펙터 열기**만 제공합니다.
+- **라이브 에이전트**는 다른 Agent 보기와 같은 API와 WebSocket 피드에서 옵니다. 각 에이전트는 자기 룸의 고정 책상(에이전트 id 해시로 배정)으로 걸어가고 머리 위에 상태를 표시합니다: 생각 점, 작업 불꽃, 승인 요청, 완료 체크, 오류 표시. 여기서 라이브 에이전트는 읽기 전용이며 사이드 패널은 **인스펙터 열기**만 제공합니다.
 - **샌드박스 에이전트**는 브라우저별 실험 공간입니다. **새 샌드박스 에이전트**에서 이름, 여덟 캐릭터 중 하나, 룸, 작업을 고릅니다. 샌드박스 에이전트는 자리에서 일하고 룸을 돌아다닌 뒤 돌아옵니다. 사이드 패널에서 일시정지, 재개, 이름 변경, 다른 룸으로 이동, 지도에서 드래그, 삭제를 할 수 있고 **모두 일시정지**, **모두 재개**, **샌드박스 비우기**는 전체에 적용됩니다. 샌드박스 에이전트는 최대 24개까지 `localStorage`의 `nexus-world-sandbox-v1`에 저장되며 실제 세션에는 절대 영향을 주지 않습니다.
 - **조작:** 드래그로 이동, 스크롤 또는 `+`/`-`로 확대/축소, `WASD` 또는 방향키로 카메라 이동, `0` 또는 **가운데로**로 초기화, `Escape`로 선택 해제. 사이드 패널이 모든 에이전트를 나열하므로 키보드만으로도 월드를 모두 사용할 수 있습니다. `prefers-reduced-motion`은 걷기와 흔들림 애니메이션을 끕니다.
 
@@ -319,11 +203,11 @@ flowchart LR
 | 기능 | 요약 |
 | --- | --- |
 | **작업 진행률** | Claude 작업 도구, 레거시 `TodoWrite`, Codex `update_plan`에서 소유자를 인식하는 진행률을 생성합니다. 카드와 행에는 간단한 미리보기가 표시되고, Session Detail에는 상태 구간, 활성 작업, 소유자, 10개 행 단위 페이지가 추가됩니다. 새 최상위 작업은 이전의 미완료 상태를 지우고, 완료 기록은 유지합니다. |
-| **Dashboard** | 저장되는 **Monitor**와 **Health** 탭이 전체 합계, 활성 계층, 최근 활동, 가중 성공률/캐시/오류/힙 상태, 스토리지, 도구, 모델, Subagent 효과, 컴팩션 지표를 결합합니다. Health는 `/api/settings/info`와 `/api/workflows`에서 5초마다 새로 고칩니다. |
-| **Kanban Board** | Agent 열은 Working, Waiting, Completed, Error를, 세션 열은 Active와 Abandoned를 추가로 다룹니다. 카드는 10개씩 표시하고 활성 WebSocket 보기만 구독하며, 전체 제목을 보존하고 권한 입력, 턴 완료, 프롬프트 대기, 중단 같은 대기 사유를 설명합니다. |
+| **지휘** | 홈 화면은 세 가지 질문에 순서대로 답합니다: **나를 기다리는 항목** 전표(승인, 할당량 종료 `10`, 최근 오류, 도구 루프, 10분 정체), Claude Direct 연료 카드(소진까지 시간, 소모율, 8비트 막대, agy-cascade 워터폴, digest로 아낀 토큰), 그리고 에이전트가 지금 하는 일(오늘의 합계, 실시간 에이전트 트리, 최신 이벤트). 시스템 상태는 **설정 > 시스템 상태**로 옮겨졌습니다. |
+| **Agent** | 같은 에이전트를 네 가지 보기로 보여 주는 하나의 페이지: **트리** (개요 또는 그래프), **타임라인** (30분 / 2시간 / 12시간 윈도에서 에이전트당 막대), **보드** (나를 기다리는 항목 / 작업 중 / 대기 중 / 완료 열), **월드** (샌드박스가 있는 8비트 사무실). 모든 보기가 에이전트 인스펙터와 **swarm 시뮬레이션** 데모를 공유합니다. |
 | **Sessions** | 보이는 페이지만 비용을 계산하는 검색, 필터, 서버 페이지네이션 히스토리와 메모리 내 임시 Codex 시작 행을 제공합니다. 검색은 300 ms 디바운스로 `id`, `name`, `cwd`를 대상으로 합니다. 이름은 명시적 제목, AI 제목, 첫 의미 있는 사용자 프롬프트 순으로 결정됩니다. |
 | **Session Detail** | 실시간 통계, 활성 작업, 도구 사용량, Subagent, 토큰, 계층, 필터링된 이벤트 타임라인, `tool_use_id` 그룹화, 도구별 렌더러를 제공합니다. Conversation 보기는 대기 중인 턴, 시스템 알림, Markdown, 구문 강조 코드, 스타일이 적용된 도구를 렌더링하고, 대기 배너에는 사유와 경과 시간을 표시합니다. |
-| **Activity Feed** | 공유 필터, 서버 페이지네이션, 그룹화, 프로젝트/세션/Subagent 출처, 세션 링크, 일관된 Claude/Codex 상태 배지를 갖춘 일시 정지 가능한 실시간 이벤트를 제공합니다. |
+| **이벤트** | `세션 > 이벤트` (`/sessions?show=events`): 공유 필터, 서버 페이지네이션, 그룹화, 프로젝트/세션/Subagent 출처, 세션 링크, 일관된 Claude/Codex 상태 배지를 갖춘 일시 정지 가능한 실시간 이벤트를 제공합니다. |
 | **Analytics** | 모델 토큰, 도구 빈도, 일요일 기준 활동 히트맵, 세션 추세, 연결 상태, 레이아웃에 맞는 로딩 스켈레톤, 긴 범례의 페이지네이션을 다룹니다. |
 | **Command Palette** | `Cmd/Ctrl+K`로 최근 명령, 모든 경로, 실시간 서버 세션, 페이지 작업, 프로젝트 디렉터리, 하위 보기, 필터, Settings, Agent Config, 기본 설정, 범위, 언어를 검색합니다. 부분 수열 순위, `>`/`@`/`#` 범위, 전체 키보드 제어, 번역된 레이블, 조용한 검색 실패, 파괴적 작업에 대한 탐색 전용 처리를 지원합니다. |
 | **One Shortcut** | `Cmd/Ctrl+K`는 입력 필드 안을 포함한 대시보드 전체의 유일한 전역 조합입니다. 여러 키 탐색을 제거해 숨은 모드를 피하고, Tabby는 `Cmd/Ctrl+B`를 유지합니다. |
@@ -1583,7 +1467,7 @@ Tabby는 키보드로 조작할 수 있고, 말풍선에 `aria-live`를 사용�
 - **라이브 사이드바**: 실시간 에이전트 상태(작업 중, 대기 중, 완료됨 등)를 보여주는 전용 활동 표시줄(Activity Bar) 뷰.
 - **사용량 분석**: 총 토큰, 실시간 USD 비용, 이벤트 수를 사이드바에서 바로 추적합니다.
 - **상태 표시줄 통합**: 활성 세션과 에이전트를 보여주는 하단 바의 한눈에 보는 펄스 모니터.
-- **딥 내비게이션**: 특정 대시보드 뷰(칸반, 분석, 설정) 또는 최근 세션에 원클릭으로 접근합니다.
+- **딥 내비게이션**: 특정 대시보드 뷰(Agent, 사용량, 설정) 또는 최근 세션에 원클릭으로 접근합니다.
 - **통합 탭**: 전체 모니터링 대시보드를 네이티브 VS Code 웹뷰 탭으로 엽니다.
 
 ### 설치 및 설정
@@ -1959,16 +1843,14 @@ graph TD
 
 ```mermaid
 graph LR
-    ROOT["/ (index)"] --> DASH["Dashboard<br/>stats + agents + events"]
-    K["/kanban"] --> KANBAN["KanbanBoard<br/>agents/sessions toggle"]
-    S["/sessions"] --> SESS["Sessions<br/>server-paginated table"]
+    ROOT["/ (index)"] --> HOME["Home (Command)<br/>needs you + fuel card + live tree"]
+    AG["/agents"] --> AGENTS["AgentsHub<br/>tree / timeline / board / world"]
+    S["/sessions"] --> SESS["SessionsHub<br/>sessions table + events stream"]
     D["/sessions/:id"] --> DETAIL["SessionDetail<br/>agents + timeline + cost"]
-    A["/activity"] --> ACT["ActivityFeed<br/>streaming event log"]
-    AN["/analytics"] --> ANALYTICS["Analytics<br/>tokens + heatmap + trends"]
-    WF["/workflows"] --> WORKFLOWS["Workflows<br/>D3 visualizations + drill-in"]
-    CC["/cc-config"] --> CCCONFIG["CcConfig<br/>12-tab Claude Code config inspector + editor"]
+    U["/usage"] --> USAGE["Usage<br/>quota breakdown + analytics"]
     RUN["/run"] --> RUNPAGE["Run<br/>spawn / resume / stream Claude subprocess"]
-    ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
+    ST["/settings"] --> SETTINGS["SettingsHub<br/>dashboard settings + Claude setup + health"]
+    OLD["/world /rooms /kanban /cascade-graph<br/>/activity /quota-roi /analytics<br/>/workflows /cc-config"] --> REDIRECT["LegacyRedirect<br/>to the new section"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
     ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
@@ -2190,14 +2072,21 @@ agent-dashboard/
 |       |       |-- WorkflowStats.tsx               # 워크플로 집계 통계
 |       |       +-- SessionDrillIn.tsx              # 세션별 에이전트 트리, 도구 타임라인, 이벤트
 |       +-- pages/
-|           |-- Dashboard.tsx      # 개요 페이지
-|           |-- KanbanBoard.tsx    # 에이전트/세션 전환, 상태 컬럼
-|           |-- Sessions.tsx       # 서버 페이지네이션 세션 테이블
-|           |-- SessionDetail.tsx  # 단일 세션 심층 분석
-|           |-- ActivityFeed.tsx   # 실시간 이벤트 스트림
-|           |-- Analytics.tsx      # 토큰 사용량, 히트맵, 추세
-|           |-- Workflows.tsx      # D3.js 워크플로 시각화 및 세션 드릴인
-|           |-- Settings.tsx       # 모델 가격, 알림, Hook, 내보내기, 정리
+|           |-- Home.tsx           # Command: needs you, fuel card, live tree, latest events
+|           |-- AgentsHub.tsx      # Agents: tree / timeline / board / world views
+|           |-- AgentWorld.tsx     # 8-bit world (Agents > World)
+|           |-- SessionsHub.tsx    # Sessions table + events stream switch
+|           |-- Sessions.tsx       # Server-paginated sessions table
+|           |-- SessionDetail.tsx  # Single session deep dive
+|           |-- ActivityFeed.tsx   # Real-time event stream (Sessions > Events)
+|           |-- Usage.tsx          # Quota breakdown, digest return, analytics
+|           |-- Analytics.tsx      # Token usage, heatmap, trends
+|           |-- Workflows.tsx      # D3.js workflow visualizations and session drill-in
+|           |-- SettingsHub.tsx    # Settings sections: dashboard, Claude setup, health
+|           |-- Settings.tsx       # Model pricing, notifications, hooks, export, cleanup
+|           |-- CcConfig.tsx       # Claude Code config explorer (Your Claude setup)
+|           |-- SystemHealth.tsx   # Database, server, hook, and cache health
+|           |-- Run.tsx            # Interactive Claude Code / Codex runs
 |           +-- NotFound.tsx       # 404 캐치올 페이지
 |-- scripts/
 |   |-- hook-handler.js          # 경량 stdin-HTTP 포워더

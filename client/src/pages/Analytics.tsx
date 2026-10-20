@@ -93,7 +93,7 @@ function ChartTooltip({ x, y, children }: { x: number; y: number; children: Reac
   const nearRight = x > window.innerWidth - 200;
   return (
     <div
-      className="fixed z-50 px-2 py-1.5 text-xs bg-[#12121f] border border-[#2a2a4a] rounded shadow-xl text-gray-200 pointer-events-none whitespace-nowrap"
+      className="fixed z-50 px-2 py-1.5 text-xs bg-surface-1 border border-border-light rounded shadow-xl text-gray-200 pointer-events-none whitespace-nowrap"
       style={{
         left: nearRight ? x - 14 : x + 14,
         top: y - 10,
@@ -137,37 +137,31 @@ function useTooltip() {
   return { show, move, hide, node };
 }
 
+/**
+ * Theme-aware colour from a design-token CSS variable, so charts follow the Duet or Console theme.
+ *
+ * @param token - Variable name without the `--` prefix (e.g. "lilac-500", "surface-3").
+ * @param alpha - Optional opacity 0..1.
+ * @returns A CSS colour usable in `style` (not in SVG presentation attributes).
+ */
+function tokenColor(token: string, alpha?: number): string {
+  return alpha === undefined ? `rgb(var(--${token}))` : `rgb(var(--${token}) / ${alpha})`;
+}
+
 // ── Heatmap ──────────────────────────────────────────────────────────────────
 
 /**
  * Fill color for a heatmap cell. Uses a log scale, so a few very busy days do not wash out the
- * rest, interpolated across an indigo-to-lavender ramp; empty days get a fixed dark color.
+ * rest, mapped onto the opacity of the theme's lilac ink; empty days get a quiet surface.
  *
  * @param count - Events on the day.
  * @param max - Busiest day's count.
  * @returns A CSS color.
  */
 function cellColor(count: number, max: number) {
-  if (count === 0) return "#161625";
-  // Log scale + RGB interpolation across a wide color ramp for maximum perceptual range
+  if (count === 0) return tokenColor("surface-3");
   const t = Math.log(count + 1) / Math.log(Math.max(max, 1) + 1);
-  // Ramp: near-black indigo → deep indigo → bright indigo → lavender
-  type RGB = [number, number, number];
-  const stops: RGB[] = [
-    [22, 20, 60], // near-black indigo
-    [55, 48, 163], // deep indigo
-    [99, 102, 241], // bright indigo
-    [199, 210, 254], // lavender
-  ];
-  const scaled = t * (stops.length - 1);
-  const lo = Math.min(Math.floor(scaled), stops.length - 2);
-  const frac = scaled - lo;
-  const [r1, g1, b1]: RGB = stops[lo] as RGB;
-  const [r2, g2, b2]: RGB = stops[lo + 1] as RGB;
-  const r = Math.round(r1 + (r2 - r1) * frac);
-  const g = Math.round(g1 + (g2 - g1) * frac);
-  const b = Math.round(b1 + (b2 - b1) * frac);
-  return `rgb(${r},${g},${b})`;
+  return tokenColor("lilac-400", Math.round((0.18 + 0.82 * t) * 100) / 100);
 }
 
 /**
@@ -331,7 +325,7 @@ function Heatmap({ weeks }: { weeks: Array<Array<{ date: string; count: number }
 /** Small area sparkline of daily counts. */
 function Sparkline({
   data,
-  color = "#6366f1",
+  color = tokenColor("lilac-500"),
 }: {
   /** Daily counts, oldest first. */
   data: Array<{ date: string; count: number }>;
@@ -373,7 +367,7 @@ function Sparkline({
 /** Line chart of daily cost, with a hover tooltip per day. */
 function CostTrendLine({
   data,
-  color = "#10b981",
+  color = tokenColor("mint-500"),
 }: {
   /** Daily cost in USD, oldest first. */
   data: Array<{ date: string; cost: number }>;
@@ -409,15 +403,15 @@ function CostTrendLine({
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-[88px] overflow-visible">
         <defs>
           <linearGradient id="daily-cost-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity={0.35} />
-            <stop offset="100%" stopColor={color} stopOpacity={0.02} />
+            <stop offset="0%" style={{ stopColor: color }} stopOpacity={0.35} />
+            <stop offset="100%" style={{ stopColor: color }} stopOpacity={0.02} />
           </linearGradient>
         </defs>
         <polyline points={areaPoints} fill="url(#daily-cost-fill)" stroke="none" />
         <polyline
           points={linePoints}
           fill="none"
-          stroke={color}
+          style={{ stroke: color }}
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -428,8 +422,7 @@ function CostTrendLine({
               cx={point.x}
               cy={point.y}
               r={2.5}
-              fill={color}
-              style={{ pointerEvents: "none" }}
+              style={{ fill: color, pointerEvents: "none" }}
             />
             <circle
               cx={point.x}
@@ -563,7 +556,14 @@ function DonutChart({
     <div className="flex items-center justify-center gap-6 w-full">
       {node}
       <svg width={128} height={128} viewBox="0 0 128 128" className="flex-shrink-0">
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1e1e2e" strokeWidth={stroke} />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          strokeWidth={stroke}
+          style={{ stroke: tokenColor("surface-3") }}
+        />
         {segments.map(({ label, value, color }, i) => {
           const dash = (value / total) * circumference;
           const gap = circumference - dash;
@@ -577,11 +577,10 @@ function DonutChart({
               cy={cy}
               r={r}
               fill="none"
-              stroke={color}
               strokeWidth={stroke}
               strokeDasharray={`${dash} ${gap}`}
               strokeDashoffset={currentOffset}
-              style={{ cursor: "default" }}
+              style={{ stroke: color, cursor: "default" }}
               onMouseEnter={(e) =>
                 show(
                   e,
@@ -661,7 +660,7 @@ function StatPill({
   return (
     <div className="card p-5 flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-500 uppercase tracking-wider">{label}</span>
+        <span className="text-[13px] font-medium text-gray-400">{label}</span>
         <Icon className={`w-4 h-4 ${color}`} />
       </div>
       {loading ? (
@@ -911,17 +910,25 @@ export function Analytics() {
     (data?.tokens.total_cache_read ?? 0) +
     (data?.tokens.total_cache_write ?? 0);
   const tokenMixSegments = [
-    { label: t("common:token.input"), value: data?.tokens.total_input ?? 0, color: "#60a5fa" },
-    { label: t("common:token.output"), value: data?.tokens.total_output ?? 0, color: "#34d399" },
+    {
+      label: t("common:token.input"),
+      value: data?.tokens.total_input ?? 0,
+      color: tokenColor("glacier-400"),
+    },
+    {
+      label: t("common:token.output"),
+      value: data?.tokens.total_output ?? 0,
+      color: tokenColor("mint-400"),
+    },
     {
       label: t("common:token.cacheRead"),
       value: data?.tokens.total_cache_read ?? 0,
-      color: "#a78bfa",
+      color: tokenColor("lilac-400"),
     },
     {
       label: t("common:token.cacheWrite"),
       value: data?.tokens.total_cache_write ?? 0,
-      color: "#facc15",
+      color: tokenColor("amber-400"),
     },
   ].filter((s) => s.value > 0);
 
@@ -936,22 +943,22 @@ export function Analytics() {
     {
       label: t("common:status.completed"),
       value: data?.sessions_by_status?.completed ?? 0,
-      color: "#8b5cf6",
+      color: tokenColor("lilac-500"),
     },
     {
       label: t("common:status.active"),
       value: data?.sessions_by_status?.active ?? 0,
-      color: "#10b981",
+      color: tokenColor("mint-500"),
     },
     {
       label: t("common:status.error"),
       value: data?.sessions_by_status?.error ?? 0,
-      color: "#ef4444",
+      color: tokenColor("coral-500"),
     },
     {
       label: t("common:status.abandoned"),
       value: data?.sessions_by_status?.abandoned ?? 0,
-      color: "#f59e0b",
+      color: tokenColor("amber-500"),
     },
   ].filter((s) => s.value > 0);
 
@@ -959,22 +966,22 @@ export function Analytics() {
     {
       label: t("common:status.completed"),
       value: data?.agents_by_status?.completed ?? 0,
-      color: "#8b5cf6",
+      color: tokenColor("lilac-500"),
     },
     {
       label: t("common:status.working"),
       value: data?.agents_by_status?.working ?? 0,
-      color: "#10b981",
+      color: tokenColor("mint-500"),
     },
     {
       label: t("common:status.waiting"),
       value: data?.agents_by_status?.waiting ?? 0,
-      color: "#eab308",
+      color: tokenColor("amber-500"),
     },
     {
       label: t("common:status.error"),
       value: data?.agents_by_status?.error ?? 0,
-      color: "#ef4444",
+      color: tokenColor("coral-500"),
     },
   ].filter((s) => s.value > 0);
 
@@ -1313,9 +1320,14 @@ export function Analytics() {
                           label: formatModelName(b.model) ?? b.model,
                           value: Math.round(b.cost * 100),
                           color:
-                            ["#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#ec4899"][
-                              i % 6
-                            ] ?? "#6b7280",
+                            [
+                              tokenColor("lilac-500"),
+                              tokenColor("glacier-500"),
+                              tokenColor("mint-500"),
+                              tokenColor("amber-500"),
+                              tokenColor("clay-500"),
+                              tokenColor("coral-500"),
+                            ][i % 6] ?? tokenColor("gray-500"),
                         }))}
                         formatTotal={(cents) => fmtCost(cents / 100)}
                       />
@@ -1517,7 +1529,10 @@ export function Analytics() {
                     <p className="text-sm text-gray-500">{t("noSessionTrendData")}</p>
                   ) : (
                     <>
-                      <Sparkline data={dailySessionsLocal.slice(-30)} color="#6366f1" />
+                      <Sparkline
+                        data={dailySessionsLocal.slice(-30)}
+                        color={tokenColor("lilac-500")}
+                      />
                       <div className="mt-4 space-y-2">
                         {dailySessionsLocal
                           .slice(-7)

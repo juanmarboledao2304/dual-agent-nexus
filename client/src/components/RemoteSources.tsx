@@ -451,7 +451,7 @@ export function RemoteSources() {
         </div>
         {scope.mode === "selected" && (
           <div className="mt-3 pt-3 border-t border-border">
-            <div className="text-[11px] uppercase tracking-wider text-gray-500 mb-2">
+            <div className="text-[11px] text-gray-500 mb-2">
               {t("remoteSources.scopePickMachines", "Machines to include")}
             </div>
             <div className="flex flex-wrap gap-2">
@@ -480,7 +480,7 @@ export function RemoteSources() {
 
       {/* Sources list header + add button */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+        <span className="text-xs font-medium text-gray-400">
           {t("remoteSources.listTitle", "Configured sources")}
         </span>
         <div className="flex items-center gap-2">

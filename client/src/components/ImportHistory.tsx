@@ -371,9 +371,7 @@ export function ImportHistory() {
       <div className="card p-5 space-y-5">
         <div className="flex flex-col gap-2 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
-              {t("import.providerLabel")}
-            </p>
+            <p className="text-[11px] font-medium text-gray-500">{t("import.providerLabel")}</p>
             <p className="mt-0.5 text-xs text-gray-500">{t("import.providerHint")}</p>
           </div>
           <div
@@ -408,7 +406,7 @@ export function ImportHistory() {
             onClick={() => setInstructionsOpen((v) => !v)}
             className="w-full flex items-center justify-between px-4 py-3 bg-surface-2 hover:bg-surface-3 transition-colors"
           >
-            <span className="flex items-center gap-2 text-xs font-semibold text-gray-300 uppercase tracking-wider">
+            <span className="flex items-center gap-2 text-xs font-medium text-gray-300">
               <ListChecks className="w-3.5 h-3.5 text-blue-400" />
               {t("import.instructions")}
             </span>
@@ -732,7 +730,7 @@ export function ImportHistory() {
         {/* Result summary */}
         {result && !running && (
           <div className="border border-emerald-500/20 bg-emerald-500/5 rounded-lg px-4 py-3 space-y-2">
-            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-xs font-medium text-emerald-400">
               <CheckCircle2 className="w-3.5 h-3.5" />
               {t("import.result.title")}
               <span className="normal-case font-normal text-emerald-300/80">· {providerLabel}</span>
@@ -771,7 +769,7 @@ export function ImportHistory() {
         {/* Restore-from-backup result summary */}
         {backupResult && !running && (
           <div className="border border-emerald-500/20 bg-emerald-500/5 rounded-lg px-4 py-3 space-y-2">
-            <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-xs font-medium text-emerald-400">
               <CheckCircle2 className="w-3.5 h-3.5" />
               {t("import.backupResult.title")}
             </div>
@@ -926,7 +924,7 @@ function ResultStat({ label, value, color }: { label: string; value: number; col
   return (
     <div className="bg-surface-2 rounded-md px-2.5 py-2">
       <p className={`text-sm font-semibold ${color}`}>{value.toLocaleString()}</p>
-      <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">{label}</p>
+      <p className="text-[11px] text-gray-500 mt-0.5">{label}</p>
     </div>
   );
 }

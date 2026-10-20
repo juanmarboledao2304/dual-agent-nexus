@@ -518,7 +518,7 @@ export function WebhookSettings() {
               >
                 <div className="flex items-center gap-3 flex-wrap">
                   <span
-                    className={`inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded border ${
+                    className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded border ${
                       TYPE_STYLES[target.type] || NEUTRAL_STYLE
                     }`}
                   >
@@ -615,7 +615,7 @@ export function WebhookSettings() {
       {formOpen && form && provider && (
         <div className="border border-border rounded-lg p-4 space-y-3 bg-surface-1">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
+            <h4 className="text-xs font-medium text-gray-300">
               {isEdit ? t("webhooks.editTitle") : t("webhooks.addTitle")}
             </h4>
             <button onClick={closeForm} className="text-gray-500 hover:text-gray-300">

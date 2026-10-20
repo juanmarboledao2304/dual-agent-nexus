@@ -134,7 +134,7 @@ describe("CommandPalette", () => {
     // navigation routes: the rest of the catalog is one keystroke away, and dumping
     // ~150 rows into an empty launcher would bury them.
     expect(screen.getAllByRole("option")).toHaveLength(10);
-    expect(screen.getByText("Quota & Digest ROI")).toBeInTheDocument();
+    expect(screen.getByText("Usage")).toBeInTheDocument();
   });
 
   it("offers the current page's own actions before anything is typed", () => {
@@ -170,10 +170,10 @@ describe("CommandPalette", () => {
   it("navigates to the highlighted page on Enter", () => {
     renderPalette();
     pressHotkey();
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "cascade hierarchy" } });
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "agents" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
 
-    expect(screen.getByTestId("location")).toHaveTextContent("/cascade-graph");
+    expect(screen.getByTestId("location")).toHaveTextContent("/agents");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
@@ -386,12 +386,12 @@ describe("CommandPalette", () => {
     act(() => openCommandPalette());
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "mcp" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
-    expect(screen.getByTestId("location")).toHaveTextContent("/cc-config?tab=mcp");
+    expect(screen.getByTestId("location")).toHaveTextContent("/settings?section=claude&tab=mcp");
 
     act(() => openCommandPalette());
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "cost analytics" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
-    expect(screen.getByTestId("location")).toHaveTextContent("/quota-roi?tab=cost");
+    expect(screen.getByTestId("location")).toHaveTextContent("/usage?tab=cost");
   });
 
   it("matches on a subsequence, not just a substring", () => {
@@ -408,18 +408,18 @@ describe("CommandPalette", () => {
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "kanban" } });
     expect(optionLabels()[0]).toContain("Agent Rooms");
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
-    expect(screen.getByTestId("location")).toHaveTextContent("/rooms");
+    expect(screen.getByTestId("location")).toHaveTextContent("/agents?mode=board");
   });
 
   it("remembers the last command run and offers it first on reopen", () => {
     renderPalette();
     pressHotkey();
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "cascade hierarchy" } });
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "agents" } });
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Enter" });
 
     act(() => openCommandPalette());
     expect(screen.getByText("Recent")).toBeInTheDocument();
-    expect(optionLabels()[0]).toContain("Cascade Hierarchy");
+    expect(optionLabels()[0]).toContain("Agents");
   });
 
   it("does not remember session picks, whose ids stop resolving", async () => {

@@ -1,14 +1,31 @@
 /**
  * @file index.css
- * @description Global styles and Tailwind CSS configuration for the application.
+ * @description Global styles: the pixel display font, base element styles driven by the theme
+ * variables, shared component classes (cards, buttons, segmented controls, status dots, the 8-bit
+ * pixel meter, paper slips, the duet rule), and the pixel sprite animations.
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
+
+@font-face {
+  font-family: "Departure Mono";
+  src: url("./assets/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* Colour tokens (surfaces, neutrals, families, accent, paper) are CSS variables injected by the
+     Tailwind theme plugin (client/tailwind.config.js) for :root ("console") and
+     :root[data-theme="duet"]. */
+  :root {
+    color-scheme: dark;
+  }
+
   body {
     @apply bg-surface-0 text-gray-200;
     font-feature-settings:
@@ -18,13 +35,13 @@
   }
 
   :focus-visible {
-    outline: 2px solid #ff8a3d;
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #2f343c #0e0f12;
+    scrollbar-color: rgb(var(--border-light)) rgb(var(--surface-1));
   }
 
   *::-webkit-scrollbar {
@@ -33,21 +50,21 @@
   }
 
   *::-webkit-scrollbar-track {
-    background: #0e0f12;
+    background: rgb(var(--surface-1));
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #2f343c;
+    background: rgb(var(--border-light));
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: #3d434c;
+    background: rgb(var(--gray-600));
   }
 
   ::selection {
-    background: rgba(255, 138, 61, 0.28);
-    color: #f5f6f8;
+    background: rgb(var(--accent) / 0.28);
+    color: rgb(var(--gray-50));
   }
 
   ::-webkit-calendar-picker-indicator {
@@ -107,7 +124,65 @@
   }
 
   .micro-label {
-    @apply text-[11px] font-medium uppercase tracking-[0.06em] text-gray-500;
+    @apply text-xs font-medium text-gray-500;
+  }
+
+  /* Segmented control (view switchers, tabs inside a page). */
+  .segmented {
+    @apply inline-flex items-center gap-0.5 rounded-lg border border-border bg-surface-1 p-0.5;
+  }
+  .segmented-item {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[13px] font-medium text-gray-400 transition-colors duration-150 hover:text-gray-100;
+  }
+  .segmented-item[aria-selected="true"],
+  .segmented-item[aria-current="page"] {
+    @apply bg-surface-4 text-gray-50 shadow-hairline;
+  }
+
+  /* Status dot: colour plus shape so status never relies on hue alone. */
+  .status-dot {
+    @apply inline-block h-2 w-2 shrink-0 rounded-full;
+  }
+
+  /* 8-bit segmented meter (quota fuel gauge): N equal blocks with 2px gaps. */
+  .pixel-meter {
+    @apply flex items-stretch gap-[2px];
+  }
+  .pixel-meter > span {
+    @apply flex-1 rounded-[1px] transition-colors duration-300;
+  }
+
+  /* "Needs you" slip: the one inverted surface, so the eye lands on it first. Its corners are
+     notched by one pixel step, the only place the 8-bit language touches the chrome. */
+  .paper-slip {
+    @apply bg-paper text-paper-ink;
+    clip-path: polygon(
+      3px 0,
+      calc(100% - 3px) 0,
+      calc(100% - 3px) 3px,
+      100% 3px,
+      100% calc(100% - 3px),
+      calc(100% - 3px) calc(100% - 3px),
+      calc(100% - 3px) 100%,
+      3px 100%,
+      3px calc(100% - 3px),
+      0 calc(100% - 3px),
+      0 3px,
+      3px 3px
+    );
+  }
+
+  /* The duet rule under the top bar: Claude Direct ink on the left, the Antigravity
+     violet-to-cyan pair on the right, echoing the split logo. */
+  .duet-rule {
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      rgb(var(--clay-400)) 0%,
+      rgb(var(--clay-400)) 50%,
+      rgb(var(--lilac-400)) 50%,
+      rgb(var(--glacier-400)) 100%
+    );
   }
 }
 
@@ -129,9 +204,9 @@
     z-index: 100;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid #2f343c;
-    background: #131519;
-    color: #e8eaee;
+    border: 1px solid rgb(var(--border-light));
+    background: rgb(var(--surface-2));
+    color: rgb(var(--gray-100));
     font-size: 0.8125rem;
     font-weight: 500;
     text-decoration: none;
@@ -140,7 +215,7 @@
   }
   .skip-to-content:focus {
     transform: translateY(0);
-    outline: 2px solid #ff8a3d;
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
   }
 }
@@ -212,13 +287,13 @@
   0%,
   100% {
     box-shadow:
-      0 0 0 2px #f59e0b,
+      0 0 0 2px rgb(var(--amber-500)),
       0 0 0 0 transparent;
   }
   50% {
     box-shadow:
-      0 0 0 2px #fbbf24,
-      0 0 14px 2px rgba(245, 158, 11, 0.55);
+      0 0 0 2px rgb(var(--amber-300)),
+      0 0 14px 2px rgb(var(--amber-400) / 0.55);
   }
 }
 
@@ -247,11 +322,11 @@
 }
 
 .pixel-frame-completed {
-  box-shadow: 0 0 0 1px #10b981;
+  box-shadow: 0 0 0 1px rgb(var(--mint-400));
 }
 
 .pixel-frame-error {
-  box-shadow: 0 0 0 1px #ef4444;
+  box-shadow: 0 0 0 1px rgb(var(--coral-400));
 }
 
 @media (prefers-reduced-motion: reduce) {

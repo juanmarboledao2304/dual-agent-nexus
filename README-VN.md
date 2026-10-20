@@ -149,165 +149,49 @@ flowchart LR
 
 ### Giao diện người dùng
 
-Giao diện tối thích ứng bao quát toàn bộ quy trình. Mỗi bản xem trước dùng thumbnail thân thiện với thiết bị di động và liên kết tới ảnh gốc rõ nét.
+Nexus Console là trung tâm điều khiển cho mọi agent bạn chạy. Giao diện có năm mục có nhãn; cùng một thanh trên cùng xuất hiện ở mọi trang với ô tìm kiếm (`Ctrl K` / `Cmd K`), **đồng hồ nhiên liệu Claude Direct**, chuông **Cần bạn**, trạng thái kết nối trực tiếp, bộ chọn ngôn ngữ và **Chạy Agent**.
 
 <p align="center">
-  <a href="images/dashboard.png"><img src="images/readme/dashboard.png" alt="Tổng quan Dashboard" width="100%"></a>
+  <img src="docs/screenshots/command.png" alt="Điều phối" width="100%">
   <br>
-  <em> <strong>Dashboard</strong> · tổng số Agent, Agent đang hoạt động, hoạt động gần đây và tín hiệu sức khỏe trực tiếp</em>
+  <em><strong>Điều phối</strong> (<code>/</code>): việc cần bạn, hạn mức Claude Direct còn dùng được bao lâu ở nhịp hiện tại, tổng số hôm nay, cây agent trực tiếp và các sự kiện mới nhất</em>
 </p>
 
-<p align="center">
-  <a href="images/tasks-overview.png"><img src="images/readme/tasks-overview.png" alt="Tổng quan tiến độ công việc" width="100%"></a>
-  <br>
-  <em> <strong>Tiến độ công việc</strong> · mức hoàn tất gọn và bản xem trước công việc theo chủ sở hữu</em>
-</p>
+- **Điều phối** (`/`) trả lời ba câu hỏi theo thứ tự. **Cần bạn** chỉ liệt kê những gì chặn công việc, in dưới dạng phiếu giấy: đang chờ phê duyệt, pool của nó hết hạn mức (mã thoát `10`), có lỗi trong 30 phút qua, cùng một công cụ lặp lại từ 4 lần trở lên, hoặc không có sự kiện nào trong 10+ phút khi đang làm việc (agent im lặng được gộp thành một phiếu). Thẻ **hạn mức Claude Direct** hiển thị thời gian đến khi cửa sổ 5 giờ đầy ở tốc độ tiêu thụ hiện tại, token đã dùng trên mức trần, thanh nhiên liệu 8-bit, thác agy-cascade (pool đang dùng, chờ, hoặc hết hạn mức kèm thời gian hồi) và số token được digest giữ lại, không đẩy sang Claude Direct. **Hôm nay**, **Agent trực tiếp** (mỗi agent một dòng, subagent đã xong được gập lại) và **Sự kiện mới nhất** hoàn thiện màn hình.
+- **Agent** (`/agents`) là một trang với bốn chế độ xem cùng các agent đó, nên phân cấp cascade chỉ được vẽ một lần: **Cây** (`?mode=tree`, dạng đề cương với nút chuyển **Đồ thị**), **Dòng thời gian** (`?mode=timeline`, một thanh cho mỗi agent từ lúc bắt đầu đến kết thúc trong cửa sổ 30 phút / 2 giờ / 12 giờ, tô màu theo pool), **Bảng** (`?mode=board`, các cột Cần bạn / Đang làm việc / Đang chờ / Hoàn tất) và **Thế giới** (`?mode=world`, văn phòng 8-bit bên dưới). Mọi chế độ xem dùng chung trình kiểm tra agent; **Mô phỏng swarm** khởi động bản demo 25 giây.
+- **Phiên** (`/sessions`) liệt kê mọi phiên với tìm kiếm, bộ lọc dự án và trạng thái; **Sự kiện** (`?show=events`) là luồng sự kiện trực tiếp. Chi tiết phiên vẫn giữ các tab Agent, Hội thoại và Dòng thời gian.
+- **Mức dùng** (`/usage`) hiển thị phân tích hạn mức đầy đủ (thác, cửa sổ 5 giờ của Claude Direct, token phiên Antigravity, flow credit, băng thông, tốc độ tiêu thụ và tỷ lệ Flash : Pro), phần hoàn trả của digest (token được giữ lại khỏi Claude Direct và tỷ lệ của chúng trong cửa sổ) và phân tích (heatmap, chi phí, token, năng suất, workflow intelligence). Cùng phân tích này cũng mở được từ đồng hồ nhiên liệu.
+- **Cài đặt** (`/settings`) có ba mục: **Bảng điều khiển** (`?section=dashboard`: giao diện, nguồn dữ liệu, giá, hook, vị trí dữ liệu, nhập, nguồn từ xa, Tabby, âm thanh, thông báo, cảnh báo, dữ liệu, giới thiệu; mỗi lần một mục từ menu bên), **Cấu hình Claude của bạn** (`?section=claude`: skill, subagent, lệnh, bộ nhớ, plugin, marketplace, máy chủ MCP, hook, phím tắt, output style) và **Tình trạng hệ thống** (`?section=health`).
+- **Chạy Agent** mở bảng Launch: một **hội thoại tương tác** với Claude Code hoặc Codex (`/run`), hoặc **điều phối một tác vụ** tới `agy-cascade`, AGY fan-out kèm digest, Claude Code, Antigravity hoặc swarm kép, với preset, console trực tiếp và nút dừng. Các tác vụ đang chạy vẫn tiếp tục truyền trực tiếp khi bảng đã đóng.
 
-<p align="center">
-  <a href="images/dashboard-health.png"><img src="images/readme/dashboard-health.png" alt="Chế độ xem sức khỏe Dashboard" width="100%"></a>
-  <br>
-  <em> <strong>Sức khỏe hệ thống</strong> · lưu trữ, cache, lỗi, công cụ, model, Subagent và compaction</em>
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/agents-tree.png" alt="Agent, Cây"><br><em><strong>Agent, Cây</strong>: ai đã giao việc cho ai</em></td>
+    <td width="50%"><img src="docs/screenshots/agents-timeline.png" alt="Agent, Dòng thời gian"><br><em><strong>Agent, Dòng thời gian</strong>: cái gì chạy lúc nào và trong bao lâu</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/agents-board.png" alt="Agent, Bảng"><br><em><strong>Agent, Bảng</strong>: agent theo trạng thái</em></td>
+    <td><img src="docs/screenshots/agents-world.png" alt="Agent, Thế giới"><br><em><strong>Agent, Thế giới</strong>: văn phòng 8-bit</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/usage.png" alt="Mức dùng"><br><em><strong>Mức dùng</strong>: hạn mức, phần hoàn trả của digest và phân tích</em></td>
+    <td><img src="docs/screenshots/quota-popover.png" alt="Cửa sổ nổi hạn mức"><br><em><strong>Cửa sổ nổi của đồng hồ nhiên liệu</strong>: mọi số liệu hạn mức từ thanh trên cùng</em></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/sessions.png" alt="Phiên"><br><em><strong>Phiên</strong>, với luồng Sự kiện cách một cú bấm</em></td>
+    <td><img src="docs/screenshots/launch.png" alt="Chạy Agent"><br><em><strong>Chạy Agent</strong>: hội thoại hoặc điều phối một lần</em></td>
+  </tr>
+</table>
 
-<p align="center">
-  <a href="images/board.png"><img src="images/readme/board.png" alt="Chế độ Agent trên Bảng Kanban" width="100%"></a>
-  <br>
-  <em> <strong>Bảng Kanban · Agent</strong> · Agent đang làm việc, đang chờ, hoàn tất và lỗi, kèm lý do chờ rõ ràng</em>
-</p>
+**Màu sắc mang ý nghĩa.** Mỗi pool có một màu mực riêng (Claude Direct đỏ son, Antigravity Claude tím, Antigravity Gemini lục lam), chỉ dùng cho chấm tròn, phần tô của đồng hồ, viền trái mảnh và các thanh dòng thời gian. Trạng thái luôn là một chấm cộng một từ (Đang làm việc, Đang chờ, Lỗi, Hoàn tất), và *Cần bạn* là bề mặt "giấy" đảo màu duy nhất. Hai chủ đề dùng chung các ý nghĩa này: **Duet** (mặc định, nền than mận với chữ số pixel Departure Mono) và **Console** (than chì ấm với điểm nhấn màu than hồng), được chọn tại **Cài đặt > Bảng điều khiển > Giao diện** và lưu trong `localStorage` dưới khóa `nexus-theme`.
 
-<p align="center">
-  <a href="images/board-sessions.png"><img src="images/readme/board-sessions.png" alt="Chế độ phiên trên Bảng Kanban" width="100%"></a>
-  <br>
-  <em> <strong>Bảng Kanban · Phiên</strong> · phiên đang hoạt động, đang chờ, hoàn tất, lỗi và bị bỏ dở</em>
-</p>
-
-<p align="center">
-  <a href="images/sessions.png"><img src="images/readme/sessions.png" alt="Tổng quan Phiên" width="100%"></a>
-  <br>
-  <em> <strong>Phiên</strong> · lịch sử có tìm kiếm, bộ lọc và phân trang phía máy chủ, kèm chi phí và hoạt động</em>
-</p>
-
-<p align="center">
-  <a href="images/session-agents.png"><img src="images/readme/session-agents.png" alt="Tổng quan Agent trong phiên" width="100%"></a>
-  <br>
-  <em> <strong>Agent trong phiên</strong> · tổng số trực tiếp, mức dùng công cụ, luồng token và hệ thống phân cấp Agent</em>
-</p>
-
-<p align="center">
-  <a href="images/tasks-details.png"><img src="images/readme/tasks-details.png" alt="Chi tiết tiến độ công việc của phiên" width="100%"></a>
-  <br>
-  <em> <strong>Chi tiết công việc</strong> · các đoạn hoàn tất, công việc hiện tại, chủ sở hữu và tác vụ được phân trang</em>
-</p>
-
-<p align="center">
-  <a href="images/session-conversation.png"><img src="images/readme/session-conversation.png" alt="Chế độ xem hội thoại của phiên" width="100%"></a>
-  <br>
-  <em> <strong>Hội thoại</strong> · transcript đã kết xuất, mã, lời gọi công cụ, đầu ra lệnh và dấu mốc phiên</em>
-</p>
-
-<p align="center">
-  <a href="images/session-timeline.png"><img src="images/readme/session-timeline.png" alt="Dòng thời gian sự kiện của phiên" width="100%"></a>
-  <br>
-  <em> <strong>Dòng thời gian</strong> · sự kiện theo thời gian, bộ lọc đa chiều và hoạt động công cụ được ghép cặp</em>
-</p>
-
-<p align="center">
-  <a href="images/feed.png"><img src="images/readme/feed.png" alt="Tổng quan Luồng hoạt động" width="100%"></a>
-  <br>
-  <em> <strong>Luồng hoạt động</strong> · sự kiện trực tiếp có thể tạm dừng, nhóm, lọc và chuyển tới phiên</em>
-</p>
-
-<p align="center">
-  <a href="images/analytics.png"><img src="images/readme/analytics.png" alt="Tổng quan Phân tích" width="100%"></a>
-  <br>
-  <em> <strong>Phân tích</strong> · token theo model, tần suất công cụ, heatmap hoạt động và xu hướng phiên</em>
-</p>
-
-<p align="center">
-  <a href="images/workflows.png"><img src="images/readme/workflows.png" alt="Tổng quan phân tích quy trình" width="100%"></a>
-  <br>
-  <em> <strong>Quy trình</strong> · đồ thị điều phối, luồng công cụ, cộng tác, ủy quyền và mẫu</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows.png"><img src="images/readme/dynamicworkflows-workflows.png" alt="Các lần chạy quy trình động" width="100%"></a>
-  <br>
-  <em> <strong>Lần chạy quy trình</strong> · trạng thái dựa trên journal, Agent, token, công cụ và thời lượng</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-workflows2.png"><img src="images/readme/dynamicworkflows-workflows2.png" alt="Lần chạy quy trình động được mở rộng" width="100%"></a>
-  <br>
-  <em> <strong>Lần chạy mở rộng</strong> · bộ lọc giai đoạn, chỉ số theo Agent, lời nhắc và kết quả đầy đủ</em>
-</p>
-
-<p align="center">
-  <a href="images/dynamicworkflows-session.png"><img src="images/readme/dynamicworkflows-session.png" alt="Lần chạy quy trình trong chi tiết phiên" width="100%"></a>
-  <br>
-  <em> <strong>Quy trình của phiên</strong> · lần chạy động được liên kết và chi phí token được gộp vào</em>
-</p>
-
-<p align="center">
-  <a href="images/config.png"><img src="images/readme/config.png" alt="Trình khám phá cấu hình Claude Code và Codex" width="100%"></a>
-  <br>
-  <em> <strong>Cấu hình Agent</strong> · kiểm tra và chỉnh sửa an toàn cấu hình Claude Code và Codex được hỗ trợ</em>
-</p>
-
-<p align="center">
-  <a href="images/config-codex.png"><img src="images/readme/config-codex.png" alt="Trình khám phá cấu hình Codex" width="100%"></a>
-  <br>
-  <em> <strong>Cấu hình Codex</strong> · model, profile, MCP, dự án, skill, hook, quy tắc, plugin và chỉ dẫn</em>
-</p>
-
-<p align="center">
-  <a href="images/config-skills.png"><img src="images/readme/config-skills.png" alt="Trình khám phá skill Claude Code" width="100%"></a>
-  <br>
-  <em> <strong>Skill</strong> · skill user, dự án và plugin có tìm kiếm cùng chỉnh sửa có sao lưu</em>
-</p>
-
-<p align="center">
-  <a href="images/run.png"><img src="images/readme/run.png" alt="Chọn nhà cung cấp trong Chạy Agent" width="100%"></a>
-  <br>
-  <em>▶️ <strong>Chạy Agent</strong> · khởi chạy Claude Code hoặc Codex với điều khiển gốc theo nhà cung cấp</em>
-</p>
-
-<p align="center">
-  <a href="images/run-results.png"><img src="images/readme/run-results.png" alt="Đầu ra trực tiếp của Chạy Agent" width="100%"></a>
-  <br>
-  <em> <strong>Lần chạy trực tiếp</strong> · chat phát trực tiếp, suy luận, lệnh, thay đổi tệp, công cụ và gắn lại</em>
-</p>
-
-<p align="center">
-  <a href="images/settings.png"><img src="images/readme/settings.png" alt="Tổng quan Cài đặt" width="100%"></a>
-  <br>
-  <em> <strong>Cài đặt</strong> · định giá, hook, thông báo, dữ liệu, nguồn từ xa và trạng thái hệ thống</em>
-</p>
-
-<p align="center">
-  <a href="images/alerts.png"><img src="images/readme/alerts.png" alt="Cài đặt cảnh báo và webhook" width="100%"></a>
-  <br>
-  <em> <strong>Cảnh báo</strong> · quy tắc, cooldown, hoạt động và webhook tích hợp hoặc generic có chữ ký</em>
-</p>
-
-<p align="center">
-  <a href="images/remote.png"><img src="images/readme/remote.png" alt="Cài đặt Nguồn dữ liệu từ xa" width="100%"></a>
-  <br>
-  <em> <strong>Nguồn dữ liệu từ xa</strong> · đồng bộ SSH theo nhà cung cấp và theo dõi theo phạm vi nguồn</em>
-</p>
-
-<p align="center">
-  <a href="images/palette.png"><img src="images/readme/palette.png" alt="Bảng lệnh" width="100%"></a>
-  <br>
-  <em>⌘ <strong>Bảng lệnh</strong> · một trình khởi chạy bằng bàn phím cho trang, phiên, dự án, bộ lọc và hành động</em>
-</p>
-
-Thanh điều hướng cố định ở trên cùng liên kết Tổng quan, Thế giới, Phòng, Phiên, Hoạt động, Cascade và Hạn mức, với nút biểu tượng cho Cấu hình Agent và Cài đặt cùng một thao tác chính duy nhất **Chạy Agent**. Các phần dưới đây mô tả đầy đủ hành vi đằng sau những chế độ xem này.
+**Địa chỉ cũ được chuyển hướng** và giữ nguyên query string: `/world`, `/rooms`, `/kanban`, `/cascade-graph` chuyển tới `/agents` (`?mode=world|board|tree`); `/activity` tới `/sessions?show=events`; `/quota-roi`, `/analytics`, `/workflows` tới `/usage`; `/cc-config` tới `/settings?section=claude`. Dải hạn mức luôn hiển thị đã trở thành đồng hồ nhiên liệu, dock Command Center nổi đã trở thành bảng Launch, và trợ lý Tabby được tắt theo mặc định.
 
 ### Thế giới Agent
 
-`/world` hiển thị mỗi agent thành một nhân vật 8-bit đang làm việc trong văn phòng phối cảnh 3/4 với bốn phòng tương ứng Phòng Agent: Cầu chỉ huy, Động cơ Cascade, Khoang Fan-Out và Kho Digest.
+**Agent > Thế giới** (`/agents?mode=world`) hiển thị mỗi agent thành một nhân vật 8-bit đang làm việc trong văn phòng phối cảnh 3/4 với bốn phòng: Cầu chỉ huy, Động cơ Cascade, Khoang Fan-Out và Kho Digest.
 
-- **Agent trực tiếp** đến từ cùng API và luồng WebSocket với Phòng Agent. Mỗi agent đi tới một bàn cố định trong phòng (gán theo hash của id agent) và hiện trạng thái trên đầu: chấm suy nghĩ, tia làm việc, yêu cầu phê duyệt, dấu hoàn tất hoặc dấu lỗi. Ở đây agent trực tiếp chỉ đọc; bảng bên chỉ có **Mở trình kiểm tra**.
+- **Agent trực tiếp** đến từ cùng API và luồng WebSocket với các chế độ xem Agent khác. Mỗi agent đi tới một bàn cố định trong phòng (gán theo hash của id agent) và hiện trạng thái trên đầu: chấm suy nghĩ, tia làm việc, yêu cầu phê duyệt, dấu hoàn tất hoặc dấu lỗi. Ở đây agent trực tiếp chỉ đọc; bảng bên chỉ có **Mở trình kiểm tra**.
 - **Agent sandbox** là sân chơi riêng của từng trình duyệt. **Agent sandbox mới** chọn tên, một trong tám nhân vật, phòng và nhiệm vụ. Agent sandbox làm việc tại chỗ, đi dạo trong phòng rồi quay lại. Từ bảng bên có thể tạm dừng, tiếp tục, đổi tên, chuyển phòng, kéo trên bản đồ hoặc xóa; **Tạm dừng tất cả**, **Tiếp tục tất cả** và **Xóa sandbox** áp dụng cho tất cả. Tối đa 24 agent sandbox được lưu trong `localStorage` ở khóa `nexus-world-sandbox-v1`; chúng không bao giờ chạm vào phiên thật.
 - **Điều khiển:** kéo để di chuyển, cuộn hoặc `+`/`-` để thu phóng, `WASD` hoặc phím mũi tên để di chuyển camera, `0` hoặc **Căn giữa** để đặt lại, `Escape` để bỏ chọn. Bảng bên liệt kê mọi agent nên có thể dùng toàn bộ thế giới bằng bàn phím. `prefers-reduced-motion` tắt hiệu ứng đi bộ và nhún nhảy.
 
@@ -320,11 +204,11 @@ Dashboard bao quát toàn bộ vòng đời Agent cục bộ. Các hợp đồng
 | Tính năng | Tóm tắt |
 | --- | --- |
 | **Tiến độ công việc** | Tiến độ theo chủ sở hữu từ công cụ tác vụ Claude, `TodoWrite` cũ và `update_plan` của Codex. Bản xem trước gọn xuất hiện trên thẻ và hàng; Chi tiết phiên bổ sung các đoạn trạng thái, công việc hiện tại, chủ sở hữu và phân trang 10 hàng. Công việc cấp cao nhất mới xóa trạng thái chưa hoàn tất cũ, còn lịch sử đã hoàn tất được giữ lại. |
-| **Dashboard** | Hai tab **Monitor** và **Health** được lưu bền vững, kết hợp tổng số Agent, hệ thống phân cấp đang hoạt động, hoạt động gần đây, sức khỏe có trọng số theo thành công/cache/lỗi/heap, lưu trữ, công cụ, model, hiệu quả Subagent và chỉ số compaction. Health làm mới mỗi 5 giây từ `/api/settings/info` và `/api/workflows`. |
-| **Bảng Kanban** | Các cột Agent gồm Đang làm việc, Đang chờ, Hoàn tất và Lỗi; các cột phiên bổ sung Đang hoạt động và Bị bỏ dở. Thẻ phân trang 10 mục mỗi lần, chỉ đăng ký chế độ xem WebSocket đang hoạt động, giữ nguyên tiêu đề đầy đủ và giải thích lý do chờ như yêu cầu quyền, kết thúc lượt, đang ở dấu nhắc hoặc bị gián đoạn. |
+| **Điều phối** | Màn hình chính trả lời ba câu hỏi theo thứ tự: các phiếu **Cần bạn** (phê duyệt, thoát do hạn mức `10`, lỗi gần đây, vòng lặp công cụ, đứng yên 10 phút), thẻ nhiên liệu Claude Direct (thời gian đến khi cạn, tốc độ tiêu thụ, thanh 8-bit, thác agy-cascade, token được digest giữ lại) và việc các agent đang làm lúc này (tổng số hôm nay, cây agent trực tiếp, sự kiện mới nhất). Tình trạng hệ thống đã chuyển sang **Cài đặt > Tình trạng hệ thống**. |
+| **Agent** | Một trang với bốn chế độ xem cùng các agent: **Cây** (đề cương hoặc đồ thị), **Dòng thời gian** (thanh cho mỗi agent trong cửa sổ 30 phút / 2 giờ / 12 giờ), **Bảng** (các cột Cần bạn / Đang làm việc / Đang chờ / Hoàn tất) và **Thế giới** (văn phòng 8-bit có sandbox). Mọi chế độ xem dùng chung trình kiểm tra agent và bản demo **Mô phỏng swarm**. |
 | **Phiên** | Lịch sử có thể tìm kiếm, lọc và phân trang phía máy chủ, với chi phí chỉ tính trên trang đang hiển thị và một hàng khởi động Codex tạm thời trong bộ nhớ. Tìm kiếm bao quát `id`, `name` và `cwd` với debounce 300 ms. Tên được lấy lần lượt từ tiêu đề rõ ràng, tiêu đề AI rồi lời nhắc người dùng có ý nghĩa đầu tiên. |
 | **Chi tiết phiên** | Thống kê trực tiếp, công việc hiện tại, mức dùng công cụ, Subagent, token, hệ thống phân cấp, dòng thời gian sự kiện có bộ lọc, nhóm theo `tool_use_id` và trình kết xuất riêng cho từng công cụ. Chế độ Hội thoại kết xuất lượt chờ, thông báo hệ thống, Markdown, mã được tô sáng và công cụ có kiểu riêng; banner chờ hiển thị lý do và thời gian đã trôi qua. |
-| **Luồng hoạt động** | Sự kiện thời gian thực có thể tạm dừng, với bộ lọc dùng chung, phân trang phía máy chủ, nhóm, nguồn dự án/phiên/Subagent, liên kết phiên và badge trạng thái Claude/Codex nhất quán. |
+| **Sự kiện** | `Phiên > Sự kiện` (`/sessions?show=events`): sự kiện thời gian thực có thể tạm dừng, với bộ lọc dùng chung, phân trang phía máy chủ, nhóm, nguồn dự án/phiên/Subagent, liên kết phiên và huy hiệu trạng thái Claude/Codex nhất quán. |
 | **Phân tích** | Token theo model, tần suất công cụ, heatmap hoạt động bắt đầu tuần vào Chủ nhật, xu hướng phiên, trạng thái kết nối, skeleton tải khớp bố cục và phân trang cho chú giải dài. |
 | **Bảng lệnh** | `Cmd/Ctrl+K` tìm kiếm lệnh gần đây, mọi route, phiên trực tiếp phía máy chủ, hành động của trang, thư mục dự án, chế độ xem con, bộ lọc, Cài đặt, Cấu hình Agent, tùy chọn, phạm vi và ngôn ngữ. Hỗ trợ xếp hạng theo chuỗi con, phạm vi `>`/`@`/`#`, điều khiển đầy đủ bằng bàn phím, nhãn đã dịch, lỗi tìm kiếm im lặng và chỉ điều hướng đối với hành động phá hủy. |
 | **Một phím tắt** | `Cmd/Ctrl+K` là tổ hợp toàn cục duy nhất của dashboard, kể cả bên trong trường nhập. Loại bỏ điều hướng nhiều phím để tránh chế độ ẩn; Tabby vẫn dùng `Cmd/Ctrl+B`. |
@@ -1570,7 +1454,7 @@ Bấm vào nhãn **Live** / **Disconnected** trên thanh điều hướng trên 
 - **Thanh bên trực tiếp:** Chế độ xem Activity Bar chuyên dụng hiển thị tình trạng Agent theo thời gian thực (Đang làm việc, Đang chờ, Hoàn tất, v.v.).
 - **Phân tích mức dùng:** Theo dõi tổng token, chi phí USD trực tiếp và số sự kiện ngay trong thanh bên.
 - **Tích hợp thanh trạng thái:** Màn hình xung ở thanh dưới cho biết nhanh phiên và Agent đang hoạt động.
-- **Điều hướng sâu:** Truy cập một lần bấm tới chế độ xem dashboard cụ thể (Kanban, Analytics, Settings) hoặc phiên gần đây.
+- **Điều hướng sâu:** Truy cập một lần bấm tới chế độ xem dashboard cụ thể (Agent, Mức dùng, Cài đặt) hoặc phiên gần đây.
 - **Tab tích hợp:** Mở toàn bộ dashboard theo dõi dưới dạng tab webview VS Code gốc.
 
 ### Cài đặt và thiết lập
@@ -1944,14 +1828,14 @@ graph TD
 
 ```mermaid
 graph LR
-    ROOT["/ (index)"] --> DASH["Dashboard<br/>stats + agents + events"]
-    K["/kanban"] --> KANBAN["KanbanBoard<br/>chuyển Agent / Phiên"]
-    S["/sessions"] --> SESS["Sessions<br/>filterable table"]
+    ROOT["/ (index)"] --> HOME["Home (Command)<br/>needs you + fuel card + live tree"]
+    AG["/agents"] --> AGENTS["AgentsHub<br/>tree / timeline / board / world"]
+    S["/sessions"] --> SESS["SessionsHub<br/>sessions table + events stream"]
     D["/sessions/:id"] --> DETAIL["SessionDetail<br/>agents + timeline + cost"]
-    A["/activity"] --> ACT["ActivityFeed<br/>streaming event log"]
-    AN["/analytics"] --> ANALYTICS["Analytics<br/>tokens + heatmap + trends"]
-    WF["/workflows"] --> WORKFLOWS["Workflows<br/>D3 visualizations + drill-in"]
-    ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
+    U["/usage"] --> USAGE["Usage<br/>quota breakdown + analytics"]
+    RUN["/run"] --> RUNPAGE["Run<br/>spawn / resume / stream Claude subprocess"]
+    ST["/settings"] --> SETTINGS["SettingsHub<br/>dashboard settings + Claude setup + health"]
+    OLD["/world /rooms /kanban /cascade-graph<br/>/activity /quota-roi /analytics<br/>/workflows /cc-config"] --> REDIRECT["LegacyRedirect<br/>to the new section"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
     ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
@@ -2163,14 +2047,21 @@ agent-dashboard/
 |       |       |-- WorkflowStats.tsx               # Aggregate workflow statistics
 |       |       +-- SessionDrillIn.tsx              # Per-session agent tree, tool timeline, events
 |       +-- pages/
-|           |-- Dashboard.tsx      # Overview page
-|           |-- KanbanBoard.tsx    # Cột trạng thái Agent / Phiên với nút chuyển
-|           |-- Sessions.tsx       # Sessions table
+|           |-- Home.tsx           # Command: needs you, fuel card, live tree, latest events
+|           |-- AgentsHub.tsx      # Agents: tree / timeline / board / world views
+|           |-- AgentWorld.tsx     # 8-bit world (Agents > World)
+|           |-- SessionsHub.tsx    # Sessions table + events stream switch
+|           |-- Sessions.tsx       # Server-paginated sessions table
 |           |-- SessionDetail.tsx  # Single session deep dive
-|           |-- ActivityFeed.tsx   # Real-time event stream
+|           |-- ActivityFeed.tsx   # Real-time event stream (Sessions > Events)
+|           |-- Usage.tsx          # Quota breakdown, digest return, analytics
 |           |-- Analytics.tsx      # Token usage, heatmap, trends
 |           |-- Workflows.tsx      # D3.js workflow visualizations and session drill-in
+|           |-- SettingsHub.tsx    # Settings sections: dashboard, Claude setup, health
 |           |-- Settings.tsx       # Model pricing, notifications, hooks, export, cleanup
+|           |-- CcConfig.tsx       # Claude Code config explorer (Your Claude setup)
+|           |-- SystemHealth.tsx   # Database, server, hook, and cache health
+|           |-- Run.tsx            # Interactive Claude Code / Codex runs
 |           +-- NotFound.tsx       # 404 catch-all page
 |-- scripts/
 |   |-- hook-handler.js          # Lightweight stdin-to-HTTP forwarder

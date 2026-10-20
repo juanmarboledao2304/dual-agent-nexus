@@ -640,7 +640,7 @@ function CodexTab({
     return (
       <div className="space-y-5">
         <section>
-          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+          <h2 className="mb-2 text-[11px] font-medium text-gray-500">
             {t("codex.overviewTitle", "Configuration overview")}
           </h2>
           <div className="grid gap-2 xl:grid-cols-5">
@@ -666,7 +666,7 @@ function CodexTab({
           </div>
         </section>
         <section>
-          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+          <h2 className="mb-2 text-[11px] font-medium text-gray-500">
             {t("overview.summary", "Quick summary")}
           </h2>
           <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
@@ -1127,9 +1127,7 @@ function CodexRootCard({ home, t }: { home: string; t: TFunction }) {
           <FolderTree className={`h-4 w-4 ${tone.iconText}`} />
         </span>
         <div className="min-w-0">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            {t("codex.home", "Codex home")}
-          </p>
+          <p className="text-[11px] font-medium text-gray-400">{t("codex.home", "Codex home")}</p>
           <p className="mt-1 truncate font-mono text-xs text-gray-100" title={home}>
             {home}
           </p>
@@ -1169,9 +1167,7 @@ function CodexDefaultStat({
           >
             <Icon className={`h-3.5 w-3.5 ${palette.iconText}`} />
           </span>
-          <span className="truncate text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            {label}
-          </span>
+          <span className="truncate text-[11px] font-medium text-gray-400">{label}</span>
         </div>
         <p
           className="mt-2 truncate font-mono text-sm font-semibold text-gray-100"
@@ -1217,9 +1213,7 @@ function CodexSummaryStat({
           >
             <Icon className={`h-3.5 w-3.5 ${palette.iconText}`} />
           </span>
-          <span className="truncate text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            {label}
-          </span>
+          <span className="truncate text-[11px] font-medium text-gray-400">{label}</span>
         </div>
         <p className="mt-1.5 text-xl font-semibold tabular-nums text-gray-100">{value}</p>
       </div>
@@ -1437,9 +1431,7 @@ function EmptyState({ t }: { t: TFunction }) {
 function ProfileSetting({ label, value }: { label: string; value: string | null }) {
   return (
     <div className="min-w-0">
-      <p className="truncate uppercase tracking-wide text-[9px] font-medium text-gray-500">
-        {label}
-      </p>
+      <p className="truncate text-[11px] font-medium text-gray-500">{label}</p>
       <p className="mt-0.5 truncate font-mono text-gray-300" title={value || "—"}>
         {value || "—"}
       </p>

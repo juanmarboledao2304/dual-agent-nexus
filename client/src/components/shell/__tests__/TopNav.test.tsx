@@ -26,48 +26,36 @@ describe("TopNav", () => {
     await i18n.changeLanguage("en");
   });
 
-  it("renders the brand name and the 8-bit app mark", () => {
+  it("renders the brand link and the 8-bit app mark", () => {
     renderNav(true);
-    expect(screen.getByText("DualAgent Nexus")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "DualAgent Nexus" })).toHaveAttribute("href", "/");
     expect(screen.getAllByRole("img", { name: "DualAgent Nexus" }).length).toBeGreaterThan(0);
   });
 
-  it("renders every primary tab with its short label and utility tabs as icons", () => {
+  it("renders the five labelled sections", () => {
     renderNav(true);
-    for (const label of [
-      "Overview",
-      "World",
-      "Rooms",
-      "Sessions",
-      "Activity",
-      "Cascade",
-      "Quota",
-    ]) {
+    for (const label of ["Command", "Agents", "Sessions", "Usage", "Settings"]) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
-    expect(screen.getByRole("link", { name: "Config" })).toHaveAttribute("href", "/cc-config");
-    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/settings");
   });
 
-  it("links tabs, GitHub, and the Run agent action to the right destinations", () => {
+  it("links the sections to their routes and keeps Run agent as an action", () => {
     renderNav(true);
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href"));
-    for (const href of [
-      "/",
+    for (const href of ["/", "/agents", "/sessions", "/usage", "/settings"]) {
+      expect(hrefs).toContain(href);
+    }
+    for (const legacy of [
       "/world",
       "/rooms",
-      "/sessions",
       "/activity",
       "/cascade-graph",
       "/quota-roi",
-      "/cc-config",
-      "/settings",
-      "/run",
-      "https://github.com/juanmarboledao2304/dual-agent-nexus",
+      "/kanban",
     ]) {
-      expect(hrefs).toContain(href);
+      expect(hrefs).not.toContain(legacy);
     }
-    expect(hrefs).not.toContain("/kanban");
+    expect(screen.getByRole("button", { name: "Run agent" })).toBeInTheDocument();
   });
 
   it("hides tab labels in compact mode but keeps accessible names", () => {
@@ -86,9 +74,11 @@ describe("TopNav", () => {
     expect(screen.getByText("Disconnected")).toBeInTheDocument();
   });
 
-  it("shows the version number", () => {
+  it("shows the version number in the connection pill tooltip", () => {
     renderNav(true);
-    expect(screen.getByText(`v${__APP_VERSION__}`)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Connection details" }).getAttribute("title")
+    ).toContain(`v${__APP_VERSION__}`);
   });
 
   it("opens the connection details modal from the status pill", async () => {
@@ -114,8 +104,8 @@ describe("TopNav", () => {
     await user.click(screen.getByRole("option", { name: "Spanish ES" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Mundo")).toBeInTheDocument();
-      expect(screen.getByText("Salas")).toBeInTheDocument();
+      expect(screen.getByText("Mando")).toBeInTheDocument();
+      expect(screen.getByText("Agentes")).toBeInTheDocument();
     });
     await i18n.changeLanguage("en");
   });

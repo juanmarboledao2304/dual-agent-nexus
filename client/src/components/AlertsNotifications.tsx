@@ -751,7 +751,7 @@ export function AlertsNotifications() {
                       >
                         {rule.name}
                       </span>
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded px-1.5 py-0.5 flex-shrink-0">
+                      <span className="text-[11px] font-medium text-accent bg-accent/10 border border-accent/20 rounded px-1.5 py-0.5 flex-shrink-0">
                         {t(`ruleTypes.${rule.rule_type}`)}
                       </span>
                     </div>

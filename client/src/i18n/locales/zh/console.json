@@ -1,0 +1,214 @@
+{
+  "pools": {
+    "agyClaude": "Antigravity Claude",
+    "agyGemini": "Antigravity Gemini",
+    "claudeDirect": "Claude Direct",
+    "models": {
+      "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
+      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "claudeDirect": "Conductor 与 Haiku 探索"
+    }
+  },
+  "poolState": {
+    "active": "使用中",
+    "standby": "待机",
+    "exhausted": "额度耗尽，{{time}}后恢复",
+    "short": {
+      "active": "使用中",
+      "standby": "待机",
+      "exhausted": "额度耗尽"
+    }
+  },
+  "status": {
+    "approval": "需要批准",
+    "working": "工作中",
+    "waiting": "等待中",
+    "error": "错误",
+    "completed": "已完成"
+  },
+  "quota": {
+    "loading": "正在加载额度",
+    "meterLabel": "Claude Direct 剩余额度",
+    "agyMeterLabel": "Antigravity 会话剩余额度",
+    "poolNumber": "池 {{n}}",
+    "free": "剩余 {{pct}}%",
+    "window": "5 小时窗口",
+    "usedOf": "已用 {{used}} / {{cap}}",
+    "timeToEmpty": "耗尽剩余",
+    "idle": "未消耗",
+    "burn": "消耗速率",
+    "perHour": "{{n}}/小时",
+    "requestsPerHour": "{{n}} 次请求/小时",
+    "cache": "缓存效率",
+    "tokensIO": "输入 / 输出 / 缓存",
+    "effort": "按强度划分的 Subagent",
+    "effortValue": "{{heavy}} 个高强度，{{standard}} 个标准，{{light}} 个轻量",
+    "agyTitle": "Antigravity",
+    "sessionTokens": "会话 Token",
+    "flowCredits": "Flow 积分",
+    "bandwidth": "上下文带宽",
+    "modelMix": "Flash : Pro 比例",
+    "waterfall": "瀑布",
+    "waterfallHint": "工作从池 1 流向池 3。需要保护的是 Claude Direct。",
+    "digest": "未占用 Claude Direct 的部分：",
+    "digestValue": "{{count}} 次 digest 共 {{tokens}} 个 token",
+    "openUsage": "查看完整用量"
+  },
+  "needsYou": {
+    "title_one": "需要你处理 ({{count}})",
+    "title_other": "需要你处理 ({{count}})",
+    "allClear": "目前没有需要你处理的事项。",
+    "bellLabel_one": "{{count}} 项需要你处理",
+    "bellLabel_other": "{{count}} 项需要你处理",
+    "open": "打开",
+    "viewUsage": "查看用量",
+    "quotaLow": "Claude Direct 已用 {{pct}}%",
+    "quotaLowDetail": "按当前速度，{{time}}后耗尽",
+    "kind": {
+      "approval": "等待你的批准",
+      "quota": "其池额度已耗尽",
+      "error": "因错误而停止",
+      "loop": "正在重复 {{tool}}（{{count}} 次）",
+      "stalled": "{{minutes}} 分钟无活动"
+    },
+    "stalledGroup_one": "{{count}} 个 Agent 已 {{minutes}} 分钟无活动",
+    "stalledGroup_other": "{{count}} 个 Agent 无活动，最长 {{minutes}} 分钟",
+    "review": "查看"
+  },
+  "launch": {
+    "title": "运行一个 Agent",
+    "subtitle": "开始一段对话，或将一个任务发送到瀑布、fan-out 或 swarm。",
+    "close": "关闭",
+    "conversation": "交互式对话",
+    "conversationHint": "在工作目录中与 Claude Code 或 Codex 逐轮对话。",
+    "dispatch": "派发任务",
+    "dispatchHint": "一条提示词，发送到你选择的引擎。输出实时显示在下方，随时可以停止。"
+  },
+  "home": {
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好"
+    },
+    "statusLine_one": "{{working}} 个 Agent 工作中。{{count}} 项需要你处理。",
+    "statusLine_other": "{{working}} 个 Agent 工作中。{{count}} 项需要你处理。",
+    "fuelTitle": "Claude Direct 额度",
+    "details": "详情",
+    "untilEmpty": "按当前速度，5 小时窗口将被用满",
+    "freeIdle": "的 5 小时窗口可用",
+    "fuelLine": "已用 {{used}} / {{cap}}，消耗 {{burn}}/小时，剩余 {{pct}}%",
+    "keptOff": "digest 已为 Claude Direct 节省 {{tokens}} 个 token",
+    "todayTitle": "今天",
+    "sessions": "会话",
+    "today": {
+      "activeAgents": "运行中的 Agent",
+      "sessions": "会话",
+      "sessionsValue": "{{total}} 个中 {{active}} 个活跃",
+      "events": "今日事件",
+      "allEvents": "全部事件",
+      "cost": "总费用"
+    },
+    "liveTitle": "运行中的 Agent",
+    "openAgents": "打开 Agent",
+    "eventsTitle": "最新事件",
+    "allEvents": "所有事件",
+    "noEvents": "还没有事件。启动 Agent 后，其工具调用会显示在这里。"
+  },
+  "agents": {
+    "title": "Agent",
+    "summary": "{{total}} 个 Agent，{{live}} 个运行中，{{attention}} 个需要你处理",
+    "views": "Agent 视图",
+    "modes": {
+      "tree": "树形",
+      "timeline": "时间线",
+      "board": "看板",
+      "world": "世界"
+    },
+    "modeHint": {
+      "tree": "谁委派给了谁。",
+      "timeline": "何时运行了什么，运行了多久。",
+      "board": "按房间和状态查看 Agent。",
+      "world": "以 8-bit 角色呈现正在工作的 Agent。"
+    },
+    "treeStyle": "树形样式",
+    "treeStyles": {
+      "outline": "大纲",
+      "graph": "图形"
+    },
+    "legend": "池颜色",
+    "treeLabel": "Agent 树",
+    "empty": "还没有 Agent。启动会话或运行 swarm 模拟即可看到树形结构。",
+    "foldedDone_one": "{{count}} 个已完成",
+    "foldedDone_other": "{{count}} 个已完成",
+    "moreTrees_one": "Agents 中另有 {{count}} 个会话",
+    "moreTrees_other": "Agents 中另有 {{count}} 个会话",
+    "ctx": "ctx {{pct}}%",
+    "simulate": "模拟 swarm",
+    "simulating": "模拟中",
+    "simulateHint": "启动一个 3 层的 agy-cascade swarm 演示，以便查看所有视图。",
+    "simulateFailed": "无法启动模拟"
+  },
+  "timeline": {
+    "hint": "每个条形从 Agent 开始到结束（或到现在）。",
+    "window": "时间范围",
+    "windows": {
+      "30": "30 分钟",
+      "120": "2 小时",
+      "720": "12 小时"
+    },
+    "now": "现在",
+    "empty": "此时间范围内没有 Agent 运行。"
+  },
+  "sessions": {
+    "views": "会话视图",
+    "sessions": "会话",
+    "events": "事件"
+  },
+  "usage": {
+    "title": "用量",
+    "subtitle": "查看每个池的剩余额度、瀑布节省了多少，以及 token 和费用的去向。",
+    "quotaTitle": "额度",
+    "roi": {
+      "offloaded": "未占用 Claude Direct 的 token",
+      "offloadedHint": "{{count}} 次 digest，平均 {{avg}}",
+      "windowShare": "节省的 5 小时窗口占比",
+      "windowShareHint": "占 {{cap}} 窗口"
+    }
+  },
+  "settings": {
+    "sections": "设置分区",
+    "section": {
+      "dashboard": "仪表盘",
+      "claude": "你的 Claude 配置",
+      "health": "系统健康"
+    },
+    "appearance": "外观",
+    "appearanceHint": "选择控制台的外观。两种主题对每种颜色的含义保持一致。",
+    "theme": "主题",
+    "themes": {
+      "duet": {
+        "name": "Duet",
+        "hint": "带有 Claude 与 Antigravity 墨色的梅子碳色。需要你处理的项目以纸张样式呈现。"
+      },
+      "console": {
+        "name": "Console",
+        "hint": "带有余烬色强调的暖石墨色。更克制、更中性。"
+      }
+    }
+  },
+  "board": {
+    "columns": {
+      "needs": "需要你",
+      "working": "工作中",
+      "waiting": "等待中",
+      "done": "已完成"
+    },
+    "empty": {
+      "needs": "暂时没有需要你处理的事项。",
+      "working": "没有正在工作的 Agent。",
+      "waiting": "没有正在等待的 Agent。",
+      "done": "还没有完成的任务。"
+    },
+    "quiet": "已 {{minutes}} 分钟无活动"
+  }
+}

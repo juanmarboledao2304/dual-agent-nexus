@@ -64,7 +64,7 @@ export function DocumentTitle() {
   const { t } = useTranslation("nav");
   const location = useLocation();
 
-  let title = t("dashboard");
+  let title = t("tabs.home");
   const path = location.pathname;
   const sessionId = path.match(/^\/sessions\/([^/]+)/)?.[1];
 
@@ -72,18 +72,10 @@ export function DocumentTitle() {
     title = `${t("sessions")} · ${sessionId.slice(0, 8)}`;
   } else if (path.startsWith("/sessions")) {
     title = t("sessions");
-  } else if (path.startsWith("/world")) {
-    title = t("world");
-  } else if (path.startsWith("/rooms") || path.startsWith("/kanban")) {
-    title = t("agentBoard");
-  } else if (path.startsWith("/activity")) {
-    title = t("activityFeed");
-  } else if (path.startsWith("/quota-roi") || path.startsWith("/analytics")) {
-    title = t("analytics");
-  } else if (path.startsWith("/cascade-graph") || path.startsWith("/workflows")) {
-    title = t("workflows");
-  } else if (path.startsWith("/cc-config")) {
-    title = t("ccConfig");
+  } else if (path.startsWith("/agents")) {
+    title = t("tabs.agents");
+  } else if (path.startsWith("/usage")) {
+    title = t("tabs.usage");
   } else if (path.startsWith("/run")) {
     title = t("run");
   } else if (path.startsWith("/settings")) {
