@@ -133,7 +133,7 @@ graph LR
 
 ### 국제화 (i18n)
 
-UI에는 영어(`en`), 중국어(`zh`), 베트남어(`vi`), 한국어(`ko`), 스페인어(`es`)를 위한 내장 로케일 전환 기능이 탑재되어 있습니다. 언어 선택기는 향후 언어가 추가되어도 사이드바가 혼잡해지지 않도록 맞춤 드롭다운으로 제공됩니다. 언어 리소스는 네임스페이스별로 로드되며, 새로고침 후에도 사용자 선호가 안정적으로 유지되도록 브라우저 스토리지를 통해 저장됩니다.
+UI에는 영어(`en`), 중국어(`zh`), 베트남어(`vi`), 한국어(`ko`), 스페인어(`es`)를 위한 내장 로케일 전환 기능이 탑재되어 있습니다. 언어 선택기는 향후 언어가 추가되어도 화면이 혼잡해지지 않도록 상단 탐색의 간결한 아이콘 선택기로 제공됩니다. 언어 리소스는 네임스페이스별로 로드되며, 새로고침 후에도 사용자 선호가 안정적으로 유지되도록 브라우저 스토리지를 통해 저장됩니다.
 
 ```mermaid
 flowchart LR
@@ -300,7 +300,15 @@ flowchart LR
   <em>⌘ <strong>Command Palette</strong> · 페이지, 세션, 프로젝트, 필터, 작업을 위한 단일 키보드 실행기</em>
 </p>
 
-사이드바는 Dashboard, Kanban Board, Sessions, Activity Feed, Analytics, Workflows, Agent Config, Run Agent, Settings로 이동합니다. 아래 섹션에서 이 보기의 전체 동작을 설명합니다.
+상단 고정 탐색은 개요, 월드, 룸, 세션, 활동, 캐스케이드, 할당량으로 이동하며, Agent 구성과 설정은 아이콘 버튼으로, 유일한 기본 동작은 **Agent 실행**으로 제공합니다. 아래 섹션에서 이 보기의 전체 동작을 설명합니다.
+
+### Agent 월드
+
+`/world`는 모든 에이전트를 3/4 원근 사무실에서 일하는 8비트 캐릭터로 보여 줍니다. 네 개의 룸은 Agent 룸과 대응합니다: 지휘 브리지, 캐스케이드 엔진, 팬아웃 포드, 다이제스트 금고.
+
+- **라이브 에이전트**는 Agent 룸과 같은 API와 WebSocket 피드에서 옵니다. 각 에이전트는 자기 룸의 고정 책상(에이전트 id 해시로 배정)으로 걸어가고 머리 위에 상태를 표시합니다: 생각 점, 작업 불꽃, 승인 요청, 완료 체크, 오류 표시. 여기서 라이브 에이전트는 읽기 전용이며 사이드 패널은 **인스펙터 열기**만 제공합니다.
+- **샌드박스 에이전트**는 브라우저별 실험 공간입니다. **새 샌드박스 에이전트**에서 이름, 여덟 캐릭터 중 하나, 룸, 작업을 고릅니다. 샌드박스 에이전트는 자리에서 일하고 룸을 돌아다닌 뒤 돌아옵니다. 사이드 패널에서 일시정지, 재개, 이름 변경, 다른 룸으로 이동, 지도에서 드래그, 삭제를 할 수 있고 **모두 일시정지**, **모두 재개**, **샌드박스 비우기**는 전체에 적용됩니다. 샌드박스 에이전트는 최대 24개까지 `localStorage`의 `nexus-world-sandbox-v1`에 저장되며 실제 세션에는 절대 영향을 주지 않습니다.
+- **조작:** 드래그로 이동, 스크롤 또는 `+`/`-`로 확대/축소, `WASD` 또는 방향키로 카메라 이동, `0` 또는 **가운데로**로 초기화, `Escape`로 선택 해제. 사이드 패널이 모든 에이전트를 나열하므로 키보드만으로도 월드를 모두 사용할 수 있습니다. `prefers-reduced-motion`은 걷기와 흔들림 애니메이션을 끕니다.
 
 ---
 
@@ -330,7 +338,7 @@ flowchart LR
 | **Transcript Snapshot Retention** | 영구 Claude, Codex, Cursor 스냅샷은 가장 완전한 대화를 보존합니다. 소스가 없는 Claude와 Cursor 복사본은 왕복 검증 후 gzip 처리되고, purge는 스냅샷을 제거하며, 선택적 연령과 크기 제한은 Settings 드라이런 미리보기 후 유일한 오래된 복사본을 정리할 수 있습니다. |
 | **Notifications** | VAPID Web Push는 백그라운드 또는 브라우저가 닫힌 상태에서도 설정된 이벤트를 전달하며, macOS 오디오 지원과 구독 제어를 제공합니다. |
 | **Alerts** | Settings에서 이벤트 패턴, 비활성, 멈춘 Agent, 토큰 알림을 위한 Rules, Channels, Activity를 제공합니다. 이벤트 규칙은 수집 후 실행되고 시간 규칙은 60초마다 검사됩니다. 저장된 알림은 규칙/세션별 쿨다운, 기본 300초, WebSocket 전달, 확인, 14개 provider 또는 비밀값 마스킹, 타임아웃, 제한된 재시도가 있는 범용 서명 JSON으로의 범위 지정 Webhook fan-out을 사용합니다. |
-| **Update Notifier** | 차단하지 않는 예약 `git fetch`가 checkout을 canonical remote와 비교한 뒤 modal, sidebar, terminal에 정확한 업데이트 명령을 표시합니다. CCAM은 스스로 pull하거나 재시작하지 않습니다. |
+| **Update Notifier** | 차단하지 않는 예약 `git fetch`가 checkout을 canonical remote와 비교한 뒤 modal, 상단 탐색, terminal에 정확한 업데이트 명령을 표시합니다. CCAM은 스스로 pull하거나 재시작하지 않습니다. |
 | **Settings** | 시스템과 Hook 상태, provider별 가격, 알림, 정리, provider home, 즉시 데이터 새로 고침, 최대 25 MiB의 export JSON 멱등 복원을 제공합니다. 가격은 provider 범위 기본값, wildcard 규칙, 공개 요율 안내, 272K GPT 경계, 별도의 Cursor native 및 third-party catalog를 지원합니다. |
 | **Run Agent + Agent Config** | `/run`은 provider별 모델, 승인, sandboxing, 재개, 정지, stream, 재연결을 갖춘 Claude Code 또는 native Codex app-server thread를 시작합니다. `/cc-config`는 편집 가능한 Claude와 Codex 탐색기를 함께 제공하며, 지원되는 사용자 파일에는 보호된 원자적 저장과 타임스탬프 백업, 비밀값이 제거된 미리보기, 정확한 profile 명령, provider별 watcher를 적용합니다. |
 | **Codex Agent Config** | 기본/profile override와 함께 전체 계정 모델 catalog를 표시하고, 표준 `<name>.config.toml` overlay를 만들며, canonical containment와 symlink 검사로 편집을 보호합니다. Profile, Hook, 규칙, 스킬, 지침은 source/path/edit/delete 작업과 backup-first deletion을 지원하고, `config.toml`은 edit-only입니다. |
@@ -1405,7 +1413,7 @@ flowchart LR
     CMP --> FP["Fingerprint changed?"]
     FP -->|yes| WS["broadcast<br/>update_status"]
     FP -->|no| IDLE["skip broadcast"]
-    WS --> CLIENT["UpdateNotifier<br/>+ Sidebar badge"]
+    WS --> CLIENT["UpdateNotifier<br/>+ 상단 탐색 업데이트 버튼"]
 
     CHECK["POST updates check"] --> FETCH
     STATUS["GET updates status"] -.-> CMP
@@ -1421,7 +1429,7 @@ flowchart LR
 | 표면 | 동작 |
 | --- | --- |
 | **Modal** (`client/src/components/UpdateNotifier.tsx`) | 새로 사용할 수 있는 `remote_sha`가 있으면 열립니다. 뒤처진 commit 수, 추적 중인 ref, 선택적 branch/fork note, 정확한 명령, **Copy command**, **Check now**, **Dismiss**를 표시합니다. Escape 또는 backdrop으로 닫을 수 있습니다. 닫기 상태는 `localStorage`에 저장되므로 더 새로운 SHA가 생기면 다시 열립니다. |
-| **Sidebar button** (`client/src/components/Sidebar.tsx`) | 항상 표시됩니다. 녹색은 뒤처진 상태를, amber는 fetch 실패를 뜻합니다. 클릭하면 닫기 상태를 지우고 `POST /api/updates/check`를 호출합니다. |
+| **상단 탐색 업데이트 버튼** (`client/src/components/shell/TopNav.tsx`) | 항상 표시됩니다. amber는 fetch 실패를 뜻합니다. 클릭하면 닫기 상태를 지우고 `POST /api/updates/check`를 호출합니다. |
 | **Server terminal** | 상태가 최신에서 뒤처짐으로 바뀌면 headless 사용자를 포함해 framed command를 출력합니다. |
 
 ### API 표면
@@ -1555,7 +1563,7 @@ Tabby는 키보드로 조작할 수 있고, 말풍선에 `aria-live`를 사용�
 
 ## 연결 상태 모달
 
-사이드바 푸터의 **Live** / **Disconnected** 알약(pill)을 클릭하면 대시보드의 WebSocket 전송에 관한 작은 세부 정보 패널이 열립니다. 활성 `ws://` 엔드포인트, 현재 소켓이 연결된 지 얼마나 되었는지, 수신된 총 이벤트 수, 가로 막대 차트로 표시되는 상위 이벤트 유형, 60초 처리량 스파크라인, 최근 활동 목록으로 표시되는 마지막 8개 이벤트를 보여줍니다. 누적 통계(총계, 유형별 분류, 최근 목록)는 `localStorage`의 `sidebar-connection-stats` 아래에 저장되어 다시 로드해도 유지되며, 롤링 스파크라인과 "connected since" 타이머는 의도적으로 일시적입니다. 푸터의 **초기화** 버튼으로 언제든 모든 것을 지울 수 있습니다.
+상단 탐색의 **Live** / **Disconnected** 알약(pill)을 클릭하면 대시보드의 WebSocket 전송에 관한 작은 세부 정보 패널이 열립니다. 활성 `ws://` 엔드포인트, 현재 소켓이 연결된 지 얼마나 되었는지, 수신된 총 이벤트 수, 가로 막대 차트로 표시되는 상위 이벤트 유형, 60초 처리량 스파크라인, 최근 활동 목록으로 표시되는 마지막 8개 이벤트를 보여줍니다. 누적 통계(총계, 유형별 분류, 최근 목록)는 `localStorage`의 `sidebar-connection-stats` 아래에 저장되어 다시 로드해도 유지되며, 롤링 스파크라인과 "connected since" 타이머는 의도적으로 일시적입니다. 푸터의 **초기화** 버튼으로 언제든 모든 것을 지울 수 있습니다.
 
 <p align="center">
   <a href="images/live.png"><img src="images/readme/live.png" alt="Connection details modal with throughput sparkline, top event types, and recent activity" width="100%"></a>
@@ -1963,7 +1971,7 @@ graph LR
     ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
-    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(Sidebar + Outlet)"]
+    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
 
     style ALL fill:#6366f1,stroke:#818cf8,color:#fff
     style LAYOUT fill:#1a1a28,stroke:#2a2a3d,color:#e4e4ed
@@ -2161,8 +2169,9 @@ agent-dashboard/
 |       |   |-- useWebSocket.ts      # 자동 재연결 WebSocket Hook
 |       |   +-- useNotifications.ts  # WebSocket 이벤트 기반 브라우저 알림 트리거
 |       |-- components/
-|       |   |-- Layout.tsx       # 사이드바 + 아웃렛을 갖춘 셸
-|       |   |-- Sidebar.tsx      # 내비게이션 + 연결 상태 표시기
+|       |   |-- Layout.tsx       # 상단 탐색 + 아웃렛을 갖춘 셸
+|       |   |-- shell/           # TopNav, LanguagePicker, ConnectionStatusModal, 연결 통계
+|       |   |-- world/           # Agent 월드 캔버스, 렌더러, 사이드 패널, 생성 대화상자
 |       |   |-- AgentCard.tsx    # 상태가 표시되는 에이전트 정보 카드
 |       |   |-- StatCard.tsx     # 지표 카드
 |       |   |-- StatusBadge.tsx  # 색상으로 구분된 상태 배지

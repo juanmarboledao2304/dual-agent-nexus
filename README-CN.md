@@ -132,7 +132,7 @@ graph LR
 
 ### 多语言支持（i18n）
 
-Dashboard 内置多语言界面，支持 `en`、`zh`、`vi`、`ko`、`es` 五种语言，适用于跨语言协作和团队共享。语言选择使用自定义下拉菜单，便于未来继续扩展。
+Dashboard 内置多语言界面，支持 `en`、`zh`、`vi`、`ko`、`es` 五种语言，适用于跨语言协作和团队共享。语言选择是顶部导航中的紧凑图标选择器，便于未来继续扩展。
 
 ```mermaid
 flowchart LR
@@ -303,7 +303,15 @@ flowchart LR
   <em>⌘ <strong>命令面板</strong> · 用一个键盘启动器访问页面、会话、项目、筛选器和操作</em>
 </p>
 
-侧边栏链接 Dashboard、Kanban 看板、会话、活动流、分析、工作流、Agent 配置、Run Agent 和设置。以下章节说明这些视图背后的完整行为。
+顶部固定导航链接概览、世界、工作室、会话、活动、级联和配额，Agent 配置与设置以图标按钮呈现，唯一的主要操作是 **运行 Agent**。以下章节说明这些视图背后的完整行为。
+
+### Agent 世界
+
+`/world` 将每个 Agent 呈现为在 3/4 透视办公室中工作的 8 位像素角色，四个房间与 Agent 工作室一一对应：指挥舰桥、级联引擎、扇出舱和摘要金库。
+
+- **实时 Agent**：与 Agent 工作室使用同一 API 和 WebSocket 数据流。每个 Agent 会走到所在房间里的固定工位（按 Agent id 的哈希分配），并在头顶显示状态：思考圆点、工作火花、批准提示、完成对勾或错误标记。实时 Agent 在这里只读，侧边面板只提供 **打开检查器**。
+- **沙盒 Agent**：每个浏览器独立的试验场。**新建沙盒 Agent** 可选择名称、八个角色之一、房间和任务。沙盒 Agent 会在工位工作、在房间内走动后返回。可在侧边面板中暂停、继续、重命名、移动到其他房间、在地图上拖动或删除；**全部暂停**、**全部继续** 和 **清空沙盒** 作用于全部沙盒 Agent。最多 24 个沙盒 Agent 保存在 `localStorage` 的 `nexus-world-sandbox-v1` 中，绝不会影响真实会话。
+- **操作**：拖动平移，滚轮或 `+`/`-` 缩放，`WASD` 或方向键移动镜头，`0` 或 **居中** 复位，`Escape` 取消选择。侧边面板列出所有 Agent，因此整个世界都可以用键盘操作。`prefers-reduced-motion` 会关闭行走和跳动动画。
 ---
 
 ## 功能特性
@@ -332,7 +340,7 @@ Dashboard 覆盖完整的本地 Agent 生命周期。详细运行契约仍见相
 | **Transcript 快照保留** | 持久的 Claude、Codex 和 Cursor 快照保存最完整的对话。源文件已消失的 Claude 和 Cursor 副本会在往返验证后 gzip 压缩；清除会删除快照；可选年龄/大小上限可在 Settings 试运行预览后清理唯一的旧副本。 |
 | **通知** | VAPID Web Push 在后台或浏览器关闭时发送配置的事件，并支持 macOS 音频和订阅控制。 |
 | **告警** | Settings 提供 Rules、Channels 和 Activity，用于事件模式、不活动、Agent 卡住和 Token 告警。事件规则在摄取后运行，时间规则每 60 秒扫描。持久告警按规则/会话冷却，默认 300 秒，并支持 WebSocket 投递、确认，以及按范围扇出至 14 个命名 Provider 或带脱敏 Secret、超时和有界重试的通用签名 JSON。 |
-| **更新提醒** | 非阻塞定时 `git fetch` 将当前检出与规范远程比较，再在模态框、侧边栏和终端显示准确的更新命令。CCAM 从不自行拉取或重启。 |
+| **更新提醒** | 非阻塞定时 `git fetch` 将当前检出与规范远程比较，再在模态框、顶部导航和终端显示准确的更新命令。CCAM 从不自行拉取或重启。 |
 | **设置** | 系统与 Hook 状态、按 Provider 的定价、通知、清理、Provider 主目录、即时数据刷新，以及最大 25 MiB 的导出 JSON 幂等恢复。定价支持 Provider 级默认值、通配规则、公开费率指引、272K GPT 边界，以及独立的 Cursor 原生与第三方目录。 |
 | **Run Agent + Agent 配置** | `/run` 启动 Claude Code 或原生 Codex app-server 线程，提供对应 Provider 的模型、审批、沙箱、恢复、停止、流式输出和重新连接。`/cc-config` 并列提供可编辑的 Claude 与 Codex 浏览器；受支持的用户文件使用受保护的原子保存和带时间戳备份、Secret 脱敏预览、准确的 Profile 命令和 Provider 专用监听器。 |
 | **Codex Agent 配置** | 显示完整账户模型目录及基础/Profile 覆盖，创建标准 `<name>.config.toml` Overlay，并通过规范路径包含检查和符号链接检查保护编辑。Profile、Hook、规则、技能和指令支持来源/路径/编辑/删除操作，删除前备份；`config.toml` 仅可编辑。 |
@@ -1409,7 +1417,7 @@ flowchart LR
     CMP --> FP["指纹是否变化?"]
     FP -->|是| WS["广播<br/>update_status"]
     FP -->|否| IDLE["跳过广播"]
-    WS --> CLIENT["UpdateNotifier<br/>+ 侧边栏徽标"]
+    WS --> CLIENT["UpdateNotifier<br/>+ 顶部导航更新按钮"]
 
     CHECK["POST updates check"] --> FETCH
     STATUS["GET updates status"] -.-> CMP
@@ -1425,7 +1433,7 @@ flowchart LR
 | 位置 | 行为 |
 | --- | --- |
 | **模态框**（`client/src/components/UpdateNotifier.tsx`） | 遇到新的可用 `remote_sha` 时打开；显示落后的提交数、所跟踪的引用、可选的分支/fork 说明、准确命令，以及**复制命令**、**立即检查**和**关闭**。按 Escape 或点击背景可关闭。关闭状态按 `remote_sha` 存储在 `localStorage` 中，因此新的 SHA 会再次打开。 |
-| **侧边栏按钮**（`client/src/components/Sidebar.tsx`） | 始终可见。绿色表示落后，琥珀色表示拉取失败。点击会清除关闭状态并调用 `POST /api/updates/check`。 |
+| **顶部导航更新按钮**（`client/src/components/shell/TopNav.tsx`） | 始终可见。琥珀色表示拉取失败。点击会清除关闭状态并调用 `POST /api/updates/check`。 |
 | **服务器终端** | 状态从最新变为落后时打印带边框的命令，无头运行的用户也能看到。 |
 
 ### API 端点
@@ -1559,7 +1567,7 @@ Dashboard 为实时会话活动提供**轻柔的音频反馈**，即使放在副
 
 ## 连接状态弹窗
 
-点击侧边栏底部的 **Live** / **Disconnected** 标签，可打开一个关于 Dashboard WebSocket 传输的小型详情面板。它会显示当前的 `ws://` 端点、本次连接保持的时长、累计接收的事件数、以横向条形图展示的高频事件类型、最近 60 秒的吞吐量折线图，以及最近 8 个事件的活动列表。累计统计（总数、类型分布、最近列表）通过 `localStorage` 中的 `sidebar-connection-stats` 键持久化，可在刷新后保留；滚动折线图和"已连接时长"则有意保持临时性。底部的 **Reset** 按钮可一键清空所有数据。
+点击顶部导航中的 **Live** / **Disconnected** 标签，可打开一个关于 Dashboard WebSocket 传输的小型详情面板。它会显示当前的 `ws://` 端点、本次连接保持的时长、累计接收的事件数、以横向条形图展示的高频事件类型、最近 60 秒的吞吐量折线图，以及最近 8 个事件的活动列表。累计统计（总数、类型分布、最近列表）通过 `localStorage` 中的 `sidebar-connection-stats` 键持久化，可在刷新后保留；滚动折线图和"已连接时长"则有意保持临时性。底部的 **Reset** 按钮可一键清空所有数据。
 
 <p align="center">
   <a href="images/live.png"><img src="images/readme/live.png" alt="连接详情弹窗，包含吞吐量折线图、高频事件类型与最近活动" width="100%"></a>
@@ -1960,7 +1968,7 @@ graph LR
     ST["/settings"] --> SETTINGS["Settings<br/>定价 + 通知 + Hook + 导出"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 兜底页"]
 
-    ALL["所有路由"] --> LAYOUT["Layout 包装器<br/>(Sidebar + Outlet)"]
+    ALL["所有路由"] --> LAYOUT["Layout 包装器<br/>(TopNav + Outlet)"]
 
     style ALL fill:#6366f1,stroke:#818cf8,color:#fff
     style LAYOUT fill:#1a1a28,stroke:#2a2a3d,color:#e4e4ed
@@ -2138,8 +2146,9 @@ agent-dashboard/
 |       |   |-- useWebSocket.ts      # 自动重连 WebSocket hook
 |       |   +-- useNotifications.ts  # WebSocket 事件触发的浏览器通知
 |       |-- components/
-|       |   |-- Layout.tsx       # 带 Sidebar + Outlet 的外壳
-|       |   |-- Sidebar.tsx      # 导航 + 连接指示器
+|       |   |-- Layout.tsx       # 带顶部导航 + Outlet 的外壳
+|       |   |-- shell/           # TopNav、LanguagePicker、ConnectionStatusModal、连接统计
+|       |   |-- world/           # Agent 世界画布、渲染器、侧边面板、创建对话框
 |       |   |-- AgentCard.tsx    # Agent 信息卡片（含状态）
 |       |   |-- StatCard.tsx     # 指标卡片
 |       |   |-- StatusBadge.tsx  # 彩色编码状态标签

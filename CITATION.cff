@@ -10,7 +10,7 @@ authors:
 abstract: "Real-time 3-pool agy-cascade waterfall and cross-CLI subagent mission control for Claude Code and Google Antigravity, built on the Claude Code Agent Monitor."
 repository-code: "https://github.com/juanmarboledao2304/dual-agent-nexus"
 url: "https://github.com/juanmarboledao2304/dual-agent-nexus"
-version: "3.0.0"
+version: "3.1.0"
 license: "MIT"
 keywords:
   - "claude"

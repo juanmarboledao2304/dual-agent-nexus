@@ -478,8 +478,8 @@ flowchart LR
 ```mermaid
 graph TD
     APP["App.tsx<br/>Router + WebSocket"]
-    LAYOUT["Layout.tsx<br/>Sidebar + Outlet"]
-    SIDEBAR["Sidebar.tsx<br/>Nav (scroll-bounded with overflow<br/>chevrons) + Connection Status"]
+    LAYOUT["Layout.tsx<br/>TopNav + Outlet"]
+    SIDEBAR["shell/TopNav.tsx<br/>Route tabs + search, live pill,<br/>update check, language, Run agent"]
     PALETTE["CommandPalette.tsx<br/>Cmd/Ctrl+K launcher: recent, pages,<br/>sessions, views, settings, config, actions"]
     SHORTCUTS["PaletteActionProvider.tsx<br/>Registry of the actions the<br/>mounted page offers the palette"]
     TOAST["ActionToast.tsx<br/>Confirms actions that<br/>change state without navigating"]
@@ -633,7 +633,7 @@ graph TD
 
     subgraph Components
         L[Layout]
-        SB[Sidebar]
+        SB[TopNav]
         AGC[AgentCard]
         STC[StatCard]
         STB[StatusBadge]
@@ -658,19 +658,19 @@ graph TD
 
 ### Command Palette
 
-`client/src/components/CommandPalette.tsx` is a global launcher mounted once by `Layout`, opened with `Cmd/Ctrl+K` from anywhere. It is deliberately keyboard-only: a sidebar button that opens a list so you can pick a page the sidebar is already showing costs a click and teaches nothing, so the chord is the trigger. Its catalog is built by `client/src/lib/paletteCommands.ts` — a pure function of one context object, which is what lets `paletteCommands.test.ts` assert coverage against the app's own route table, `SETTINGS_SECTIONS`, and `TABS` instead of trusting a hand-kept list.
+`client/src/components/CommandPalette.tsx` is a global launcher mounted once by `Layout`, opened with `Cmd/Ctrl+K` from anywhere. The chord is the primary trigger; the top navigation also carries a small search icon that opens the same launcher. Its catalog is built by `client/src/lib/paletteCommands.ts` — a pure function of one context object, which is what lets `paletteCommands.test.ts` assert coverage against the app's own route table, `SETTINGS_SECTIONS`, and `TABS` instead of trusting a hand-kept list.
 
 | Group | Source | Notes |
 | --- | --- | --- |
 | Recent | `client/src/lib/recentCommands.ts` | The last 5 command **ids** in `localStorage`; re-resolved against the live catalog on every open, so a stale id simply disappears |
-| Pages | The nine sidebar routes | Matched on the **translated** label, so it works in every locale |
+| Pages | The ten navigation routes | Matched on the **translated** label, so it works in every locale |
 | Sessions | `GET /api/sessions?q=` | Debounced 180 ms, capped at 6 results, minimum 2 characters |
 | This page | `PAGE_ACTION_COMMANDS` ∩ `boundIds` | Actions the mounted page registered — pause the stream, sort, clear filters, copy this session's id. Listed **only** where they are bound |
 | Projects | `GET /api/sessions/facets` | Every known project directory, jumping to `/sessions?cwd=…` |
 | Views | Page sub-tabs and list filters | `/?tab=`, `/kanban?view=`, `/analytics?tab=`, `/sessions?status=` — every tab and filter is addressable by URL |
 | Settings | The 13 `SETTINGS_SECTIONS` anchors | `/settings#<id>`; the Settings page resolves the hash on load |
 | Agent Config | The 12 `TABS` keys | `/cc-config?tab=<key>` |
-| Actions | Preferences, scope, language, links, page operations | Sound (on/off and volume), Tabby (enable/mute), provider scope, per-machine data scope, the five languages, notifications, sidebar toggle, reload, history back/forward, scroll, copy link, update check, API reference, issues, releases |
+| Actions | Preferences, scope, language, links, page operations | Sound (on/off and volume), Tabby (enable/mute), provider scope, per-machine data scope, the five languages, notifications, compact-navigation toggle, reload, history back/forward, scroll, copy link, update check, API reference, issues, releases |
 
 Ranking is subsequence matching with positional scoring (`client/src/lib/fuzzy.ts`), and the matched characters are highlighted in the row. With a catalog this size a substring filter would make most commands unreachable without typing their exact wording; subsequence matching lets `mcp` reach "MCP servers" and `kbrd` reach "Kanban Board". A leading sigil narrows the search — `>` actions and views, `@` pages, `#` sessions — but is never required.
 
@@ -680,7 +680,7 @@ Session search is deliberately **server-side**. The dashboard routinely holds th
 
 The palette **navigates rather than mutates** for anything destructive: purging the database or deleting a session stays behind its confirmation modal, and the palette only offers the jump. `paletteCommands.test.ts` asserts no command id matches `/delete|purge|wipe/`.
 
-The sidebar trigger opens the palette by dispatching a `ccam:command-palette` window event (defined in `client/src/lib/appEvents.ts`) rather than through lifted state or a context provider, which keeps the trigger decoupled from the component and usable from anywhere in the tree. The same module carries `ccam:check-updates`, which the palette uses to ask the sidebar to run an update check — the check owns the spinner, the failure state, and the modal, so it stays in one place.
+The top navigation's search icon opens the palette by dispatching a `ccam:command-palette` window event (defined in `client/src/lib/appEvents.ts`) rather than through lifted state or a context provider, which keeps the trigger decoupled from the component and usable from anywhere in the tree. The same module carries `ccam:check-updates`, which the palette uses to request an update check; `useUpdateCheck` in `client/src/components/shell/connectionStats.ts` owns the request, the spinner, and the failure state, so it stays in one place.
 
 Accessibility: the panel is a modal `dialog` whose input is a `combobox` driving an `aria-activedescendant` listbox. Arrow keys move the active option (with feature-detected `scrollIntoView`), `Home`/`End` and `PageUp`/`PageDown` jump, `Tab` moves between groups without leaking focus out of the dialog, `Enter` runs the highlighted row, `Escape` closes, and focus returns to the previously focused element on close. Pointer hover only takes the selection after a real `mousemove`, so arrowing through a scrolled list under a stationary cursor is not fought by `mouseenter`.
 
@@ -702,11 +702,11 @@ What remains:
 
 ### Making a keyboard-only feature discoverable
 
-A launcher nobody knows about is a launcher nobody opens, and the palette has no
-permanent affordance by design — a button beside the sidebar duplicates
-navigation the sidebar already shows. The answer is not standing chrome for a
-fact you learn in one second, but a hint that appears where the need is felt and
-**deletes itself once it has done its job**.
+A launcher nobody knows about is a launcher nobody opens. The top navigation
+keeps only a small search icon for it, so the shortcut itself is easy to miss.
+The answer is not more standing chrome for a fact you learn in one second, but a
+hint that appears where the need is felt and **deletes itself once it has done
+its job**.
 
 `client/src/lib/paletteDiscovery.ts` holds one bit in `localStorage`: has this
 browser ever opened the palette? Two surfaces read it:
@@ -771,7 +771,7 @@ graph LR
     SET_R["/settings"] --> SET[Settings]
     NF_R["/*"] --> NF[NotFound]
 
-    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(Sidebar + Outlet)"]
+    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
 ```
 
 | Route           | Page          | Data Sources                                           |
@@ -888,13 +888,13 @@ Two classes of explanatory popover sit on top of the chart layer, both i18n-driv
 - **Stat-card popovers** (`WorkflowStats.tsx`). Each of the six headline cards (Avg Agent Depth, Avg Subagents/Session, Agent Success Rate, Most Common Flow, Avg Compactions, Avg Duration) carries an info `i` icon at the bottom-right of the card. Hovering it opens a fixed-positioned, viewport-clamped popover with three sections: a value+label header, a "How it's calculated" paragraph (`workflows.stats.tooltip.calc.*`), and a "What this number means" paragraph that renders `"{value} {phrase} means {interpretation}"`. The interpretation comes from a deterministic, value-bucket function (`interp*`) — pure rule-based mapping with no AI generation, so the same input always yields the same explanation across all three locales.
 - **Chart-section popovers** (`Workflows.tsx → ChartInfoPopover`). The `i` icon next to each section title (1–11) opens a structured "What this shows / How to read it / Why it matters" popover sourced from `workflows.chartInfo.<sectionKey>.*`. Each of the 11 charts has its own three-paragraph entry, fully translated to en/vi/zh.
 
-Both popover classes use the same fixed-position + viewport-clamp algorithm: anchor right of the icon (or center for chart-section popovers), clamp to a viewport margin, and flip above when there isn't enough room below. They are never clipped by the sidebar, the right edge of the screen, or any ancestor's `overflow:hidden`.
+Both popover classes use the same fixed-position + viewport-clamp algorithm: anchor right of the icon (or center for chart-section popovers), clamp to a viewport margin, and flip above when there isn't enough room below. They are never clipped by the top navigation, the right edge of the screen, or any ancestor's `overflow:hidden`.
 
 ---
 
 ## Internationalization Architecture
 
-The client localization stack is powered by `i18next` + `react-i18next` (`client/src/i18n/index.ts`) and currently supports five languages: English (`en`), Chinese (`zh`), Vietnamese (`vi`), Korean (`ko`), and Spanish (`es`). The sidebar uses the shared custom `Select` dropdown, so locale choices remain compact as languages grow. Language detection prefers `localStorage` (`i18nextLng`) and falls back to the browser locale (`navigator`) with `en` as final fallback.
+The client localization stack is powered by `i18next` + `react-i18next` (`client/src/i18n/index.ts`) and currently supports five languages: English (`en`), Chinese (`zh`), Vietnamese (`vi`), Korean (`ko`), and Spanish (`es`). The top navigation uses a compact icon-trigger picker (`client/src/components/shell/LanguagePicker.tsx`), so locale choices remain compact as languages grow. Language detection prefers `localStorage` (`i18nextLng`) and falls back to the browser locale (`navigator`) with `en` as final fallback.
 
 ```mermaid
 flowchart LR
@@ -2163,7 +2163,7 @@ graph TD
         API["lib/api.ts<br/>api.updates"]
         BUS["lib/eventBus.ts<br/>subscribe and publish"]
         MODAL["UpdateNotifier.tsx<br/>dismissedSha in localStorage"]
-        SIDEBAR["Sidebar.tsx<br/>Check-for-updates button"]
+        SIDEBAR["shell/TopNav.tsx<br/>Check-for-updates button"]
     end
 
     SCHED -->|tick every 5 min| LIB
@@ -2191,7 +2191,7 @@ sequenceDiagram
     participant Lib as update-check lib
     participant Git as git
     participant WS as WebSocket broadcast
-    participant Client as Modal and Sidebar
+    participant Client as Modal and TopNav
 
     Sched->>Lib: tick
     Lib->>Lib: check .git exists
@@ -2230,8 +2230,8 @@ sequenceDiagram
 | **`server/lib/update-check.js`** | Pure function `getUpdatesStatus(root?, { skipFetch? })`. Runs every git call via `execFile` (no shell, 10s–120s timeouts). **Branch- and fork-aware:** prefers `upstream` over `origin` when both exist (standard fork convention), resolves `<remote>/master`/`/main`/`/HEAD`, reads the current branch and its tracked upstream, and shapes `manual_command` per situation: `git pull --ff-only` only when the local branch tracks the canonical ref; `git fetch <remote> && git merge --ff-only <ref>` for forks (local branch name matches canonical but tracks a different remote); `git fetch <remote>` only on a feature branch or detached HEAD. Non-git installs, missing remotes, fetch failures, and unresolvable upstream refs are returned as soft payloads — never throws. Adds `situation`, `situation_note`, `canonical_remote`, `current_branch`, `tracking_upstream`, and `tracks_canonical` to the response. |
 | **`server/update-scheduler.js`** | Ticks the lib every `DASHBOARD_UPDATE_CHECK_INTERVAL_MS` (default 300 000, floor 60 000). First tick is scheduled 8s after server start with `.unref()` so it doesn't block shutdown. Broadcasts only when the fingerprint `{update_available, remote_sha, commits_behind, fetch_error, manual_command}` changes — `manual_command` is included so situation transitions (e.g. user switches branches, or adds an `upstream` remote) trigger a re-broadcast even when the SHA and commit count are unchanged. Emits a framed message to stdout on "up-to-date → behind" transitions, and only suggests "restart the dashboard" when the printed command actually rewrites the working tree. `DASHBOARD_UPDATE_CHECK=0\|false\|off` disables the scheduler entirely. |
 | **`server/routes/updates.js`** | Two endpoints: `GET /status` (read-only check), `POST /check` (check + broadcast). Mounted under `/api/*`, so they ride the default loopback bind as their trust boundary and are gated by `DASHBOARD_TOKEN` when one is set. There is **no** `POST /apply` route. |
-| **`UpdateNotifier.tsx`** | Modal. Hydrates from `api.updates.status()` on mount and mirrors the payload back into the local `eventBus` so the Sidebar can listen without a second git fetch. Subscribes to `update_status` WS frames for ongoing sync. Keeps `dismissedSha` in `localStorage` (`agent-monitor-update-dismissed-sha`) and in React state; a window event `dashboard:reset-update-dismissal` from the Sidebar clears both. ESC / backdrop click dismisses. |
-| **`Sidebar.tsx`** | Always-visible "Check for updates" button in the footer. Subscribes to `update_status` (no own fetch). On click: clears dismissed SHA in localStorage, dispatches `dashboard:reset-update-dismissal`, then calls `api.updates.check()`. Visual state: emerald badge when `update_available`, amber when `fetch_error`, neutral otherwise. |
+| **`UpdateNotifier.tsx`** | Modal. Hydrates from `api.updates.status()` on mount and mirrors the payload back into the local `eventBus` so the top navigation can listen without a second git fetch. Subscribes to `update_status` WS frames for ongoing sync. Keeps `dismissedSha` in `localStorage` (`agent-monitor-update-dismissed-sha`) and in React state; a window event `dashboard:reset-update-dismissal` from the top navigation's update check clears both. ESC / backdrop click dismisses. |
+| **`shell/TopNav.tsx` + `shell/connectionStats.ts`** | Always-visible "Check for updates" icon in the top navigation, backed by `useUpdateCheck`. Subscribes to `update_status` (no own fetch). On click: clears dismissed SHA in localStorage, dispatches `dashboard:reset-update-dismissal`, then calls `api.updates.check()`. Visual state: amber when `fetch_error`, neutral otherwise. |
 
 ### Payload Shape
 
@@ -2266,11 +2266,11 @@ The same shape is used by `GET /status`, `POST /check`, and the `update_status` 
 
 | Condition | Returned payload | User-visible effect |
 | --- | --- | --- |
-| Not a git clone | `{git_repo:false, update_available:false, message:"Install directory is not a git clone..."}` | Modal suppressed (`update_available` false). Sidebar stays neutral. |
+| Not a git clone | `{git_repo:false, update_available:false, message:"Install directory is not a git clone..."}` | Modal suppressed (`update_available` false). The update button stays neutral. |
 | No remotes configured | `{git_repo:true, update_available:false, message:"No git remotes configured..."}` | Same as above. |
-| `git fetch` failed (offline, auth) | `{git_repo:true, update_available:false, canonical_remote, fetch_error:"<stderr>"}` | Sidebar button goes amber; modal stays suppressed until a successful check. |
+| `git fetch` failed (offline, auth) | `{git_repo:true, update_available:false, canonical_remote, fetch_error:"<stderr>"}` | The update button goes amber; modal stays suppressed until a successful check. |
 | Canonical default branch unresolvable | `{git_repo:true, update_available:false, canonical_remote, message:"Could not resolve <remote>/master..."}` | Modal suppressed. |
-| Healthy, up to date | `{git_repo:true, update_available:false, commits_behind:0, situation:"tracking_canonical"\|...}` | Sidebar neutral, modal suppressed. |
+| Healthy, up to date | `{git_repo:true, update_available:false, commits_behind:0, situation:"tracking_canonical"\|...}` | Update button neutral, modal suppressed. |
 | Healthy, behind, on canonical branch | `{update_available:true, situation:"tracking_canonical", manual_command:"...git pull --ff-only..."}` | Modal opens with `git pull` flow + restart hint. |
 | Healthy, behind, fork (origin = fork, upstream = canonical) | `{update_available:true, situation:"fork_or_diverged_tracking", manual_command:"...git fetch upstream && git merge --ff-only upstream/master..."}` | Modal opens with merge flow + restart hint + `situation_note` explaining the divergence. |
 | Healthy, behind, on a feature branch | `{update_available:true, situation:"feature_branch", manual_command:"...git fetch <remote>"}` | Modal opens; `situation_note` explains the user is off the canonical branch; restart hint suppressed because the working tree isn't being changed. |

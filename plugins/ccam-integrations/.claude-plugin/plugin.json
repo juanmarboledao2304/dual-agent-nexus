@@ -1,7 +1,7 @@
 {
   "name": "ccam-integrations",
   "description": "Manage CCAM alert rules, universal webhook providers, browser push notifications, and SSH Remote Data Sources with explicit mutation and external-send confirmation.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": { "name": "Son Nguyen", "url": "https://github.com/hoangsonww" },
   "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",

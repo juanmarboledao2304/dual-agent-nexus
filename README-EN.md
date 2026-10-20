@@ -134,7 +134,7 @@ In addition to the real-time monitoring dashboard, it also includes a local MCP 
 
 ### Internationalization (i18n)
 
-The UI ships with built-in locale switching for English (`en`), Chinese (`zh`), Vietnamese (`vi`), Korean (`ko`), and Spanish (`es`). A custom language dropdown prevents the selector from crowding the sidebar as more locales are added. Language resources are loaded by namespace and persisted through browser storage for stable user preference across refreshes.
+The UI ships with built-in locale switching for English (`en`), Chinese (`zh`), Vietnamese (`vi`), Korean (`ko`), and Spanish (`es`). A compact icon-trigger language picker in the top navigation keeps the selector out of the way as more locales are added. Language resources are loaded by namespace and persisted through browser storage for stable user preference across refreshes.
 
 ```mermaid
 flowchart LR
@@ -301,7 +301,15 @@ The responsive dark interface covers the full workflow. Every preview uses a mob
   <em>⌘ <strong>Command Palette</strong> · one keyboard launcher for pages, sessions, projects, filters, and actions</em>
 </p>
 
-The sidebar links Dashboard, Kanban Board, Sessions, Activity Feed, Analytics, Workflows, Agent Config, Run Agent, and Settings. The sections below describe the complete behavior behind these views.
+The sticky top navigation links Overview, World, Rooms, Sessions, Activity, Cascade, and Quota, with icon buttons for Agent Config and Settings and a single primary **Run agent** action. The sections below describe the complete behavior behind these views.
+
+### Agent World
+
+`/world` shows every agent as an 8-bit character working in a 3/4-perspective office with four rooms that mirror Agent Rooms: Conductor Bridge, Cascade Engine, Fan-Out Pods, and Digest Vault.
+
+- **Live agents** come from the same API and WebSocket feed as Agent Rooms. Each one walks to a stable desk in its room (assigned by a hash of the agent id) and shows its state above its head: thinking dots, a working spark, an approval prompt, a check when done, or an error mark. Live agents are read-only here; the side panel offers **Open inspector** only.
+- **Sandbox agents** are a per-browser playground. **New sandbox agent** picks a name, one of the eight characters, a room, and a task. A sandbox agent works at home, wanders its room, and returns. Pause, resume, rename, move to another room, drag it on the map, or delete it from the side panel; **Pause all**, **Resume all**, and **Clear sandbox** act on all of them. Up to 24 sandbox agents persist in `localStorage` under `nexus-world-sandbox-v1`; they never touch real sessions.
+- **Controls:** drag to pan, scroll or `+`/`-` to zoom, `WASD` or arrow keys to move the camera, `0` or **Recenter** to reset, `Escape` to clear the selection. The side panel lists every agent so the world is fully usable from the keyboard. `prefers-reduced-motion` turns off walking and bobbing.
 
 ---
 
@@ -331,7 +339,7 @@ The dashboard covers the complete local agent lifecycle. Detailed operational co
 | **Transcript Snapshot Retention** | Durable Claude, Codex, and Cursor snapshots preserve the most complete conversation. Missing-source Claude and Cursor copies gzip after verified round-trip; purge removes snapshots; optional age/size caps can prune the only old copy after a Settings dry-run preview. |
 | **Notifications** | VAPID Web Push delivers configured events in background or closed-browser states, with macOS audio support and subscription controls. |
 | **Alerts** | Settings provides Rules, Channels, and Activity for event-pattern, inactivity, stuck-agent, and token alerts. Event rules run after ingestion; time rules sweep every 60 seconds. Persisted alerts use per-rule/session cooldown, default 300 seconds, WebSocket delivery, acknowledgement, and scoped webhook fan-out to 14 named providers or generic signed JSON with masked secrets, timeouts, and bounded retries. |
-| **Update Notifier** | A non-blocking scheduled `git fetch` compares the checkout with the canonical remote, then shows the exact update command in the modal, sidebar, and terminal. CCAM never pulls or restarts itself. |
+| **Update Notifier** | A non-blocking scheduled `git fetch` compares the checkout with the canonical remote, then shows the exact update command in the modal, top navigation, and terminal. CCAM never pulls or restarts itself. |
 | **Settings** | System and hook status, per-provider pricing, notifications, cleanup, provider homes, instant data refresh, and idempotent restore of export JSON up to 25 MiB. Pricing supports provider-scoped defaults, wildcard rules, published-rate guidance, the 272K GPT boundary, and separate Cursor-native and third-party catalogs. |
 | **Run Agent + Agent Config** | `/run` launches Claude Code or native Codex app-server threads with provider-specific models, approvals, sandboxing, resume, stop, stream, and reattach. `/cc-config` pairs editable Claude and Codex explorers; supported user files use guarded atomic saves and timestamped backups, secret-redacted previews, exact profile commands, and provider-specific watchers. |
 | **Codex Agent Config** | Shows the full account model catalog plus base/profile overrides, creates standard `<name>.config.toml` overlays, and guards editing with canonical containment and symlink checks. Profiles, hooks, rules, skills, and instructions support source/path/edit/delete actions with backup-first deletion; `config.toml` is edit-only. |
@@ -1410,7 +1418,7 @@ flowchart LR
     CMP --> FP["Fingerprint changed?"]
     FP -->|yes| WS["broadcast<br/>update_status"]
     FP -->|no| IDLE["skip broadcast"]
-    WS --> CLIENT["UpdateNotifier<br/>+ Sidebar badge"]
+    WS --> CLIENT["UpdateNotifier<br/>+ top-nav update button"]
 
     CHECK["POST updates check"] --> FETCH
     STATUS["GET updates status"] -.-> CMP
@@ -1426,7 +1434,7 @@ A single check is cheap (`git fetch <remote> --prune` against the canonical remo
 | Surface | Behavior |
 | --- | --- |
 | **Modal** (`client/src/components/UpdateNotifier.tsx`) | Opens for a new available `remote_sha`; shows commits behind, tracked ref, optional branch/fork note, exact command, and **Copy command**, **Check now**, and **Dismiss**. Escape or backdrop dismisses it. The dismissal is keyed in `localStorage`, so a newer SHA opens again. |
-| **Sidebar button** (`client/src/components/Sidebar.tsx`) | Always visible. Green means behind; amber means fetch failure. Clicking clears dismissal and calls `POST /api/updates/check`. |
+| **Top-nav update button** (`client/src/components/shell/TopNav.tsx`) | Always visible. Amber means fetch failure. Clicking clears dismissal and calls `POST /api/updates/check`. |
 | **Server terminal** | Prints a framed command when status changes from current to behind, including for headless users. |
 
 ### API Surface
@@ -1560,7 +1568,7 @@ By default, session start, session complete, session error, Claude Code notifica
 
 ## Connection Status Modal
 
-Click the **Live** / **Disconnected** pill in the sidebar footer to open a small details panel about the dashboard's WebSocket transport. It shows the active `ws://` endpoint, how long the current socket has been up, total events received, top event types as a horizontal bar chart, a 60-second throughput sparkline, and the last 8 events as a recent-activity list. Cumulative stats (totals, type breakdown, recent list) persist across reloads via `localStorage` under `sidebar-connection-stats`; the rolling sparkline and "connected since" timer are intentionally ephemeral. A **Reset** button in the footer clears everything on demand.
+Click the **Live** / **Disconnected** pill in the top navigation to open a small details panel about the dashboard's WebSocket transport. It shows the active `ws://` endpoint, how long the current socket has been up, total events received, top event types as a horizontal bar chart, a 60-second throughput sparkline, and the last 8 events as a recent-activity list. Cumulative stats (totals, type breakdown, recent list) persist across reloads via `localStorage` under `sidebar-connection-stats`; the rolling sparkline and "connected since" timer are intentionally ephemeral. A **Reset** button in the footer clears everything on demand.
 
 <p align="center">
   <a href="images/live.png"><img src="images/readme/live.png" alt="Connection details modal with throughput sparkline, top event types, and recent activity" width="100%"></a>
@@ -1968,7 +1976,7 @@ graph LR
     ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
-    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(Sidebar + Outlet)"]
+    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
 
     style ALL fill:#6366f1,stroke:#818cf8,color:#fff
     style LAYOUT fill:#1a1a28,stroke:#2a2a3d,color:#e4e4ed
@@ -2176,8 +2184,9 @@ agent-dashboard/
 |       |   |-- useWebSocket.ts      # Auto-reconnecting WebSocket hook
 |       |   +-- useNotifications.ts  # Browser notification triggers from WebSocket events
 |       |-- components/
-|       |   |-- Layout.tsx       # Shell with sidebar + outlet
-|       |   |-- Sidebar.tsx      # Navigation + connection indicator
+|       |   |-- Layout.tsx       # Shell with top navigation + outlet
+|       |   |-- shell/           # TopNav, LanguagePicker, ConnectionStatusModal, connection stats
+|       |   |-- world/           # Agent World canvas, renderer, side panel, create dialog
 |       |   |-- AgentCard.tsx    # Agent info card with status
 |       |   |-- StatCard.tsx     # Metric card
 |       |   |-- StatusBadge.tsx  # Color-coded status pills

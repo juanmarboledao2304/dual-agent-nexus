@@ -3,7 +3,7 @@
 openapi: 3.0.3
 info:
   title: DualAgent Nexus API
-  version: 3.0.0
+  version: 3.1.0
   description: 'HTTP API for DualAgent Nexus: real-time Claude Code and Google Antigravity session monitoring, 3-pool agy-cascade waterfall telemetry, cross-CLI subagent lifecycle tracking, analytics, hooks ingestion, and workflow intelligence.'
   contact:
     name: Juan Manuel Arboleda Orozco
@@ -586,7 +586,7 @@ components:
         version:
           type: string
           description: Dashboard release version from package.json
-          example: 3.0.0
+          example: 3.1.0
         timestamp:
           type: string
           format: date-time

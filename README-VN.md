@@ -134,7 +134,7 @@ Ngoài bảng thông tin giám sát thời gian thực, nó còn bao gồm tri�
 
 ### Quốc tế hóa (i18n)
 
-Giao diện người dùng đi kèm với tính năng chuyển đổi ngôn ngữ tích hợp cho tiếng Anh (`en`), tiếng Trung (`zh`), tiếng Việt (`vi`), tiếng Hàn (`ko`) và tiếng Tây Ban Nha (`es`). Bộ chọn ngôn ngữ là một menu thả xuống tùy chỉnh để không chiếm chỗ khi thêm ngôn ngữ mới. Tài nguyên ngôn ngữ được tải theo không gian tên và được lưu giữ trong bộ nhớ của trình duyệt để mang lại ưu tiên người dùng ổn định trong các lần làm mới.
+Giao diện người dùng đi kèm với tính năng chuyển đổi ngôn ngữ tích hợp cho tiếng Anh (`en`), tiếng Trung (`zh`), tiếng Việt (`vi`), tiếng Hàn (`ko`) và tiếng Tây Ban Nha (`es`). Bộ chọn ngôn ngữ là một nút biểu tượng gọn trên thanh điều hướng trên cùng để không chiếm chỗ khi thêm ngôn ngữ mới. Tài nguyên ngôn ngữ được tải theo không gian tên và được lưu giữ trong bộ nhớ của trình duyệt để mang lại ưu tiên người dùng ổn định trong các lần làm mới.
 
 ```mermaid
 flowchart LR
@@ -301,7 +301,15 @@ Giao diện tối thích ứng bao quát toàn bộ quy trình. Mỗi bản xem 
   <em>⌘ <strong>Bảng lệnh</strong> · một trình khởi chạy bằng bàn phím cho trang, phiên, dự án, bộ lọc và hành động</em>
 </p>
 
-Thanh bên liên kết Dashboard, Bảng Kanban, Phiên, Luồng hoạt động, Phân tích, Quy trình, Cấu hình Agent, Chạy Agent và Cài đặt. Các phần dưới đây mô tả đầy đủ hành vi đằng sau những chế độ xem này.
+Thanh điều hướng cố định ở trên cùng liên kết Tổng quan, Thế giới, Phòng, Phiên, Hoạt động, Cascade và Hạn mức, với nút biểu tượng cho Cấu hình Agent và Cài đặt cùng một thao tác chính duy nhất **Chạy Agent**. Các phần dưới đây mô tả đầy đủ hành vi đằng sau những chế độ xem này.
+
+### Thế giới Agent
+
+`/world` hiển thị mỗi agent thành một nhân vật 8-bit đang làm việc trong văn phòng phối cảnh 3/4 với bốn phòng tương ứng Phòng Agent: Cầu chỉ huy, Động cơ Cascade, Khoang Fan-Out và Kho Digest.
+
+- **Agent trực tiếp** đến từ cùng API và luồng WebSocket với Phòng Agent. Mỗi agent đi tới một bàn cố định trong phòng (gán theo hash của id agent) và hiện trạng thái trên đầu: chấm suy nghĩ, tia làm việc, yêu cầu phê duyệt, dấu hoàn tất hoặc dấu lỗi. Ở đây agent trực tiếp chỉ đọc; bảng bên chỉ có **Mở trình kiểm tra**.
+- **Agent sandbox** là sân chơi riêng của từng trình duyệt. **Agent sandbox mới** chọn tên, một trong tám nhân vật, phòng và nhiệm vụ. Agent sandbox làm việc tại chỗ, đi dạo trong phòng rồi quay lại. Từ bảng bên có thể tạm dừng, tiếp tục, đổi tên, chuyển phòng, kéo trên bản đồ hoặc xóa; **Tạm dừng tất cả**, **Tiếp tục tất cả** và **Xóa sandbox** áp dụng cho tất cả. Tối đa 24 agent sandbox được lưu trong `localStorage` ở khóa `nexus-world-sandbox-v1`; chúng không bao giờ chạm vào phiên thật.
+- **Điều khiển:** kéo để di chuyển, cuộn hoặc `+`/`-` để thu phóng, `WASD` hoặc phím mũi tên để di chuyển camera, `0` hoặc **Căn giữa** để đặt lại, `Escape` để bỏ chọn. Bảng bên liệt kê mọi agent nên có thể dùng toàn bộ thế giới bằng bàn phím. `prefers-reduced-motion` tắt hiệu ứng đi bộ và nhún nhảy.
 
 ---
 
@@ -331,7 +339,7 @@ Dashboard bao quát toàn bộ vòng đời Agent cục bộ. Các hợp đồng
 | **Lưu giữ snapshot transcript** | Snapshot bền vững của Claude, Codex và Cursor giữ hội thoại đầy đủ nhất. Bản sao Claude và Cursor mất nguồn được gzip sau khi round-trip đã xác minh; purge xóa snapshot; giới hạn tuổi/kích thước tùy chọn có thể cắt bản sao cũ duy nhất sau bản xem trước chạy thử trong Cài đặt. |
 | **Thông báo** | VAPID Web Push gửi sự kiện đã cấu hình khi chạy nền hoặc khi trình duyệt đóng, có hỗ trợ âm thanh macOS và điều khiển đăng ký. |
 | **Cảnh báo** | Cài đặt cung cấp Rules, Channels và Activity cho cảnh báo theo mẫu sự kiện, không hoạt động, Agent bị kẹt và token. Quy tắc sự kiện chạy sau khi tiếp nhận; quy tắc thời gian quét mỗi 60 giây. Cảnh báo bền vững dùng cooldown theo quy tắc/phiên, mặc định 300 giây, gửi qua WebSocket, xác nhận và fan-out webhook có phạm vi tới 14 nhà cung cấp được đặt tên hoặc JSON ký chung với secret được che, timeout và retry có giới hạn. |
-| **Thông báo cập nhật** | `git fetch` theo lịch không chặn so sánh checkout với remote chuẩn, rồi hiển thị lệnh cập nhật chính xác trong modal, thanh bên và terminal. CCAM không bao giờ tự pull hay tự khởi động lại. |
+| **Thông báo cập nhật** | `git fetch` theo lịch không chặn so sánh checkout với remote chuẩn, rồi hiển thị lệnh cập nhật chính xác trong modal, thanh điều hướng trên cùng và terminal. CCAM không bao giờ tự pull hay tự khởi động lại. |
 | **Cài đặt** | Trạng thái hệ thống và hook, định giá theo nhà cung cấp, thông báo, dọn dẹp, thư mục nhà cung cấp, làm mới dữ liệu tức thì và khôi phục idempotent JSON xuất ra tối đa 25 MiB. Định giá hỗ trợ mặc định theo nhà cung cấp, quy tắc wildcard, hướng dẫn giá công bố, ranh giới GPT 272K và danh mục riêng cho Cursor gốc và bên thứ ba. |
 | **Chạy Agent + Cấu hình Agent** | `/run` khởi chạy Claude Code hoặc luồng app-server Codex gốc với model, phê duyệt, sandbox, tiếp tục, dừng, phát trực tiếp và gắn lại theo từng nhà cung cấp. `/cc-config` ghép trình khám phá Claude và Codex có thể chỉnh sửa; tệp người dùng được hỗ trợ dùng lưu atomic có bảo vệ và bản sao lưu có dấu thời gian, bản xem trước che secret, lệnh profile chính xác và watcher riêng theo nhà cung cấp. |
 | **Cấu hình Agent Codex** | Hiển thị toàn bộ danh mục model của tài khoản cùng override cơ sở/profile, tạo overlay `<name>.config.toml` chuẩn và bảo vệ chỉnh sửa bằng kiểm tra containment chuẩn hóa cùng symlink. Profile, hook, quy tắc, skill và chỉ dẫn hỗ trợ hành động nguồn/đường dẫn/sửa/xóa với xóa sau khi sao lưu; `config.toml` chỉ được sửa. |
@@ -1391,7 +1399,7 @@ flowchart LR
     CMP --> FP["fingerprint đổi không?"]
     FP -->|có| WS["broadcast<br/>update_status"]
     FP -->|không| IDLE["bỏ qua broadcast"]
-    WS --> CLIENT["UpdateNotifier<br/>+ badge thanh bên"]
+    WS --> CLIENT["UpdateNotifier<br/>+ nút cập nhật trên thanh điều hướng"]
 
     CHECK["POST updates check"] --> FETCH
     STATUS["GET updates status"] -.-> CMP
@@ -1407,7 +1415,7 @@ Mỗi lần kiểm tra đều rẻ (`git fetch <remote> --prune` với remote ch
 | Bề mặt | Hành vi |
 | --- | --- |
 | **Modal** (`client/src/components/UpdateNotifier.tsx`) | Mở khi có `remote_sha` mới; hiển thị số commit chậm hơn, ref được theo dõi, ghi chú nhánh/fork tùy chọn, lệnh chính xác và các nút **Copy command**, **Check now**, **Dismiss**. Escape hoặc bấm nền sẽ đóng. Trạng thái bỏ qua được khóa trong `localStorage`, nên SHA mới hơn sẽ mở lại. |
-| **Nút thanh bên** (`client/src/components/Sidebar.tsx`) | Luôn hiển thị. Màu xanh lá nghĩa là chậm hơn; màu hổ phách nghĩa là fetch thất bại. Bấm sẽ xóa trạng thái bỏ qua và gọi `POST /api/updates/check`. |
+| **Nút cập nhật trên thanh điều hướng** (`client/src/components/shell/TopNav.tsx`) | Luôn hiển thị. Màu hổ phách nghĩa là fetch thất bại. Bấm sẽ xóa trạng thái bỏ qua và gọi `POST /api/updates/check`. |
 | **Terminal máy chủ** | In lệnh có khung khi trạng thái chuyển từ mới nhất sang chậm hơn, kể cả cho người dùng headless. |
 
 ### Giao diện API
@@ -1541,7 +1549,7 @@ Theo mặc định, phiên bắt đầu, phiên hoàn tất, phiên lỗi, thôn
 
 ## Hộp thoại trạng thái kết nối
 
-Bấm vào nhãn **Live** / **Disconnected** ở chân thanh bên để mở một bảng chi tiết nhỏ về kênh truyền WebSocket của Dashboard. Bảng hiển thị endpoint `ws://` đang dùng, thời lượng của socket hiện tại, tổng số sự kiện đã nhận, biểu đồ thanh ngang các loại sự kiện phổ biến, biểu đồ đường (sparkline) lưu lượng trong 60 giây gần nhất và danh sách 8 sự kiện gần đây. Các số liệu tích lũy (tổng số, phân bổ theo loại, danh sách gần đây) được lưu qua `localStorage` ở khóa `sidebar-connection-stats` nên sẽ giữ nguyên sau khi tải lại; sparkline và bộ đếm "đã kết nối" cố ý chỉ tồn tại tạm thời. Nút **Reset** ở chân hộp thoại xóa toàn bộ số liệu bất cứ lúc nào.
+Bấm vào nhãn **Live** / **Disconnected** trên thanh điều hướng trên cùng để mở một bảng chi tiết nhỏ về kênh truyền WebSocket của Dashboard. Bảng hiển thị endpoint `ws://` đang dùng, thời lượng của socket hiện tại, tổng số sự kiện đã nhận, biểu đồ thanh ngang các loại sự kiện phổ biến, biểu đồ đường (sparkline) lưu lượng trong 60 giây gần nhất và danh sách 8 sự kiện gần đây. Các số liệu tích lũy (tổng số, phân bổ theo loại, danh sách gần đây) được lưu qua `localStorage` ở khóa `sidebar-connection-stats` nên sẽ giữ nguyên sau khi tải lại; sparkline và bộ đếm "đã kết nối" cố ý chỉ tồn tại tạm thời. Nút **Reset** ở chân hộp thoại xóa toàn bộ số liệu bất cứ lúc nào.
 
 <p align="center">
   <a href="images/live.png"><img src="images/readme/live.png" alt="Hộp thoại chi tiết kết nối với sparkline lưu lượng, các loại sự kiện phổ biến và hoạt động gần đây" width="100%"></a>
@@ -1946,7 +1954,7 @@ graph LR
     ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
-    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(Sidebar + Outlet)"]
+    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
 
     style ALL fill:#6366f1,stroke:#818cf8,color:#fff
     style LAYOUT fill:#1a1a28,stroke:#2a2a3d,color:#e4e4ed
@@ -2134,8 +2142,9 @@ agent-dashboard/
 |       |   |-- useWebSocket.ts      # Auto-reconnecting WebSocket hook
 |       |   +-- useNotifications.ts  # Browser notification triggers from WebSocket events
 |       |-- components/
-|       |   |-- Layout.tsx       # Shell with sidebar + outlet
-|       |   |-- Sidebar.tsx      # Navigation + connection indicator
+|       |   |-- Layout.tsx       # Shell with top navigation + outlet
+|       |   |-- shell/           # TopNav, LanguagePicker, ConnectionStatusModal, connection stats
+|       |   |-- world/           # Agent World canvas, renderer, side panel, create dialog
 |       |   |-- AgentCard.tsx    # Agent info card with status
 |       |   |-- StatCard.tsx     # Metric card
 |       |   |-- StatusBadge.tsx  # Color-coded status pills

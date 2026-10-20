@@ -257,7 +257,7 @@ flowchart LR
     F --> G["formatModelName() — human-friendly model display"]
 ```
 
-Supported language codes are explicitly `en`, `zh`, `vi`, `ko`, and `es`. The sidebar uses a custom language dropdown that scales as locales are added. Use [I18N.md](./I18N.md) for architecture details, naming conventions, language switching flow, localization behavior, and rollout guidance.
+Supported language codes are explicitly `en`, `zh`, `vi`, `ko`, and `es`. The top navigation uses a compact icon-trigger language picker that scales as locales are added. Use [I18N.md](./I18N.md) for architecture details, naming conventions, language switching flow, localization behavior, and rollout guidance.
 
 ---
 

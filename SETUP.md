@@ -584,7 +584,7 @@ If Node.js is not found, use the full path to `node` in the hook command. Edit `
 
 ---
 
-### Dashboard shows "Disconnected" in the sidebar
+### Dashboard shows "Disconnected" in the top navigation
 
 The WebSocket connection to the server failed. Ensure the server is running:
 

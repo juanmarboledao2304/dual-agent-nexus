@@ -134,7 +134,7 @@ Además del panel de control de monitoreo en tiempo real, también incluye una i
 
 ### Internacionalización (i18n)
 
-La interfaz de usuario incluye selección de idioma para inglés (`en`), chino (`zh`), vietnamita (`vi`), coreano (`ko`) y español (`es`). El selector personalizado en forma de menú desplegable evita que la barra lateral se sature a medida que se agregan idiomas. Los recursos se cargan por espacio de nombres y la preferencia se conserva en el almacenamiento del navegador entre actualizaciones.
+La interfaz de usuario incluye selección de idioma para inglés (`en`), chino (`zh`), vietnamita (`vi`), coreano (`ko`) y español (`es`). Un selector compacto con ícono en la navegación superior evita saturar la interfaz a medida que se agregan idiomas. Los recursos se cargan por espacio de nombres y la preferencia se conserva en el almacenamiento del navegador entre actualizaciones.
 
 ```mermaid
 flowchart LR
@@ -301,7 +301,15 @@ La interfaz oscura y adaptable cubre todo el flujo de trabajo. Cada vista previa
   <em>⌘ <strong>Paleta de comandos</strong> · un iniciador de teclado para páginas, sesiones, proyectos, filtros y acciones</em>
 </p>
 
-La barra lateral enlaza Panel, Tablero Kanban, Sesiones, Feed de Actividad, Analíticas, Flujos, Configuración del agente, Ejecutar agente y Configuración. Las secciones siguientes describen el comportamiento completo detrás de estas vistas.
+La navegación superior fija enlaza Resumen, Mundo, Salas, Sesiones, Actividad, Cascada y Cuota, con botones de ícono para Configuración del agente y Ajustes y una única acción principal **Ejecutar agente**. Las secciones siguientes describen el comportamiento completo detrás de estas vistas.
+
+### Mundo de agentes
+
+`/world` muestra cada agente como un personaje de 8 bits trabajando en una oficina en perspectiva 3/4 con cuatro salas que reflejan las Salas de agentes: Puente de mando, Motor de cascada, Cápsulas de fan-out y Bóveda de digest.
+
+- **Agentes en vivo**: llegan del mismo API y del mismo flujo WebSocket que las Salas de agentes. Cada uno camina hasta un escritorio estable en su sala (asignado por un hash del id del agente) y muestra su estado sobre la cabeza: puntos de pensamiento, una chispa de trabajo, una solicitud de aprobación, una marca al terminar o un aviso de error. Aquí son de solo lectura; el panel lateral solo ofrece **Abrir inspector**.
+- **Agentes de sandbox**: son un espacio de prueba por navegador. **Nuevo agente de sandbox** elige un nombre, uno de los ocho personajes, una sala y una tarea. El agente trabaja en su lugar, recorre su sala y vuelve. Desde el panel lateral se puede pausar, reanudar, renombrar, mover a otra sala, arrastrar en el mapa o eliminar; **Pausar todos**, **Reanudar todos** y **Vaciar sandbox** actúan sobre todos. Hasta 24 agentes de sandbox persisten en `localStorage` bajo `nexus-world-sandbox-v1`; nunca tocan sesiones reales.
+- **Controles**: arrastra para desplazar, rueda o `+`/`-` para hacer zoom, `WASD` o flechas para mover la cámara, `0` o **Centrar** para restablecer y `Escape` para quitar la selección. El panel lateral lista todos los agentes, así que el mundo se puede usar por completo con el teclado. `prefers-reduced-motion` desactiva las caminatas y los saltos.
 
 ---
 ## Características
@@ -330,7 +338,7 @@ El panel cubre todo el ciclo de vida de los agentes locales. Los contratos opera
 | **Retención de snapshots de transcripciones** | Los snapshots persistentes de Claude, Codex y Cursor conservan la conversación más completa. Las copias de Claude y Cursor sin origen se comprimen con gzip tras verificar el recorrido completo. La purga elimina snapshots. Los límites opcionales de edad y tamaño pueden eliminar la única copia antigua después de una vista previa de simulación en Configuración. |
 | **Notificaciones** | VAPID Web Push entrega eventos configurados cuando el navegador está en segundo plano o cerrado, con audio en macOS y controles de suscripción. |
 | **Alertas** | Configuración ofrece Reglas, Canales y Actividad para patrones de eventos, inactividad, agentes atascados y alertas de tokens. Las reglas de eventos se ejecutan tras la ingesta y las temporales cada 60 segundos. Las alertas persistentes usan un cooldown por regla y sesión, predeterminado en 300 segundos, entrega por WebSocket, confirmación y envío limitado a 14 proveedores con nombre o JSON genérico firmado, con secretos ocultos, timeouts y reintentos acotados. |
-| **Notificador de actualizaciones** | Un `git fetch` programado y no bloqueante compara el checkout con el remoto canónico y muestra el comando exacto de actualización en el modal, la barra lateral y el terminal. CCAM nunca hace pull ni se reinicia. |
+| **Notificador de actualizaciones** | Un `git fetch` programado y no bloqueante compara el checkout con el remoto canónico y muestra el comando exacto de actualización en el modal, la navegación superior y el terminal. CCAM nunca hace pull ni se reinicia. |
 | **Configuración** | Estado del sistema y de hooks, precios por proveedor, notificaciones, limpieza, homes de proveedores, actualización instantánea de datos y restauración idempotente de JSON de exportación de hasta 25 MiB. Los precios admiten valores predeterminados por proveedor, reglas comodín, orientación de tarifas publicadas, el límite GPT de 272K y catálogos separados de Cursor nativo y proveedores externos. |
 | **Ejecutar agente + Configuración del agente** | `/run` inicia Claude Code o hilos nativos del app-server de Codex con modelos, aprobaciones, sandbox, reanudación, detención, transmisión y reconexión específicos del proveedor. `/cc-config` reúne exploradores editables de Claude y Codex. Los archivos de usuario compatibles usan guardados atómicos protegidos y copias de seguridad con marca de tiempo, vistas previas con secretos ocultos, comandos exactos de perfil y watchers específicos del proveedor. |
 | **Configuración del agente de Codex** | Muestra el catálogo completo de modelos de la cuenta y las sobreescrituras base y de perfil, crea overlays estándar `<name>.config.toml` y protege la edición con comprobaciones de contención canónica y symlinks. Perfiles, hooks, reglas, skills e instrucciones admiten acciones de origen, ruta, edición y eliminación con copia previa. `config.toml` solo se puede editar. |
@@ -1396,7 +1404,7 @@ flowchart LR
     CMP --> FP["Fingerprint changed?"]
     FP -->|yes| WS["broadcast<br/>update_status"]
     FP -->|no| IDLE["skip broadcast"]
-    WS --> CLIENT["UpdateNotifier<br/>+ Sidebar badge"]
+    WS --> CLIENT["UpdateNotifier<br/>+ botón de la navegación superior"]
 
     CHECK["POST updates check"] --> FETCH
     STATUS["GET updates status"] -.-> CMP
@@ -1412,7 +1420,7 @@ Un solo cheque es barato (`git fetch <remote> --prune` contra el remoto canónic
 | Superficie | Comportamiento |
 | --- | --- |
 | **Modal** (`client/src/components/UpdateNotifier.tsx`) | Se abre cuando hay un nuevo `remote_sha` disponible. Muestra los commits de retraso, la referencia seguida, una nota opcional sobre la rama o el fork, el comando exacto y **Copiar comando**, **Comprobar ahora** y **Descartar**. Escape o un clic en el fondo lo descartan. El descarte se vincula al SHA en `localStorage`, por lo que un SHA nuevo vuelve a abrirlo. |
-| **Botón de la barra lateral** (`client/src/components/Sidebar.tsx`) | Siempre está visible. El verde indica retraso y el ámbar un fallo de fetch. Al hacer clic se borra el descarte y se llama a `POST /api/updates/check`. |
+| **Botón de actualización de la navegación superior** (`client/src/components/shell/TopNav.tsx`) | Siempre está visible. El ámbar indica un fallo de fetch. Al hacer clic se borra el descarte y se llama a `POST /api/updates/check`. |
 | **Terminal del servidor** | Imprime un comando enmarcado cuando el estado pasa de actualizado a retrasado, también para usuarios sin interfaz. |
 
 ### Superficie de la API
@@ -1546,7 +1554,7 @@ Por defecto están activados el inicio de sesión, la finalización de sesión, 
 
 ## Modal de estado de conexión
 
-Haga clic en la píldora **En vivo** / **Desconectado** en el pie de página de la barra lateral para abrir un pequeño panel de detalles sobre el transporte WebSocket del panel de control. Muestra el extremo de destino `ws://` activo, cuánto tiempo ha estado activo el socket actual, los eventos totales recibidos, los tipos de eventos más comunes como un gráfico de barras horizontal, una línea de chispa de rendimiento de 60 segundos y los últimos 8 eventos como una lista de actividad reciente. Las estadísticas acumulativas (totales, desglose por tipo, lista reciente) persisten a través de las recargas a través de `localStorage` bajo `sidebar-connection-stats`; la línea de chispa en movimiento y el temporizador "conectado desde" son intencionalmente efímeros. Un botón **Restablecer** en el pie de página borra todo a demanda.
+Haga clic en la píldora **En vivo** / **Desconectado** en la navegación superior para abrir un pequeño panel de detalles sobre el transporte WebSocket del panel de control. Muestra el extremo de destino `ws://` activo, cuánto tiempo ha estado activo el socket actual, los eventos totales recibidos, los tipos de eventos más comunes como un gráfico de barras horizontal, una línea de chispa de rendimiento de 60 segundos y los últimos 8 eventos como una lista de actividad reciente. Las estadísticas acumulativas (totales, desglose por tipo, lista reciente) persisten a través de las recargas a través de `localStorage` bajo `sidebar-connection-stats`; la línea de chispa en movimiento y el temporizador "conectado desde" son intencionalmente efímeros. Un botón **Restablecer** en el pie de página borra todo a demanda.
 
 <p align="center">
   <a href="images/live.png"><img src="images/readme/live.png" alt="Modal de detalles de conexión con sparkline de rendimiento, tipos de evento principales y actividad reciente" width="100%"></a>
@@ -1953,7 +1961,7 @@ graph LR
     ST["/settings"] --> SETTINGS["Settings<br/>pricing + notifications + hooks + export"]
     NF["/*"] --> NOTFOUND["NotFound<br/>404 catch-all"]
 
-    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(Sidebar + Outlet)"]
+    ALL["All routes"] --> LAYOUT["Layout wrapper<br/>(TopNav + Outlet)"]
 
     style ALL fill:#6366f1,stroke:#818cf8,color:#fff
     style LAYOUT fill:#1a1a28,stroke:#2a2a3d,color:#e4e4ed
@@ -2160,8 +2168,9 @@ agent-dashboard/
 |       |   |-- useWebSocket.ts      # Auto-reconnecting WebSocket hook
 |       |   +-- useNotifications.ts  # Browser notification triggers from WebSocket events
 |       |-- components/
-|       |   |-- Layout.tsx       # Shell with sidebar + outlet
-|       |   |-- Sidebar.tsx      # Navigation + connection indicator
+|       |   |-- Layout.tsx       # Shell with top navigation + outlet
+|       |   |-- shell/           # TopNav, LanguagePicker, ConnectionStatusModal, connection stats
+|       |   |-- world/           # Agent World canvas, renderer, side panel, create dialog
 |       |   |-- AgentCard.tsx    # Agent info card with status
 |       |   |-- StatCard.tsx     # Metric card
 |       |   |-- StatusBadge.tsx  # Color-coded status pills

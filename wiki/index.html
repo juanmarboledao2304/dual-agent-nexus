@@ -126,7 +126,7 @@
             "applicationCategory": "DeveloperApplication",
             "applicationSubCategory": "Monitoring and observability",
             "operatingSystem": "macOS, Windows, Linux",
-            "softwareVersion": "3.0.0",
+            "softwareVersion": "3.1.0",
             "license": "https://opensource.org/licenses/MIT",
             "isAccessibleForFree": true,
             "image": "https://juanmarboledao2304.github.io/dual-agent-nexus/og-image.png",
@@ -1176,7 +1176,7 @@
                     Every UI update is pushed over a persistent WebSocket with sub-5 ms dispatch
                     latency — zero polling anywhere. If the connection drops, automatic 2-second
                     reconnect kicks in while a ping/pong heartbeat detects stale connections
-                    early. A sidebar indicator turns green/red so you always know whether you're
+                    early. A status pill in the top navigation turns green/red so you always know whether you're
                     live. The WebSocket carries typed JSON envelopes for new events, session
                     updates, agent transitions, compaction results, and import progress — all
                     parsed into the same eventBus the REST layer uses.
@@ -1467,7 +1467,7 @@
                   <h3>Responsive Design</h3>
                   <p>
                     Mobile-first layouts with stacking grids, horizontally scrollable tables,
-                    and a collapsible sidebar that auto-hides below 1400 px. All pages adapt
+                    and a top navigation whose tabs scroll sideways on narrow screens. All pages adapt
                     from phone to ultrawide with consistent navigation and readable typography.
                     Kanban columns stack vertically on narrow screens, analytics charts reflow
                     to single-column, and the activity feed stays fully swipeable. Touch targets
@@ -2973,8 +2973,8 @@ npm run mcp:start:repl         # interactive CLI with tab completion</code></pre
             <div class="mermaid">
               graph TD
                 APP["App.tsx — Router + WebSocket"]:::root
-                LAYOUT["Layout.tsx — Sidebar + Outlet"]
-                SIDEBAR["Sidebar.tsx — Nav + Connection Status"]
+                LAYOUT["Layout.tsx — TopNav + Outlet"]
+                SIDEBAR["shell/TopNav.tsx — Nav + Connection Status"]
                 DASH["Dashboard.tsx"]
                 KANBAN["KanbanBoard.tsx"]
                 SESS["Sessions.tsx"]
@@ -7248,7 +7248,7 @@ npm run install-hooks</code></pre>
     <!-- Body-content translations — must load before script.js so the
          i18n engine sees window.__WIKI_CONTENT_I18N. Both are deferred, so they
          run in document order. -->
-    <script src="i18n-content.js?v=110" defer></script>
+    <script src="i18n-content.js?v=111" defer></script>
     <script src="script.js?v=60" defer></script>
     <script>
       (function () {

@@ -7,6 +7,13 @@
 
 const { describe, it } = require("node:test");
 const assert = require("node:assert/strict");
+
+// Isolate the cooldown tests from the machine's real ~/.cache/agy-cascade, where a live
+// agy-cascade run may have left *.exhausted markers.
+process.env.AGY_CASCADE_CACHE_DIR = require("node:fs").mkdtempSync(
+  require("node:path").join(require("node:os").tmpdir(), "agy-cascade-test-")
+);
+
 const {
   classifyModelAndEffort,
   resolveQuotaPool,
