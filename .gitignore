@@ -78,3 +78,4 @@ __pycache__/
 
 # Git worktrees created for parallel agent work (never part of a commit)
 .worktrees/
+.claude/worktrees/
