@@ -18,12 +18,13 @@ without Developer Mode; client 550/550; `tsc` 0 errors; build OK; header + i18n 
 
 ## Open items
 
-1. Desktop app not built here (no `desktop/node_modules`; native better-sqlite3 build).
-   Run `cd desktop && npm install` on a machine with the toolchain, then `npm run desktop:build`.
+1. Desktop app TypeScript typechecks clean (`cd desktop && npx tsc -p tsconfig.json --noEmit`),
+   but the packaged app and its smoke test were not run: they need Electron's binary and a
+   better-sqlite3 native build (Node 22 LTS or a C++ toolchain). Then `npm run desktop:build`.
 2. After merging/publishing, re-wire hooks from the final checkout:
    `node scripts/install-hooks.js --claude --antigravity` (rewrites :4820 curl hooks to :7770).
 3. Optional: GitHub milestone `v3.0.0` (version-release skill) once the GitHub repo exists.
-4. Optional polish: `vscode-extension/README.md` still points at the upstream Marketplace listing.
+4. (Done) `vscode-extension/README.md` now documents `.vsix` install instead of the upstream listing.
 
 ## Publish
 

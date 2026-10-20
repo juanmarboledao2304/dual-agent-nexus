@@ -36,15 +36,16 @@ Jump directly to specific views from the sidebar:
 ## Getting Started
 
 ### 1. Requirements
-Ensure you have the Claude Code Agent Monitor server running locally:
+Ensure you have the DualAgent Nexus server running locally:
 ```bash
 npm install
 npm run dev
 ```
 
 ### 2. Installation
-- Search for **"Claude Code Agent Monitor"** in the VS Code Marketplace.
-- Click **Install**.
+- Build the extension package (see **Publishing & Development** below) and install the
+  generated `.vsix` with **Extensions: Install from VSIX...** in the VS Code command palette.
+- Until a DualAgent Nexus listing is published to the Marketplace, the `.vsix` is the way to install it.
 
 ### 3. Usage
 - Click the **Radar/Dashboard icon** in the Activity Bar.
