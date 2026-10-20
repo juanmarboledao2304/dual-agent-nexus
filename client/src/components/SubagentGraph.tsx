@@ -357,24 +357,29 @@ export function SubagentGraph({
                           <path
                             d={pathD}
                             fill="none"
-                            stroke={childTheme.svgStroke}
+                            style={{ stroke: childTheme.svgStroke }}
                             strokeOpacity={0.28}
                             strokeWidth={2}
                           />
                           <path
                             d={pathD}
                             fill="none"
-                            stroke={childTheme.svgStroke}
+                            style={{ stroke: childTheme.svgStroke }}
                             strokeWidth={2.25}
                             strokeDasharray={isChildWorking ? "5 5" : "none"}
                             strokeOpacity={isChildWorking ? 0.95 : 0.55}
                             className={isChildWorking ? "animate-pulse" : ""}
                           />
-                          <circle cx={62} cy={childY} r={3} fill={childTheme.svgStroke} />
+                          <circle
+                            cx={62}
+                            cy={childY}
+                            r={3}
+                            style={{ fill: childTheme.svgStroke }}
+                          />
                         </g>
                       );
                     })}
-                    <circle cx={2} cy={rootY} r={3.5} fill={rootTheme.svgStroke} />
+                    <circle cx={2} cy={rootY} r={3.5} style={{ fill: rootTheme.svgStroke }} />
                   </svg>
 
                   {/* Right Column: Level 2 Nodes + Optional Level 3 Fan-Out Specialist Subtree */}
@@ -538,24 +543,34 @@ export function SubagentGraph({
                                   <path
                                     d={pathD}
                                     fill="none"
-                                    stroke={l3Theme.svgStroke}
+                                    style={{ stroke: l3Theme.svgStroke }}
                                     strokeOpacity={0.3}
                                     strokeWidth={1.75}
                                   />
                                   <path
                                     d={pathD}
                                     fill="none"
-                                    stroke={l3Theme.svgStroke}
+                                    style={{ stroke: l3Theme.svgStroke }}
                                     strokeWidth={2}
                                     strokeDasharray={isL3Working ? "4 4" : "none"}
                                     strokeOpacity={isL3Working ? 0.95 : 0.6}
                                     className={isL3Working ? "animate-pulse" : ""}
                                   />
-                                  <circle cx={50} cy={l3Y} r={2.5} fill={l3Theme.svgStroke} />
+                                  <circle
+                                    cx={50}
+                                    cy={l3Y}
+                                    r={2.5}
+                                    style={{ fill: l3Theme.svgStroke }}
+                                  />
                                 </g>
                               );
                             })}
-                            <circle cx={2} cy={l2AnchorY} r={3} fill={childTheme.svgStroke} />
+                            <circle
+                              cx={2}
+                              cy={l2AnchorY}
+                              r={3}
+                              style={{ fill: childTheme.svgStroke }}
+                            />
                           </svg>
 
                           {/* Level 3 Specialist Fan-Out Subagents */}

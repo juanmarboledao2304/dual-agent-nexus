@@ -211,9 +211,7 @@ export function SnapshotStorage({
       {storage ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="bg-surface-2 rounded-lg px-3 py-3 border-l-2 border-sky-500/20">
-            <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1.5">
-              {t("snapshots.total")}
-            </p>
+            <p className="text-[11px] text-gray-500 mb-1.5">{t("snapshots.total")}</p>
             <p className="text-xl font-semibold text-gray-200">
               {formatStorageBytes(storage.total_bytes)}
             </p>
@@ -232,7 +230,7 @@ export function SnapshotStorage({
                 className="bg-surface-2 rounded-lg px-3 py-3 border-l-2 border-gray-500/20"
                 title={root?.path}
               >
-                <p className="text-[11px] text-gray-500 uppercase tracking-wider mb-1.5">{label}</p>
+                <p className="text-[11px] text-gray-500 mb-1.5">{label}</p>
                 <p className="text-xl font-semibold text-gray-200">
                   {formatStorageBytes(root?.bytes ?? 0)}
                 </p>

@@ -25,6 +25,13 @@ Every colour is `rgb(var(--x) / <alpha-value>)`; a Tailwind plugin injects `:roo
 
 ## Follow-ups
 
-- Inherited inner components (dispatcher, Settings sections, Analytics charts with hard-coded hex) still use mono uppercase labels in places; restyle them gradually.
-- `agentTheme.ts` keeps hex strokes for the SVG graph; move them to theme variables if the Graph view needs Duet inks.
-- Version bump (minor, `version-release` skill) when this ships.
+Done in 3.2.0:
+
+- The dispatcher inside the Launch panel (`CommandCenterDock.tsx`) uses tokens only: no gradients, no mono uppercase labels; the active engine wears its pool ink and Dispatch is the accent button.
+- Analytics charts read colours through `tokenColor("family-stop")` (`rgb(var(--x))`), applied via `style` (SVG presentation attributes do not reliably resolve `var()`); the heatmap maps its log scale onto lilac opacity.
+- `agentTheme.ts` `svgStroke` values are theme variables; `SubagentGraph` applies them through `style`. `strokeHex` stays as legend data.
+- Uppercase labels inside the Settings sections (pricing, hooks, health, Claude config, imports, remote sources, snapshots, alerts) are sentence case.
+
+Still open:
+
+- Graph view node chips (`badgeClass` in `agentTheme.ts`) and the dispatcher's English-only strings (not yet in i18n).

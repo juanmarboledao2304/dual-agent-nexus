@@ -1,7 +1,8 @@
 /**
  * @file Chromatic Thermal UI System for DualAgent Nexus.
  * Maps Claude Code (Warm Spectrum: Red/Orange/Yellow) and Google Antigravity (Cool Spectrum: Purple/Blue/Emerald)
- * agents to deterministic Tailwind classes, SVG connector stroke colors, model badges, and 4-bar effort meters.
+ * agents to deterministic Tailwind classes, theme-aware SVG connector strokes (CSS variables of the active
+ * Duet or Console theme), model badges, and 4-bar effort meters.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
@@ -40,7 +41,9 @@ export interface AgentThermalTheme {
   dotClass: string;
   barFillClass: string;
   barActiveClass: string;
+  /** Fixed sRGB reference of the family (legend data; not used for rendering). */
   strokeHex: string;
+  /** Theme-aware stroke (`rgb(var(--family-stop))`); apply through `style`, not SVG attributes. */
   svgStroke: string;
   glowHex: string;
   spectrumLabel: string;
@@ -489,7 +492,7 @@ export function getAgentThermalTheme(
         barFillClass: "bg-fuchsia-400",
         barActiveClass: "bg-fuchsia-400",
         strokeHex: "#d946ef",
-        svgStroke: "#d946ef",
+        svgStroke: "rgb(var(--lilac-500))",
         glowHex: "rgba(217,70,239,0.38)",
         spectrumLabel: "Electric Fuchsia",
       };
@@ -518,7 +521,7 @@ export function getAgentThermalTheme(
       barFillClass: "bg-indigo-400",
       barActiveClass: "bg-indigo-400",
       strokeHex: "#6366f1",
-      svgStroke: "#6366f1",
+      svgStroke: "rgb(var(--lilac-500))",
       glowHex: "rgba(99,102,241,0.35)",
       spectrumLabel: "Neon Indigo",
     };
@@ -551,7 +554,7 @@ export function getAgentThermalTheme(
         barFillClass: "bg-purple-400",
         barActiveClass: "bg-purple-400",
         strokeHex: "#a855f7",
-        svgStroke: "#a855f7",
+        svgStroke: "rgb(var(--lilac-500))",
         glowHex: "rgba(168,85,247,0.35)",
         spectrumLabel: "Electric Purple",
       };
@@ -581,7 +584,7 @@ export function getAgentThermalTheme(
         barFillClass: "bg-emerald-400",
         barActiveClass: "bg-emerald-400",
         strokeHex: "#10b981",
-        svgStroke: "#10b981",
+        svgStroke: "rgb(var(--mint-500))",
         glowHex: "rgba(16,185,129,0.3)",
         spectrumLabel: "Emerald Green",
       };
@@ -611,7 +614,7 @@ export function getAgentThermalTheme(
       barFillClass: "bg-blue-400",
       barActiveClass: "bg-blue-400",
       strokeHex: "#3b82f6",
-      svgStroke: "#3b82f6",
+      svgStroke: "rgb(var(--glacier-500))",
       glowHex: "rgba(59,130,246,0.3)",
       spectrumLabel: "Cyber Blue",
     };
@@ -643,7 +646,7 @@ export function getAgentThermalTheme(
       barFillClass: "bg-red-400",
       barActiveClass: "bg-red-400",
       strokeHex: "#ef4444",
-      svgStroke: "#ef4444",
+      svgStroke: "rgb(var(--coral-500))",
       glowHex: "rgba(239,68,68,0.35)",
       spectrumLabel: "Crimson Red",
     };
@@ -673,7 +676,7 @@ export function getAgentThermalTheme(
       barFillClass: "bg-amber-300",
       barActiveClass: "bg-amber-300",
       strokeHex: "#fbbf24",
-      svgStroke: "#fbbf24",
+      svgStroke: "rgb(var(--amber-400))",
       glowHex: "rgba(251,191,36,0.3)",
       spectrumLabel: "Amber Yellow",
     };
@@ -703,7 +706,7 @@ export function getAgentThermalTheme(
     barFillClass: "bg-orange-400",
     barActiveClass: "bg-orange-400",
     strokeHex: "#f97316",
-    svgStroke: "#f97316",
+    svgStroke: "rgb(var(--clay-500))",
     glowHex: "rgba(249,115,22,0.3)",
     spectrumLabel: "Vibrant Orange",
   };

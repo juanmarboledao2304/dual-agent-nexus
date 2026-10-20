@@ -600,24 +600,16 @@ function PricingInfoTooltip({ provider = "claude" }: { provider?: "claude" | "cu
         >
           <p className="text-xs font-semibold text-gray-100 mb-2">{t(`${key}.title`)}</p>
 
-          <p className="font-semibold text-gray-200 uppercase tracking-wider text-[9px] mb-1">
-            {t(`${key}.howItWorks`)}
-          </p>
+          <p className="font-medium text-gray-200 text-[11px] mb-1">{t(`${key}.howItWorks`)}</p>
           <p className="text-gray-400 leading-snug mb-2.5">{t(`${key}.howItWorksBody`)}</p>
 
-          <p className="font-semibold text-gray-200 uppercase tracking-wider text-[9px] mb-1">
-            {t(`${key}.patternsTitle`)}
-          </p>
+          <p className="font-medium text-gray-200 text-[11px] mb-1">{t(`${key}.patternsTitle`)}</p>
           <p className="text-gray-400 leading-snug mb-2.5">{t(`${key}.patternsBody`)}</p>
 
-          <p className="font-semibold text-amber-300 uppercase tracking-wider text-[9px] mb-1">
-            {t(`${key}.manualUpdates`)}
-          </p>
+          <p className="font-medium text-amber-300 text-[11px] mb-1">{t(`${key}.manualUpdates`)}</p>
           <p className="text-gray-400 leading-snug mb-2.5">{t(`${key}.manualUpdatesBody`)}</p>
 
-          <p className="font-semibold text-amber-300 uppercase tracking-wider text-[9px] mb-1">
-            {t(`${key}.apiPricing`)}
-          </p>
+          <p className="font-medium text-amber-300 text-[11px] mb-1">{t(`${key}.apiPricing`)}</p>
           <p className="text-gray-400 leading-snug">{t(`${key}.apiPricingBody`)}</p>
         </div>
       )}
@@ -859,7 +851,7 @@ function GptPricingTable({
       {error && <p className="mb-3 rounded bg-red-500/10 p-2 text-xs text-red-300">{error}</p>}
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[1560px] text-left text-xs">
-          <thead className="bg-surface-3 text-[10px] uppercase tracking-wide text-gray-500">
+          <thead className="bg-surface-3 text-[11px] text-gray-500">
             <tr>
               <th rowSpan={2} className="px-3 py-2">
                 {t("pricing.pattern")}
@@ -1221,7 +1213,7 @@ function CursorPricingTable({
       {error && <p className="mb-3 rounded bg-red-500/10 p-2 text-xs text-red-300">{error}</p>}
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[780px] text-left text-xs">
-          <thead className="bg-surface-3 text-[10px] uppercase tracking-wide text-gray-500">
+          <thead className="bg-surface-3 text-[11px] text-gray-500">
             <tr>
               <th className="px-3 py-2">{t("pricing.pattern")}</th>
               <th className="px-3 py-2">{t("pricing.cursor.name")}</th>
@@ -2110,7 +2102,7 @@ export function Settings() {
   // just Sonnet 5), so a future model with a launch promo needs no code change.
   const introField = (key: keyof EditRow, labelKey: string, opts: { date?: boolean } = {}) => (
     <label className="flex flex-col gap-1">
-      <span className="text-[10px] uppercase tracking-wider text-violet-300/70">{t(labelKey)}</span>
+      <span className="text-[11px] text-violet-300/70">{t(labelKey)}</span>
       <input
         type={opts.date ? "text" : "number"}
         {...(opts.date ? { placeholder: "YYYY-MM-DD" } : { step: "0.01", min: "0" })}
@@ -2127,7 +2119,7 @@ export function Settings() {
       <td colSpan={10} className="px-4 pb-3 pt-2">
         <div className="mt-2 rounded-md border border-violet-500/20 bg-violet-500/[0.04] px-3 py-2.5">
           <div className="flex items-center gap-1.5 mb-2">
-            <span className="text-[11px] font-semibold text-violet-300 uppercase tracking-wider">
+            <span className="text-[11px] font-medium text-violet-300">
               {t("pricing.introRatesTitle")}
             </span>
             <span className="text-[11px] text-gray-500">{t("pricing.introRatesHint")}</span>
@@ -2243,7 +2235,7 @@ export function Settings() {
       {/* In-page section navigation - Settings is dense, so this TOC jumps to
           and scroll-spies each section. */}
       <nav className="sticky top-0 z-20 -mx-1 !mt-2 px-1 py-2 bg-surface-0/85 backdrop-blur border-b border-border/60 flex items-center gap-1.5 lg:hidden">
-        <span className="flex-shrink-0 pl-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+        <span className="flex-shrink-0 pl-1 text-[11px] font-medium text-gray-500">
           {t("jumpTo", "Jump to")}
         </span>
         {tocOverflow.left && (
@@ -2456,34 +2448,34 @@ export function Settings() {
               <table className="w-full min-w-[1000px]">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500">
                       {t("pricing.pattern")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500">
                       {t("common:cost.model")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("common:token.input")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("common:token.output")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("common:token.cacheRead")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("pricing.cacheWrite5m")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("pricing.cacheWrite1h")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("pricing.fastInput")}
                     </th>
-                    <th className="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                    <th className="px-4 py-3 text-[11px] font-medium text-gray-500 text-right">
                       {t("pricing.fastOutput")}
                     </th>
-                    <th className="w-24 px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                    <th className="w-24 px-4 py-3 text-[11px] font-medium text-gray-500">
                       {t("common:actions")}
                     </th>
                   </tr>
@@ -2899,7 +2891,7 @@ export function Settings() {
                   </div>
 
                   <div className="pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
+                    <p className="text-xs font-medium text-gray-400 mb-3">
                       {t("sound.playWhen", "Play a cue when...")}
                     </p>
                     <div className="space-y-2">
@@ -3085,7 +3077,7 @@ export function Settings() {
 
               {notifPrefs.enabled && (
                 <div className="space-y-3 pt-4 border-t border-border">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
+                  <p className="text-xs text-gray-500 font-medium">
                     {t("notifications.notifyWhen")}
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -3176,7 +3168,7 @@ export function Settings() {
             <div className="space-y-4">
               <div className="card p-5 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold flex-shrink-0">
+                  <p className="text-xs text-gray-500 font-medium flex-shrink-0">
                     {t("data.dbOverview")}
                   </p>
                   {sysInfo && (
@@ -3221,7 +3213,7 @@ export function Settings() {
                         >
                           <div className="flex items-center gap-2 mb-1.5">
                             {tableIcons[table] || <Database className="w-4 h-4 text-gray-500" />}
-                            <p className="text-[11px] text-gray-500 uppercase tracking-wider">
+                            <p className="text-[11px] text-gray-500">
                               {tableLabels[table] || table.replace(/_/g, " ")}
                             </p>
                           </div>
@@ -3234,9 +3226,7 @@ export function Settings() {
                     <div className="bg-surface-2 rounded-lg px-3 py-3 border-l-2 border-indigo-500/20">
                       <div className="flex items-center gap-2 mb-1.5">
                         <HardDrive className="w-4 h-4 text-indigo-400" />
-                        <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                          {t("data.dbSize")}
-                        </p>
+                        <p className="text-[11px] text-gray-500">{t("data.dbSize")}</p>
                       </div>
                       <p className="text-xl font-semibold text-gray-200">
                         {formatBytes(sysInfo.db.size)}
@@ -3390,9 +3380,7 @@ export function Settings() {
                   <div className="bg-surface-2 rounded-lg px-4 py-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Server className="w-4 h-4 text-indigo-400" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                        {t("about.release")}
-                      </p>
+                      <p className="text-[11px] text-gray-500">{t("about.release")}</p>
                     </div>
                     <p className="text-sm font-semibold text-gray-200 font-mono">
                       v{sysInfo.server.version}
@@ -3406,9 +3394,7 @@ export function Settings() {
                   <div className="bg-surface-2 rounded-lg px-4 py-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Clock className="w-4 h-4 text-blue-400" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                        {t("about.uptime")}
-                      </p>
+                      <p className="text-[11px] text-gray-500">{t("about.uptime")}</p>
                     </div>
                     <p className="text-sm font-semibold text-gray-200">
                       {formatUptime(sysInfo.server.uptime)}
@@ -3417,9 +3403,7 @@ export function Settings() {
                   <div className="bg-surface-2 rounded-lg px-4 py-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Cpu className="w-4 h-4 text-emerald-400" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                        {t("about.nodejs")}
-                      </p>
+                      <p className="text-[11px] text-gray-500">{t("about.nodejs")}</p>
                     </div>
                     <p className="text-sm font-semibold text-gray-200 font-mono">
                       {sysInfo.server.node_version}
@@ -3428,18 +3412,14 @@ export function Settings() {
                   <div className="bg-surface-2 rounded-lg px-4 py-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Globe className="w-4 h-4 text-violet-400" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                        {t("about.platform")}
-                      </p>
+                      <p className="text-[11px] text-gray-500">{t("about.platform")}</p>
                     </div>
                     <p className="text-sm font-semibold text-gray-200">{sysInfo.server.platform}</p>
                   </div>
                   <div className="bg-surface-2 rounded-lg px-4 py-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Wifi className="w-4 h-4 text-amber-400" />
-                      <p className="text-[11px] text-gray-500 uppercase tracking-wider">
-                        {t("about.wsClients")}
-                      </p>
+                      <p className="text-[11px] text-gray-500">{t("about.wsClients")}</p>
                     </div>
                     <p className="text-sm font-semibold text-gray-200">
                       {sysInfo.server.ws_connections}

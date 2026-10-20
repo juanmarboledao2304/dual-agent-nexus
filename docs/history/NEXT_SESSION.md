@@ -1,6 +1,8 @@
 # DualAgent Nexus — handoff for the next session
 
-**State (2026-10-20):** branch `worktree-redesign-clarity` carries the **Nexus Console redesign**
+**State (2026-10-20):** version **3.2.0** ships the **Nexus Console redesign** (PR #1, merged into
+`main`, tag `v3.2.0`). The visual follow-ups (dispatcher, Analytics and graph colours, Settings labels)
+are done; what remains is listed under "Still open" in the plan. Original branch `worktree-redesign-clarity` carried the **Nexus Console redesign**
 (five sections: Command, Agents, Sessions, Usage, Settings; Duet and Console themes; fuel gauge;
 Needs-you rule; Launch panel). Decisions and tokens: `docs/plans/2026-10-20-nexus-console-redesign.md`.
 README screenshots come from an isolated demo server (fake `USERPROFILE`/`HOME`, `npm run seed`,

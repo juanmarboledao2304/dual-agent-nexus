@@ -247,7 +247,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Server className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Runtime</span>
+              <span className="text-xs text-gray-500">Runtime</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">
               {info.server.cpus} cores · {info.server.arch}
@@ -325,7 +325,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Database className="w-4 h-4 text-blue-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Storage</span>
+              <span className="text-xs text-gray-500">Storage</span>
             </div>
             <Tip
               raw={`Write velocity (events):\n5 min: ${info.db.load_stats?.m5 ?? 0}\n15 min: ${info.db.load_stats?.m15 ?? 0}\n1 hr: ${info.db.load_stats?.h1 ?? 0}`}
@@ -459,7 +459,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Health Score</span>
+              <span className="text-xs text-gray-500">Health Score</span>
             </div>
             <Tip
               raw={`Composite Index formula:\n0.4 × Success Rate (${successRate.toFixed(1)}%)\n+ 0.25 × Cache Hit (${cacheHitRate.toFixed(1)}%)\n+ 0.25 × (100 − Error Rate) (${(100 - errorRate).toFixed(1)}%)\n+ 0.10 × (100 − Heap%) (${(100 - heapUsedPct).toFixed(1)}%)\n= ${healthScore.toFixed(1)}`}
@@ -523,7 +523,7 @@ export function SystemHealthTab() {
               raw={`Cache Hit Rate: ${cacheHitRate.toFixed(1)}%\nHits: ${info.transcript_cache?.hits ?? 0}\nMisses: ${info.transcript_cache?.misses ?? 0}`}
             >
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Cache</p>
+                <p className="text-[11px] text-gray-600">Cache</p>
                 <p className="text-xs font-mono font-bold text-blue-400">
                   {cacheHitRate.toFixed(0)}%
                 </p>
@@ -534,7 +534,7 @@ export function SystemHealthTab() {
               raw={`Error Rate: ${errorRate.toFixed(2)}%\n<5% = healthy, 5-15% = warning, >15% = critical`}
             >
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Errors</p>
+                <p className="text-[11px] text-gray-600">Errors</p>
                 <p
                   className={`text-xs font-mono font-bold ${errorRate < 5 ? "text-emerald-400" : errorRate < 15 ? "text-amber-400" : "text-red-400"}`}
                 >
@@ -547,7 +547,7 @@ export function SystemHealthTab() {
               raw={`Transcript compactions: ${workflow.compaction?.totalCompactions ?? 0}\nReduces context window by summarizing turns.`}
             >
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Compact</p>
+                <p className="text-[11px] text-gray-600">Compact</p>
                 <p className="text-xs font-mono font-bold text-violet-400">
                   {workflow.compaction?.totalCompactions ?? 0}
                 </p>
@@ -558,7 +558,7 @@ export function SystemHealthTab() {
               raw={`Tokens recovered: ${(workflow.compaction?.tokensRecovered ?? 0).toLocaleString()}\nFreed by compaction.`}
             >
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Saved</p>
+                <p className="text-[11px] text-gray-600">Saved</p>
                 <p className="text-xs font-mono font-bold text-emerald-400">
                   {((workflow.compaction?.tokensRecovered ?? 0) / 1000).toFixed(1)}K
                 </p>
@@ -575,7 +575,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Bot className="w-4 h-4 text-blue-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Token Usage</span>
+              <span className="text-xs text-gray-500">Token Usage</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">
               {(totalTokens / 1000).toFixed(1)}K total
@@ -631,7 +631,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-4 h-4 text-violet-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Concurrency</span>
+              <span className="text-xs text-gray-500">Concurrency</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">{lanes.length} intervals</span>
           </div>
@@ -676,7 +676,7 @@ export function SystemHealthTab() {
           <div className="grid grid-cols-3 gap-3 border-t border-border/40 pt-3">
             <Tip block raw={`Peak: ${maxLaneCount} sessions running simultaneously.`}>
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Peak</p>
+                <p className="text-[11px] text-gray-600">Peak</p>
                 <p className="text-sm font-mono font-bold text-gray-200">{maxLaneCount}</p>
               </div>
             </Tip>
@@ -685,7 +685,7 @@ export function SystemHealthTab() {
               raw={`${lanes.filter((l) => l.count > 0).length} of ${lanes.length} intervals have active sessions.`}
             >
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Active</p>
+                <p className="text-[11px] text-gray-600">Active</p>
                 <p className="text-sm font-mono font-bold text-emerald-400">
                   {lanes.filter((l) => l.count > 0).length}
                 </p>
@@ -693,7 +693,7 @@ export function SystemHealthTab() {
             </Tip>
             <Tip block raw={`Average concurrency across all intervals.`}>
               <div className="text-center cursor-default">
-                <p className="text-[9px] text-gray-600 uppercase">Avg</p>
+                <p className="text-[11px] text-gray-600">Avg</p>
                 <p className="text-sm font-mono font-bold text-blue-400">
                   {lanes.length > 0
                     ? (lanes.reduce((s, l) => s + l.count, 0) / lanes.length).toFixed(1)
@@ -712,7 +712,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Zap className="w-4 h-4 text-amber-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Tool Usage</span>
+              <span className="text-xs text-gray-500">Tool Usage</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">top {topTools.length}</span>
           </div>
@@ -767,9 +767,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <GitBranch className="w-4 h-4 text-violet-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">
-                Subagent Effectiveness
-              </span>
+              <span className="text-xs text-gray-500">Subagent Effectiveness</span>
             </div>
           </div>
 
@@ -820,7 +818,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Plug className="w-4 h-4 text-amber-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Integration</span>
+              <span className="text-xs text-gray-500">Integration</span>
             </div>
             <span
               className={`text-[10px] font-mono px-2 py-0.5 rounded ${info.hooks.installed ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-surface-3 text-gray-500 border border-border"}`}
@@ -877,7 +875,7 @@ export function SystemHealthTab() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Cpu className="w-4 h-4 text-cyan-400" />
-              <span className="text-xs text-gray-500 uppercase tracking-wider">Platform</span>
+              <span className="text-xs text-gray-500">Platform</span>
             </div>
             <span className="text-[10px] font-mono text-gray-500">{info.server.node_version}</span>
           </div>

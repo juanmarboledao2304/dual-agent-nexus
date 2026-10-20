@@ -1,7 +1,7 @@
 {
   "name": "ccam-analytics",
   "description": "Deep analytics and monitoring for Claude Code sessions — cost tracking, token usage breakdowns, usage trends, and productivity scoring powered by Agent Monitor.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "author": { "name": "Son Nguyen", "url": "https://github.com/hoangsonww" },
   "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",

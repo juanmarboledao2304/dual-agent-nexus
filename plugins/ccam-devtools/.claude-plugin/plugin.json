@@ -1,7 +1,7 @@
 {
   "name": "ccam-devtools",
   "description": "Developer tools for Claude Code Agent Monitor — session debugging, hook diagnostics, data export, and system health checks for maintaining a healthy monitoring setup.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "author": { "name": "Son Nguyen", "url": "https://github.com/hoangsonww" },
   "homepage": "https://github.com/juanmarboledao2304/dual-agent-nexus",
   "repository": "https://github.com/juanmarboledao2304/dual-agent-nexus",
