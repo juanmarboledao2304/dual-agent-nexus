@@ -246,6 +246,38 @@ describe("registry sync against the database", () => {
     assert.equal(main.awaiting_input_since, null);
   });
 
+  it("reopens a closed row whose terminal is still open, but not a finished job", async () => {
+    const open = "88888888-8888-4888-8888-888888888888";
+    const done = "99999999-9999-4999-8999-999999999999";
+    for (const sid of [open, done]) {
+      await hook("SessionStart", { session_id: sid, cwd: "C:\\work" });
+      await hook("UserPromptSubmit", { session_id: sid, prompt: "go" });
+      stmts.updateSession.run(null, "completed", new Date().toISOString(), null, sid);
+      stmts.updateAgent.run(
+        null,
+        "completed",
+        null,
+        null,
+        new Date().toISOString(),
+        null,
+        `${sid}-main`
+      );
+    }
+    makeSync(
+      registryWith(
+        { sessionId: open, kind: "interactive", status: "idle" },
+        { sessionId: done, status: "idle", jobId: "j9", jobState: "done" }
+      )
+    )();
+    const reopened = stmts.getSession.get(open);
+    assert.equal(reopened.status, "active");
+    assert.equal(reopened.ended_at, null);
+    const main = stmts.getAgent.get(`${open}-main`);
+    assert.equal(main.status, "waiting");
+    assert.equal(main.awaiting_reason, "stop");
+    assert.equal(stmts.getSession.get(done).status, "completed");
+  });
+
   it("leaves a status alone while Claude Code is still settling it", async () => {
     const sid = "44444444-4444-4444-8444-444444444444";
     await hook("SessionStart", { session_id: sid, cwd: "C:\\work" });
