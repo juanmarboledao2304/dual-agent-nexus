@@ -21,6 +21,8 @@ Complete REST API and WebSocket documentation for Agent Dashboard.
   - [Notifications](#notifications)
   - [Remote Data Sources](#remote-data-sources)
   - [Remote Push Ingestion](#remote-push-ingestion)
+  - [Run Agent](#run-agent)
+  - [Nexus quota, dispatch, and simulation](#nexus-quota-dispatch-and-simulation)
 - [WebSocket API](#websocket-api)
 - [Error Handling](#error-handling)
 - [Rate Limiting](#rate-limiting)
@@ -1490,6 +1492,37 @@ DELETE /api/run/:id                   Stop (SIGTERM → SIGKILL after 5 s)
 `provider` defaults to `"claude"`. Claude keeps `"headless"` (single-shot, prompt in argv via `-p`) and `"conversation"` modes, including `resumeSessionId` support. Codex always uses a real multi-turn app-server thread; its `permissionMode` is an approval policy (`"untrusted"`, `"on-request"`, or `"never"`) and its `sandbox` is `"read-only"`, `"workspace-write"`, or `"danger-full-access"`. Codex's model list is retrieved from the signed-in local app server, while Claude returns its supported aliases plus locally observed models because the Claude CLI has no model-list command. `run_stream` carries parsed Claude stream-json envelopes or normalized Codex app-server events; `run_status` and `run_input_ack` cover both providers. Concurrency is effectively uncapped (default ceiling 10000, override with `RUN_MAX_CONCURRENT`) — the ceiling exists only to prevent fork-bomb footguns from a buggy client.
 
 Spawned `claude` processes fire the dashboard's hooks like any other CLI session, so they show up in `/api/sessions`, the analytics, the Kanban board, and the Workflows page automatically — the Run page itself just owns the live streaming UX.
+
+### Nexus quota, dispatch, and simulation
+
+The routes behind the fuel gauge, the **Dispatch a task** half of the Launch panel, and **Simulate swarm**.
+
+```http
+GET    /api/quota                     Dual quota telemetry: claude (5-hour window, burn, rate_limits), antigravity, cascade
+POST   /api/quota/claude-limits       Real Claude limits from statusline/nexus-statusline.js (hook-guarded)
+GET    /api/cascade/status            agy-cascade pool states and cooldowns (~/.cache/agy-cascade/<pool>.exhausted)
+POST   /api/dispatch                  Body: { prompt, engine?, model?, claudeModel?, antigravityModel?, effort?, cwd? }
+GET    /api/dispatch/active           { dispatches: [...] } running dispatches with dispatch_id and session_id
+POST   /api/dispatch/:id/kill         Stop a running dispatch
+POST   /api/simulate/swarm            Body: { cwd? } starts the 25-second demo cascade
+```
+
+**Real Claude limits.** Claude Code passes `rate_limits` only to its statusline command, so `statusline/nexus-statusline.js` forwards it:
+
+```json
+{
+  "rate_limits": {
+    "five_hour": { "used_percentage": 37, "resets_at": 1761080700 },
+    "seven_day": { "used_percentage": 61, "resets_at": 1761334200 }
+  }
+}
+```
+
+`resets_at` is epoch seconds. A body without a valid window returns `400 INVALID_RATE_LIMITS`. The windows are kept in `<data dir>/claude-rate-limits.json`, dropped once `resets_at` passes, and broadcast as `quota_updated`. While a window is present, `GET /api/quota` reports `claude.source = "statusline"` and the meter shows the real percentage and reset time; without one it falls back to the token-count estimate and labels it as such.
+
+**Dispatch.** `engine` is `claude` (default), `antigravity` (`agy`, `gemini`), `agy-claude`, `agy-cascade` (`cascade`), `fanout` (`fan-out`), or `dual` (`swarm`, `both`). The response (`201`) carries `dispatch_id`, `session_id`, `agent_id`, `provider`, `model`, `effort`, `mode`, `cwd`, `pid`, and `status`; output streams over WebSocket and the session closes when the process exits, with the real output parsed for a `===DIGEST===` block. On Windows, `.exe` binaries run directly, extensionless shebang scripts such as `agy-cascade` run through Git Bash, and `.cmd` shims are quoted. If the CLI cannot be launched, the dispatch fails with `CLI '<bin>' could not be launched: not found on PATH`; set `NEXUS_DISPATCH_SIMULATE=1` to replay the canned stream instead (demos only).
+
+**Simulation.** `POST /api/simulate/swarm` returns `201 { ok, simulation_id, duration_ms: 25000, claude_session_id, antigravity_session_id }`. Sessions use the `swarm-claude-<id>` / `swarm-agy-<id>` ids and the `cwd` you pass (default: the server's working directory). Starting a new run cancels the previous one.
 
 ---
 

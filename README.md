@@ -10,7 +10,7 @@
 
 ![The Command screen: what needs you, how much Claude Direct quota is left, and what your agents are doing right now](./docs/screenshots/command.png)
 
-**See it in 43 seconds:** [watch the tour (MP4, with voice-over)](./docs/media/dualagent-nexus-promo.mp4)
+**See it in 44 seconds:** [watch the tour (MP4, with voice-over)](./docs/media/dualagent-nexus-promo.mp4)
 
 ![A short loop of the promo: the Nexus logo, the Needs-you slips, and the Claude Direct fuel gauge](./docs/media/dualagent-nexus-tour.gif)
 
@@ -50,6 +50,15 @@ npm run install-hooks --all
 - **Claude Code** hooks go to `~/.claude/settings.json` and stream to `http://127.0.0.1:7770/api/hooks`.
 - **Google Antigravity** hooks go to `~/.gemini/config/hooks.json`.
 - A transcript watcher tails `~/.claude/projects/**/*.jsonl` and `~/.gemini/**/*.jsonl` to capture subagents.
+- Every 5 seconds Nexus also reads Claude Code's own session registry (`~/.claude/sessions/`), so a finished background job closes, a job waiting for your reply surfaces, and sessions keep their real names, on Windows too.
+
+For your **real Claude limits** (5-hour and weekly use, reset time), point Claude Code's statusline at the Nexus script in `~/.claude/settings.json`, then restart Claude Code:
+
+```json
+{ "statusLine": { "type": "command", "command": "node \"/path/to/dual-agent-nexus/statusline/nexus-statusline.js\"" } }
+```
+
+Claude Code hands `rate_limits` only to the statusline, and the script forwards them to Nexus. Without it, the quota is an estimate from token counts and says so. Details in [`statusline/README.md`](./statusline/README.md#nexus-statusline-real-claude-limits).
 
 Open **http://localhost:7770**. No agents running yet? Go to **Agents** and press **Simulate swarm** to play a 25-second demo of a three-level cascade (conductor, `agy-cascade` bridge, fan-out), including a pool running out of quota and an approval prompt. For development with hot reload use `npm run dev` and open http://localhost:5173.
 
@@ -65,8 +74,8 @@ The top bar is the same on every page: the five sections, a search field (`Ctrl 
 
 The home screen. Top to bottom:
 
-- **Needs you.** Only the things that block work, printed as paper slips so your eye lands there first: waiting for your approval, its pool ran out of quota, stopped with an error (last 30 minutes), repeating the same tool, or quiet for 10+ minutes while marked as working. Quiet agents fold into one slip. When nothing needs you, it is a single line: *Nothing needs you right now.*
-- **Claude Direct quota.** The big number is how long until your 5-hour window fills at the current pace. Under it: tokens used of the cap, burn rate, an 8-bit fuel bar, the agy-cascade waterfall (which pool is in use, which is on standby or out of quota), and how many tokens digests kept off Claude Direct.
+- **Needs you.** Only the things that block work, printed as paper slips so your eye lands there first: waiting for your approval, waiting for your reply (a background job blocked on a question), its pool ran out of quota, stopped with an error (last 30 minutes), repeating the same tool, quiet for 10+ minutes while marked as working, or Claude Direct under 20% of its 5-hour window. Quiet agents fold into one slip. When nothing needs you, it is a single line: *Nothing needs you right now.*
+- **Claude Direct quota.** With the Nexus statusline, the big number is how much of your real 5-hour limit is free, with its reset time and your weekly use (*Real Claude limit · resets in 2h 05m · week 61% used*). Without it, the card shows the token-count estimate: time until the window fills at the current pace, tokens used, and burn rate. Under either: an 8-bit fuel bar, the agy-cascade waterfall (which pool is in use, which is on standby or out of quota), and how many tokens digests kept off Claude Direct.
 - **Today.** Agents live, active sessions, events today and all time, total cost.
 - **Live agents.** The live agent tree, one line per agent: sprite, task, current tool, model, context use, status. Finished subagents fold into *N finished*. Click any row to open the inspector with its event log.
 - **Latest events.** The last tool calls as they happen; *All events* opens the full stream.
@@ -89,7 +98,7 @@ Every view shares the agent inspector. **Simulate swarm** lives here too.
 
 ![Sessions](./docs/screenshots/sessions.png)
 
-Every recorded session with status, last activity, duration, agents, and cost, plus search, project filter, and status filters. Switch to **Events** for the live event stream (pause, filter by type, tool, or session). Open a session for its agents, the full conversation, and a timeline.
+Every recorded session with status, last activity, duration, agents, and cost (Claude sessions follow what Claude Code itself reports: working, waiting for approval, waiting for your reply, or done), plus search, project filter, and status filters. Switch to **Events** for the live event stream (pause, filter by type, tool, or session). Open a session for its agents, the full conversation, and a timeline.
 
 ### Usage
 
@@ -122,7 +131,7 @@ Three sections:
 **Run agent** opens the Launch panel with two ways to start work:
 
 - **Interactive conversation** with Claude Code or Codex in a working directory, turn by turn.
-- **Dispatch a task:** one prompt sent to `agy-cascade` (the 3-pool waterfall), an AGY fan-out with a digest, Claude Code, Antigravity, or a dual swarm. Presets fill engine, model, effort, and a prompt template; output streams live and you can stop it at any time. Running dispatches keep streaming when you close the panel.
+- **Dispatch a task:** one prompt sent to `agy-cascade` (the 3-pool waterfall), an AGY fan-out with a digest, Claude Code, Antigravity, or a dual swarm. Presets fill engine, model, effort, and a prompt template; output streams live and you can stop it at any time. Running dispatches keep streaming when you close the panel. Dispatches run the real CLI (on Windows, `agy-cascade` runs through Git Bash), so the engine's command must be on the server's `PATH`; if it cannot be launched, the dispatch fails with that reason instead of pretending to succeed. When the process exits, its session closes and a `===DIGEST===` block in the output is picked up.
 
 ### Search and keyboard
 
