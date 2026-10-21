@@ -159,12 +159,12 @@ Nexus Console 是你运行的所有 Agent 的指挥中心，分为五个带标�
   <em><strong>指挥台</strong>（<code>/</code>）：需要你处理的事项、按当前节奏 Claude Direct 配额还能用多久、今日总量、实时 Agent 树和最新事件</em>
 </p>
 
-- **指挥台**（`/`）按顺序回答三个问题。**需要你处理**只列出阻塞工作的事项，以纸条形式打印：等待批准、所在 pool 配额用尽（退出码 `10`）、最近 30 分钟内出现错误、同一工具重复 4 次以上，或工作中超过 10 分钟没有任何事件（安静的 Agent 会折叠成一张纸条）。**Claude Direct 配额**卡片显示按当前消耗速度填满 5 小时窗口所需的时间、已用 Token 与上限、8 位像素风燃料条、agy-cascade 瀑布（使用中、待命，或配额用尽及其冷却时间），以及被 digest 挡在 Claude Direct 之外的 Token。**今日**、**实时 Agent**（每个 Agent 一行，已完成的 Subagent 折叠）和**最新事件**构成屏幕的其余部分。
+- **指挥台**（`/`）按顺序回答三个问题。**需要你处理**只列出阻塞工作的事项，以纸条形式打印：等待批准、等待你的回复（后台任务卡在一个问题上）、所在 pool 配额用尽（退出码 `10`）、最近 30 分钟内出现错误、同一工具重复 4 次以上、工作中超过 10 分钟没有任何事件（安静的 Agent 会折叠成一张纸条），或 Claude Direct 低于其 5 小时窗口的 20%。安装 `statusline/nexus-statusline.js` 后，**Claude Direct 配额**卡片显示真实 5 小时限额的剩余比例、重置时间和本周用量；未安装时显示基于 Token 计数的估算（按当前消耗速度填满 5 小时窗口所需的时间、已用 Token），并标明为估算。两种情况下都有：8 位像素风燃料条、agy-cascade 瀑布（使用中、待命，或配额用尽及其冷却时间），以及被 digest 挡在 Claude Direct 之外的 Token。**今日**、**实时 Agent**（每个 Agent 一行，已完成的 Subagent 折叠）和**最新事件**构成屏幕的其余部分。
 - **Agent**（`/agents`）是一个页面，用四种视图呈现同一批 Agent，因此级联层级只绘制一次：**树形**（`?mode=tree`，大纲，带 **图** 切换）、**时间线**（`?mode=timeline`，每个 Agent 一根从开始到结束的条，窗口为 30 分钟 / 2 小时 / 12 小时，按 pool 着色）、**看板**（`?mode=board`，列为 需要你处理 / 工作中 / 等待中 / 已完成）和**世界**（`?mode=world`，下文的 8 位像素办公室）。所有视图共用 Agent 检查器；**模拟 swarm** 会启动 25 秒的演示。
 - **会话**（`/sessions`）列出每个会话，支持搜索以及项目和状态筛选；**事件**（`?show=events`）是实时事件流。会话详情仍保留 Agent、对话和时间线标签页。
 - **用量**（`/usage`）显示完整的配额明细（瀑布、Claude Direct 5 小时窗口、Antigravity 会话 Token、flow 额度、带宽、消耗速度以及 Flash : Pro 比例）、digest 回报（被挡在 Claude Direct 之外的 Token 及其占窗口的比例）和分析（热力图、成本、Token、生产力、工作流洞察）。同样的明细也可从燃料表打开。
 - **设置**（`/settings`）有三个分区：**仪表盘**（`?section=dashboard`：外观、数据源、定价、Hook、数据位置、导入、远程数据源、Tabby、声音、通知、警报、数据、关于；通过侧边菜单一次显示一个分区）、**你的 Claude 配置**（`?section=claude`：skills、subagents、命令、记忆、插件、marketplace、MCP 服务器、Hook、快捷键、输出样式）和**系统健康**（`?section=health`）。
-- **运行 Agent** 打开 Launch 面板：与 Claude Code 或 Codex 的**交互式对话**（`/run`），或向 `agy-cascade`、带 digest 的 AGY 扇出、Claude Code、Antigravity 或双 swarm **派发任务**，带预设、实时控制台和停止按钮。面板关闭后，正在运行的派发任务仍会继续流式输出。
+- **运行 Agent** 打开 Launch 面板：与 Claude Code 或 Codex 的**交互式对话**（`/run`），或向 `agy-cascade`、带 digest 的 AGY 扇出、Claude Code、Antigravity 或双 swarm **派发任务**，带预设、实时控制台和停止按钮。面板关闭后，正在运行的派发任务仍会继续流式输出。派发会运行真实的 CLI（在 Windows 上，`agy-cascade` 这类带 shebang 的脚本通过 Git Bash 运行），因此其命令必须在服务器的 `PATH` 中；无法启动时，派发会以该原因失败（只有设置 `NEXUS_DISPATCH_SIMULATE=1` 才会播放模拟输出）。进程退出后，其会话关闭，并解析输出中的 `===DIGEST===` 块。
 
 <table>
   <tr>

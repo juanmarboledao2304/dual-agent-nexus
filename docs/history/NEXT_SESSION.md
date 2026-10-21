@@ -1,5 +1,21 @@
 # DualAgent Nexus — handoff for the next session
 
+**State (2026-10-21):** `main` carries 3.2.0 plus the live-sync fixes (PRs #2 and #3): Claude Code
+session-registry sync (`NEXUS_LIVE_SYNC_MS`), real Claude limits through
+`statusline/nexus-statusline.js`, real dispatch on Windows (`NEXUS_DISPATCH_SIMULATE` for demos), and
+Opus 5.5 sessions labelled as Claude Code. Server tests 1478 pass / 10 skipped, client 565 pass,
+typecheck and build clean. The docs, all eleven README screenshots, the promo video (44 s), its GIF
+and VTT were regenerated to match. Capture recipe: seed a fresh DB with `DASHBOARD_DATA_DIR`,
+`CLAUDE_HOME`, `HOME`, and `USERPROFILE` pointing at a temp dir and `DASHBOARD_PORT=7790`; before
+each shot POST sample `rate_limits` to `/api/quota/claude-limits` (so the meter shows the real-limit
+mode) and start `POST /api/simulate/swarm` with `{ "cwd": "/home/dev/dual-agent-nexus" }` so no local
+path leaks; shoot at 1440x900 between 11 and 17 s (pool 1 out of quota, approval pending), with
+`localStorage` `i18nextLng=en` and `provider-onboarding-shown-v2=1`. Video GIF:
+`npx remotion render Video-Nexus out/dualagent-nexus-tour.gif --codec=gif --every-nth-frame=3
+--frames=299-746 --scale=0.41667` (Remotion's bundled ffmpeg lacks the `fps`/`palettegen` filters).
+
+## State (2026-10-20)
+
 **State (2026-10-20):** version **3.2.0** ships the **Nexus Console redesign** (PR #1, merged into
 `main`, tag `v3.2.0`). The visual follow-ups (dispatcher, Analytics and graph colours, Settings labels)
 are done; what remains is listed under "Still open" in the plan. Original branch `worktree-redesign-clarity` carried the **Nexus Console redesign**
