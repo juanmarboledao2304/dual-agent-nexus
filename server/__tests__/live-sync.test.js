@@ -291,43 +291,50 @@ describe("real Claude limits from the statusline", () => {
 });
 
 describe("Windows command resolution", () => {
-  it("runs exe directly, bash scripts through Git Bash, and quotes .cmd shims", () => {
-    const bin = fs.mkdtempSync(path.join(TMP, "bin-"));
-    const git = fs.mkdtempSync(path.join(TMP, "git-"));
-    fs.mkdirSync(path.join(git, "cmd"));
-    fs.mkdirSync(path.join(git, "bin"));
-    fs.writeFileSync(path.join(git, "cmd", "git.exe"), "");
-    fs.writeFileSync(path.join(git, "bin", "bash.exe"), "");
-    fs.writeFileSync(path.join(bin, "tool.exe"), "");
-    fs.writeFileSync(path.join(bin, "shim.cmd"), "@echo off");
-    fs.writeFileSync(path.join(bin, "script"), "#!/usr/bin/env bash\necho hi\n");
-    fs.writeFileSync(path.join(bin, "plain"), "not a script");
-    const env = {
-      PATH: [bin, path.join(git, "cmd")].join(";"),
-      PATHEXT: ".EXE;.CMD",
-      ProgramFiles: path.join(TMP, "none"),
-    };
-    const opts = { platform: "win32", env };
+  // Builds real Windows paths on disk, so it only means something on a Windows host.
+  it(
+    "runs exe directly, bash scripts through Git Bash, and quotes .cmd shims",
+    {
+      skip: process.platform !== "win32",
+    },
+    () => {
+      const bin = fs.mkdtempSync(path.join(TMP, "bin-"));
+      const git = fs.mkdtempSync(path.join(TMP, "git-"));
+      fs.mkdirSync(path.join(git, "cmd"));
+      fs.mkdirSync(path.join(git, "bin"));
+      fs.writeFileSync(path.join(git, "cmd", "git.exe"), "");
+      fs.writeFileSync(path.join(git, "bin", "bash.exe"), "");
+      fs.writeFileSync(path.join(bin, "tool.exe"), "");
+      fs.writeFileSync(path.join(bin, "shim.cmd"), "@echo off");
+      fs.writeFileSync(path.join(bin, "script"), "#!/usr/bin/env bash\necho hi\n");
+      fs.writeFileSync(path.join(bin, "plain"), "not a script");
+      const env = {
+        PATH: [bin, path.join(git, "cmd")].join(";"),
+        PATHEXT: ".EXE;.CMD",
+        ProgramFiles: path.join(TMP, "none"),
+      };
+      const opts = { platform: "win32", env };
 
-    const exe = resolveCommand("tool", ["-p", "two words"], opts);
-    assert.equal(exe.via, "direct");
-    assert.equal(exe.shell, false);
-    assert.deepEqual(exe.args, ["-p", "two words"]);
+      const exe = resolveCommand("tool", ["-p", "two words"], opts);
+      assert.equal(exe.via, "direct");
+      assert.equal(exe.shell, false);
+      assert.deepEqual(exe.args, ["-p", "two words"]);
 
-    const cmd = resolveCommand("shim", ['say "hi"'], opts);
-    assert.equal(cmd.via, "cmd");
-    assert.equal(cmd.shell, true);
-    assert.deepEqual(cmd.args, ['"say ""hi"""']);
+      const cmd = resolveCommand("shim", ['say "hi"'], opts);
+      assert.equal(cmd.via, "cmd");
+      assert.equal(cmd.shell, true);
+      assert.deepEqual(cmd.args, ['"say ""hi"""']);
 
-    const script = resolveCommand("script", ["--dir", "x"], opts);
-    assert.equal(script.via, "bash");
-    assert.equal(script.command, path.win32.resolve(path.join(git, "bin", "bash.exe")));
-    assert.equal(script.args[0], path.join(bin, "script").replace(/\\/g, "/"));
-    assert.deepEqual(script.args.slice(1), ["--dir", "x"]);
+      const script = resolveCommand("script", ["--dir", "x"], opts);
+      assert.equal(script.via, "bash");
+      assert.equal(script.command, path.win32.resolve(path.join(git, "bin", "bash.exe")));
+      assert.equal(script.args[0], path.join(bin, "script").replace(/\\/g, "/"));
+      assert.deepEqual(script.args.slice(1), ["--dir", "x"]);
 
-    assert.equal(resolveCommand("plain", [], opts), null);
-    assert.equal(resolveCommand("missing", [], opts), null);
-  });
+      assert.equal(resolveCommand("plain", [], opts), null);
+      assert.equal(resolveCommand("missing", [], opts), null);
+    }
+  );
 
   it("leaves non-Windows platforms to the OS", () => {
     const r = resolveCommand("agy-cascade", ["a"], { platform: "linux", env: {} });
@@ -352,14 +359,20 @@ describe("one-shot dispatch", () => {
       });
       assert.equal(res.status, 201);
       const sid = res.body.dispatch.session_id;
-      assert.equal(res.body.dispatch.status, "error");
-      const session = stmts.getSession.get(sid);
+      // Windows resolves PATH up front and fails synchronously; elsewhere spawn reports
+      // ENOENT asynchronously, so wait for the error to land.
+      let session = stmts.getSession.get(sid);
+      for (let i = 0; i < 50 && session.status !== "error"; i++) {
+        await new Promise((r) => setTimeout(r, 20));
+        session = stmts.getSession.get(sid);
+      }
       assert.equal(session.status, "error");
       assert.equal(session.awaiting_input_since, null);
       const active = (await request("/api/dispatch/active")).body.dispatches.find(
         (d) => d.session_id === sid
       );
-      assert.ok(active.logs.some((l) => /could not be launched/.test(l.line)));
+      assert.equal(active.status, "error");
+      assert.ok(active.logs.some((l) => /could not be launched|failed to start/.test(l.line)));
       assert.ok(!active.logs.some((l) => /DIGEST|checkpoint/.test(l.line)));
     } finally {
       process.env.PATH = savedPath;
