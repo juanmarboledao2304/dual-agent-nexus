@@ -23,6 +23,7 @@ const { ingestWorkflowsForSession } = require("../lib/workflow-ingest");
 // `liveness.probeLiveCwds` and the watchdog picks the stub up at call time.
 const liveness = require("../lib/session-liveness");
 const { createClaudeLiveSync } = require("../lib/claude-live-registry");
+const { isClaudeProjectsTranscript } = require("../lib/claude-home");
 const { getRemotePushToken, extractHeaderOnlyToken, tokensMatch } = require("../lib/security");
 const { REMOTE_PROVIDERS, assertProvider } = require("../lib/remote-sync");
 const { normalizeSpeed, normalizeGeo, normalizeTier } = require("../lib/token-usage");
@@ -269,9 +270,14 @@ function ensureSession(sessionId, data, origin = null) {
   const cursorSession =
     data.provider === "cursor" ||
     (typeof data.transcript_path === "string" && isCursorTranscriptPath(data.transcript_path));
+  // Claude Code sends a model but no provider; without this, an Opus/Sonnet 5.x model would be
+  // guessed as Antigravity's Pool 1. Its transcript under <CLAUDE_HOME>/projects proves origin.
+  const claudeCodeSession = !data.provider && isClaudeProjectsTranscript(data.transcript_path);
   const resolvedProvider = cursorSession
     ? "cursor"
-    : normalizeProvider(data.provider, data.model, data.source);
+    : claudeCodeSession
+      ? "claude"
+      : normalizeProvider(data.provider, data.model, data.source);
   const classified = classifyModelAndEffort({
     provider: resolvedProvider,
     model: data.model,
@@ -280,6 +286,11 @@ function ensureSession(sessionId, data, origin = null) {
     isSubagent: false,
     type: "main",
   });
+
+  if (session && claudeCodeSession && session.provider === "agy-claude") {
+    // Rows born before the transcript-path check were mislabelled as Antigravity Pool 1.
+    setSessionProviderStmt.run("claude", sessionId);
+  }
 
   if (!session) {
     stmts.insertSession.run(
@@ -1524,7 +1535,8 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
   const curSession = stmts.getSession.get(sessionId);
   const curAgent = agentId ? stmts.getAgent.get(agentId) : null;
   const resolvedProvider = normalizeProvider(
-    data.provider || curSession?.provider,
+    data.provider ||
+      (isClaudeProjectsTranscript(data.transcript_path) ? "claude" : curSession?.provider),
     data.model || curAgent?.model || curSession?.model,
     data.source || curSession?.source
   );

@@ -291,9 +291,23 @@ function writeEnvFile(key, value) {
   fs.renameSync(tempPath, envPath);
 }
 
+/**
+ * True when `value` is a transcript JSONL under the Claude Code projects directory. Only Claude
+ * Code writes there, so a hook carrying such a path comes from a Claude Code (direct
+ * subscription) session even when its payload names an Opus/Sonnet 5.x model and no provider.
+ */
+function isClaudeProjectsTranscript(value) {
+  if (typeof value !== "string" || !value) return false;
+  const relative = path.relative(getProjectsDir(), path.resolve(value));
+  if (!relative || path.isAbsolute(relative)) return false;
+  const posix = relative.split(path.sep).join("/");
+  return !posix.startsWith("../") && posix.endsWith(".jsonl");
+}
+
 module.exports = {
   getClaudeHome,
   getProjectsDir,
+  isClaudeProjectsTranscript,
   getDataDir,
   getTranscriptSnapshotDir,
   getSettingsPath,
