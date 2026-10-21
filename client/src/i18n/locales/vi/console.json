@@ -21,6 +21,7 @@
   },
   "status": {
     "approval": "Cần phê duyệt",
+    "input": "Cần bạn trả lời",
     "working": "Đang làm việc",
     "waiting": "Đang chờ",
     "error": "Lỗi",
@@ -52,7 +53,13 @@
     "waterfallHint": "Công việc đổ từ nhóm 1 sang nhóm 3. Cần bảo vệ Claude Direct.",
     "digest": "Đã giữ lại khỏi Claude Direct:",
     "digestValue": "{{tokens}} token trong {{count}} digest",
-    "openUsage": "Xem đầy đủ mức dùng"
+    "openUsage": "Xem đầy đủ mức dùng",
+    "usedPct": "Đã dùng {{pct}}%",
+    "resetsIn": "Làm mới sau",
+    "resetsShort": "làm mới {{time}}",
+    "weekly": "Tuần (7 ngày)",
+    "weeklyValue": "Đã dùng {{pct}}%, làm mới sau {{time}}",
+    "estimateHint": "Ước tính cục bộ. Cài statusline Nexus (statusline/nexus-statusline.js) để xem giới hạn Claude thực."
   },
   "needsYou": {
     "title_one": "Cần bạn ({{count}})",
@@ -66,6 +73,7 @@
     "quotaLowDetail": "Hết sau {{time}} với tốc độ hiện tại",
     "kind": {
       "approval": "Đang chờ bạn phê duyệt",
+      "input": "Đang chờ bạn trả lời",
       "quota": "Nhóm đã hết hạn mức",
       "error": "Dừng do lỗi",
       "loop": "Đang lặp {{tool}} ({{count}} lần)",
@@ -112,7 +120,8 @@
     "openAgents": "Mở Agent",
     "eventsTitle": "Sự kiện mới nhất",
     "allEvents": "Tất cả sự kiện",
-    "noEvents": "Chưa có sự kiện nào. Khi bạn chạy agent, các lệnh gọi công cụ sẽ hiện ở đây."
+    "noEvents": "Chưa có sự kiện nào. Khi bạn chạy agent, các lệnh gọi công cụ sẽ hiện ở đây.",
+    "fuelLineReal": "Giới hạn Claude thực · làm mới sau {{reset}} · tuần đã dùng {{week}}%"
   },
   "agents": {
     "title": "Agent",

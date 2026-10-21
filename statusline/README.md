@@ -32,6 +32,27 @@ Cost color thresholds:
 - **Yellow** — $5–$20
 - **Red** — $20+
 
+## Nexus statusline (real Claude limits)
+
+`statusline/nexus-statusline.js` is a Node alternative that also feeds DualAgent Nexus your real Claude subscription limits. Claude Code passes `rate_limits` (`five_hour` and `seven_day`, each with `used_percentage` and `resets_at`) only to the statusline command; the script forwards it to `POST /api/quota/claude-limits` (same port discovery and `CCAM_HOOK_TOKEN` as the hook handler) and prints one line:
+
+```text
+Opus 5.5 · ctx 12% · 5h 37% (2h 05m) · 7d 61%
+```
+
+Install it in `~/.claude/settings.json` (use your checkout path):
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "node \"C:/path/to/dual-agent-nexus/statusline/nexus-statusline.js\""
+  }
+}
+```
+
+The quota meter, the Home quota card and the Needs-you quota slip then show the real 5-hour use, its reset time and the weekly use. Until a statusline reports, they show the token-count estimate and say so. The POST is fire-and-forget with a 2 s timeout, so the statusline never blocks Claude Code.
+
 ## Requirements
 
 - Python 3.6+

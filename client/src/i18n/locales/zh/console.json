@@ -21,6 +21,7 @@
   },
   "status": {
     "approval": "需要批准",
+    "input": "需要你回复",
     "working": "工作中",
     "waiting": "等待中",
     "error": "错误",
@@ -52,7 +53,13 @@
     "waterfallHint": "工作从池 1 流向池 3。需要保护的是 Claude Direct。",
     "digest": "未占用 Claude Direct 的部分：",
     "digestValue": "{{count}} 次 digest 共 {{tokens}} 个 token",
-    "openUsage": "查看完整用量"
+    "openUsage": "查看完整用量",
+    "usedPct": "已用 {{pct}}%",
+    "resetsIn": "重置倒计时",
+    "resetsShort": "{{time}} 后重置",
+    "weekly": "本周（7 天）",
+    "weeklyValue": "已用 {{pct}}%，{{time}} 后重置",
+    "estimateHint": "本地估算。安装 Nexus 状态栏（statusline/nexus-statusline.js）即可查看 Claude 实际限额。"
   },
   "needsYou": {
     "title_one": "需要你处理 ({{count}})",
@@ -66,6 +73,7 @@
     "quotaLowDetail": "按当前速度，{{time}}后耗尽",
     "kind": {
       "approval": "等待你的批准",
+      "input": "等待你的回复",
       "quota": "其池额度已耗尽",
       "error": "因错误而停止",
       "loop": "正在重复 {{tool}}（{{count}} 次）",
@@ -112,7 +120,8 @@
     "openAgents": "打开 Agent",
     "eventsTitle": "最新事件",
     "allEvents": "所有事件",
-    "noEvents": "还没有事件。启动 Agent 后，其工具调用会显示在这里。"
+    "noEvents": "还没有事件。启动 Agent 后，其工具调用会显示在这里。",
+    "fuelLineReal": "Claude 实际限额 · {{reset}} 后重置 · 本周已用 {{week}}%"
   },
   "agents": {
     "title": "Agent",

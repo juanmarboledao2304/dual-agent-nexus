@@ -4,7 +4,8 @@
  * pools, agy-cascade waterfall status). One 6-second poll plus WebSocket pushes feed every consumer (the
  * top-bar meter, the Home quota card, the Usage page) instead of each component polling on its own. The
  * poll only runs while at least one component is subscribed, and keeps the last good value when the
- * server is briefly unreachable.
+ * server is briefly unreachable. {@link summarizeClaudeWindow} prefers the real subscription limits the
+ * Nexus statusline forwards (source "statusline") and falls back to the token-count estimate.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
@@ -109,6 +110,19 @@ export interface ClaudeWindowSummary {
   hoursToEmpty: number | null;
   burnPerHour: number;
   cacheEfficiencyPct: number;
+  /** "statusline" when the numbers are Claude's real limits, "estimate" for the token-count guess. */
+  source: "statusline" | "estimate";
+  /** Hours until the 5-hour window resets (real limits only). */
+  resetsInHours: number | null;
+  /** Percent of the 7-day limit used (real limits only). */
+  weeklyUsedPct: number | null;
+  /** Hours until the 7-day limit resets (real limits only). */
+  weeklyResetsInHours: number | null;
+}
+
+/** Hours from `now` until an epoch-seconds instant, never negative. */
+function hoursUntil(epochSeconds: number, now: number): number {
+  return Math.max(0, (epochSeconds * 1000 - now) / 3_600_000);
 }
 
 /**
@@ -118,10 +132,32 @@ export interface ClaudeWindowSummary {
  * @returns Summary, or null when there is no telemetry yet.
  */
 export function summarizeClaudeWindow(
-  quota: DualQuotaTelemetry | null
+  quota: DualQuotaTelemetry | null,
+  now: number = Date.now()
 ): ClaudeWindowSummary | null {
   if (!quota) return null;
   const { window_5h_tokens: used, window_5h_cap: cap } = quota.claude;
+  const limits = quota.claude.rate_limits ?? null;
+  const fiveHour = limits?.five_hour;
+  const sevenDay = limits?.seven_day;
+  const weekly = {
+    weeklyUsedPct: sevenDay ? sevenDay.used_percentage : null,
+    weeklyResetsInHours: sevenDay ? hoursUntil(sevenDay.resets_at, now) : null,
+  };
+  if (fiveHour) {
+    return {
+      used,
+      cap,
+      freeFraction: Math.max(0, Math.min(1, 1 - fiveHour.used_percentage / 100)),
+      // Claude reports how much is used, not how fast it burns: no time-to-empty guess.
+      hoursToEmpty: null,
+      burnPerHour: quota.claude.burn_rate_tokens_per_hr,
+      cacheEfficiencyPct: quota.claude.cache_efficiency_pct,
+      source: "statusline",
+      resetsInHours: hoursUntil(fiveHour.resets_at, now),
+      ...weekly,
+    };
+  }
   const freeFraction = cap > 0 ? Math.max(0, Math.min(1, 1 - used / cap)) : 1;
   return {
     used,
@@ -130,6 +166,9 @@ export function summarizeClaudeWindow(
     hoursToEmpty: quota.claude.est_hours_to_cap,
     burnPerHour: quota.claude.burn_rate_tokens_per_hr,
     cacheEfficiencyPct: quota.claude.cache_efficiency_pct,
+    source: "estimate",
+    resetsInHours: null,
+    ...weekly,
   };
 }
 

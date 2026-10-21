@@ -421,6 +421,7 @@ sequenceDiagram
    - 共享的增量 Transcript 解析无需重复读取未变化的字节，即可记录压缩、API 与工具错误、回合时长、Token 和元数据。活跃会话扫描使用索引化的 `sessions.transcript_path` 值，并驱逐已废弃的缓存条目。
    - 15 秒看门狗会在 10 秒无 Hook 后查找 Transcript API 错误。它也会根据 Transcript 标记恢复 Esc 中断；若没有标记，则在 `DASHBOARD_WORKING_IDLE_SECONDS` 后恢复，默认 120，且仅当没有工具运行、Hook 和 Transcript 都未推进时触发。
    - 同一个看门狗会在 `DASHBOARD_LIVENESS_IDLE_SECONDS` 后通过进程存活探测完成已结束的本地会话，默认 60。启动探测会立即执行，并在约 5 秒后再次执行，不受该空闲门槛限制。探测会跳过 Windows、容器、转发的非 POSIX 路径、远程数据源会话、工具失败和 `DASHBOARD_LIVENESS_PROBE=0`；之后到达的真实 Hook 会自愈误判。
+   - 在 Windows 上（没有 `ps`/`lsof`），通过 Claude Code 自己的会话注册表（`~/.claude/sessions/<pid>.json`）探测 Claude 会话。同一注册表每 5 秒还会把活跃的 Claude 会话同步为 Claude Code 报告的状态：`jobs/<id>/state.json` 为 `done` 的后台任务会关闭，处于 `blocked`（等待回复）的任务会在“需要你”中显示为 **等待你的回复**，空闲提示只是普通等待（绝不是“批准”），会话的真实名称会替换 `Session <id8>`。一次性 dispatch 会在其进程退出时关闭；缺少 CLI 时 dispatch 会失败，而不是模拟运行。将 `statusline/nexus-statusline.js` 安装为 Claude Code 状态栏，即可用真实的 5 小时和每周限额替代基于令牌计数的配额估算。
    - 连续项目同步组合立即扫描、防抖 `fs.watch` 与 `DASHBOARD_SESSION_SYNC_MS` 轮询，默认 30 秒。单个 mtime 缓存只重新解析新增或增长的 Transcript，并广播与 Hook 相同的会话帧。
 4. **WebSocket** 发布已提交的变更。
 5. **UI** 无需轮询即可刷新受影响视图。
@@ -516,6 +517,8 @@ flowchart LR
 | `DASHBOARD_STALE_MINUTES` | `180` | 活跃或 Waiting 会话转为 abandoned 前的无活动时长。看门狗负责执行，维护任务每隔该值的四分之一运行一次，间隔限制在 60 秒至 5 分钟。 |
 | `DASHBOARD_WORKING_IDLE_SECONDS` | `120` | 在工具、Hook 和 Transcript 都未推进时恢复没有标记的 Esc 取消。较小的值响应更快，但可能短暂误判长时间静默回合；新活动会自愈。Cursor 使用相同规则。 |
 | `DASHBOARD_LIVENESS_PROBE` | `1` | 设为 `0` 可禁用本地 Claude/Codex 死亡会话的进程完成探测。Windows、容器、转发的非 POSIX 路径和远程数据源会自动跳过。 |
+| `NEXUS_LIVE_SYNC_MS` | `5000` | Claude Code 会话注册表同步的间隔（真实状态、已完成任务、等待回复的任务、真实名称）。`0` 表示禁用。 |
+| `NEXUS_DISPATCH_SIMULATE` | 未设置 | 设为 `1` 时，CLI 缺失的 dispatch 由预制遥测流代替（仅用于演示）。未设置时 dispatch 会明确失败。 |
 | `DASHBOARD_LIVENESS_IDLE_SECONDS` | `60` | 看门狗存活检查的 Transcript 或最后 Hook 空闲门槛。启动探测忽略此门槛，使已经结束的会话立即清除。 |
 | `DASHBOARD_SESSION_SYNC_MS` | `30000` | 新增或变化的 `~/.claude/projects` 文件的安全轮询间隔。`fs.watch` 仍会立即响应；`0` 只禁用轮询。 |
 | `DASHBOARD_CURSOR_HOME` | `~/.cursor` | Cursor Chat、Transcript、回填和持久快照的状态根目录。 |

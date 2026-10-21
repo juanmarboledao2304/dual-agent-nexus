@@ -97,13 +97,21 @@ function FuelCard() {
             </p>
           </div>
           <p className="mt-2 text-[13px] text-gray-400">
-            {t("home.fuelLine", {
-              used: formatTokens(claude.used),
-              cap: formatTokens(claude.cap),
-              burn: formatTokens(claude.burnPerHour),
-              pct: Math.round(claude.freeFraction * 100),
-            })}
+            {claude.source === "statusline"
+              ? t("home.fuelLineReal", {
+                  reset: formatHours(claude.resetsInHours ?? 0),
+                  week: claude.weeklyUsedPct != null ? Math.round(claude.weeklyUsedPct) : "--",
+                })
+              : t("home.fuelLine", {
+                  used: formatTokens(claude.used),
+                  cap: formatTokens(claude.cap),
+                  burn: formatTokens(claude.burnPerHour),
+                  pct: Math.round(claude.freeFraction * 100),
+                })}
           </p>
+          {claude.source === "estimate" && (
+            <p className="mt-1 text-[12px] text-gray-500">{t("quota.estimateHint")}</p>
+          )}
           <PixelMeter
             value={claude.freeFraction}
             blocks={40}

@@ -123,6 +123,23 @@ function createApp() {
   app.get("/api/quota", (_req, res) => {
     res.json(simulateController.getDualQuotaTelemetry());
   });
+  // Real subscription limits forwarded by statusline/nexus-statusline.js. Same
+  // guard as the hook routes: it is written by a local Claude Code process.
+  app.post("/api/quota/claude-limits", hookGuard, (req, res) => {
+    const { recordRateLimits } = require("./lib/claude-rate-limits");
+    const stored = recordRateLimits(req.body);
+    if (!stored) {
+      return res.status(400).json({
+        error: {
+          code: "INVALID_RATE_LIMITS",
+          message: "Expected rate_limits.five_hour / seven_day with used_percentage and resets_at",
+        },
+      });
+    }
+    const { broadcast } = require("./websocket");
+    broadcast("quota_updated", simulateController.getDualQuotaTelemetry());
+    return res.json({ ok: true, rate_limits: stored });
+  });
   app.get("/api/cascade/status", (_req, res) => {
     const { db } = require("./db");
     const { getCascadeStatus } = require("./watchers/cascadeCacheWatcher");

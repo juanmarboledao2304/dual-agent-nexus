@@ -21,6 +21,7 @@
   },
   "status": {
     "approval": "Pide aprobación",
+    "input": "Pide tu respuesta",
     "working": "Trabajando",
     "waiting": "Esperando",
     "error": "Error",
@@ -52,7 +53,13 @@
     "waterfallHint": "El trabajo cae de la bolsa 1 a la 3. Claude Direct es la que hay que proteger.",
     "digest": "Ahorrado a Claude Direct:",
     "digestValue": "{{tokens}} tokens en {{count}} digests",
-    "openUsage": "Ver uso completo"
+    "openUsage": "Ver uso completo",
+    "usedPct": "{{pct}}% usado",
+    "resetsIn": "Se renueva en",
+    "resetsShort": "renueva {{time}}",
+    "weekly": "Semana (7 días)",
+    "weeklyValue": "{{pct}}% usado, se renueva en {{time}}",
+    "estimateHint": "Estimación local. Instala la statusline de Nexus (statusline/nexus-statusline.js) para ver tu límite real de Claude."
   },
   "needsYou": {
     "title_one": "Te necesita ({{count}})",
@@ -66,6 +73,7 @@
     "quotaLowDetail": "Se agota en {{time}} a este ritmo",
     "kind": {
       "approval": "Espera tu aprobación",
+      "input": "Espera tu respuesta",
       "quota": "Su bolsa se quedó sin cuota",
       "error": "Se detuvo con un error",
       "loop": "Repite {{tool}} ({{count}} veces)",
@@ -112,7 +120,8 @@
     "openAgents": "Abrir Agentes",
     "eventsTitle": "Últimos eventos",
     "allEvents": "Todos los eventos",
-    "noEvents": "Aún no hay eventos. Inicia un agente y sus llamadas a herramientas aparecen aquí."
+    "noEvents": "Aún no hay eventos. Inicia un agente y sus llamadas a herramientas aparecen aquí.",
+    "fuelLineReal": "Límite real de Claude · se renueva en {{reset}} · semana al {{week}}%"
   },
   "agents": {
     "title": "Agentes",

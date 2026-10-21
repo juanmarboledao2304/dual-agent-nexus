@@ -18,13 +18,14 @@ import {
   resolveQuotaPoolBadge,
   sanitizeAgentText,
 } from "../../utils/agentTheme";
-import { isAwaitingApproval } from "../../utils/pixelSprites";
+import { isAwaitingApproval, isAwaitingReply } from "../../utils/pixelSprites";
 import { PixelAvatar } from "../PixelAvatar";
 import { poolMeta } from "./pools";
 
 /** Status presentation: dot colour plus a word, never colour alone. */
 function statusOf(agent: Agent): { key: string; dot: string; text: string } {
   if (isAwaitingApproval(agent)) return { key: "approval", dot: "bg-paper", text: "text-gray-50" };
+  if (isAwaitingReply(agent)) return { key: "input", dot: "bg-paper", text: "text-gray-50" };
   switch (agent.status) {
     case "working":
       return { key: "working", dot: "bg-mint-400 animate-pulse-dot", text: "text-gray-200" };
