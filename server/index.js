@@ -441,6 +441,18 @@ function startBackgroundServices() {
   // deferred; see the function for why live fixes cannot heal every old row.
   repairInflatedTokenTotals();
 
+  // Claude Code sessions on Opus/Sonnet 5.x used to be labelled agy-claude
+  // (Antigravity Pool 1). Idempotent; runs before the liveness reap so the
+  // reap and the registry sync see them as Claude sessions.
+  try {
+    const { repairClaudeProviderLabels } = require("./lib/claude-live-registry");
+    const fixed = repairClaudeProviderLabels(require("./db").db);
+    if (fixed > 0)
+      console.log(`Relabelled ${fixed} Claude Code session(s) mislabelled as agy-claude.`);
+  } catch (err) {
+    console.warn("Claude provider label repair failed:", err?.message || err);
+  }
+
   // Boot liveness reap. When the user quit Claude Code while the dashboard
   // was DOWN, the SessionEnd hook was lost and only the process probe can
   // tell the session is dead — without this, such sessions sit in Waiting

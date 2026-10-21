@@ -20,6 +20,7 @@ process.env.DASHBOARD_DB_PATH = path.join(TMP, "test.db");
 process.env.DASHBOARD_DATA_DIR = path.join(TMP, "data");
 process.env.DASHBOARD_LIVENESS_PROBE = "0";
 process.env.NEXUS_LIVE_SYNC_MS = "0";
+process.env.CLAUDE_HOME = path.join(TMP, "claude-home");
 delete process.env.NEXUS_DISPATCH_SIMULATE;
 
 const { createApp, startServer } = require("../index");
@@ -29,6 +30,7 @@ const {
   deriveLiveState,
   preferredName,
   createClaudeLiveSync,
+  repairClaudeProviderLabels,
 } = require("../lib/claude-live-registry");
 const { mapTelemetryStatus } = require("../utils/modelClassifier");
 const { resolveCommand } = require("../lib/command-resolver");
@@ -246,12 +248,86 @@ describe("registry sync against the database", () => {
     assert.equal(main.awaiting_input_since, null);
   });
 
+  it("reopens a closed row whose terminal is still open, but not a finished job", async () => {
+    const open = "88888888-8888-4888-8888-888888888888";
+    const done = "99999999-9999-4999-8999-999999999999";
+    for (const sid of [open, done]) {
+      await hook("SessionStart", { session_id: sid, cwd: "C:\\work" });
+      await hook("UserPromptSubmit", { session_id: sid, prompt: "go" });
+      stmts.updateSession.run(null, "completed", new Date().toISOString(), null, sid);
+      stmts.updateAgent.run(
+        null,
+        "completed",
+        null,
+        null,
+        new Date().toISOString(),
+        null,
+        `${sid}-main`
+      );
+    }
+    makeSync(
+      registryWith(
+        { sessionId: open, kind: "interactive", status: "idle" },
+        { sessionId: done, status: "idle", jobId: "j9", jobState: "done" }
+      )
+    )();
+    const reopened = stmts.getSession.get(open);
+    assert.equal(reopened.status, "active");
+    assert.equal(reopened.ended_at, null);
+    const main = stmts.getAgent.get(`${open}-main`);
+    assert.equal(main.status, "waiting");
+    assert.equal(main.awaiting_reason, "stop");
+    assert.equal(stmts.getSession.get(done).status, "completed");
+  });
+
   it("leaves a status alone while Claude Code is still settling it", async () => {
     const sid = "44444444-4444-4444-8444-444444444444";
     await hook("SessionStart", { session_id: sid, cwd: "C:\\work" });
     await hook("UserPromptSubmit", { session_id: sid, prompt: "go" });
     makeSync(registryWith({ sessionId: sid, jobState: "done", statusUpdatedAt: Date.now() }))();
     assert.equal(stmts.getSession.get(sid).status, "active");
+  });
+});
+
+describe("Claude Code sessions on Opus/Sonnet 5.x are not Antigravity", () => {
+  const transcriptFor = (sid) =>
+    path.join(process.env.CLAUDE_HOME, "projects", "C--work", `${sid}.jsonl`);
+
+  it("labels a hook carrying a Claude projects transcript as claude", async () => {
+    const sid = "aaaaaaaa-1111-4111-8111-111111111111";
+    await hook("SessionStart", {
+      session_id: sid,
+      cwd: "C:\\work",
+      model: "claude-opus-5-5",
+      transcript_path: transcriptFor(sid),
+    });
+    assert.equal(stmts.getSession.get(sid).provider, "claude");
+  });
+
+  it("still infers Pool 1 from the model when nothing proves a Claude Code origin", async () => {
+    const sid = "bbbbbbbb-2222-4222-8222-222222222222";
+    await hook("SessionStart", { session_id: sid, cwd: "C:\\work", model: "claude-opus-5-5" });
+    assert.equal(stmts.getSession.get(sid).provider, "agy-claude");
+  });
+
+  it("repairs rows mislabelled before the fix, and only those", async () => {
+    const mislabelled = "cccccccc-3333-4333-8333-333333333333";
+    const agy = "dddddddd-4444-4444-8444-444444444444";
+    for (const sid of [mislabelled, agy]) {
+      await hook("SessionStart", { session_id: sid, cwd: "C:\\work", model: "claude-opus-5-5" });
+    }
+    db.prepare("UPDATE sessions SET transcript_path = ? WHERE id = ?").run(
+      transcriptFor(mislabelled),
+      mislabelled
+    );
+    db.prepare("UPDATE sessions SET transcript_path = ? WHERE id = ?").run(
+      path.join(TMP, "antigravity", `${agy}.jsonl`),
+      agy
+    );
+    assert.ok(repairClaudeProviderLabels(db) >= 1);
+    assert.equal(stmts.getSession.get(mislabelled).provider, "claude");
+    assert.equal(stmts.getSession.get(agy).provider, "agy-claude");
+    assert.equal(repairClaudeProviderLabels(db), 0);
   });
 });
 

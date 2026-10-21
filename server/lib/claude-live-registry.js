@@ -5,14 +5,16 @@
  * (working / blocked / done / failed ...). Hooks alone cannot tell a finished job from an idle
  * prompt, and on Windows there is no process probe at all, so sessions drifted: finished jobs stayed
  * "working", idle prompts showed as "asks for approval", jobs asking for a reply never surfaced, and
- * dead sessions stayed active. This module reads that registry and steers active session rows to
- * the state Claude Code itself reports. It only writes when something actually changed.
+ * dead sessions stayed active. This module reads that registry, reopens a closed row whose process
+ * is still alive (unless its job is finished), and steers active session rows to
+ * the state Claude Code itself reports. It only writes when something actually changed. It also
+ * repairs Claude Code sessions that were mislabelled as Antigravity Pool 1 (agy-claude).
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { getClaudeHome } = require("./claude-home");
+const { getClaudeHome, isClaudeProjectsTranscript } = require("./claude-home");
 
 /** Names the dashboard invents when it knows nothing better. */
 const GENERIC_NAME = /^(?:Session|Main Agent - Session) [0-9a-f]{8}$/i;
@@ -168,7 +170,7 @@ function createClaudeLiveSync({
 
     for (const entry of registry.sessions.values()) {
       if (entry.spare) continue;
-      const session = stmts.getSession.get(entry.sessionId);
+      let session = stmts.getSession.get(entry.sessionId);
       if (!session || (session.provider || "claude") !== "claude") continue;
 
       let sessionTouched = false;
@@ -181,6 +183,22 @@ function createClaudeLiveSync({
       }
 
       const settled = !entry.statusUpdatedAt || now() - entry.statusUpdatedAt >= SETTLE_MS;
+
+      // A row closed by a startup import or a stale sweep while its process is still alive (an
+      // open terminal idle at its prompt) is live again. A finished job stays closed.
+      if ((session.status === "completed" || session.status === "abandoned") && settled) {
+        const state = deriveLiveState(entry);
+        if (state && state.kind !== "completed" && state.kind !== "error") {
+          stmts.reactivateSession.run(session.id);
+          if (stmts.getAgent.get(`${session.id}-main`)) {
+            stmts.reactivateAgent.run(`${session.id}-main`);
+            touchedAgents.add(`${session.id}-main`);
+          }
+          session = stmts.getSession.get(session.id);
+          sessionTouched = true;
+        }
+      }
+
       const live = session.status === "active" && settled ? deriveLiveState(entry) : null;
       const mainId = `${session.id}-main`;
       const main = stmts.getAgent.get(mainId);
@@ -279,7 +297,36 @@ function createClaudeLiveSync({
   };
 }
 
+/**
+ * One-off, idempotent repair: Claude Code sessions on an Opus/Sonnet 5.x model used to be
+ * labelled `agy-claude` (Antigravity Pool 1) because Claude Code's hooks carry a model but no
+ * provider. A transcript under <CLAUDE_HOME>/projects proves the session is Claude Code, so
+ * relabel the session and its main agent as `claude`.
+ *
+ * @returns {number} Sessions relabelled.
+ */
+function repairClaudeProviderLabels(db) {
+  const rows = db
+    .prepare(
+      "SELECT id, transcript_path FROM sessions WHERE provider = 'agy-claude' AND transcript_path IS NOT NULL"
+    )
+    .all();
+  const setSession = db.prepare("UPDATE sessions SET provider = 'claude' WHERE id = ?");
+  const setMain = db.prepare(
+    "UPDATE agents SET provider = 'claude' WHERE id = ? AND provider = 'agy-claude'"
+  );
+  let fixed = 0;
+  for (const row of rows) {
+    if (!isClaudeProjectsTranscript(row.transcript_path)) continue;
+    setSession.run(row.id);
+    setMain.run(`${row.id}-main`);
+    fixed += 1;
+  }
+  return fixed;
+}
+
 module.exports = {
+  repairClaudeProviderLabels,
   readLiveClaudeSessions,
   deriveLiveState,
   preferredName,
