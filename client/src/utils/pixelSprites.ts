@@ -430,6 +430,21 @@ export function isAwaitingApproval(agent: AvatarStateInput | null | undefined): 
 }
 
 /**
+ * True when a background Claude Code job stopped to ask the human for a reply (its job state is
+ * "blocked"; the server stamps awaiting_reason = "job_blocked"). Distinct from an approval prompt
+ * and from an ordinary idle prompt, which needs nobody.
+ *
+ * @param agent - Agent row (or a partial with the fields above).
+ * @returns Whether the agent is waiting on the human's reply.
+ */
+export function isAwaitingReply(agent: AvatarStateInput | null | undefined): boolean {
+  if (!agent) return false;
+  const status = String(agent.status || "").toLowerCase();
+  if (status === "completed" || status === "error") return false;
+  return Boolean(agent.awaiting_input_since) && agent.awaiting_reason === "job_blocked";
+}
+
+/**
  * Map an agent's lifecycle to an avatar state. Approval waits win over everything except a
  * finished lifecycle; a working agent with no active tool is thinking.
  *

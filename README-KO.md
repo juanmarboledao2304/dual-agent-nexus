@@ -418,6 +418,7 @@ sequenceDiagram
    - 공유 증분 트랜스크립트 파싱은 변경되지 않은 바이트를 다시 읽지 않고 컴팩션, API와 도구 오류, 턴 소요 시간, 토큰, 메타데이터를 기록합니다. 활성 세션 sweep은 indexed `sessions.transcript_path` 값을 사용하고 abandoned cache 항목을 제거합니다.
    - 15초 watchdog은 Hook이 10초 동안 없는 경우 트랜스크립트 API 오류를 찾습니다. 트랜스크립트 마커에서 Esc 중단도 복구하고, 마커가 없으면 도구가 실행 중이지 않고 Hook과 트랜스크립트가 모두 진행하지 않을 때만 `DASHBOARD_WORKING_IDLE_SECONDS`, 기본값 120 이후 복구합니다.
    - 같은 watchdog은 `DASHBOARD_LIVENESS_IDLE_SECONDS`, 기본값 60 이후 process-liveness probe로 종료된 local session을 완료합니다. 시작 probe는 즉시 실행되고 약 5초 후 이 idle gate 없이 다시 실행됩니다. Probe는 Windows, container, non-POSIX forwarded path, remote-source session, tool failure, `DASHBOARD_LIVENESS_PROBE=0`에서 건너뛰며, 이후 실제 Hook이 잘못된 완료를 자동 복구합니다.
+   - Windows에서는(`ps`/`lsof` 없음) Claude Code 자체의 세션 레지스트리(`~/.claude/sessions/<pid>.json`)로 Claude 세션을 확인합니다. 같은 레지스트리는 5초마다 활성 Claude 세션을 Claude Code가 보고하는 상태로 맞춥니다: `jobs/<id>/state.json`이 `done`인 백그라운드 작업은 종료되고, 답변을 기다리는 `blocked` 작업은 Needs you에 **답변을 기다리는 중**으로 표시되며, 유휴 프롬프트는 일반 대기(절대 "승인"이 아님)이고, 세션의 실제 이름이 `Session <id8>`을 대체합니다. 일회성 dispatch는 프로세스가 끝나면 닫히고, CLI가 없으면 실행을 시뮬레이션하지 않고 실패합니다. `statusline/nexus-statusline.js`를 Claude Code 상태줄로 설치하면 토큰 수 기반 할당량 추정 대신 실제 5시간 및 주간 한도를 볼 수 있습니다.
    - 지속적 프로젝트 동기화는 즉시 sweep, debounce `fs.watch`, 기본값 30초인 `DASHBOARD_SESSION_SYNC_MS` polling을 결합합니다. 하나의 mtime cache가 새 트랜스크립트나 커진 트랜스크립트만 다시 파싱하고 Hook과 같은 세션 frame을 broadcast합니다.
 4. **WebSocket**이 commit된 변경을 게시합니다.
 5. **UI**가 polling 없이 영향을 받는 보기를 새로 고칩니다.
@@ -516,6 +517,8 @@ flowchart LR
 | `DASHBOARD_STALE_MINUTES` | `180` | active 또는 Waiting 세션이 abandoned가 되기 전 비활성 시간입니다. Watchdog이 적용하고 유지 관리는 이 값의 1/4 주기로 실행되며 60초에서 5분 사이로 제한됩니다. |
 | `DASHBOARD_WORKING_IDLE_SECONDS` | `120` | 도구, Hook, 트랜스크립트 활동이 진행하지 않을 때 마커 없는 Esc 취소를 복구합니다. 값을 낮추면 더 빨리 반응하지만 긴 무음 턴을 잠시 잘못 분류할 수 있으며, 새 활동이 자동 복구합니다. Cursor도 같은 규칙을 사용합니다. |
 | `DASHBOARD_LIVENESS_PROBE` | `1` | 종료된 local Claude/Codex 세션의 process 기반 완료를 끄려면 `0`으로 설정합니다. Windows, container, 전달된 non-POSIX path, remote source는 자동으로 건너뜁니다. |
+| `NEXUS_LIVE_SYNC_MS` | `5000` | Claude Code 세션 레지스트리 동기화 간격(실제 상태, 완료된 작업, 답변을 기다리는 작업, 실제 이름). `0`이면 비활성화됩니다. |
+| `NEXUS_DISPATCH_SIMULATE` | 미설정 | `1`로 설정하면 CLI가 없는 dispatch를 미리 준비된 텔레메트리 스트림이 대신합니다(데모 전용). 미설정 시 dispatch가 명확히 실패합니다. |
 | `DASHBOARD_LIVENESS_IDLE_SECONDS` | `60` | Watchdog liveness 확인을 위한 트랜스크립트 또는 마지막 Hook idle gate입니다. 시작 probe는 이 gate를 무시하므로 이미 종료된 세션을 즉시 정리합니다. |
 | `DASHBOARD_SESSION_SYNC_MS` | `30000` | 새로 생기거나 변경된 `~/.claude/projects` 파일을 위한 안전 poll입니다. `fs.watch`는 계속 즉시 작동하며 `0`은 polling만 끕니다. |
 | `DASHBOARD_CURSOR_HOME` | `~/.cursor` | Chat, transcript, backfill, durable snapshot을 위한 Cursor 상태 root입니다. |

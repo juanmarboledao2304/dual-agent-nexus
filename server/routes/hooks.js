@@ -22,6 +22,7 @@ const { ingestWorkflowsForSession } = require("../lib/workflow-ingest");
 // Required as a module object (not destructured) so tests can swap
 // `liveness.probeLiveCwds` and the watchdog picks the stub up at call time.
 const liveness = require("../lib/session-liveness");
+const { createClaudeLiveSync } = require("../lib/claude-live-registry");
 const { getRemotePushToken, extractHeaderOnlyToken, tokensMatch } = require("../lib/security");
 const { REMOTE_PROVIDERS, assertProvider } = require("../lib/remote-sync");
 const { normalizeSpeed, normalizeGeo, normalizeTier } = require("../lib/token-usage");
@@ -1542,6 +1543,7 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
     status: data.status || curAgent?.status,
     currentTool: curAgent?.current_tool || (hookType === "PreToolUse" ? toolName : null),
     awaitingInput: Boolean(curAgent?.awaiting_input_since || curSession?.awaiting_input_since),
+    awaitingReason: curAgent?.awaiting_reason || curSession?.awaiting_reason || null,
   });
 
   if (curAgent) {
@@ -2401,11 +2403,28 @@ function livenessReap({ ignoreIdleGate = false, provider = "claude" } = {}) {
 
   const probe = liveness.probeLiveCwds(cli);
   const rolloutProbe = provider === "codex" ? liveness.probeLiveCodexRollouts() : null;
-  if (!probe.available && !rolloutProbe?.available) return;
+  // Claude Code's own session registry: an exact session-id probe, and the only
+  // one on Windows (where probeLiveCwds has no implementation).
+  const registryProbe =
+    provider === "claude" && !probe.available ? liveness.probeLiveClaudeSessionIds() : null;
+  if (!probe.available && !rolloutProbe?.available && !registryProbe?.available) return;
   const now = Date.now();
   for (const sess of activeSessions) {
     if (rolloutProbe?.available && sess.transcript_path) {
       if (rolloutProbe.paths.has(path.resolve(sess.transcript_path))) continue;
+    } else if (registryProbe?.available) {
+      if (registryProbe.ids.has(sess.id)) continue;
+      // Only real Claude Code sessions (UUID ids) are in the registry; dashboard-owned
+      // rows (dispatch-*, swarm-*) have their own lifecycle.
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(sess.id))
+        continue;
+      // Hook-forwarded sessions from another machine use that machine's path syntax;
+      // this host's registry can never list them.
+      const localCwd =
+        process.platform === "win32"
+          ? /^[A-Za-z]:[\\/]/.test(sess.cwd || "")
+          : path.posix.isAbsolute(sess.cwd || "");
+      if (!localCwd) continue;
     } else {
       if (!probe.available || !sess.cwd) continue;
       // Household-hook-forwarded sessions report cwd in the ORIGIN machine's own
@@ -3066,9 +3085,30 @@ const watchdogTimer = setInterval(watchdogCheck, WATCHDOG_INTERVAL_MS);
 // Don't keep the process alive just for the watchdog
 if (watchdogTimer.unref) watchdogTimer.unref();
 
+// Live registry sync: steer active Claude sessions to the state Claude Code
+// itself reports (busy / idle / permission prompt, background job done or
+// blocked on a reply, real session name). Hooks stay the low-latency path;
+// this corrects what hooks cannot express. NEXUS_LIVE_SYNC_MS=0 disables it.
+const syncClaudeLiveState = createClaudeLiveSync({ db, stmts, broadcast });
+const LIVE_SYNC_MS = (() => {
+  const raw = parseInt(process.env.NEXUS_LIVE_SYNC_MS, 10);
+  return Number.isFinite(raw) && raw >= 0 ? raw : 5_000;
+})();
+if (LIVE_SYNC_MS > 0) {
+  const liveSyncTimer = setInterval(() => {
+    try {
+      syncClaudeLiveState();
+    } catch (err) {
+      console.warn("[LIVE SYNC] Error during sync:", err?.message || err);
+    }
+  }, LIVE_SYNC_MS);
+  if (liveSyncTimer.unref) liveSyncTimer.unref();
+}
+
 router.transcriptCache = transcriptCache;
 router.watchdogCheck = watchdogCheck;
 router.livenessReap = livenessReap;
+router.syncClaudeLiveState = syncClaudeLiveState;
 router.processEvent = processEvent;
 // Exposed as a narrow test seam for version-variant Codex hook payloads.
 router.codexTranscriptPath = codexTranscriptPath;

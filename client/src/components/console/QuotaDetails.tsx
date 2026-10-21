@@ -124,17 +124,40 @@ export function QuotaDetails({ quota, cascade, wide = false }: QuotaDetailsProps
           label={t("quota.meterLabel")}
         />
         <div className="mt-2 divide-y divide-border/60">
-          <Row
-            label={t("quota.window")}
-            value={t("quota.usedOf", {
-              used: formatTokens(claude.used),
-              cap: formatTokens(claude.cap),
-            })}
-          />
-          <Row
-            label={t("quota.timeToEmpty")}
-            value={claude.hoursToEmpty != null ? formatHours(claude.hoursToEmpty) : t("quota.idle")}
-          />
+          {claude.source === "statusline" ? (
+            <>
+              <Row
+                label={t("quota.window")}
+                value={t("quota.usedPct", { pct: Math.round((1 - claude.freeFraction) * 100) })}
+              />
+              <Row label={t("quota.resetsIn")} value={formatHours(claude.resetsInHours ?? 0)} />
+              {claude.weeklyUsedPct != null && (
+                <Row
+                  label={t("quota.weekly")}
+                  value={t("quota.weeklyValue", {
+                    pct: Math.round(claude.weeklyUsedPct),
+                    time: formatHours(claude.weeklyResetsInHours ?? 0),
+                  })}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Row
+                label={t("quota.window")}
+                value={t("quota.usedOf", {
+                  used: formatTokens(claude.used),
+                  cap: formatTokens(claude.cap),
+                })}
+              />
+              <Row
+                label={t("quota.timeToEmpty")}
+                value={
+                  claude.hoursToEmpty != null ? formatHours(claude.hoursToEmpty) : t("quota.idle")
+                }
+              />
+            </>
+          )}
           <Row
             label={t("quota.burn")}
             value={t("quota.perHour", { n: formatTokens(claude.burnPerHour) })}
@@ -146,6 +169,9 @@ export function QuotaDetails({ quota, cascade, wide = false }: QuotaDetailsProps
           />
           <Row label={t("quota.effort")} value={effort(quota.claude.active_subagents)} />
         </div>
+        {claude.source === "estimate" && (
+          <p className="mt-2 text-[12px] leading-snug text-gray-500">{t("quota.estimateHint")}</p>
+        )}
       </section>
 
       <section aria-labelledby="quota-agy">

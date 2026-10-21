@@ -565,13 +565,19 @@ function formatModelShortName(model = "", provider = "claude", modelTier = "stan
 /**
  * Map hook event type and agent state to canonical telemetry status and legacy DB status.
  * @param {object} params
- * @returns {{ telemetryStatus: 'spawning' | 'thinking' | 'tool_use' | 'waiting_approval' | 'completed' | 'error', dbStatus: 'working' | 'waiting' | 'completed' | 'error' }}
+ * `waiting_approval` is reserved for a real permission/dialog block (a PermissionRequest hook, or a
+ * blocking Notification, which stamps awaiting_reason = "notification"). Any other wait — the turn
+ * ended, a resumed session, a background job asking for a reply — is `waiting_input`, so the UI never
+ * shows "asks for approval" for an agent that is just idle at its prompt.
+ * @param {object} params
+ * @returns {{ telemetryStatus: 'spawning' | 'thinking' | 'tool_use' | 'waiting_approval' | 'waiting_input' | 'completed' | 'error', dbStatus: 'working' | 'waiting' | 'completed' | 'error' }}
  */
 function mapTelemetryStatus({
   hookType = "",
   status = "",
   currentTool = null,
   awaitingInput = false,
+  awaitingReason = null,
 } = {}) {
   const s = String(status || "")
     .toLowerCase()
@@ -592,12 +598,13 @@ function mapTelemetryStatus({
   }
   if (
     s === "waiting_approval" ||
-    s === "waiting" ||
-    awaitingInput ||
     h === "PermissionRequest" ||
-    h === "Notification"
+    (awaitingInput && awaitingReason === "notification")
   ) {
     return { telemetryStatus: "waiting_approval", dbStatus: "waiting" };
+  }
+  if (s === "waiting" || awaitingInput) {
+    return { telemetryStatus: "waiting_input", dbStatus: "waiting" };
   }
   if (s === "spawning" || h === "SubagentStart" || h === "SessionStart") {
     return { telemetryStatus: "spawning", dbStatus: "working" };

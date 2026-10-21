@@ -9,7 +9,9 @@
  * That covers Windows (no probe implementation), containers (host processes
  * are invisible, so an empty process list would be a lie), missing `ps` /
  * `lsof` binaries, and the DASHBOARD_LIVENESS_PROBE=0 escape hatch for
- * setups where hooks arrive from another machine.
+ * setups where hooks arrive from another machine. On Windows, Claude sessions
+ * are probed through Claude Code's own session registry instead
+ * (probeLiveClaudeSessionIds).
  * @author Son Nguyen <hoangson091104@gmail.com>
  */
 
@@ -189,8 +191,23 @@ function probeLiveCodexRollouts() {
   return { available: true, paths };
 }
 
+/**
+ * Session ids of every live Claude Code process, from Claude Code's own registry
+ * (`<CLAUDE_HOME>/sessions/<pid>.json`, pid checked). Exact per session and
+ * works on Windows, where {@link probeLiveCwds} has no implementation.
+ *
+ * @returns {{ available: boolean, ids: Set<string> }}
+ */
+function probeLiveClaudeSessionIds() {
+  if (probeDisabledByEnv() || isInsideContainer()) return { available: false, ids: new Set() };
+  const { readLiveClaudeSessions } = require("./claude-live-registry");
+  const registry = readLiveClaudeSessions();
+  return { available: registry.available, ids: new Set(registry.sessions.keys()) };
+}
+
 module.exports = {
   probeLiveCwds,
+  probeLiveClaudeSessionIds,
   probeLiveCodexRollouts,
   isAgentCommand,
   isClaudeCommand,

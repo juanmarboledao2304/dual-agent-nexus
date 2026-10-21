@@ -1,6 +1,9 @@
 /**
  * @file Unified Prompt Dispatcher & Process Manager for Claude Code CLI, Google Antigravity CLI (agy), and Dual Swarm mode.
  * Spawns child processes, streams stdout/stderr over WebSockets, records telemetry in SQLite, and provides a SIGTERM kill switch.
+ * Dispatches are one-shot: when the process exits the session is closed (completed or error), never left
+ * "waiting" for input it cannot receive. A missing CLI fails the dispatch visibly; the canned telemetry
+ * stream only runs when NEXUS_DISPATCH_SIMULATE=1 (demos).
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
@@ -11,8 +14,45 @@ const { stmts } = require("../db");
 const { broadcast } = require("../websocket");
 const hooksRouter = require("../routes/hooks");
 const { classifyModelAndEffort } = require("../utils/modelClassifier");
+const { resolveCommand } = require("../lib/command-resolver");
 
 const router = Router();
+
+/** Lines of process output kept for the final Stop event (digest + git checkpoint detection). */
+const OUTPUT_TAIL_LINES = 200;
+
+/** True when the canned telemetry stream may stand in for a missing CLI (demo setups only). */
+function simulationAllowed() {
+  return /^(1|true|yes|on)$/i.test(String(process.env.NEXUS_DISPATCH_SIMULATE || "").trim());
+}
+
+/**
+ * Fail a dispatch that could not run: log why, land the session in `error`, and tell the UI.
+ */
+function failDispatch(dispatchEntry, reason) {
+  if (dispatchEntry.status === "killed" || dispatchEntry.status === "error") return;
+  emitDispatchStream(dispatchEntry, "stderr", `[dispatch] ${reason}`);
+  dispatchEntry.status = "error";
+  hooksRouter.processEvent("Stop", {
+    session_id: dispatchEntry.sessionId,
+    provider: dispatchEntry.provider,
+    model: dispatchEntry.model,
+    effort: dispatchEntry.effort,
+    stop_reason: "error",
+    output: reason,
+  });
+  broadcast("dispatch_status", {
+    dispatch_id: dispatchEntry.id,
+    dispatchId: dispatchEntry.id,
+    session_id: dispatchEntry.sessionId,
+    sessionId: dispatchEntry.sessionId,
+    agent_id: dispatchEntry.agentId,
+    agentId: dispatchEntry.agentId,
+    provider: dispatchEntry.provider,
+    status: "error",
+    error: reason,
+  });
+}
 
 // Active dispatched processes: Map<dispatchId, { id, sessionId, agentId, provider, model, effort, cwd, pid, child, timer, startedAt, status, logs }>
 const activeDispatches = new Map();
@@ -336,6 +376,7 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
             cache_read_tokens: Math.round(step.inTok * 0.72),
           },
         });
+        hooksRouter.processEvent("SessionEnd", { session_id: sessionId, provider, model, effort });
         dispatchEntry.status = "completed";
         broadcast("dispatch_status", {
           dispatch_id: dispatchEntry.id,
@@ -445,11 +486,26 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
     ANTIGRAVITY_EFFORT: classified.effort,
   };
 
+  const launch = resolveCommand(bin, args, { env });
+  if (!launch) {
+    const reason =
+      `CLI '${bin}' could not be launched: not found on PATH` +
+      (process.platform === "win32" ? " (or it is a bash script and Git Bash was not found)" : "");
+    if (simulationAllowed()) {
+      emitDispatchStream(dispatchEntry, "stdout", `[telemetry-bridge] ${reason} — simulating`);
+      runSimulatedCliFallback(dispatchEntry, prompt);
+    } else {
+      failDispatch(dispatchEntry, reason);
+    }
+    return dispatchResult(dispatchEntry, classified);
+  }
+
   try {
-    const child = spawn(bin, args, {
+    const child = spawn(launch.command, launch.args, {
       cwd: resolvedCwd,
       env,
-      shell: process.platform === "win32",
+      shell: launch.shell,
+      windowsHide: true,
       stdio: ["ignore", "pipe", "pipe"],
     });
 
@@ -480,19 +536,29 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
     emitDispatchStream(
       dispatchEntry,
       "stdout",
-      `[spawn] ${bin} ${args.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" ")} (PID ${dispatchEntry.pid})`
+      `[spawn] ${launch.via === "direct" ? bin : `${bin} (via ${launch.via})`} ${args
+        .map((a) => (a.includes(" ") ? `"${a}"` : a))
+        .join(" ")} (PID ${dispatchEntry.pid})`
     );
 
-    let fallbackTriggered = false;
-    const triggerFallback = (reason) => {
-      if (fallbackTriggered || dispatchEntry.status === "killed") return;
-      fallbackTriggered = true;
-      emitDispatchStream(
-        dispatchEntry,
-        "stdout",
-        `[telemetry-bridge] ${reason} — activating integrated live telemetry execution stream`
-      );
-      runSimulatedCliFallback(dispatchEntry, prompt);
+    // Last lines of real output, handed to the final Stop event so ===DIGEST=== blocks and git
+    // checkpoints the CLI printed are recorded on the agent.
+    const outputTail = [];
+    const rememberOutput = (line) => {
+      outputTail.push(line);
+      if (outputTail.length > OUTPUT_TAIL_LINES) outputTail.shift();
+    };
+
+    let launchFailed = false;
+    const handleLaunchFailure = (reason) => {
+      if (launchFailed || dispatchEntry.status === "killed") return;
+      launchFailed = true;
+      if (simulationAllowed()) {
+        emitDispatchStream(dispatchEntry, "stdout", `[telemetry-bridge] ${reason} — simulating`);
+        runSimulatedCliFallback(dispatchEntry, prompt);
+      } else {
+        failDispatch(dispatchEntry, reason);
+      }
     };
 
     let stdoutBuf = "";
@@ -502,7 +568,10 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
         const lines = stdoutBuf.split(/\r?\n/);
         stdoutBuf = lines.pop() || "";
         for (const line of lines) {
-          if (line.trim()) emitDispatchStream(dispatchEntry, "stdout", line);
+          if (line.trim()) {
+            rememberOutput(line);
+            emitDispatchStream(dispatchEntry, "stdout", line);
+          }
         }
       });
     }
@@ -515,33 +584,44 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
         stderrBuf = lines.pop() || "";
         for (const line of lines) {
           if (line.trim()) {
-            if (/not recognized|command not found|ENOENT/i.test(line)) {
-              triggerFallback(`CLI binary '${bin}' not on PATH`);
-            } else {
-              emitDispatchStream(dispatchEntry, "stderr", line);
-            }
+            rememberOutput(line);
+            emitDispatchStream(dispatchEntry, "stderr", line);
           }
         }
       });
     }
 
     child.on("error", (err) => {
-      triggerFallback(`CLI spawn notice (${err.code || err.message})`);
+      handleLaunchFailure(`CLI '${bin}' failed to start (${err.code || err.message})`);
     });
 
     child.on("close", (code) => {
-      if (fallbackTriggered || dispatchEntry.status === "killed") return;
-      if (code !== 0 && dispatchEntry.logs.length <= 2) {
-        triggerFallback(`CLI exited early (code ${code})`);
+      if (launchFailed || dispatchEntry.status === "killed") return;
+      for (const rest of [stdoutBuf, stderrBuf]) {
+        if (rest.trim()) {
+          rememberOutput(rest);
+          emitDispatchStream(dispatchEntry, "stdout", rest);
+        }
+      }
+      if (code !== 0) {
+        failDispatch(dispatchEntry, `CLI '${bin}' exited with code ${code}`);
         return;
       }
-      dispatchEntry.status = code === 0 ? "completed" : "error";
+      dispatchEntry.status = "completed";
       hooksRouter.processEvent("Stop", {
         session_id: sessionId,
         provider: classified.provider,
         model: classified.model,
         effort: classified.effort,
-        stop_reason: code === 0 ? "end_turn" : "error",
+        stop_reason: "end_turn",
+        output: outputTail.join("\n"),
+      });
+      // A dispatch is one-shot: its process is gone, so nothing can answer a "waiting" prompt.
+      hooksRouter.processEvent("SessionEnd", {
+        session_id: sessionId,
+        provider: classified.provider,
+        model: classified.model,
+        effort: classified.effort,
       });
       broadcast("dispatch_status", {
         dispatch_id: dispatchId,
@@ -556,28 +636,33 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
       });
     });
   } catch (err) {
-    emitDispatchStream(
-      dispatchEntry,
-      "stdout",
-      `[telemetry-bridge] Spawning live telemetry execution stream (${err.message})`
-    );
-    runSimulatedCliFallback(dispatchEntry, prompt);
+    if (simulationAllowed()) {
+      emitDispatchStream(dispatchEntry, "stdout", `[telemetry-bridge] ${err.message} — simulating`);
+      runSimulatedCliFallback(dispatchEntry, prompt);
+    } else {
+      failDispatch(dispatchEntry, `CLI '${bin}' failed to start (${err.message})`);
+    }
   }
 
+  return dispatchResult(dispatchEntry, classified);
+}
+
+/** Response shape for one dispatch (shared by the success and early-failure paths). */
+function dispatchResult(dispatchEntry, classified) {
   return {
-    dispatch_id: dispatchId,
-    dispatchId,
-    session_id: sessionId,
-    sessionId,
-    agent_id: agentId,
-    agentId,
+    dispatch_id: dispatchEntry.id,
+    dispatchId: dispatchEntry.id,
+    session_id: dispatchEntry.sessionId,
+    sessionId: dispatchEntry.sessionId,
+    agent_id: dispatchEntry.agentId,
+    agentId: dispatchEntry.agentId,
     provider: classified.provider,
     model: classified.model,
     model_tier: classified.model_tier,
     modelTier: classified.model_tier,
     effort: classified.effort,
-    mode,
-    cwd: resolvedCwd,
+    mode: dispatchEntry.mode,
+    cwd: dispatchEntry.cwd,
     pid: dispatchEntry.pid,
     status: dispatchEntry.status,
   };

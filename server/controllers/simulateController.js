@@ -19,6 +19,7 @@ const {
   triggerSimulatedExhaustion,
   clearSimulatedExhaustion,
 } = require("../watchers/cascadeCacheWatcher");
+const { getRateLimits } = require("../lib/claude-rate-limits");
 
 const router = Router();
 
@@ -222,6 +223,10 @@ function getDualQuotaTelemetry() {
   );
 
   const cascadeStatus = getCascadeStatus(db);
+  // Real limits from Claude Code's statusline, when the Nexus statusline is installed. They win over
+  // the token estimate above, whose 2.5M cap is a guess.
+  const rateLimits = getRateLimits();
+  const realFiveHourPct = rateLimits?.five_hour ? rateLimits.five_hour.used_percentage : null;
 
   return {
     timestamp: new Date().toISOString(),
@@ -231,10 +236,12 @@ function getDualQuotaTelemetry() {
       label: "Claude Code Subscription",
       window_5h_tokens: claudeTotal5h,
       window_5h_cap: claudeCap5h,
-      window_5h_utilization_pct: Math.min(
-        100,
-        Math.round((claudeTotal5h / claudeCap5h) * 1000) / 10
-      ),
+      window_5h_utilization_pct:
+        realFiveHourPct != null
+          ? Math.min(100, realFiveHourPct)
+          : Math.min(100, Math.round((claudeTotal5h / claudeCap5h) * 1000) / 10),
+      // { five_hour?, seven_day?: { used_percentage, resets_at (epoch s) }, updated_at, source } | null
+      rate_limits: rateLimits,
       input_tokens: claudeInput,
       output_tokens: claudeOutput,
       cache_read_tokens: claudeCacheRead,

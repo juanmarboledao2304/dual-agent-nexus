@@ -8,7 +8,16 @@
 
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
-import { AlertTriangle, Bell, Check, Clock3, Fuel, Hand, Repeat2 } from "lucide-react";
+import {
+  AlertTriangle,
+  Bell,
+  Check,
+  Clock3,
+  Fuel,
+  Hand,
+  MessageSquareReply,
+  Repeat2,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useAttention } from "../../lib/useAttention";
 import type { AttentionItem, AttentionKind } from "../../lib/useAttention";
@@ -23,6 +32,7 @@ import { Popover } from "./Popover";
 
 const KIND_ICON: Record<AttentionKind, LucideIcon> = {
   approval: Hand,
+  input: MessageSquareReply,
   quota: Fuel,
   error: AlertTriangle,
   loop: Repeat2,

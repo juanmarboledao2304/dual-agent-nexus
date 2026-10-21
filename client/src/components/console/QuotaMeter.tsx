@@ -1,7 +1,7 @@
 /**
  * @file QuotaMeter.tsx
  * @description Compact Claude Direct fuel gauge for the top bar: an 8-bit segmented meter with the free
- * percentage and time to empty. It turns amber under 20% and coral under 10%. Clicking it opens a
+ * percentage and time to empty (with real statusline limits: time until the window resets). It turns amber under 20% and coral under 10%. Clicking it opens a
  * popover with the full quota breakdown ({@link QuotaDetails}) and a link to the Usage page. This
  * replaces the always-on quota strip that used to sit on every page.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
@@ -51,10 +51,16 @@ export function QuotaMeter() {
             label={t("quota.meterLabel")}
           />
           <span className="tabular-nums text-gray-100">{claude ? `${pct}%` : "--"}</span>
-          {claude?.hoursToEmpty != null && (
+          {claude?.source === "statusline" && claude.resetsInHours != null ? (
             <span className="hidden tabular-nums text-gray-500 xl:inline">
-              {formatHours(claude.hoursToEmpty)}
+              {t("quota.resetsShort", { time: formatHours(claude.resetsInHours) })}
             </span>
+          ) : (
+            claude?.hoursToEmpty != null && (
+              <span className="hidden tabular-nums text-gray-500 xl:inline">
+                {formatHours(claude.hoursToEmpty)}
+              </span>
+            )
           )}
         </>
       }

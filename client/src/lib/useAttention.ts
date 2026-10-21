@@ -2,7 +2,8 @@
  * @file useAttention.ts
  * @description The "Needs you" list: a shared, app-wide store of the few things that actually need the
  * human. The definition is strict on purpose so the signal never turns into wallpaper: an agent waiting
- * for tool approval, an agent whose pool hit its quota (agy-cascade exit 10), an agent stuck repeating
+ * for tool approval, a background job that asked for a reply (Claude Code job state "blocked"), an
+ * agent whose pool hit its quota (agy-cascade exit 10), an agent stuck repeating
  * the same tool, an agent that errored in the last 30 minutes, an agent marked working with no event for
  * 10 minutes (stalled), and Claude Direct under 20% of its 5-hour window. The top-bar bell and the Home
  * strip read the same list. Agents are polled every 15 s and refreshed on agent WebSocket events.
@@ -15,9 +16,10 @@ import { eventBus } from "./eventBus";
 import { mergeFreshestById } from "./merge-by-id";
 import type { Agent, WSMessage } from "./types";
 import { detectAttention } from "../utils/agentRooms";
+import { isAwaitingReply } from "../utils/pixelSprites";
 
 /** Why an item needs the human. */
-export type AttentionKind = "approval" | "quota" | "loop" | "error" | "stalled";
+export type AttentionKind = "approval" | "input" | "quota" | "loop" | "error" | "stalled";
 
 /** One agent-level attention item. */
 export interface AttentionItem {
@@ -32,10 +34,11 @@ export interface AttentionItem {
 /** Order in which kinds are listed: the most blocking first. */
 const KIND_ORDER: Record<AttentionKind, number> = {
   approval: 0,
-  quota: 1,
-  error: 2,
-  loop: 3,
-  stalled: 4,
+  input: 1,
+  quota: 2,
+  error: 3,
+  loop: 4,
+  stalled: 5,
 };
 
 /** Minutes without events before a working agent counts as stalled. */
@@ -59,6 +62,7 @@ export function classifyAttention(agents: readonly Agent[], now: number): Attent
     const flags = detectAttention(agent);
     let kind: AttentionKind | null = null;
     if (flags.approval) kind = "approval";
+    else if (isAwaitingReply(agent)) kind = "input";
     else if (flags.quotaExhausted) kind = "quota";
     else if (flags.error && idleMinutes <= ERROR_WINDOW_MINUTES) kind = "error";
     else if (flags.loop) kind = "loop";

@@ -21,6 +21,7 @@
   },
   "status": {
     "approval": "승인 필요",
+    "input": "답변 필요",
     "working": "작업 중",
     "waiting": "대기 중",
     "error": "오류",
@@ -52,7 +53,13 @@
     "waterfallHint": "작업은 풀 1에서 풀 3으로 흘러갑니다. 보호해야 할 것은 Claude Direct입니다.",
     "digest": "Claude Direct에서 덜어낸 양:",
     "digestValue": "digest {{count}}건, 토큰 {{tokens}}개",
-    "openUsage": "전체 사용량 보기"
+    "openUsage": "전체 사용량 보기",
+    "usedPct": "{{pct}}% 사용",
+    "resetsIn": "초기화까지",
+    "resetsShort": "{{time}} 후 초기화",
+    "weekly": "주간 (7일)",
+    "weeklyValue": "{{pct}}% 사용, {{time}} 후 초기화",
+    "estimateHint": "로컬 추정치입니다. 실제 Claude 한도를 보려면 Nexus 상태줄(statusline/nexus-statusline.js)을 설치하세요."
   },
   "needsYou": {
     "title_one": "나를 기다리는 항목 ({{count}})",
@@ -66,6 +73,7 @@
     "quotaLowDetail": "현재 속도라면 {{time}} 후 소진",
     "kind": {
       "approval": "승인을 기다리는 중",
+      "input": "답변을 기다리는 중",
       "quota": "풀의 할당량이 소진됨",
       "error": "오류로 중단됨",
       "loop": "{{tool}} 반복 중 ({{count}}회)",
@@ -112,7 +120,8 @@
     "openAgents": "Agent 열기",
     "eventsTitle": "최근 이벤트",
     "allEvents": "모든 이벤트",
-    "noEvents": "아직 이벤트가 없습니다. Agent를 시작하면 도구 호출이 여기에 표시됩니다."
+    "noEvents": "아직 이벤트가 없습니다. Agent를 시작하면 도구 호출이 여기에 표시됩니다.",
+    "fuelLineReal": "실제 Claude 한도 · {{reset}} 후 초기화 · 주간 {{week}}% 사용"
   },
   "agents": {
     "title": "Agent",

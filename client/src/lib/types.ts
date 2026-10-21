@@ -939,6 +939,7 @@ export interface Agent {
     | "thinking"
     | "tool_use"
     | "waiting_approval"
+    | "waiting_input"
     | "completed"
     | "error"
     | string
@@ -1951,6 +1952,22 @@ export interface CascadeStatus {
   timestamp: string;
 }
 
+/** One Claude subscription window as Claude Code reports it. */
+export interface ClaudeRateLimitWindow {
+  /** Percent of the window used, 0..100. */
+  used_percentage: number;
+  /** Unix epoch seconds when the window resets. */
+  resets_at: number;
+}
+
+/** Claude subscription limits forwarded by the Nexus statusline. */
+export interface ClaudeRateLimits {
+  five_hour?: ClaudeRateLimitWindow;
+  seven_day?: ClaudeRateLimitWindow;
+  updated_at: string;
+  source: "statusline";
+}
+
 export interface DualQuotaTelemetry {
   timestamp: string;
   simulating: boolean;
@@ -1971,6 +1988,8 @@ export interface DualQuotaTelemetry {
     };
     burn_rate_tokens_per_hr: number;
     est_hours_to_cap: number | null;
+    /** Real subscription limits from Claude Code's statusline; null/absent until it reports them. */
+    rate_limits?: ClaudeRateLimits | null;
   };
   antigravity: {
     provider: "antigravity";

@@ -21,6 +21,7 @@
   },
   "status": {
     "approval": "Needs approval",
+    "input": "Needs your reply",
     "working": "Working",
     "waiting": "Waiting",
     "error": "Error",
@@ -52,7 +53,13 @@
     "waterfallHint": "Work pours from pool 1 to pool 3. Claude Direct is the one to protect.",
     "digest": "Kept off Claude Direct:",
     "digestValue": "{{tokens}} tokens in {{count}} digests",
-    "openUsage": "Open full usage"
+    "openUsage": "Open full usage",
+    "usedPct": "{{pct}}% used",
+    "resetsIn": "Resets in",
+    "resetsShort": "resets {{time}}",
+    "weekly": "Week (7 days)",
+    "weeklyValue": "{{pct}}% used, resets in {{time}}",
+    "estimateHint": "Local estimate. Install the Nexus statusline (statusline/nexus-statusline.js) to see your real Claude limit."
   },
   "needsYou": {
     "title_one": "Needs you ({{count}})",
@@ -66,6 +73,7 @@
     "quotaLowDetail": "Runs out in {{time}} at the current pace",
     "kind": {
       "approval": "Waiting for your approval",
+      "input": "Waiting for your reply",
       "quota": "Its pool ran out of quota",
       "error": "Stopped with an error",
       "loop": "Repeating {{tool}} ({{count}} times)",
@@ -112,7 +120,8 @@
     "openAgents": "Open Agents",
     "eventsTitle": "Latest events",
     "allEvents": "All events",
-    "noEvents": "No events yet. Start an agent and its tool calls appear here."
+    "noEvents": "No events yet. Start an agent and its tool calls appear here.",
+    "fuelLineReal": "Real Claude limit · resets in {{reset}} · week {{week}}% used"
   },
   "agents": {
     "title": "Agents",
