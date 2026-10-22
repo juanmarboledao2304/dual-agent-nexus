@@ -644,6 +644,11 @@ describe("screen snapshots", () => {
       </MemoryRouter>
     );
     await settle();
+    await act(async () => {
+      // The deep link activates its section a frame later; on a slow runner the GPT section was
+      // still hidden here, which made its tooltip inaccessible and the query below flaky.
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+    });
 
     // Settings shows one section at a time; the other pricing section is rendered but hidden.
     const claudeSection = document.getElementById("claude-pricing");
