@@ -820,9 +820,15 @@ const processEvent = db.transaction((hookType, data, origin = null) => {
     case "Stop": {
       const session = stmts.getSession.get(sessionId);
       const sessionLabel = session?.name || `Session ${sessionId.slice(0, 8)}`;
+      // An error Stop may carry the failure reason in `output` (dispatches do); keep it in the
+      // summary so the session history says why it failed, not just that it did.
+      const errorReason =
+        data.stop_reason === "error" && typeof data.output === "string"
+          ? data.output.trim().slice(0, 500)
+          : "";
       summary =
         data.stop_reason === "error"
-          ? `Error in ${sessionLabel}`
+          ? `Error in ${sessionLabel}${errorReason ? `: ${errorReason}` : ""}`
           : `${sessionLabel} - ready for input`;
 
       // Stop means Claude finished its turn, NOT that the session is closed.

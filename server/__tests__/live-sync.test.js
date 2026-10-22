@@ -450,9 +450,32 @@ describe("one-shot dispatch", () => {
       assert.equal(active.status, "error");
       assert.ok(active.logs.some((l) => /could not be launched|failed to start/.test(l.line)));
       assert.ok(!active.logs.some((l) => /DIGEST|checkpoint/.test(l.line)));
+      // The stored history keeps the reason, not just "Error in <session>".
+      const events = (await request(`/api/sessions/${sid}`)).body.events || [];
+      const stop = events.find((e) => e.event_type === "Stop");
+      assert.match(stop.summary, /^Error in .+: CLI 'agy-cascade' (could not be launched|failed)/);
     } finally {
       process.env.PATH = savedPath;
     }
+  });
+
+  it("quotes the last plain output lines when the CLI exits non-zero", () => {
+    const { exitFailureReason } = require("../controllers/dispatchController");
+    const tail = [
+      "agy-cascade: probando 'Gemini 4 Argon (High)' (grupo argon)",
+      'AGY_SIGNAL {"status":"QUOTA_EXHAUSTED"}',
+      "agy-cascade: grupo 'argon' sin cuota; paso al siguiente",
+      'AGY_USAGE {"status": "ERROR"}',
+      "agy-cascade: todos los modelos de Antigravity están sin cuota (o no disponibles).",
+    ];
+    assert.equal(
+      exitFailureReason("agy-cascade", 10, tail),
+      "CLI 'agy-cascade' exited with code 10: " +
+        "agy-cascade: probando 'Gemini 4 Argon (High)' (grupo argon) | " +
+        "agy-cascade: grupo 'argon' sin cuota; paso al siguiente | " +
+        "agy-cascade: todos los modelos de Antigravity están sin cuota (o no disponibles)."
+    );
+    assert.equal(exitFailureReason("claude", 1, []), "CLI 'claude' exited with code 1");
   });
 });
 

@@ -26,6 +26,23 @@ function simulationAllowed() {
   return /^(1|true|yes|on)$/i.test(String(process.env.NEXUS_DISPATCH_SIMULATE || "").trim());
 }
 
+/** Last lines of output quoted in a non-zero exit reason, so the stored error says why it failed. */
+const FAILURE_TAIL_LINES = 3;
+
+/**
+ * Reason for a non-zero exit: the code plus the last plain-text lines the CLI printed
+ * (machine lines such as AGY_USAGE / AGY_SIGNAL JSON are skipped), e.g. agy-cascade's
+ * "todos los modelos de Antigravity están sin cuota".
+ */
+function exitFailureReason(bin, code, outputTail) {
+  const base = `CLI '${bin}' exited with code ${code}`;
+  const lastLines = (outputTail || [])
+    .map((line) => String(line).trim())
+    .filter((line) => line && !/^AGY_[A-Z_]+\s*[{:]/.test(line))
+    .slice(-FAILURE_TAIL_LINES);
+  return lastLines.length ? `${base}: ${lastLines.join(" | ")}` : base;
+}
+
 /**
  * Fail a dispatch that could not run: log why, land the session in `error`, and tell the UI.
  */
@@ -604,7 +621,7 @@ function spawnSingleProvider({ provider, prompt, model, effort, cwd, mode = "sin
         }
       }
       if (code !== 0) {
-        failDispatch(dispatchEntry, `CLI '${bin}' exited with code ${code}`);
+        failDispatch(dispatchEntry, exitFailureReason(bin, code, outputTail));
         return;
       }
       dispatchEntry.status = "completed";
@@ -951,3 +968,4 @@ router.post("/:id/kill", (req, res) => {
 
 router.killAgentOrDispatch = killAgentOrDispatch;
 module.exports = router;
+module.exports.exitFailureReason = exitFailureReason;
