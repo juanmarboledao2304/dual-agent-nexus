@@ -18,7 +18,7 @@
 > **Full guides:** [English](./README-EN.md) · [中文](./README-CN.md) · [Tiếng Việt](./README-VN.md) · [한국어](./README-KO.md) · [Español](./README-ES.md) · [agy-cascade starter kit](./contrib/agy-cascade/README.md)
 
 > [!IMPORTANT]
-> **Want your AI credits to go further? Get [DualAgent Nexus Pro on Agensi](https://www.agensi.io/r/JUANARBOLEDA).** The free dashboard shows you what your agents are doing; **Pro is the installable skill that does the routing for you**: a configurable quota cascade across subscriptions *and* API keys, brain / router / executor roles, MCP management for 7 agents, a `/usage`-style quota view, slash commands, and 8 worked examples. Works in Claude Code, Cursor, Copilot, Codex, Gemini CLI, Windsurf and Cline. [What Pro adds ↓](#dualagent-nexus-pro)
+> **Want your AI credits to go further? Get [DualAgent Nexus Pro on Agensi](https://www.agensi.io/r/JUANARBOLEDA).** The free dashboard shows you what your agents are doing; **Pro is the installable skill that does the routing for you**: a configurable quota cascade across subscriptions *and* API keys, a brain you can choose (Claude, Codex or Gemini) with a shared memory across agents, brain / router / executor roles, MCP management for 7 agents, a `/usage`-style quota view, slash commands, and 8 worked examples. Works in Claude Code, Cursor, Copilot, Codex, Gemini CLI, Windsurf and Cline. [What Pro adds ↓](#dualagent-nexus-pro)
 
 ---
 
@@ -192,11 +192,13 @@ The free repo stays free and MIT-licensed: the dashboard, the hooks, and the ref
 | Quota waterfall | Reference bash script, 3 fixed pools | **Configurable controller, any number of pools**, retries, cooldown locks, timeouts |
 | Pay-per-use API keys | No | **Anthropic and any OpenAI-compatible endpoint** (DeepSeek, OpenAI, OpenRouter, local servers), with cost estimates and budgets |
 | Who thinks, who routes, who executes | Fixed | **Brain / router / executor / reviewer roles** with presets; pin the router to a specific model |
+| Choose the brain | Claude only | **Make Claude, Codex or Gemini the conductor** with one command; run Claude Code and Codex CLI as executors, each on its own account |
+| Shared memory across agents | No | **One brain journal per project**: Claude Code and Codex turns are captured by hooks, executors get the context, and another AI can take over when a subscription runs out |
 | MCP servers | Manual per agent | **One list, synced to 7 agents** with dry runs and backups (KiCad PCB example included) |
 | Quota view | Dashboard gauge | **`/usage`-style screen** for every pool, plus telemetry reports and a quota planner |
 | Delegate or do it yourself? | Your judgement | **Routing heuristic** with break-even maths, optional LLM router |
-| Commands and templates | `CLAUDE.md` snippet | **8 slash commands** for Claude Code, Gemini CLI, Codex and Cursor; rule files for 7 agents |
-| Learning material | README | **13 reference guides and 8 end-to-end worked examples** |
+| Commands and templates | `CLAUDE.md` snippet | **9 slash commands** for Claude Code, Gemini CLI, Codex and Cursor; rule files for 7 agents |
+| Learning material | README | **14 reference guides and 8 end-to-end worked examples** |
 
 Everything runs locally on the Python standard library. The only network calls go to the API endpoints you configure yourself.
 
