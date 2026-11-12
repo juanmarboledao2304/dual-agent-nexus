@@ -24,8 +24,8 @@ import type { PixelRole, SpriteVariant } from "../pixelSprites";
 const VARIANTS = Object.keys(SPRITE_DEFINITIONS) as SpriteVariant[];
 
 describe("sprite definitions", () => {
-  it("ships all eight variants in the legend order", () => {
-    expect(VARIANTS).toHaveLength(8);
+  it("ships all ten variants in the legend order", () => {
+    expect(VARIANTS).toHaveLength(10);
     expect([...SPRITE_VARIANT_ORDER].sort()).toEqual([...VARIANTS].sort());
   });
 
@@ -46,6 +46,10 @@ describe("sprite definitions", () => {
     expect(SPRITE_DEFINITIONS["claude-opus"].palette.A).toBe("#fbbf24");
     expect(SPRITE_DEFINITIONS["claude-sonnet"].palette.B).toBe("#f97316");
     expect(SPRITE_DEFINITIONS["claude-haiku"].palette.B).toBe("#eab308");
+    expect(SPRITE_DEFINITIONS["claude-fable"].palette.B).toBe("#f59e0b");
+    expect(SPRITE_DEFINITIONS["claude-fable"].palette.A).toBe("#fbbf24");
+    expect(SPRITE_DEFINITIONS["claude-fable"].palette.R).toBe("#fef9c3");
+    expect(SPRITE_DEFINITIONS["claude-mythos"].palette.B).toBe("#8b5cf6");
     expect(SPRITE_DEFINITIONS["agy-opus"].palette.B).toBe("#d946ef");
     expect(SPRITE_DEFINITIONS["agy-sonnet"].palette.B).toBe("#6366f1");
     expect(SPRITE_DEFINITIONS["gemini-argon"].palette.B).toBe("#a855f7");
@@ -73,6 +77,13 @@ describe("sprite definitions", () => {
 });
 
 describe("resolveSpriteVariant", () => {
+  it("resolves Claude Fable 5.2 and Claude Mythos 5.2 across pools", () => {
+    expect(resolveSpriteVariant("claude", "heavy", "claude-fable-5-2")).toBe("claude-fable");
+    expect(resolveSpriteVariant("claude", "heavy", "claude-mythos-5-2")).toBe("claude-mythos");
+    expect(resolveSpriteVariant("agy-claude", "heavy", "claude-fable-5-2")).toBe("claude-fable");
+    expect(resolveSpriteVariant("agy-claude", "heavy", "claude-mythos-5-2")).toBe("claude-mythos");
+  });
+
   it("maps each pool and tier to its character", () => {
     expect(resolveSpriteVariant("claude", "heavy")).toBe("claude-opus");
     expect(resolveSpriteVariant("claude", "standard")).toBe("claude-sonnet");

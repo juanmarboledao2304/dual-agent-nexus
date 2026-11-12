@@ -75,6 +75,39 @@ describe("Phase 7 — Chromatic Thermal UI & Pool 1 agy-claude Palette", () => {
     );
   });
 
+  it("handles Claude Fable 5.2 and Claude Mythos 5.2 in Claude Direct and AGY-Claude pools", () => {
+    const fable = getAgentThermalTheme({
+      model: "claude-fable-5-2",
+      provider: "claude",
+    });
+    expect(fable.provider).toBe("claude");
+    expect(fable.tier).toBe("heavy");
+    expect(formatAgentModelBadge("claude-fable-5-2")).toBe("Fable 5.2");
+
+    const mythos = getAgentThermalTheme({
+      model: "claude-mythos-5-2",
+    });
+    expect(mythos.provider).toBe("claude");
+    expect(mythos.tier).toBe("heavy");
+    expect(formatAgentModelBadge("claude-mythos-5-2")).toBe("Mythos 5.2");
+
+    const fableAgy = getAgentThermalTheme({
+      model: "claude-fable-5-2",
+      provider: "agy-claude",
+    });
+    expect(fableAgy.provider).toBe("agy-claude");
+    expect(fableAgy.tier).toBe("heavy");
+    expect(formatAgentModelBadge("claude-fable-5-2", "agy-claude", "heavy")).toBe("Fable 5.2");
+
+    const mythosAgy = getAgentThermalTheme({
+      model: "claude-mythos-5-2",
+      provider: "agy-claude",
+    });
+    expect(mythosAgy.provider).toBe("agy-claude");
+    expect(mythosAgy.tier).toBe("heavy");
+    expect(formatAgentModelBadge("claude-mythos-5-2", "agy-claude", "heavy")).toBe("Mythos 5.2");
+  });
+
   it("includes all 8 thermal spectrum entries across Pool 1, Pool 2, and Pool 3", () => {
     expect(THERMAL_LEGEND_ITEMS.length).toBe(8);
     expect(THERMAL_LEGEND_ITEMS.some((i) => i.colorName === "Electric Fuchsia")).toBe(true);

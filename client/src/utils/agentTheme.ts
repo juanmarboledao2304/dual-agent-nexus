@@ -231,7 +231,7 @@ export function resolveProvider(
     m.includes("gpt-oss") ||
     m.includes("120b") ||
     ((p === "antigravity" || p === "agy" || n.includes("agy-cascade")) &&
-      (m.includes("opus") || m.includes("sonnet")))
+      (m.includes("opus") || m.includes("sonnet") || m.includes("fable") || m.includes("mythos")))
   ) {
     return "agy-claude";
   }
@@ -277,6 +277,10 @@ export function resolveModelTier(params: {
   const m = String(params.model || "").toLowerCase();
   const e = String(params.effort || "").toLowerCase();
   const sub = String(params.subagentRole || params.subagentType || "").toLowerCase();
+
+  if (m.includes("fable") || m.includes("mythos")) {
+    return "heavy";
+  }
 
   if (params.provider === "agy-claude") {
     if (m.includes("opus")) return "heavy";
@@ -352,6 +356,13 @@ export function formatModelBadge(
   const m = String(model || "")
     .toLowerCase()
     .trim();
+
+  if (m.includes("fable")) {
+    return "Fable 5.2";
+  }
+  if (m.includes("mythos")) {
+    return "Mythos 5.2";
+  }
 
   if (provider === "agy-claude") {
     if (m.includes("gpt-oss") || m.includes("120b")) return "GPT-OSS 120B";

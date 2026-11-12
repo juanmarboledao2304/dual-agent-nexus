@@ -1,12 +1,13 @@
 /**
  * @file pixelSprites.ts
  * @description Deterministic 8-bit sprite data for the DualAgent Nexus PixelAvatar engine.
- * Every agent resolves to one of eight 16x16 character sprites drawn from its quota pool and
- * model tier: Pool 3 Claude Direct (warm spectrum), Pool 1 AGY-Claude (hybrid spectrum with
- * Antigravity orbital frame accents), and Pool 2 AGY-Gemini (cool spectrum with a dual-core
- * chest). Sprites are plain character maps so they stay reviewable as text and render as
- * run-length-merged SVG rects under `shape-rendering="crispEdges"`. Also maps an agent's
- * lifecycle and current tool to an avatar state and a short geometric status badge.
+ * Every agent resolves to one of ten 16x16 character sprites drawn from its quota pool and
+ * model tier: Pool 3 Claude Direct (warm spectrum, including Claude Fable 5.2 and Claude
+ * Mythos 5.2), Pool 1 AGY-Claude (hybrid spectrum with Antigravity orbital frame accents),
+ * and Pool 2 AGY-Gemini (cool spectrum with a dual-core chest). Sprites are plain character
+ * maps so they stay reviewable as text and render as run-length-merged SVG rects under
+ * `shape-rendering="crispEdges"`. Also maps an agent's lifecycle and current tool to an avatar
+ * state and a short geometric status badge.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
  */
 
@@ -15,11 +16,13 @@ import type { ModelTier, ThermalProvider } from "./agentTheme";
 /** Side length of every sprite grid, in pixels. */
 export const SPRITE_GRID = 16;
 
-/** The eight character sprites, one per pool and tier. */
+/** The ten character sprites, one per pool and tier. */
 export type SpriteVariant =
   | "claude-opus"
   | "claude-sonnet"
   | "claude-haiku"
+  | "claude-fable"
+  | "claude-mythos"
   | "agy-opus"
   | "agy-sonnet"
   | "gemini-argon"
@@ -226,6 +229,44 @@ const SPRITE_ROWS: Record<SpriteVariant, readonly string[]> = {
     EMPTY,
     EMPTY,
   ],
+  // Claude Fable 5.2: Radiant amber chassis with tall, spiky, upswept golden hair and subtle glowing aura.
+  "claude-fable": [
+    "....R..AA..R....",
+    ".RA...AAAA...AR.",
+    "..AA..ALLA..AA..",
+    "..AAA.ALLA.AAA..",
+    "..AAAAAAAAAAAA..",
+    "..ALAAAAAAAALA..",
+    "..AABBABBABBAA..",
+    "..ABBEBBBBEBBA..",
+    "...BBEBBBBEBB...",
+    ".BBBBBBBBBBBBBB.",
+    "...BBBBBBBBBB...",
+    "...DDDDDDDDDD...",
+    "...D.D....D.D...",
+    "....SSSSSSSS....",
+    EMPTY,
+    EMPTY,
+  ],
+  // Claude Mythos 5.2: Astral amethyst chassis with celestial floating corona halo.
+  "claude-mythos": [
+    EMPTY,
+    ".....CCCCCC.....",
+    "....C......C....",
+    "...LLAAAAAALL...",
+    "...BBBBBBBBBB...",
+    "...AAAAAAAAAA...",
+    ".BBAEEAAAAEEABB.",
+    ".BBAAAAAAAAAABB.",
+    "...BBBBBBBBBB...",
+    "...BBBBCCBBBB...",
+    "...DDDDDDDDDD...",
+    "...D.D....D.D...",
+    "...D.D....D.D...",
+    "....SSSSSSSS....",
+    EMPTY,
+    EMPTY,
+  ],
 };
 
 const SHADOW = "rgba(2,6,23,0.55)";
@@ -336,10 +377,48 @@ export const SPRITE_DEFINITIONS: Record<SpriteVariant, SpriteDefinition> = {
     palette: { B: "#10b981", D: "#065f46", L: "#34d399", E: "#03140e", C: "#a7f3d0", S: SHADOW },
     rows: SPRITE_ROWS["gemini-flash"],
   },
+  "claude-fable": {
+    variant: "claude-fable",
+    pool: "claude-direct",
+    tier: "heavy",
+    label: "Claude Fable 5.2",
+    poolLabel: "POOL 3 • CLAUDE DIRECT",
+    primaryHex: "#f59e0b",
+    palette: {
+      B: "#f59e0b",
+      D: "#b45309",
+      L: "#fef08a",
+      E: "#1c0a03",
+      A: "#fbbf24",
+      R: "#fef9c3",
+      S: SHADOW,
+    },
+    rows: SPRITE_ROWS["claude-fable"],
+  },
+  "claude-mythos": {
+    variant: "claude-mythos",
+    pool: "claude-direct",
+    tier: "heavy",
+    label: "Claude Mythos 5.2",
+    poolLabel: "POOL 3 • CLAUDE DIRECT",
+    primaryHex: "#8b5cf6",
+    palette: {
+      B: "#8b5cf6",
+      D: "#5b21b6",
+      L: "#a78bfa",
+      E: "#0f0728",
+      A: "#c4b5fd",
+      C: "#ede9fe",
+      S: SHADOW,
+    },
+    rows: SPRITE_ROWS["claude-mythos"],
+  },
 };
 
-/** Sprite variants in legend order: Pool 1, Pool 2, Pool 3; heavy to light. */
+/** Sprite variants in legend order: Flagship, Pool 1, Pool 2, Pool 3; heavy to light. */
 export const SPRITE_VARIANT_ORDER: readonly SpriteVariant[] = [
+  "claude-fable",
+  "claude-mythos",
   "agy-opus",
   "agy-sonnet",
   "gemini-argon",
@@ -382,17 +461,24 @@ export function buildSpriteRects(variant: SpriteVariant): SpriteRect[] {
 }
 
 /**
- * Pick the sprite for an agent from its resolved thermal provider and model tier. Codex and
- * Cursor rows (outside the three operational pools) fall back to the Claude Direct sprites.
+ * Pick the sprite for an agent from its resolved thermal provider, model tier, and optional model ID.
+ * Flagship models Claude Fable 5.2 and Claude Mythos 5.2 resolve to their dedicated sprites.
+ * Codex and Cursor rows (outside the three operational pools) fall back to the Claude Direct sprites.
  *
  * @param provider - Thermal provider from `getAgentThermalTheme`.
  * @param tier - Model tier from `getAgentThermalTheme`.
+ * @param model - Optional model identifier (raw or normalized).
  * @returns The matching sprite variant.
  */
 export function resolveSpriteVariant(
   provider: ThermalProvider | string,
-  tier: ModelTier
+  tier?: ModelTier,
+  model?: string | null
 ): SpriteVariant {
+  const m = String(model || "").toLowerCase();
+  if (m.includes("fable")) return "claude-fable";
+  if (m.includes("mythos")) return "claude-mythos";
+
   if (provider === "agy-claude") return tier === "heavy" ? "agy-opus" : "agy-sonnet";
   if (provider === "antigravity" || provider === "agy-gemini") {
     if (tier === "heavy") return "gemini-argon";

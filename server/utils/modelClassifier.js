@@ -169,7 +169,11 @@ function normalizeProvider(provider, model = "", source = "") {
       s.includes("antigravity") ||
       s.includes("agy-cascade") ||
       s.includes("agy")) &&
-    (m.includes("opus") || m.includes("sonnet") || m.includes("claude"))
+    (m.includes("opus") ||
+      m.includes("sonnet") ||
+      m.includes("claude") ||
+      m.includes("fable") ||
+      m.includes("mythos"))
   ) {
     return "agy-claude";
   }
@@ -358,6 +362,32 @@ function classifyModelAndEffort(input = {}) {
 
   // Pool 1: agy-claude (Claude Opus 5.5 High/Med -> Sonnet 5.5 High -> GPT-OSS 120B inside Antigravity)
   if (provider === "agy-claude") {
+    if (m.includes("fable")) {
+      const resolvedModel = rawModel || "claude-fable-5-2";
+      return {
+        provider: "agy-claude",
+        pool: "agy-claude",
+        model: resolvedModel,
+        model_short: formatModelShortName(resolvedModel, "agy-claude", "heavy"),
+        model_tier: "heavy",
+        effort: explicitEffort || "high",
+        subagent_role,
+      };
+    }
+
+    if (m.includes("mythos")) {
+      const resolvedModel = rawModel || "claude-mythos-5-2";
+      return {
+        provider: "agy-claude",
+        pool: "agy-claude",
+        model: resolvedModel,
+        model_short: formatModelShortName(resolvedModel, "agy-claude", "heavy"),
+        model_tier: "heavy",
+        effort: explicitEffort || "high",
+        subagent_role,
+      };
+    }
+
     const isHeavy =
       m.includes("opus") ||
       (!m.includes("sonnet") &&
@@ -454,7 +484,35 @@ function classifyModelAndEffort(input = {}) {
     (tool === "task" || tool === "dispatch_agent" || tool === "agent" || isSubagent) &&
     (subType === "explore" || subagent_role === "Explore") &&
     !m.includes("opus") &&
-    !m.includes("sonnet");
+    !m.includes("sonnet") &&
+    !m.includes("fable") &&
+    !m.includes("mythos");
+
+  if (m.includes("fable")) {
+    const resolvedModel = rawModel || "claude-fable-5-2";
+    return {
+      provider,
+      pool,
+      model: resolvedModel,
+      model_short: formatModelShortName(resolvedModel, provider, "heavy"),
+      model_tier: "heavy",
+      effort: explicitEffort || "high",
+      subagent_role,
+    };
+  }
+
+  if (m.includes("mythos")) {
+    const resolvedModel = rawModel || "claude-mythos-5-2";
+    return {
+      provider,
+      pool,
+      model: resolvedModel,
+      model_short: formatModelShortName(resolvedModel, provider, "heavy"),
+      model_tier: "heavy",
+      effort: explicitEffort || "high",
+      subagent_role,
+    };
+  }
 
   if (
     m.includes("haiku") ||
@@ -511,6 +569,13 @@ function formatModelShortName(model = "", provider = "claude", modelTier = "stan
     .toLowerCase()
     .trim();
   const p = String(provider || "claude").toLowerCase();
+
+  if (m.includes("fable")) {
+    return "Fable 5.2";
+  }
+  if (m.includes("mythos")) {
+    return "Mythos 5.2";
+  }
 
   if (p === "agy-claude") {
     if (m.includes("gpt-oss") || m.includes("120b")) return "GPT-OSS 120B";
