@@ -93,8 +93,12 @@ export function PixelAvatar({
   className = "",
 }: PixelAvatarProps) {
   const theme = agent ? getAgentThermalTheme(agent, session?.provider, session?.model) : null;
+  const effectiveModel = agent?.model || session?.model;
   const resolvedVariant: SpriteVariant =
-    variant ?? (theme ? resolveSpriteVariant(theme.provider, theme.tier) : "claude-sonnet");
+    variant ??
+    (theme
+      ? resolveSpriteVariant(theme.provider, theme.tier, effectiveModel)
+      : resolveSpriteVariant("claude", "standard", effectiveModel));
   const def = SPRITE_DEFINITIONS[resolvedVariant];
   const resolvedState = state ?? resolveAvatarState(agent);
   const meta = agent ? parseAgentMetadata(agent.metadata) : {};

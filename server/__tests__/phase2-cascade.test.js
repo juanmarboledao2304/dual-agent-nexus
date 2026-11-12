@@ -95,6 +95,43 @@ describe("Phase 7 — 3-Pool Model Classifier & Waterfall Telemetry", () => {
     assert.equal(resolveQuotaPool(undefined, "claude-opus-5-5-thinking"), "agy-claude");
   });
 
+  it("classifies Claude Fable 5.2 and Claude Mythos 5.2 as heavy tier in Pool 3 and Pool 1", () => {
+    const fable = classifyModelAndEffort({
+      model: "claude-fable-5-2",
+      provider: "claude",
+    });
+    assert.equal(fable.provider, "claude");
+    assert.equal(fable.pool, "claude-direct");
+    assert.equal(fable.model_tier, "heavy");
+    assert.equal(fable.model_short, "Fable 5.2");
+
+    const mythos = classifyModelAndEffort({
+      model: "claude-mythos-5-2",
+    });
+    assert.equal(mythos.provider, "claude");
+    assert.equal(mythos.pool, "claude-direct");
+    assert.equal(mythos.model_tier, "heavy");
+    assert.equal(mythos.model_short, "Mythos 5.2");
+
+    const fableAgy = classifyModelAndEffort({
+      model: "claude-fable-5-2",
+      provider: "agy-claude",
+    });
+    assert.equal(fableAgy.provider, "agy-claude");
+    assert.equal(fableAgy.pool, "agy-claude");
+    assert.equal(fableAgy.model_tier, "heavy");
+    assert.equal(fableAgy.model_short, "Fable 5.2");
+
+    const mythosAgy = classifyModelAndEffort({
+      model: "claude-mythos-5-2",
+      source: "antigravity",
+    });
+    assert.equal(mythosAgy.provider, "agy-claude");
+    assert.equal(mythosAgy.pool, "agy-claude");
+    assert.equal(mythosAgy.model_tier, "heavy");
+    assert.equal(mythosAgy.model_short, "Mythos 5.2");
+  });
+
   it("exports DEFAULT_CASCADE_MODELS in priority order", () => {
     assert.ok(Array.isArray(DEFAULT_CASCADE_MODELS));
     assert.ok(DEFAULT_CASCADE_MODELS.length >= 4);

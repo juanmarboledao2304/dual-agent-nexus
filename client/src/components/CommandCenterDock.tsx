@@ -226,7 +226,7 @@ function dispatchSprite(d: ActiveDispatchItem): {
         : d.status === "error" || d.status === "killed"
           ? "error"
           : "idle";
-  return { variant: resolveSpriteVariant(theme.provider, theme.tier), state };
+  return { variant: resolveSpriteVariant(theme.provider, theme.tier, d.model), state };
 }
 
 export function CommandCenterDock({ variant = "dock" }: { variant?: "dock" | "panel" } = {}) {
