@@ -75,6 +75,9 @@ Bảng điều khiển chuyên nghiệp để theo dõi Claude Code, Cursor và 
 
 Tài liệu đã bản địa hóa: [`README-EN.md`](./README-EN.md) · [`README-CN.md`](./README-CN.md) · [`README-VN.md`](./README-VN.md) · [`README-KO.md`](./README-KO.md) · [`README-ES.md`](./README-ES.md)
 
+> [!IMPORTANT]
+> **DualAgent Nexus Pro** (skill trả phí trên [Agensi.io](https://www.agensi.io/r/JUANARBOLEDA)) giúp tín dụng AI của bạn dùng được lâu hơn: chuỗi hạn mức có thể cấu hình qua cả gói đăng ký lẫn khóa API (Anthropic, DeepSeek, tương thích OpenAI, máy chủ cục bộ), vai trò bộ não / bộ định tuyến / bộ thực thi, quản lý MCP cho 7 tác tử, màn hình hạn mức kiểu `/usage`, lệnh slash, 13 hướng dẫn tham khảo và 8 ví dụ hoàn chỉnh. Bảng điều khiển trong kho này vẫn miễn phí. Đăng ký Agensi qua [liên kết giới thiệu này](https://www.agensi.io/r/JUANARBOLEDA) giúp ủng hộ dự án miễn phí mà bạn không tốn thêm chi phí.
+
 > [!NOTE]
 > Bạn cần hướng dẫn theo tác vụ? [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) là sổ tay thực hành về sử dụng hằng ngày, vận hành theo nhóm, khắc phục sự cố, tự động hóa CLI/MCP và các quy trình triển khai. [Wiki tĩnh đã bản địa hóa](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) vẫn là phần giới thiệu sản phẩm và kiến trúc bằng tiếng Anh, Việt, Trung, Hàn và Tây Ban Nha; các hợp đồng kỹ thuật chính xác vẫn nằm trong [`docs/`](./docs/README.md).
 

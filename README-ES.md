@@ -75,6 +75,9 @@ Un panel profesional para rastrear sesiones, herramientas, historial de conversa
 > [!TIP]
 > Consulta también [README-EN.md](./README-EN.md) (English), [README-CN.md](./README-CN.md) (中文), [README-VN.md](./README-VN.md) (Tiếng Việt) y [README-KO.md](./README-KO.md) (한국어). Este es el README en español.
 
+> [!IMPORTANT]
+> **DualAgent Nexus Pro** (skill de pago en [Agensi.io](https://www.agensi.io/r/JUANARBOLEDA)) hace que tus créditos de IA rindan más: una cascada de cuota configurable entre suscripciones y claves de API (Anthropic, DeepSeek, compatibles con OpenAI, locales), roles de cerebro / ruteador / ejecutor, gestión de MCP para 7 agentes, una vista de cuota estilo `/usage`, comandos slash, 13 guías de referencia y 8 ejemplos completos. El panel de este repositorio sigue siendo gratuito. Registrarte en Agensi con [este enlace de afiliado](https://www.agensi.io/r/JUANARBOLEDA) apoya el proyecto gratuito sin costo extra para ti.
+
 > [!NOTE]
 > ¿Necesitas ayuda orientada a tareas? La [Wiki de GitHub](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) es el manual práctico para el uso diario, las operaciones de equipo, la solución de problemas, la automatización con CLI/MCP y las recetas de despliegue. La [Wiki estática localizada](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) sigue siendo el recorrido del producto y la arquitectura en inglés, vietnamita, chino, coreano y español; los contratos técnicos exactos permanecen en [`docs/`](./docs/README.md).
 
