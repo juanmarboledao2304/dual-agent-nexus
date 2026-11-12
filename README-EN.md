@@ -75,6 +75,9 @@ A professional dashboard to track and visualize Claude Code, Cursor, and Codex a
 > [!TIP]
 > See also: [README-CN.md](./README-CN.md) (中文版本), [README-VN.md](./README-VN.md) (Phiên bản tiếng Việt), [README-KO.md](./README-KO.md) (한국어 버전), and [README-ES.md](./README-ES.md) (versión en español) for localized documentation with region-specific tips and best practices.
 
+> [!IMPORTANT]
+> **DualAgent Nexus Pro** (paid agent skill on [Agensi.io](https://www.agensi.io/r/JUANARBOLEDA)) stretches your AI credits further: a configurable quota cascade across subscriptions and API keys (Anthropic, DeepSeek, OpenAI-compatible, local), brain / router / executor roles, MCP management for 7 agents, a `/usage`-style quota view, slash commands, 13 reference guides and 8 worked examples. The dashboard in this repo stays free. Signing up on Agensi through [this affiliate link](https://www.agensi.io/r/JUANARBOLEDA) supports the free project at no extra cost to you.
+
 > [!NOTE]
 > Need task-first help? The [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) is the practical handbook for everyday use, team operations, troubleshooting, CLI/MCP automation, and deployment recipes. The [localized static Wiki](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) remains the English, Vietnamese, Chinese, Korean, and Spanish product and architecture tour; exact technical contracts stay in [`docs/`](./docs/README.md).
 

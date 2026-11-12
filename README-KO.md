@@ -74,6 +74,9 @@ Claude Code, Cursor, Codex 에이전트 세션, 도구 사용, 대화 기록, �
 > [!TIP]
 > 참고: 영어 원문은 [README-EN.md](./README-EN.md), 중국어 버전은 [README-CN.md](./README-CN.md) (中文版本), 베트남어 버전은 [README-VN.md](./README-VN.md) (Phiên bản tiếng Việt), 스페인어 버전은 [README-ES.md](./README-ES.md) (Español)를 확인하세요. 이 문서는 한국어 버전입니다.
 
+> [!IMPORTANT]
+> **DualAgent Nexus Pro**([Agensi.io](https://www.agensi.io/r/JUANARBOLEDA)의 유료 에이전트 스킬)는 AI 크레딧을 더 오래 쓰게 해 줍니다: 구독과 API 키(Anthropic, DeepSeek, OpenAI 호환, 로컬)를 아우르는 설정 가능한 쿼터 캐스케이드, 브레인 / 라우터 / 실행자 역할, 7개 에이전트용 MCP 관리, `/usage` 스타일 쿼터 화면, 슬래시 명령, 13개의 참고 가이드와 8개의 완전한 예제. 이 저장소의 대시보드는 계속 무료입니다. [이 제휴 링크](https://www.agensi.io/r/JUANARBOLEDA)로 Agensi에 가입하면 추가 비용 없이 무료 프로젝트를 지원할 수 있습니다.
+
 > [!NOTE]
 > 작업 중심의 도움이 필요하신가요? [GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki)는 일상적인 사용, 팀 운영, 문제 해결, CLI/MCP 자동화 및 배포 절차를 위한 실용 핸드북입니다. [현지화된 정적 Wiki](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/)는 영어, 베트남어, 중국어, 한국어 및 스페인어 제품·아키텍처 둘러보기를 계속 제공하며, 정확한 기술 계약은 [`docs/`](./docs/README.md)에 유지됩니다.
 
