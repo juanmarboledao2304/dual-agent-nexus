@@ -75,6 +75,9 @@
 
 切换文档：[`README-EN.md`](./README-EN.md) · [`README-CN.md`](./README-CN.md) · [`README-VN.md`](./README-VN.md) · [`README-KO.md`](./README-KO.md) · [`README-ES.md`](./README-ES.md)
 
+> [!IMPORTANT]
+> **DualAgent Nexus Pro**（[Agensi.io](https://www.agensi.io/r/JUANARBOLEDA) 上的付费智能体技能）让你的 AI 额度用得更久：可配置的额度级联，覆盖订阅与 API 密钥（Anthropic、DeepSeek、OpenAI 兼容接口、本地服务），大脑 / 路由 / 执行者角色，面向 7 种智能体的 MCP 管理，`/usage` 风格的额度视图，斜杠命令，13 篇参考指南和 8 个完整示例。本仓库中的仪表盘继续免费。通过[此联盟链接](https://www.agensi.io/r/JUANARBOLEDA)注册 Agensi，可在不增加你任何费用的情况下支持这个免费项目。
+
 > [!NOTE]
 > 需要按任务查阅的帮助？[GitHub Wiki](https://github.com/juanmarboledao2304/dual-agent-nexus/wiki) 是面向日常使用、团队运维、故障排查、CLI/MCP 自动化和部署操作的实用手册。[本地化静态 Wiki](https://juanmarboledao2304.github.io/dual-agent-nexus/wiki/) 继续提供英语、越南语、中文、韩语和西班牙语的产品与架构导览；精确的技术契约仍以 [`docs/`](./docs/README.md) 为准。
 
