@@ -50,10 +50,11 @@ const CLAUDE_MODELS = [
 ];
 
 const ANTIGRAVITY_MODELS = [
-  { id: "argon-4-ultra", label: "Argon 4 Ultra (Deep Reasoning · Violet)" },
+  { id: "gemini-4-carbon", label: "Gemini 4 Carbon (Flagship Reasoning · Graphite)" },
+  { id: "gemini-4-argon", label: "Gemini 4 Argon (Deep Reasoning · Violet)" },
   { id: "gemini-3.2-pro-high", label: "Gemini 3.2 Pro High (Deep Reasoning · Violet)" },
   { id: "gemini-3-flow", label: "Gemini 3 Flow (Standard Agentic Flow · Sapphire)" },
-  { id: "gemini-3.8-flash-high", label: "Gemini 3.8 Flash High (Fan-Out · Emerald)" },
+  { id: "gemini-4-hydrogen-high", label: "Gemini 4 Hydrogen High (Fan-Out · Emerald)" },
 ];
 
 const CASCADE_MODELS = [
@@ -74,15 +75,15 @@ const CASCADE_MODELS = [
     label: "Waterfall start: Gemini 3.2 Pro (High) · Pool 2 AGY-Gemini",
   },
   {
-    id: "gemini-3.8-flash-high",
-    label: "Waterfall start: Gemini 3.8 Flash (High) · Pool 2 AGY-Gemini",
+    id: "gemini-4-hydrogen-high",
+    label: "Waterfall start: Gemini 4 Hydrogen (High) · Pool 2 AGY-Gemini",
   },
 ];
 
 const DUAL_MODELS = [
-  { id: "claude-opus-4-6", label: "Dual Heavy: Claude Opus 4.6 + Argon 4 Ultra" },
+  { id: "claude-opus-4-6", label: "Dual Heavy: Claude Opus 4.6 + Gemini 4 Argon" },
   { id: "claude-sonnet-4-6", label: "Dual Standard: Claude Sonnet 4.6 + Gemini 3 Flow" },
-  { id: "claude-haiku-4-5", label: "Dual Fast: Claude Haiku 4.5 + Gemini 3.8 Flash" },
+  { id: "claude-haiku-4-5", label: "Dual Fast: Claude Haiku 4.5 + Gemini 4 Hydrogen" },
 ];
 
 /** Model each engine starts on when selected. */

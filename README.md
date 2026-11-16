@@ -111,7 +111,7 @@ Quota first, analytics second:
 
 - **Waterfall:** each pool's state and cooldown, and what digests saved.
 - **Claude Direct:** 5-hour window, time to empty, burn rate, cache efficiency, input/output/cache tokens, subagents by effort.
-- **Antigravity:** session tokens, flow credits, context bandwidth, request and token burn, Flash : Pro mix.
+- **Antigravity:** session tokens, flow credits, context bandwidth, request and token burn, Hydrogen : Pro mix.
 - **Digest return:** tokens kept off Claude Direct and the share of the 5-hour window they represent.
 - **Analytics:** 52-week activity heatmap, daily cost, cost by model and weekday, token, productivity, and workflow analytics.
 
@@ -150,7 +150,7 @@ Colour always means something, and status never relies on colour alone.
 | --- | --- | --- |
 | **Claude Direct** (Anthropic subscription, pool 3) | Vermilion | Pool dots, the fuel gauge, the thin left edge of agent rows, timeline bars |
 | **Antigravity Claude** (Google-paid Opus / Sonnet / GPT-OSS, pool 1) | Violet | Same forms |
-| **Antigravity Gemini** (Google-paid Argon / Pro / Flash, pool 2) | Cyan | Same forms |
+| **Antigravity Gemini** (Google-paid Carbon / Argon / Hydrogen, pool 2) | Cyan | Same forms |
 | **Needs you** | Paper (inverted) | Slips on Command, the bell badge, the Board's first column |
 | Working / Waiting / Error / Done | Green / Amber / Coral / Grey | A dot plus the word |
 
@@ -167,7 +167,7 @@ flowchart TD
   subgraph Waterfall["<b>Pools, in order</b>"]
     direction TB
     Pool1["<b>Pool 1: agy-claude</b> (Google)<br/>Opus 5.5, Sonnet 5.5, GPT-OSS 120B"]
-    Pool2["<b>Pool 2: agy-gemini</b> (Google)<br/>Gemini 4 Argon, Gemini Pro, Gemini 3.8 Flash"]
+    Pool2["<b>Pool 2: agy-gemini</b> (Google)<br/>Gemini 4 Carbon, Gemini 4 Argon, Gemini Pro, Gemini 4 Hydrogen"]
     Pool3["<b>Pool 3: claude-direct</b> (Anthropic)<br/>Conductor and final fallback"]
     Pool1 -->|"exit 10, 30 min cooldown"| Pool2
     Pool2 -->|"exit 10, 30 min cooldown"| Pool3

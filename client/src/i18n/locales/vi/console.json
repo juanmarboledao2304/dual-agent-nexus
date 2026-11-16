@@ -5,7 +5,7 @@
     "claudeDirect": "Claude Direct",
     "models": {
       "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
-      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "agyGemini": "Gemini 4 Carbon, Argon, Hydrogen",
       "claudeDirect": "Conductor và khám phá với Haiku"
     }
   },
@@ -48,7 +48,7 @@
     "sessionTokens": "Token phiên",
     "flowCredits": "Tín dụng Flow",
     "bandwidth": "Băng thông ngữ cảnh",
-    "modelMix": "Tỉ lệ Flash : Pro",
+    "modelMix": "Tỉ lệ Hydrogen : Pro",
     "waterfall": "Thác nước",
     "waterfallHint": "Công việc đổ từ nhóm 1 sang nhóm 3. Cần bảo vệ Claude Direct.",
     "digest": "Đã giữ lại khỏi Claude Direct:",

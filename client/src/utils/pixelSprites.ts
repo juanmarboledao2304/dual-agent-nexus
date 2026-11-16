@@ -1,10 +1,11 @@
 /**
  * @file pixelSprites.ts
  * @description Deterministic 8-bit sprite data for the DualAgent Nexus PixelAvatar engine.
- * Every agent resolves to one of ten 16x16 character sprites drawn from its quota pool and
+ * Every agent resolves to one of eleven 16x16 character sprites drawn from its quota pool and
  * model tier: Pool 3 Claude Direct (warm spectrum, including Claude Fable 5.2 and Claude
  * Mythos 5.2), Pool 1 AGY-Claude (hybrid spectrum with Antigravity orbital frame accents),
- * and Pool 2 AGY-Gemini (cool spectrum with a dual-core chest). Sprites are plain character
+ * and Pool 2 AGY-Gemini (cool spectrum with a dual-core chest, including flagship Gemini 4
+ * Carbon). Sprites are plain character
  * maps so they stay reviewable as text and render as run-length-merged SVG rects under
  * `shape-rendering="crispEdges"`. Also maps an agent's lifecycle and current tool to an avatar
  * state and a short geometric status badge.
@@ -16,7 +17,7 @@ import type { ModelTier, ThermalProvider } from "./agentTheme";
 /** Side length of every sprite grid, in pixels. */
 export const SPRITE_GRID = 16;
 
-/** The ten character sprites, one per pool and tier. */
+/** The eleven character sprites, one per pool and tier. */
 export type SpriteVariant =
   | "claude-opus"
   | "claude-sonnet"
@@ -25,6 +26,7 @@ export type SpriteVariant =
   | "claude-mythos"
   | "agy-opus"
   | "agy-sonnet"
+  | "gemini-carbon"
   | "gemini-argon"
   | "gemini-pro"
   | "gemini-flash";
@@ -171,6 +173,26 @@ const SPRITE_ROWS: Record<SpriteVariant, readonly string[]> = {
     ...CLAUDE_BODY.slice(7),
     "R..............R",
     "RR............RR",
+  ],
+  // Pool 2 flagship: Gemini 4 Carbon. Graphite chassis crowned by a cyan diamond crest, twin
+  // antennas, and a bright dual-core chest. The most powerful Gemini (top-tier plans only).
+  "gemini-carbon": [
+    "....C..AA..C....",
+    "...CCAAAAAACC...",
+    "....C......C....",
+    "....D......D....",
+    "...LLLLLLLLLL...",
+    "...BBBBBBBBBB...",
+    "...BBEBBBBEBB...",
+    "...BBBBBBBBBB...",
+    ".BBBBBCCCCBBBBB.",
+    "...BBBCAACBBB...",
+    "...BBBBCCBBBB...",
+    "...DDDDDDDDDD...",
+    "...D.D....D.D...",
+    "...D.D....D.D...",
+    "....SSSSSSSS....",
+    EMPTY,
   ],
   // Pool 2 heavy: violet chassis, twin antennas, cyan diamond core.
   "gemini-argon": [
@@ -347,11 +369,29 @@ export const SPRITE_DEFINITIONS: Record<SpriteVariant, SpriteDefinition> = {
     },
     rows: SPRITE_ROWS["agy-sonnet"],
   },
+  "gemini-carbon": {
+    variant: "gemini-carbon",
+    pool: "agy-gemini",
+    tier: "heavy",
+    label: "Gemini 4 Carbon",
+    poolLabel: "POOL 2 • AGY-GEMINI",
+    primaryHex: "#334155",
+    palette: {
+      B: "#334155",
+      D: "#0f172a",
+      L: "#64748b",
+      E: "#02040a",
+      C: "#22d3ee",
+      A: "#67e8f9",
+      S: SHADOW,
+    },
+    rows: SPRITE_ROWS["gemini-carbon"],
+  },
   "gemini-argon": {
     variant: "gemini-argon",
     pool: "agy-gemini",
     tier: "heavy",
-    label: "Argon 4 Ultra",
+    label: "Gemini 4 Argon",
     poolLabel: "POOL 2 • AGY-GEMINI",
     primaryHex: "#a855f7",
     palette: { B: "#a855f7", D: "#6b21a8", L: "#c084fc", E: "#12052a", C: "#22d3ee", S: SHADOW },
@@ -371,7 +411,7 @@ export const SPRITE_DEFINITIONS: Record<SpriteVariant, SpriteDefinition> = {
     variant: "gemini-flash",
     pool: "agy-gemini",
     tier: "light",
-    label: "Gemini 3.8 Flash",
+    label: "Gemini 4 Hydrogen",
     poolLabel: "POOL 2 • AGY-GEMINI",
     primaryHex: "#10b981",
     palette: { B: "#10b981", D: "#065f46", L: "#34d399", E: "#03140e", C: "#a7f3d0", S: SHADOW },
@@ -421,6 +461,7 @@ export const SPRITE_VARIANT_ORDER: readonly SpriteVariant[] = [
   "claude-mythos",
   "agy-opus",
   "agy-sonnet",
+  "gemini-carbon",
   "gemini-argon",
   "gemini-pro",
   "gemini-flash",
@@ -462,7 +503,8 @@ export function buildSpriteRects(variant: SpriteVariant): SpriteRect[] {
 
 /**
  * Pick the sprite for an agent from its resolved thermal provider, model tier, and optional model ID.
- * Flagship models Claude Fable 5.2 and Claude Mythos 5.2 resolve to their dedicated sprites.
+ * Flagship models Claude Fable 5.2, Claude Mythos 5.2, and Gemini 4 Carbon resolve to their
+ * dedicated sprites.
  * Codex and Cursor rows (outside the three operational pools) fall back to the Claude Direct sprites.
  *
  * @param provider - Thermal provider from `getAgentThermalTheme`.
@@ -478,9 +520,11 @@ export function resolveSpriteVariant(
   const m = String(model || "").toLowerCase();
   if (m.includes("fable")) return "claude-fable";
   if (m.includes("mythos")) return "claude-mythos";
+  if (m.includes("carbon")) return "gemini-carbon";
 
   if (provider === "agy-claude") return tier === "heavy" ? "agy-opus" : "agy-sonnet";
   if (provider === "antigravity" || provider === "agy-gemini") {
+    if (m.includes("argon")) return "gemini-argon";
     if (tier === "heavy") return "gemini-argon";
     if (tier === "light") return "gemini-flash";
     return "gemini-pro";

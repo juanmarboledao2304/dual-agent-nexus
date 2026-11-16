@@ -80,8 +80,16 @@ const DEFAULT_CASCADE_MODELS = [
   {
     pool: "agy-gemini",
     provider: "antigravity",
-    model: "argon-4-ultra-high",
-    label: "Argon / Gemini 4 High",
+    model: "gemini-4-carbon-high",
+    label: "Gemini 4 Carbon High",
+    tier: "heavy",
+    effort: "high",
+  },
+  {
+    pool: "agy-gemini",
+    provider: "antigravity",
+    model: "gemini-4-argon-high",
+    label: "Gemini 4 Argon High",
     tier: "heavy",
     effort: "high",
   },
@@ -96,24 +104,24 @@ const DEFAULT_CASCADE_MODELS = [
   {
     pool: "agy-gemini",
     provider: "antigravity",
-    model: "gemini-3.8-flash-high",
-    label: "Gemini 3.8 Flash High",
+    model: "gemini-4-hydrogen-high",
+    label: "Gemini 4 Hydrogen High",
     tier: "light",
     effort: "high",
   },
   {
     pool: "agy-gemini",
     provider: "antigravity",
-    model: "gemini-3.8-flash-med",
-    label: "Gemini 3.8 Flash Med",
+    model: "gemini-4-hydrogen-med",
+    label: "Gemini 4 Hydrogen Med",
     tier: "light",
     effort: "medium",
   },
   {
     pool: "agy-gemini",
     provider: "antigravity",
-    model: "gemini-3.8-flash-low",
-    label: "Gemini 3.8 Flash Low",
+    model: "gemini-4-hydrogen-low",
+    label: "Gemini 4 Hydrogen Low",
     tier: "light",
     effort: "low",
   },
@@ -193,7 +201,9 @@ function normalizeProvider(provider, model = "", source = "") {
 
   if (
     m.includes("gemini") ||
+    m.includes("carbon") ||
     m.includes("argon") ||
+    m.includes("hydrogen") ||
     m.includes("3.8-flash") ||
     m.includes("flash") ||
     m.includes("ultra")
@@ -419,16 +429,25 @@ function classifyModelAndEffort(input = {}) {
     };
   }
 
-  // Pool 2: agy-gemini / antigravity (Argon / Gemini 4+ -> Gemini Pro -> Gemini 3.8 Flash High/Med/Low)
+  // Pool 2: agy-gemini / antigravity
+  // (Gemini 4 Carbon flagship / Gemini 4 Argon -> Gemini Pro -> Gemini 4 Hydrogen High/Med/Low).
+  // Gemini 4 Hydrogen replaced Gemini 3.8 Flash as the basic worker (2026-11-16); "flash" is kept
+  // as a legacy alias so older model strings still classify.
   if (provider === "antigravity") {
     const isLightModel =
+      m.includes("hydrogen") ||
       m.includes("3.8-flash") ||
       m.includes("flash") ||
       m.includes("lite") ||
       m.includes("nano") ||
-      (subType === "explore" && !m.includes("pro") && !m.includes("argon") && !m.includes("ultra"));
+      (subType === "explore" &&
+        !m.includes("pro") &&
+        !m.includes("argon") &&
+        !m.includes("ultra") &&
+        !m.includes("carbon"));
 
     const isHeavyModel =
+      m.includes("carbon") ||
       m.includes("pro") ||
       m.includes("ultra") ||
       m.includes("argon") ||
@@ -439,9 +458,12 @@ function classifyModelAndEffort(input = {}) {
 
     if (
       isLightModel ||
-      (explicitEffort === "low" && !m.includes("argon") && !m.includes("ultra"))
+      (explicitEffort === "low" &&
+        !m.includes("argon") &&
+        !m.includes("ultra") &&
+        !m.includes("carbon"))
     ) {
-      const resolvedModel = rawModel || "gemini-3.8-flash";
+      const resolvedModel = rawModel || "gemini-4-hydrogen";
       return {
         provider: "antigravity",
         pool: "agy-gemini",
@@ -454,7 +476,7 @@ function classifyModelAndEffort(input = {}) {
     }
 
     if (isHeavyModel) {
-      const resolvedModel = rawModel || "argon-4-ultra";
+      const resolvedModel = rawModel || "gemini-4-argon";
       return {
         provider: "antigravity",
         pool: "agy-gemini",
@@ -591,17 +613,19 @@ function formatModelShortName(model = "", provider = "claude", modelTier = "stan
   }
 
   if (p === "antigravity" || p === "agy-gemini") {
-    if (m.includes("argon")) return "Argon 4";
+    if (m.includes("carbon")) return "Gemini 4 Carbon";
+    if (m.includes("argon")) return "Gemini 4 Argon";
+    if (m.includes("hydrogen")) return "Gemini 4 Hydrogen";
     if (m.includes("gemini-4") || m.includes("gemini 4")) return "Gemini 4";
     if (m.includes("ultra")) return "Gemini Ultra";
     if (m.includes("3.8-flash") || m.includes("3.8")) return "3.8 Flash";
     if (m.includes("flash-lite") || m.includes("lite")) return "Flash Lite";
     if (m.includes("flash")) return "3.8 Flash";
-    if (m.includes("pro")) return "Gemini 3 Pro";
+    if (m.includes("pro")) return "Gemini Pro";
     if (m.includes("flow")) return "Agy Flow";
-    if (modelTier === "heavy") return "Argon 4";
-    if (modelTier === "light") return "3.8 Flash";
-    return "Gemini 3 Std";
+    if (modelTier === "heavy") return "Gemini 4 Argon";
+    if (modelTier === "light") return "Gemini 4 Hydrogen";
+    return "Gemini Pro";
   }
 
   if (m.includes("opus")) {

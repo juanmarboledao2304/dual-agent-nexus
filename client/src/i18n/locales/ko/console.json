@@ -5,7 +5,7 @@
     "claudeDirect": "Claude Direct",
     "models": {
       "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
-      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "agyGemini": "Gemini 4 Carbon, Argon, Hydrogen",
       "claudeDirect": "Conductor와 Haiku 탐색"
     }
   },
@@ -48,7 +48,7 @@
     "sessionTokens": "세션 토큰",
     "flowCredits": "Flow 크레딧",
     "bandwidth": "컨텍스트 대역폭",
-    "modelMix": "Flash : Pro 비율",
+    "modelMix": "Hydrogen : Pro 비율",
     "waterfall": "워터폴",
     "waterfallHint": "작업은 풀 1에서 풀 3으로 흘러갑니다. 보호해야 할 것은 Claude Direct입니다.",
     "digest": "Claude Direct에서 덜어낸 양:",

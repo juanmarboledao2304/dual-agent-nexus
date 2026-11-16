@@ -294,7 +294,7 @@ function processAntigravityJsonlEntries(filePath, entries) {
         session_id: convId,
         session_name: `Antigravity ${convId.slice(0, 8)}`,
         provider: "antigravity",
-        model: obj.model || "argon-4-ultra",
+        model: obj.model || "gemini-4-argon",
         effort: obj.thinking ? "high" : "medium",
         prompt: contentStr.slice(0, 300),
         output: contentStr,
@@ -312,7 +312,7 @@ function processAntigravityJsonlEntries(filePath, entries) {
         hooksRouter.processEvent("PreToolUse", {
           session_id: convId,
           provider: "antigravity",
-          model: obj.model || (obj.thinking ? "argon-4-ultra" : "gemini-3-flow"),
+          model: obj.model || (obj.thinking ? "gemini-4-argon" : "gemini-3-flow"),
           effort: obj.thinking ? "high" : "medium",
           tool_name: toolName,
           tool_input: args,
@@ -329,7 +329,7 @@ function processAntigravityJsonlEntries(filePath, entries) {
       hooksRouter.processEvent("Stop", {
         session_id: convId,
         provider: "antigravity",
-        model: obj.model || "gemini-3.8-flash-high",
+        model: obj.model || "gemini-4-hydrogen-high",
         effort: "high",
         output: contentStr,
         summary: "===DIGEST=== Received from Antigravity",

@@ -2,7 +2,7 @@
  * @file End-to-end regression test for POST /api/simulate/swarm. Drives the real router handler
  * with mocked timers against a throwaway database and asserts the full 25-second lifecycle:
  * L1 Opus Conductor, L2 agy-cascade bridge starting on Pool 1 Opus 5.5 Thinking, Exit Code 10
- * failover to Pool 2 Argon 4 Ultra, three L3 Gemini 3.8 Flash units with git checkpoints, the
+ * failover to Pool 2 Gemini 4 Argon, three L3 Gemini 4 Hydrogen units with git checkpoints, the
  * 4x Grep loop, the y/n permission prompt, and the final ===DIGEST=== handoff. Guards against
  * statement-arity bugs that once made every bridge/fan-out insert throw silently.
  * @author Juan Manuel Arboleda Orozco (github.com/juanmarboledao2304)
@@ -119,19 +119,19 @@ describe("POST /api/simulate/swarm lifecycle", () => {
     assert.deepEqual(tools.slice(-4), ["Grep", "Grep", "Grep", "Grep"]);
   });
 
-  it("fails the bridge over to Pool 2 Argon 4 Ultra on Exit Code 10", () => {
+  it("fails the bridge over to Pool 2 Gemini 4 Argon on Exit Code 10", () => {
     mock.timers.tick(500); // T+7.6s
     const bridge = agentsOf(sim.claude_session_id).find((a) =>
       a.id.endsWith("-bridge-agy-cascade")
     );
     assert.equal(bridge.provider, "antigravity");
-    assert.equal(bridge.model, "argon-4-ultra");
+    assert.equal(bridge.model, "gemini-4-argon");
     assert.equal(bridge.model_tier, "heavy");
     assert.equal(meta(bridge).cascade_exit_code, 10);
     assert.equal(meta(bridge).active_pool, "agy-gemini");
   });
 
-  it("fans out three L3 Gemini 3.8 Flash units under the bridge", () => {
+  it("fans out three L3 Gemini 4 Hydrogen units under the bridge", () => {
     mock.timers.tick(2500); // T+10.1s
     const agents = agentsOf(sim.claude_session_id);
     const bridge = agents.find((a) => a.id.endsWith("-bridge-agy-cascade"));
@@ -139,7 +139,7 @@ describe("POST /api/simulate/swarm lifecycle", () => {
     assert.equal(units.length, 3);
     for (const u of units) {
       assert.equal(u.parent_agent_id, bridge.id);
-      assert.equal(u.model, "gemini-3.8-flash-high");
+      assert.equal(u.model, "gemini-4-hydrogen-high");
       assert.equal(u.status, "working");
     }
   });

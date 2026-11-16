@@ -123,7 +123,7 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
   const digestOutput = [
     "===DIGEST===",
     `- Task Completed: ${prompt.slice(0, 72)}`,
-    `- Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) -> Pool 2 (AGY-Gemini 3.8 Flash High)`,
+    `- Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 High) -> Pool 2 (AGY-Gemini 4 Hydrogen High)`,
     `- Fan-Out Units: ${isFanOut ? "3 specialist subagents (Unit 1, Unit 2, Unit 3)" : "Direct waterfall execution"}`,
     `- Git Checkpoints: ${isFanOut ? "3 commits verified cleanly" : "1 checkpoint commit verified"}`,
     `- Offloaded Verbose Trace: ~${isFanOut ? "38,400" : "19,200"} raw tokens compressed into 6-line digest`,
@@ -245,14 +245,14 @@ function runSimulatedCliFallback(dispatchEntry, prompt) {
             {
               delay: 1400,
               tool: "invoke_subagent",
-              msg: `[agy:${model}] Spawning 3.8-Flash fast exploration subagent for "${prompt.slice(0, 48)}"`,
+              msg: `[agy:${model}] Spawning Gemini 4 Hydrogen fast exploration subagent for "${prompt.slice(0, 48)}"`,
               inTok: 4200,
               outTok: 890,
               subagent: {
                 TypeName: "research",
                 Role: "Explore",
                 Prompt: `Fast context scan for: ${prompt.slice(0, 80)}`,
-                Model: "gemini-3.8-flash",
+                Model: "gemini-4-hydrogen",
                 Effort: "low",
               },
             },
@@ -897,7 +897,7 @@ router.post("/", (req, res) => {
         antigravityModel ||
         (model && (model.includes("gemini") || model.includes("argon") || model.includes("flash"))
           ? model
-          : "argon-4-ultra"),
+          : "gemini-4-argon"),
       effort,
       cwd,
     });
@@ -922,7 +922,7 @@ router.post("/", (req, res) => {
     model:
       model ||
       (singleProvider === "antigravity"
-        ? "argon-4-ultra"
+        ? "gemini-4-argon"
         : singleProvider === "agy-claude"
           ? "claude-opus-5-5-high"
           : "claude-sonnet-4-6"),

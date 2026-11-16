@@ -5,7 +5,7 @@
     "claudeDirect": "Claude Direct",
     "models": {
       "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
-      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "agyGemini": "Gemini 4 Carbon, Argon, Hydrogen",
       "claudeDirect": "Conductor 与 Haiku 探索"
     }
   },
@@ -48,7 +48,7 @@
     "sessionTokens": "会话 Token",
     "flowCredits": "Flow 积分",
     "bandwidth": "上下文带宽",
-    "modelMix": "Flash : Pro 比例",
+    "modelMix": "Hydrogen : Pro 比例",
     "waterfall": "瀑布",
     "waterfallHint": "工作从池 1 流向池 3。需要保护的是 Claude Direct。",
     "digest": "未占用 Claude Direct 的部分：",
