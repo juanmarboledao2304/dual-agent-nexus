@@ -57,19 +57,33 @@ describe("Phase 7 — 3-Pool Model Classifier & Waterfall Telemetry", () => {
   });
 
   it("classifies Pool 2 (agy-gemini / antigravity) models", () => {
+    const hydrogen = classifyModelAndEffort({
+      model: "gemini-4-hydrogen-high",
+    });
+    assert.equal(hydrogen.provider, "antigravity");
+    assert.equal(hydrogen.pool, "agy-gemini");
+    assert.equal(hydrogen.model_tier, "light");
+
+    // Legacy alias: Gemini 3.8 Flash still classifies (demoted, kept as fallback).
     const flash38 = classifyModelAndEffort({
       model: "gemini-3.8-flash-high",
     });
-    assert.equal(flash38.provider, "antigravity");
     assert.equal(flash38.pool, "agy-gemini");
     assert.equal(flash38.model_tier, "light");
 
     const argon = classifyModelAndEffort({
-      model: "argon-4-ultra",
+      model: "gemini-4-argon",
     });
     assert.equal(argon.provider, "antigravity");
     assert.equal(argon.pool, "agy-gemini");
     assert.equal(argon.model_tier, "heavy");
+
+    const carbon = classifyModelAndEffort({
+      model: "gemini-4-carbon-high",
+    });
+    assert.equal(carbon.provider, "antigravity");
+    assert.equal(carbon.pool, "agy-gemini");
+    assert.equal(carbon.model_tier, "heavy");
   });
 
   it("classifies Pool 3 (claude-direct) models", () => {
@@ -137,7 +151,7 @@ describe("Phase 7 — 3-Pool Model Classifier & Waterfall Telemetry", () => {
     assert.ok(DEFAULT_CASCADE_MODELS.length >= 4);
     assert.equal(DEFAULT_CASCADE_MODELS[0].pool, "agy-claude");
     assert.equal(resolveQuotaPool("agy-claude", "claude-opus-5-5-thinking"), "agy-claude");
-    assert.equal(resolveQuotaPool("antigravity", "gemini-3.8-flash-high"), "agy-gemini");
+    assert.equal(resolveQuotaPool("antigravity", "gemini-4-hydrogen-high"), "agy-gemini");
   });
 });
 
@@ -275,7 +289,7 @@ describe("DualAgent Nexus v3 — port 7770, hook migration, simulator, authorshi
       "utf8"
     );
     assert.match(src, /--model claude-opus-5-5-thinking/);
-    assert.match(src, /agy-cascade \(Pool 2: Argon 4 Ultra\)/);
+    assert.match(src, /agy-cascade \(Pool 2: Gemini 4 Argon\)/);
     assert.match(src, /meta\.cascade_exit_code = 10/);
     assert.match(src, /notification_type: "permission_prompt"/);
     const emoji = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;

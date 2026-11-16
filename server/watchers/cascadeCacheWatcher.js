@@ -233,7 +233,7 @@ function getCascadeStatus(db = registeredDb) {
     id: "agy-gemini",
     pool: "agy-gemini",
     label: "Pool 2: AGY-Gemini",
-    short_chain: "Argon 4 / Gemini Pro / 3.8 Flash",
+    short_chain: "Gemini 4 Argon / Gemini Pro / Gemini 4 Hydrogen",
     status: pool2State.exhausted ? "exhausted" : activePool === "agy-gemini" ? "active" : "standby",
     ...pool2State,
   };

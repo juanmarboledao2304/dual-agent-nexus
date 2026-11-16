@@ -2,7 +2,7 @@
  * @file Dual-Subscription Quota Telemetry & One-Click 25-Second Swarm Simulator for Claude Code and Google Antigravity.
  * Powers the quota meter and Usage page and POST /api/simulate/swarm. The swarm drives every Agent Rooms zone
  * and the 3-level Cascade Hierarchy: L1 Opus Conductor -> L2 agy-cascade bridge on Pool 1 Opus 5.5
- * Thinking -> Exit Code 10 -> Pool 2 Argon 4 Ultra -> 3x L3 Gemini 3.8 Flash specialists -> git
+ * Thinking -> Exit Code 10 -> Pool 2 Gemini 4 Argon -> 3x L3 Gemini 4 Hydrogen specialists -> git
  * checkpoints and a ===DIGEST=== token-offload summary. Along the way it raises each Attention Radar
  * signal once (a 4x Grep loop, Exit Code 10 quota exhaustion, and a y/n permission prompt) and
  * streams per-agent stdout so every workstation pod's mini-terminal fills in.
@@ -333,7 +333,7 @@ router.post("/swarm", (req, res) => {
     timers,
   };
 
-  // 0s–4s: Spawn Level-1 Claude Conductor (claude-direct, Opus 4.6) + Antigravity Orchestrator (Argon 4)
+  // 0s–4s: Spawn Level-1 Claude Conductor (claude-direct, Opus 4.6) + Antigravity Orchestrator (Gemini 4 Argon)
   // and run fast Read/Grep/Haiku exploration to design the 3-unit interface contract
   schedule(0, () => {
     hooksRouter.processEvent("SessionStart", {
@@ -364,11 +364,11 @@ router.post("/swarm", (req, res) => {
       session_id: agySessionId,
       session_name: "Antigravity Swarm: Autonomous DAG & Subagent Verification",
       provider: "antigravity",
-      model: "argon-4-ultra",
+      model: "gemini-4-argon",
       effort: "high",
       cwd,
       prompt:
-        "Architect real-time subagent hierarchy graph, verify cross-provider hooks, and benchmark 3.8-Flash parallel inspection.",
+        "Architect real-time subagent hierarchy graph, verify cross-provider hooks, and benchmark Gemini 4 Hydrogen parallel inspection.",
       pid: 52088,
       metrics: {
         input_tokens: 22000,
@@ -380,11 +380,11 @@ router.post("/swarm", (req, res) => {
     hooksRouter.processEvent("UserPromptSubmit", {
       session_id: agySessionId,
       provider: "antigravity",
-      model: "argon-4-ultra",
+      model: "gemini-4-argon",
       effort: "high",
       cwd,
       prompt:
-        "Architect real-time subagent hierarchy graph, verify cross-provider hooks, and benchmark 3.8-Flash parallel inspection.",
+        "Architect real-time subagent hierarchy graph, verify cross-provider hooks, and benchmark Gemini 4 Hydrogen parallel inspection.",
       pid: 52088,
       metrics: {
         input_tokens: 26500,
@@ -405,7 +405,7 @@ router.post("/swarm", (req, res) => {
     });
   });
 
-  // T+2000ms: Spawn native Haiku Explore subagents + Antigravity 3.8-Flash inspection subagents
+  // T+2000ms: Spawn native Haiku Explore subagents + Antigravity Gemini 4 Hydrogen inspection subagents
   schedule(2000, () => {
     const haikuTasks = [
       {
@@ -453,7 +453,7 @@ router.post("/swarm", (req, res) => {
     hooksRouter.processEvent("PreToolUse", {
       session_id: agySessionId,
       provider: "antigravity",
-      model: "gemini-3.8-flash",
+      model: "gemini-4-hydrogen",
       effort: "low",
       tool_name: "invoke_subagent",
       tool_input: {
@@ -463,7 +463,7 @@ router.post("/swarm", (req, res) => {
             TypeName: "research",
             Role: "Explore: view_file_outline AST",
             Prompt: "Inspect AST symbols across server/controllers and server/utils",
-            Model: "gemini-3.8-flash",
+            Model: "gemini-4-hydrogen",
             Effort: "low",
           },
           {
@@ -471,7 +471,7 @@ router.post("/swarm", (req, res) => {
             TypeName: "research",
             Role: "Explore: grep_search hook endpoints",
             Prompt: "Search all hook configurations in ~/.gemini/config/hooks.json",
-            Model: "gemini-3.8-flash",
+            Model: "gemini-4-hydrogen",
             Effort: "low",
           },
           {
@@ -479,7 +479,7 @@ router.post("/swarm", (req, res) => {
             TypeName: "research",
             Role: "Explore: run_command diagnostics",
             Prompt: "Verify port 7770 telemetry throughput and WebSocket latency",
-            Model: "gemini-3.8-flash",
+            Model: "gemini-4-hydrogen",
             Effort: "low",
           },
         ],
@@ -604,12 +604,12 @@ router.post("/swarm", (req, res) => {
   });
 
   // T+7500ms: Simulate Exit Code 10 (Quota Exhausted) on Pool 1 (AGY-Claude Opus 5.5 Thinking) ->
-  // Trigger `claude.exhausted` 30m cooldown banner -> Cascade Level-2 Bridge Agent to Pool 2: AGY-Gemini (Argon 4 Ultra)
+  // Trigger `claude.exhausted` 30m cooldown banner -> Cascade Level-2 Bridge Agent to Pool 2: AGY-Gemini (Gemini 4 Argon)
   schedule(7500, () => {
     triggerSimulatedExhaustion("agy-claude", 1800, {
       reason: "Exit Code 10 (claude.exhausted — Pool 1 Opus 5.5 / Sonnet 5.5 quota exhausted)",
       cascadedTo: "agy-gemini",
-      activeModel: "argon-4-ultra",
+      activeModel: "gemini-4-argon",
     });
 
     const bridgeAgent = stmts.getAgent.get(bridgeAgentId);
@@ -627,7 +627,7 @@ router.post("/swarm", (req, res) => {
       meta.exit_code_10_handled = true;
 
       stmts.updateAgent.run(
-        "agy-cascade (Pool 2: Argon 4 Ultra)",
+        "agy-cascade (Pool 2: Gemini 4 Argon)",
         "working",
         null,
         "define_subagent",
@@ -638,7 +638,7 @@ router.post("/swarm", (req, res) => {
       stmts.updateAgentTelemetry.run(
         "antigravity",
         "Code",
-        "argon-4-ultra",
+        "gemini-4-argon",
         "heavy",
         "high",
         "tool_use",
@@ -664,7 +664,7 @@ router.post("/swarm", (req, res) => {
       claudeSessionId,
       bridgeAgentId,
       "antigravity",
-      "[agy-cascade] Cascading to Pool 2: AGY-Gemini (Argon 4 Ultra, high effort)"
+      "[agy-cascade] Cascading to Pool 2: AGY-Gemini (Gemini 4 Argon, high effort)"
     );
   });
 
@@ -721,7 +721,7 @@ router.post("/swarm", (req, res) => {
       stmts.updateAgentTelemetry.run(
         "antigravity",
         u.role,
-        "gemini-3.8-flash-high",
+        "gemini-4-hydrogen-high",
         "light",
         "high",
         "tool_use",
@@ -739,7 +739,7 @@ router.post("/swarm", (req, res) => {
       broadcast("agent_created", stmts.getAgent.get(u.id));
     });
 
-    const l3Msg = `[Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 3.8 Flash High`;
+    const l3Msg = `[Level-2 agy-cascade -> Level-3 Fan-Out] Spawned 3 parallel specialist subagents (${fanOutUnitIds.join(", ")}) on Gemini 4 Hydrogen High`;
     emitAgentStream(simRunId, claudeSessionId, bridgeAgentId, "antigravity", l3Msg);
 
     const unitLines = [
@@ -796,7 +796,7 @@ router.post("/swarm", (req, res) => {
   });
 
   // T+15000ms: Level-3 Specialist Subagents create git checkpoints (`git commit -m "checkpoint: ..."`);
-  // Haiku & 3.8-Flash exploration subagents finish
+  // Haiku & Gemini 4 Hydrogen exploration subagents finish
   schedule(15000, () => {
     for (const id of claudeHaikuIds) {
       hooksRouter.processEvent("SubagentStop", {
@@ -812,7 +812,7 @@ router.post("/swarm", (req, res) => {
         session_id: agySessionId,
         agent_id: id,
         provider: "antigravity",
-        model: "gemini-3.8-flash",
+        model: "gemini-4-hydrogen",
         effort: "low",
       });
     }
@@ -838,7 +838,7 @@ router.post("/swarm", (req, res) => {
         stmts.updateAgentTelemetry.run(
           "antigravity",
           unitAgent.subagent_role || "Code",
-          "gemini-3.8-flash-high",
+          "gemini-4-hydrogen-high",
           "light",
           "high",
           "tool_use",
@@ -918,7 +918,7 @@ router.post("/swarm", (req, res) => {
 
     const digestBlock = [
       "===DIGEST===",
-      "1. Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 Thinking) hit Exit Code 10 -> auto-cascaded to Pool 2 (AGY-Gemini Argon 4 Ultra); 3 L3 units ran on Gemini 3.8 Flash High.",
+      "1. Pool Waterfall: Pool 1 (AGY-Claude Opus 5.5 Thinking) hit Exit Code 10 -> auto-cascaded to Pool 2 (AGY-Gemini Gemini 4 Argon); 3 L3 units ran on Gemini 4 Hydrogen High.",
       "2. Unit 1 (conv-unit-1): Built cascadeCacheWatcher.js, /api/cascade/status, and 3-pool modelClassifier [commit 7c2e91a].",
       "3. Unit 2 (conv-unit-2): Added Electric Fuchsia/Indigo AGY-Claude spectrum & 3-level SubagentGraph DAG [commit 8d4f02b].",
       "4. Unit 3 (conv-unit-3): Verified zero TypeScript errors and 100% unit test pass rate [commit 9e1a33c].",
@@ -1042,14 +1042,14 @@ router.post("/swarm", (req, res) => {
     hooksRouter.processEvent("PostToolUse", {
       session_id: agySessionId,
       provider: "antigravity",
-      model: "argon-4-ultra",
+      model: "gemini-4-argon",
       effort: "high",
       tool_name: "run_command",
     });
     hooksRouter.processEvent("Stop", {
       session_id: agySessionId,
       provider: "antigravity",
-      model: "argon-4-ultra",
+      model: "gemini-4-argon",
       effort: "high",
       metrics: {
         input_tokens: 134000,

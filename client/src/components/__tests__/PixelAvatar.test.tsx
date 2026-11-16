@@ -45,11 +45,18 @@ describe("PixelAvatar", () => {
     );
     expect(screen.getByTestId("pixel-avatar")).toHaveAttribute("data-variant", "agy-opus");
 
-    rerender(<PixelAvatar agent={agent({ provider: "antigravity", model: "argon-4-ultra" })} />);
+    rerender(
+      <PixelAvatar agent={agent({ provider: "antigravity", model: "gemini-4-carbon-high" })} />
+    );
+    expect(screen.getByTestId("pixel-avatar")).toHaveAttribute("data-variant", "gemini-carbon");
+
+    rerender(
+      <PixelAvatar agent={agent({ provider: "antigravity", model: "gemini-4-argon-high" })} />
+    );
     expect(screen.getByTestId("pixel-avatar")).toHaveAttribute("data-variant", "gemini-argon");
 
     rerender(
-      <PixelAvatar agent={agent({ provider: "antigravity", model: "gemini-3.8-flash-high" })} />
+      <PixelAvatar agent={agent({ provider: "antigravity", model: "gemini-4-hydrogen-high" })} />
     );
     expect(screen.getByTestId("pixel-avatar")).toHaveAttribute("data-variant", "gemini-flash");
 

@@ -5,7 +5,7 @@
     "claudeDirect": "Claude Direct",
     "models": {
       "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
-      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "agyGemini": "Gemini 4 Carbon, Argon, Hydrogen",
       "claudeDirect": "Conductor y exploración con Haiku"
     }
   },
@@ -48,7 +48,7 @@
     "sessionTokens": "Tokens de la sesión",
     "flowCredits": "Créditos de Flow",
     "bandwidth": "Ancho de banda de contexto",
-    "modelMix": "Mezcla Flash : Pro",
+    "modelMix": "Mezcla Hydrogen : Pro",
     "waterfall": "Cascada",
     "waterfallHint": "El trabajo cae de la bolsa 1 a la 3. Claude Direct es la que hay que proteger.",
     "digest": "Ahorrado a Claude Direct:",

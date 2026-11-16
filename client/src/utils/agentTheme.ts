@@ -104,7 +104,7 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     tier: "heavy",
     colorName: "Electric Purple",
     hex: "#a855f7",
-    models: "Argon 4 Ultra / Gemini 4+ High",
+    models: "Gemini 4 Carbon / Argon · High",
     role: "Pool 2: Deep Reasoning / Planner",
   },
   {
@@ -112,7 +112,7 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     tier: "standard",
     colorName: "Cyber Blue",
     hex: "#3b82f6",
-    models: "Gemini 3 Pro / Flow · Med Effort",
+    models: "Gemini Pro / Flow · Med Effort",
     role: "Pool 2: Standard Agentic Coding Flow",
   },
   {
@@ -120,7 +120,7 @@ export const THERMAL_LEGEND_ITEMS: ThermalLegendItem[] = [
     tier: "light",
     colorName: "Emerald Green",
     hex: "#10b981",
-    models: "Gemini 3.8 Flash · High/Med/Low",
+    models: "Gemini 4 Hydrogen · High/Med/Low",
     role: "Pool 2: High-Speed Fan-Out Specialist",
   },
 ];
@@ -288,10 +288,17 @@ export function resolveModelTier(params: {
   }
 
   if (params.provider === "antigravity") {
-    if (m.includes("3.8-flash") || m.includes("flash") || m.includes("lite") || e === "low") {
+    if (
+      m.includes("hydrogen") ||
+      m.includes("3.8-flash") ||
+      m.includes("flash") ||
+      m.includes("lite") ||
+      e === "low"
+    ) {
       return "light";
     }
     if (
+      m.includes("carbon") ||
       m.includes("pro") ||
       m.includes("ultra") ||
       m.includes("argon") ||
@@ -346,7 +353,7 @@ export function resolveEffort(
 }
 
 /**
- * Format compact model badge text (e.g. Opus 5.5, Sonnet 5.5, GPT-OSS 120B, Opus 4.6, Sonnet 4.6, Haiku 4.5, Argon 4, 3.8 Flash).
+ * Format compact model badge text (e.g. Opus 5.5, Sonnet 5.5, GPT-OSS 120B, Haiku 4.5, Gemini 4 Carbon, Gemini 4 Argon, Gemini 4 Hydrogen).
  */
 export function formatModelBadge(
   model?: string | null,
@@ -372,17 +379,19 @@ export function formatModelBadge(
   }
 
   if (provider === "antigravity" || provider === "agy-gemini") {
-    if (m.includes("argon")) return "Argon 4";
+    if (m.includes("carbon")) return "Gemini 4 Carbon";
+    if (m.includes("argon")) return "Gemini 4 Argon";
+    if (m.includes("hydrogen")) return "Gemini 4 Hydrogen";
     if (m.includes("gemini-4") || m.includes("gemini 4")) return "Gemini 4";
     if (m.includes("ultra")) return "Gemini Ultra";
     if (m.includes("3.8-flash") || m.includes("3.8")) return "3.8 Flash";
     if (m.includes("flash-lite") || m.includes("lite")) return "Flash Lite";
     if (m.includes("flash")) return "3.8 Flash";
-    if (m.includes("pro")) return "Gemini 3 Pro";
+    if (m.includes("pro")) return "Gemini Pro";
     if (m.includes("flow")) return "Agy Flow";
-    if (tier === "heavy") return "Argon 4";
-    if (tier === "light") return "3.8 Flash";
-    return "Gemini 3 Flow";
+    if (tier === "heavy") return "Gemini 4 Argon";
+    if (tier === "light") return "Gemini 4 Hydrogen";
+    return "Gemini Pro";
   }
 
   if (m.includes("opus")) {

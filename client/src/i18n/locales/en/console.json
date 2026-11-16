@@ -5,7 +5,7 @@
     "claudeDirect": "Claude Direct",
     "models": {
       "agyClaude": "Opus 5.5, Sonnet 5.5, GPT-OSS",
-      "agyGemini": "Argon 4, Gemini Pro, 3.8 Flash",
+      "agyGemini": "Gemini 4 Carbon, Argon, Hydrogen",
       "claudeDirect": "Conductor and Haiku explore"
     }
   },
@@ -48,7 +48,7 @@
     "sessionTokens": "Session tokens",
     "flowCredits": "Flow credits",
     "bandwidth": "Context bandwidth",
-    "modelMix": "Flash : Pro mix",
+    "modelMix": "Hydrogen : Pro mix",
     "waterfall": "Waterfall",
     "waterfallHint": "Work pours from pool 1 to pool 3. Claude Direct is the one to protect.",
     "digest": "Kept off Claude Direct:",

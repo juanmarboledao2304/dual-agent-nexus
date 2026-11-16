@@ -24,8 +24,8 @@ import type { PixelRole, SpriteVariant } from "../pixelSprites";
 const VARIANTS = Object.keys(SPRITE_DEFINITIONS) as SpriteVariant[];
 
 describe("sprite definitions", () => {
-  it("ships all ten variants in the legend order", () => {
-    expect(VARIANTS).toHaveLength(10);
+  it("ships all eleven variants in the legend order", () => {
+    expect(VARIANTS).toHaveLength(11);
     expect([...SPRITE_VARIANT_ORDER].sort()).toEqual([...VARIANTS].sort());
   });
 
@@ -52,6 +52,8 @@ describe("sprite definitions", () => {
     expect(SPRITE_DEFINITIONS["claude-mythos"].palette.B).toBe("#8b5cf6");
     expect(SPRITE_DEFINITIONS["agy-opus"].palette.B).toBe("#d946ef");
     expect(SPRITE_DEFINITIONS["agy-sonnet"].palette.B).toBe("#6366f1");
+    expect(SPRITE_DEFINITIONS["gemini-carbon"].palette.B).toBe("#334155");
+    expect(SPRITE_DEFINITIONS["gemini-carbon"].palette.C).toBe("#22d3ee");
     expect(SPRITE_DEFINITIONS["gemini-argon"].palette.B).toBe("#a855f7");
     expect(SPRITE_DEFINITIONS["gemini-argon"].palette.C).toBe("#22d3ee");
     expect(SPRITE_DEFINITIONS["gemini-pro"].palette.B).toBe("#3b82f6");
@@ -62,7 +64,7 @@ describe("sprite definitions", () => {
     for (const v of ["agy-opus", "agy-sonnet"] as const) {
       expect(SPRITE_DEFINITIONS[v].rows.join("")).toContain("R");
     }
-    for (const v of ["gemini-argon", "gemini-pro", "gemini-flash"] as const) {
+    for (const v of ["gemini-carbon", "gemini-argon", "gemini-pro", "gemini-flash"] as const) {
       expect(SPRITE_DEFINITIONS[v].rows.join("")).toContain("C");
     }
   });
@@ -82,6 +84,21 @@ describe("resolveSpriteVariant", () => {
     expect(resolveSpriteVariant("claude", "heavy", "claude-mythos-5-2")).toBe("claude-mythos");
     expect(resolveSpriteVariant("agy-claude", "heavy", "claude-fable-5-2")).toBe("claude-fable");
     expect(resolveSpriteVariant("agy-claude", "heavy", "claude-mythos-5-2")).toBe("claude-mythos");
+  });
+
+  it("resolves flagship Gemini 4 Carbon and keeps Argon/Hydrogen in Pool 2", () => {
+    expect(resolveSpriteVariant("antigravity", "heavy", "gemini-4-carbon-high")).toBe(
+      "gemini-carbon"
+    );
+    expect(resolveSpriteVariant("agy-gemini", "standard", "gemini-4-carbon-low")).toBe(
+      "gemini-carbon"
+    );
+    expect(resolveSpriteVariant("antigravity", "heavy", "gemini-4-argon-high")).toBe(
+      "gemini-argon"
+    );
+    expect(resolveSpriteVariant("agy-gemini", "light", "gemini-4-hydrogen-low")).toBe(
+      "gemini-flash"
+    );
   });
 
   it("maps each pool and tier to its character", () => {
