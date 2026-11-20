@@ -74,9 +74,17 @@ SELECTED_MODEL=""
 if ! is_pool_exhausted "claude"; then
   SELECTED_POOL="agy-claude"
   SELECTED_MODEL="claude-opus-5-5-thinking"
+elif ! is_pool_exhausted "neon"; then
+  # Gemini 4 Neon (2026-11-20): Opus-5.5-class, stronger than Hydrogen. Own lock until you
+  # confirm your plan shares its quota with Hydrogen (then merge it into "gemini").
+  SELECTED_POOL="agy-neon"
+  SELECTED_MODEL="gemini-4-neon-high"
 elif ! is_pool_exhausted "gemini"; then
   SELECTED_POOL="agy-gemini"
-  SELECTED_MODEL="argon-4-ultra"
+  # Basic Gemini worker as of 2026-11-16: Gemini 4 Hydrogen (replaced 3.8 Flash).
+  # Shares the 'gemini' quota bag. Argon (gemini-4-argon-*) has its own weekly bag
+  # and belongs in a separate 'argon' pool, not here.
+  SELECTED_MODEL="gemini-4-hydrogen-high"
 else
   SELECTED_POOL="claude-direct"
   SELECTED_MODEL="claude-opus-4-6"
