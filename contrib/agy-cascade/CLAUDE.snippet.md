@@ -5,6 +5,15 @@
 
 ## DualAgent Nexus & agy-cascade Protocol
 
+> **Model ladder (2026-11-20):** best-to-worst Gemini order is Carbon > Argon > **Neon** > Hydrogen
+> (Neon = Opus-5.5-class, Hydrogen = Sonnet-5.5-class; `gemini-4-neon-*`, own lock `neon`).
+>
+> **Earlier note (2026-11-16):** the basic Gemini worker is **Gemini 4 Hydrogen**
+> (`gemini-4-hydrogen-*`), which replaced Gemini 3.8 Flash. Hydrogen shares the general
+> Gemini quota bag (with Pro/Flash); **Gemini 4 Argon** (`gemini-4-argon-*`) keeps its own
+> separate weekly quota bag, so exhausting Argon never blocks Hydrogen. `agy-cascade`
+> auto-orders from `agy models`, so Gemini 4 already outranks 3.8 Flash automatically.
+
 When operating as the Conductor on this codebase:
 
 1. **Heavy Work Delegation**:
