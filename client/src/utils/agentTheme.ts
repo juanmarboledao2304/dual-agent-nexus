@@ -302,6 +302,7 @@ export function resolveModelTier(params: {
       m.includes("pro") ||
       m.includes("ultra") ||
       m.includes("argon") ||
+      m.includes("neon") ||
       e === "high" ||
       e === "max"
     ) {
@@ -353,7 +354,7 @@ export function resolveEffort(
 }
 
 /**
- * Format compact model badge text (e.g. Opus 5.5, Sonnet 5.5, GPT-OSS 120B, Haiku 4.5, Gemini 4 Carbon, Gemini 4 Argon, Gemini 4 Hydrogen).
+ * Format compact model badge text (e.g. Opus 5.5, Sonnet 5.5, GPT-OSS 120B, Haiku 4.5, Gemini 4 Carbon, Gemini 4 Argon, Gemini 4 Neon, Gemini 4 Hydrogen).
  */
 export function formatModelBadge(
   model?: string | null,
@@ -381,6 +382,7 @@ export function formatModelBadge(
   if (provider === "antigravity" || provider === "agy-gemini") {
     if (m.includes("carbon")) return "Gemini 4 Carbon";
     if (m.includes("argon")) return "Gemini 4 Argon";
+    if (m.includes("neon")) return "Gemini 4 Neon";
     if (m.includes("hydrogen")) return "Gemini 4 Hydrogen";
     if (m.includes("gemini-4") || m.includes("gemini 4")) return "Gemini 4";
     if (m.includes("ultra")) return "Gemini Ultra";

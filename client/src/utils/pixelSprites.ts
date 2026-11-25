@@ -1,7 +1,7 @@
 /**
  * @file pixelSprites.ts
  * @description Deterministic 8-bit sprite data for the DualAgent Nexus PixelAvatar engine.
- * Every agent resolves to one of eleven 16x16 character sprites drawn from its quota pool and
+ * Every agent resolves to one of twelve 16x16 character sprites drawn from its quota pool and
  * model tier: Pool 3 Claude Direct (warm spectrum, including Claude Fable 5.2 and Claude
  * Mythos 5.2), Pool 1 AGY-Claude (hybrid spectrum with Antigravity orbital frame accents),
  * and Pool 2 AGY-Gemini (cool spectrum with a dual-core chest, including flagship Gemini 4
@@ -17,7 +17,7 @@ import type { ModelTier, ThermalProvider } from "./agentTheme";
 /** Side length of every sprite grid, in pixels. */
 export const SPRITE_GRID = 16;
 
-/** The eleven character sprites, one per pool and tier. */
+/** The twelve character sprites, one per pool and tier. */
 export type SpriteVariant =
   | "claude-opus"
   | "claude-sonnet"
@@ -28,6 +28,7 @@ export type SpriteVariant =
   | "agy-sonnet"
   | "gemini-carbon"
   | "gemini-argon"
+  | "gemini-neon"
   | "gemini-pro"
   | "gemini-flash";
 
@@ -205,6 +206,26 @@ const SPRITE_ROWS: Record<SpriteVariant, readonly string[]> = {
     "...BBEBBBBEBB...",
     ".BBBBBBCCBBBBBB.",
     "...BBBCCCCBBB...",
+    "...BBBBCCBBBB...",
+    "...DDDDDDDDDD...",
+    "...D.D....D.D...",
+    "...D.D....D.D...",
+    "....SSSSSSSS....",
+    EMPTY,
+    EMPTY,
+  ],
+  // Pool 2 upper-mid: Gemini 4 Neon. Electric fuchsia chassis under a glowing cyan neon tube
+  // arc, with glowing arms and a lit diamond core. Opus-5.5-class: below Argon, above Hydrogen.
+  "gemini-neon": [
+    "...RRRRRRRRRR...",
+    "..R..........R..",
+    "...C........C...",
+    "...LLLLLLLLLL...",
+    "...BBBBBBBBBB...",
+    "...BBEBBBBEBB...",
+    "...BBEBBBBEBB...",
+    ".RBBBBBCCBBBBBR.",
+    "...BBBCAACBBB...",
     "...BBBBCCBBBB...",
     "...DDDDDDDDDD...",
     "...D.D....D.D...",
@@ -397,6 +418,25 @@ export const SPRITE_DEFINITIONS: Record<SpriteVariant, SpriteDefinition> = {
     palette: { B: "#a855f7", D: "#6b21a8", L: "#c084fc", E: "#12052a", C: "#22d3ee", S: SHADOW },
     rows: SPRITE_ROWS["gemini-argon"],
   },
+  "gemini-neon": {
+    variant: "gemini-neon",
+    pool: "agy-gemini",
+    tier: "heavy",
+    label: "Gemini 4 Neon",
+    poolLabel: "POOL 2 • AGY-GEMINI",
+    primaryHex: "#d946ef",
+    palette: {
+      B: "#d946ef",
+      D: "#86198f",
+      L: "#f0abfc",
+      E: "#1a0420",
+      C: "#22d3ee",
+      A: "#ecfeff",
+      R: "#67e8f9",
+      S: SHADOW,
+    },
+    rows: SPRITE_ROWS["gemini-neon"],
+  },
   "gemini-pro": {
     variant: "gemini-pro",
     pool: "agy-gemini",
@@ -463,6 +503,7 @@ export const SPRITE_VARIANT_ORDER: readonly SpriteVariant[] = [
   "agy-sonnet",
   "gemini-carbon",
   "gemini-argon",
+  "gemini-neon",
   "gemini-pro",
   "gemini-flash",
   "claude-opus",
@@ -525,6 +566,7 @@ export function resolveSpriteVariant(
   if (provider === "agy-claude") return tier === "heavy" ? "agy-opus" : "agy-sonnet";
   if (provider === "antigravity" || provider === "agy-gemini") {
     if (m.includes("argon")) return "gemini-argon";
+    if (m.includes("neon")) return "gemini-neon";
     if (tier === "heavy") return "gemini-argon";
     if (tier === "light") return "gemini-flash";
     return "gemini-pro";
