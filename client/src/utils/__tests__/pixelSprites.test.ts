@@ -24,8 +24,8 @@ import type { PixelRole, SpriteVariant } from "../pixelSprites";
 const VARIANTS = Object.keys(SPRITE_DEFINITIONS) as SpriteVariant[];
 
 describe("sprite definitions", () => {
-  it("ships all eleven variants in the legend order", () => {
-    expect(VARIANTS).toHaveLength(11);
+  it("ships all twelve variants in the legend order", () => {
+    expect(VARIANTS).toHaveLength(12);
     expect([...SPRITE_VARIANT_ORDER].sort()).toEqual([...VARIANTS].sort());
   });
 
@@ -64,7 +64,13 @@ describe("sprite definitions", () => {
     for (const v of ["agy-opus", "agy-sonnet"] as const) {
       expect(SPRITE_DEFINITIONS[v].rows.join("")).toContain("R");
     }
-    for (const v of ["gemini-carbon", "gemini-argon", "gemini-pro", "gemini-flash"] as const) {
+    for (const v of [
+      "gemini-carbon",
+      "gemini-argon",
+      "gemini-neon",
+      "gemini-pro",
+      "gemini-flash",
+    ] as const) {
       expect(SPRITE_DEFINITIONS[v].rows.join("")).toContain("C");
     }
   });
@@ -96,6 +102,8 @@ describe("resolveSpriteVariant", () => {
     expect(resolveSpriteVariant("antigravity", "heavy", "gemini-4-argon-high")).toBe(
       "gemini-argon"
     );
+    expect(resolveSpriteVariant("antigravity", "heavy", "gemini-4-neon-high")).toBe("gemini-neon");
+    expect(resolveSpriteVariant("agy-gemini", "standard", "gemini-4-neon-low")).toBe("gemini-neon");
     expect(resolveSpriteVariant("agy-gemini", "light", "gemini-4-hydrogen-low")).toBe(
       "gemini-flash"
     );

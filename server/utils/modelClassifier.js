@@ -96,6 +96,14 @@ const DEFAULT_CASCADE_MODELS = [
   {
     pool: "agy-gemini",
     provider: "antigravity",
+    model: "gemini-4-neon-high",
+    label: "Gemini 4 Neon High",
+    tier: "heavy",
+    effort: "high",
+  },
+  {
+    pool: "agy-gemini",
+    provider: "antigravity",
     model: "gemini-3-pro",
     label: "Gemini Pro",
     tier: "standard",
@@ -203,6 +211,7 @@ function normalizeProvider(provider, model = "", source = "") {
     m.includes("gemini") ||
     m.includes("carbon") ||
     m.includes("argon") ||
+    m.includes("neon") ||
     m.includes("hydrogen") ||
     m.includes("3.8-flash") ||
     m.includes("flash") ||
@@ -430,7 +439,7 @@ function classifyModelAndEffort(input = {}) {
   }
 
   // Pool 2: agy-gemini / antigravity
-  // (Gemini 4 Carbon flagship / Gemini 4 Argon -> Gemini Pro -> Gemini 4 Hydrogen High/Med/Low).
+  // (Gemini 4 Carbon flagship / Gemini 4 Argon -> Gemini 4 Neon -> Gemini Pro -> Gemini 4 Hydrogen High/Med/Low).
   // Gemini 4 Hydrogen replaced Gemini 3.8 Flash as the basic worker (2026-11-16); "flash" is kept
   // as a legacy alias so older model strings still classify.
   if (provider === "antigravity") {
@@ -451,6 +460,7 @@ function classifyModelAndEffort(input = {}) {
       m.includes("pro") ||
       m.includes("ultra") ||
       m.includes("argon") ||
+      m.includes("neon") ||
       m.includes("gemini-4") ||
       m.includes("gemini 4") ||
       explicitEffort === "high" ||
@@ -615,6 +625,7 @@ function formatModelShortName(model = "", provider = "claude", modelTier = "stan
   if (p === "antigravity" || p === "agy-gemini") {
     if (m.includes("carbon")) return "Gemini 4 Carbon";
     if (m.includes("argon")) return "Gemini 4 Argon";
+    if (m.includes("neon")) return "Gemini 4 Neon";
     if (m.includes("hydrogen")) return "Gemini 4 Hydrogen";
     if (m.includes("gemini-4") || m.includes("gemini 4")) return "Gemini 4";
     if (m.includes("ultra")) return "Gemini Ultra";
